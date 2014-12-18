@@ -1,0 +1,39 @@
+@prefix cas: <http://www.broker-cloud.eu/service-descriptions/CAS/broker#>.
+
+#################################################################################
+### Bind Broker Policy to Gold profile 
+cas:CASBrokerPolicy cas:hasServiceLevelProfileCAS cas:CASServiceLevelProfileGold.	
+
+#################################################################################
+#### Service Level Profiles 
+
+cas:ServiceLevelProfileGold a cas:CASServiceLevelProfile ;
+cas:hasServiceLevelAvailability cas:GoldAvailability; 
+cas:hasServiceLevelSecurity cas:GoldSecurity. 
+
+#####################################################################################
+### Service Levels 
+## for gold 
+cas:GoldAvailability a cas:ServiceLevelAvailability;
+cas:hasSLE-Availability cas:SLE-GoldAvailability.
+
+cas:GoldSecurity a cas:ServiceLevelSecurity;
+cas:hasSLE-Security cas:SLE-GoldSecurity. 
+
+#####################################################################################
+### Service Level Expressions 
+## for gold 
+cas:SLE-GoldAvailability a cas:SLE-Availability;
+cas:hasVariableAvailability  cas:VarGoldAvailability.  
+
+cas:SLE-GoldSecurity a cas:SLE-Security;
+cas:hasVariableSecurity  cas:VarGoldSecurity.  
+
+#####################################################################################
+### Variables 
+## for gold
+cas:VarGoldAvailability a cas:VarAvailability;
+cas:hasDefaultAvailability cas:AvailabilityHigh.
+
+cas:VarGoldSecurity a  cas:VarSecurity;
+cas:hasDefaultSecurity cas:ASMVhigh. 

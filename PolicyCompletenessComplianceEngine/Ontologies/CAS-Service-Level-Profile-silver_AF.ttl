@@ -1,0 +1,41 @@
+@prefix cas: <http://www.broker-cloud.eu/service-descriptions/CAS/broker#>.
+
+#################################################################################
+### Bind Broker Policy to the Silver profile 
+cas:CASBrokerPolicy cas:hasServiceLevelProfileCAS cas:CASServiceLevelProfileSilver.	
+
+#################################################################################
+#### Service Level Profiles 
+
+cas:ServiceLevelProfileSilver a cas:CASServiceLevelProfile ; 
+cas:hasServiceLevelAvailability cas:SilverAvailability;  
+cas:hasServiceLevelSecurity cas:SilverSecurity. 
+
+#####################################################################################
+### Service Levels 
+## for silver 
+cas:SilverAvailability a cas:ServiceLevelAvailability;
+cas:hasSLE-Availability cas:SLE-SilverAvailability.
+
+cas:SilverSecurity a cas:ServiceLevelSecurity;
+cas:hasSLE-Security cas:SLE-SilverSecurity.
+
+#####################################################################################
+### Service Level Expressions 
+## for silver 
+
+cas:SLE-SilverAvailability a cas:SLE-Availability;
+cas:hasVariableAvailability  cas:VarSilverAvailability.   
+
+cas:SLE-SilverSecurity a cas:SLE-Security;
+cas:hasVariableSecurity  cas:VarSilverSecurity.  
+
+#####################################################################################
+### Variables 
+## for silver
+
+cas:VarSilverAvailability a cas:VarAvailability;
+cas:hasDefaultAvailability cas:AvailabilityMedium.
+
+cas:VarSilverSecurity a  cas:VarSecurity;
+cas:hasDefaultSecurity cas:ASMVmedium.

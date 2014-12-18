@@ -1,0 +1,89 @@
+@base <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> .
+@prefix sp: <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> .
+@prefix cas: <http://www.broker-cloud.eu/service-descriptions/CAS/broker#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#>  .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> .
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> .
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> .
+@prefix fc: <http://www.broker-cloud.eu/service-descriptions/CAS/categories#>.
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+
+
+
+#############################################################################################
+# This ontology describes the Address App Service Model (SM) offered on
+# CAS Software AG  platform. 
+# The app is described (via the SM) using several criteria defined by CAS in 
+# <http://www.broker-cloud.eu/service-descriptions/CAS/broker/> and
+# <http://www.broker-cloud.eu/service-descriptions/CAS/categories#>  . 
+# Service Provider are defined in <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> 
+# Additionally, all SLA´s under which the app is offered are described in 
+# the Service Level Profile that is referenced. 
+#############################################################################################
+
+<>
+  	a owl:Ontology;
+	rdfs:label "CAS Cloud Address App" ;
+	dcterms:title "CAS Cloud Address App" ;
+	dcterms:description "Description of CAS Cloud Address App" ;
+	dcterms:created "2014-02-13"^^xsd:date ;
+	dcterms:modified "2014-11-11"^^xsd:date ;
+	dcterms:creator sp:CAS_Software_AG;
+    dcterms:publisher "Antonia Schwichtenberg";
+	owl:versionInfo "005" .
+
+
+### Address App ###
+sp:CASAddressApp a usdl-core:Service, cas:App;
+	dcterms:title "CAS Adress App";
+	dcterms:creator sp:CAS_Software_AG;
+	usdl-core-cb:dependsOn sp:CASCalenderApp;
+	usdl-core:hasEntityInvolvement sp:ISV1EntityInvolvement;
+	usdl-core-cb:hasServiceModel sp:ServiceModelAddressApp. 
+
+
+### Entity involvement
+sp:ISV1EntityInvolvement a usdl-core:EntityInvolvement;
+	usdl-core:withBusinessRole  usdl-business-roles:provider;
+	usdl-core:ofBusinessEntity sp:ISV1 .
+
+
+### Service Model for the Address App  ### 
+sp:ServiceModelAddressApp a cas:CASServiceModel;
+	gr:isVariantOf cas:CASBrokerPolicy;
+	usdl-core-cb:hasClassificationDimension fc:projectmanager, fc:insurance, fc:contacts;
+	cas:hasServiceLevelProfileCAS cas:ServiceLevelProfileSilver;
+	
+	cas:hasAuditability cas:AAVhigh; 
+	
+	cas:hasContractingExperience cas:ACEVgood;
+	
+	cas:hasEaseOfDoingBusiness cas:AEODBVeasy;
+	
+	cas:hasExtensibility cas:AEVmedium;
+	
+	cas:hasPortability cas:APVmedium;
+	
+	cas:hasSuitability cas:ASVmedium;
+	
+	cas:hasAccessibility cas:AAVmedium;
+	
+	cas:fullfillsClientRequirements cas:ACRVmedium;
+	
+	cas:hasLearnability cas:ALVgood;
+	
+	cas:hasMonitoring cas:AMVbasic;
+	
+	cas:hasInteroperability cas:AIVhigh;
+	
+	cas:hasAdaptability cas:AAVhigh.
+
+# Todo: the Price Specification to be attached to offering and offering to Service or Service Model 

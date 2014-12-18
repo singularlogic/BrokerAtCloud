@@ -1,0 +1,128 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+
+<http://linked-usdl.org/ns/usdl-sla> a owl:Ontology;
+    dc:title "USDL Service Level Agreements";
+    dc:description """<p>Simple vocabulary for describing service level agreements. This vocabulary is based on the work on USDL in the TEXO project.</p>
+<p>Service level module of USDL. Service Level Agreements (SLAs) are a common way to formally specify such functional and non-functional conditions under which services are or are to be delivered. However, SLAs in practice are specified at the top-level interface between a service provider and a service customer only. Customers and providers can use top-level SLAs to monitor whether the actual service delivery complies with the agreed SLA terms. In case of SLA violations, penalties or compensations can be directly derived. The USDL Service Level Module allows modeling such information. The module is derived from our research as part of a multilevel SLA management platform. This vocabulary defines a simple subset of the original USDL Service Level Module.</p>
+""";
+    dc:modified "2012-09-20"^^xsd:date;
+    vann:preferredNamespaceUri "http://www.linked-usdl.org/ns/usdl-sla#";
+    vann:preferredNamespacePrefix "usdl-sla";
+    foaf:page <http://linked-usdl.org/ns/usdl-sla.html>;
+    dc:creator
+        <http://linked-usdl.org/ns/usdl-sla#tleidig>,
+        <http://linked-usdl.org/ns/usdl-sla#cmom> .
+
+<http://linked-usdl.org/ns/usdl-sla#tleidig> a foaf:Person;
+    foaf:name "Torsten Leidig" .
+#    foaf:homepage <> .
+
+<http://linked-usdl.org/ns/usdl-sla#SAP%20Research%20Center%20CEC%20Karlsruhe%2C%20SAP%20AG> a foaf:Organization;
+    foaf:member <http://linked-usdl.org/ns/usdl-sla#tleidig>;
+    foaf:name "SAP Research Center CEC Karlsruhe, SAP AG";
+    foaf:homepage <http://www.sap.com> .
+
+<http://linked-usdl.org/ns/usdl-sla#cmom> a foaf:Person;
+    foaf:name "Christof Momm" .
+#    foaf:homepage <> .
+
+<http://linked-usdl.org/ns/usdl-sla#SAP%20AG> a foaf:Organization;
+    foaf:member <http://linked-usdl.org/ns/usdl-sla#cmom>;
+    foaf:name "SAP AG";
+    foaf:homepage <http://www.sap.com> .
+
+usdl-sla:Variable a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://linked-usdl.org/ns/usdl-sla>;
+    rdfs:label "Variable";
+    rdfs:comment """<p>A variable that is used in a service level expression and can be negotiated between consumer and provider.</p>
+""" .
+
+usdl-sla:ServiceLevelExpression a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://linked-usdl.org/ns/usdl-sla>;
+    rdfs:label "Service Level Expression";
+    rdfs:comment """<p>A ServiceLevelExpression specifies an expression that is evaluated in the context of a service level state or action. For this purpose it may reference a set of service level attributes (constants, metrics or variable references) and define relationships between these attributes, e.g. Boolean or arithmetic operands. Typically, it resolves to a Boolean value that indicates whether a guaranteed state is met or whether the precondition to a guaranteed action is fulfilled.</p>
+""" .
+
+usdl-sla:GuaranteedState a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://linked-usdl.org/ns/usdl-sla>;
+    rdfs:label "Guaranteed State";
+    rdfs:comment """<p>A GuaranteedState is a particular service level that specifies a single state that must be maintained within the lifetime of any service instance, to which the respective service level profile applies.</p>
+""";
+    rdfs:subClassOf usdl-sla:ServiceLevel .
+
+usdl-sla:GuaranteedAction a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://linked-usdl.org/ns/usdl-sla>;
+    rdfs:label "Guaranteed Action";
+    rdfs:comment """<p>A GuaranteedAction is a particular ServiceLevel that specifies a self-contained activity that must be performed, if and only if during the lifetime of any service instance to which the respective service level profile applies a specific precondition is fulfilled.</p>
+""";
+    rdfs:subClassOf usdl-sla:ServiceLevel .
+
+usdl-sla:ServiceLevelProfile a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://linked-usdl.org/ns/usdl-sla>;
+    rdfs:label "Service Level Profile";
+    rdfs:comment """<p>A service level profile captures a number of service level statements that have to be satisfied.</p>
+<p>The container for the service level profile descriptions of a service. ServiceLevelProfile represents a set of service level specifications that are combined into one profile and which are offered/negotiated/agreed as a whole. Different profiles can be used to specify different options of how service levels may be specified and grouped (e.g., as gold, silver, bronze profile). A ServiceLevelProfile resembles the concept of a Service Level Agreement Template as for example specified in WS-Agreement.</p>
+""" .
+
+usdl-sla:ServiceLevel a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://linked-usdl.org/ns/usdl-sla>;
+    rdfs:label "Service Level";
+    rdfs:comment """<p>A ServiceLevel specifies a single service level objective as it characterizes an offered, negotiated or agreed service. Service levels are defined by the parties participating in service provisioning, delivery and consumption and express assertions that are claimed or expected to hold during these activities. Such assertions are always attributed to a single party, which is obligated to enforce the service level. From the viewpoint of the party defining the service level two cases are distinguished. Either the defining party obligates itself to ensure the service level, i.e., it claims that the assertion will hold, or the defining party expects the obligated party to ensure the service level, i.e., it requires the other party to enforce the assertion.</p>
+""" .
+
+usdl-sla:hasVariable a rdf:Property, owl:ObjectProperty;
+    rdfs:isDefinedBy <http://linked-usdl.org/ns/usdl-sla>;
+    rdfs:label "has variable";
+    rdfs:comment """<p>Variables that are used to express the service level.</p>
+""";
+    rdfs:domain usdl-sla:ServiceLevelExpression;
+    rdfs:range usdl-sla:Variable .
+
+usdl-sla:hasServiceLevelProfile a rdf:Property, owl:ObjectProperty;
+    rdfs:isDefinedBy <http://linked-usdl.org/ns/usdl-sla>;
+    rdfs:label "has service level profile";
+    rdfs:comment """<p>Service level profile descriptions for a service</p>
+""";
+    rdfs:domain usdl-core:Service;
+    rdfs:range usdl-sla:ServiceLevelProfile .
+
+usdl-sla:hasDefault a rdf:Property, owl:ObjectProperty;
+    rdfs:isDefinedBy <http://linked-usdl.org/ns/usdl-sla>;
+    rdfs:label "has default";
+    rdfs:comment """<p>The default value of the variable, e.g.&nbsp; to be shown in a service store.</p>
+""";
+    rdfs:domain usdl-sla:Variable;
+    rdfs:range gr:QuantitativeValue .
+
+usdl-sla:serviceLevelExpression a rdf:Property, owl:ObjectProperty;
+    rdfs:isDefinedBy <http://linked-usdl.org/ns/usdl-sla>;
+    rdfs:label "service level expression";
+    rdfs:comment """<p>A ServiceLevelExpression specifies an expression that is evaluated in the context of a service level state or action. For this purpose it may reference a set of service level attributes (constants, metrics or variable references) and define relationships between these attributes, e.g. Boolean or arithmetic operands. Typically, it resolves to a Boolean value that indicates whether a guaranteed state is met or whether the precondition to a guaranteed action is fulfilled.</p>
+""";
+    rdfs:domain usdl-sla:ServiceLevel;
+    rdfs:range usdl-sla:ServiceLevelExpression .
+
+usdl-sla:obligedParty a rdf:Property, owl:ObjectProperty;
+    rdfs:isDefinedBy <http://linked-usdl.org/ns/usdl-sla>;
+    rdfs:label "obliged party";
+    rdfs:comment """<p>The party that is in charge to guarantee/enforce this service level</p>
+""";
+    rdfs:domain usdl-sla:ServiceLevel;
+    rdfs:range rdfs:Resource .
+
+usdl-sla:hasServiceLevel a rdf:Property, owl:ObjectProperty;
+    rdfs:isDefinedBy <http://linked-usdl.org/ns/usdl-sla>;
+    rdfs:label "has service level";
+    rdfs:comment """<p>Service level descriptions for a service level profile.</p>
+""";
+    rdfs:domain usdl-sla:ServiceLevelProfile;
+    rdfs:range usdl-sla:ServiceLevel .

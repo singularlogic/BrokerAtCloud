@@ -1,0 +1,329 @@
+#@prefix : <http://www.semanticweb.org/owl/owlapi/turtle#> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#>.
+
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> .
+
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> .
+
+@prefix brokerpolicy: <http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/brokerpolicy#> .
+
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+
+@prefix fc: <http://www.broker-cloud.eu/service-descriptions/CAS/categories#>.
+
+@base <http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/brokerpolicy/> .
+
+
+<http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/brokerpolicy/> rdf:type owl:Ontology .
+
+
+### Framework declaration
+
+brokerpolicy:hasNumberOfUsers rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty; 
+	rdfs:domain brokerpolicy:ServiceModelSAPHANAApp;
+	rdfs:range brokerpolicy:QVNumberOfUsersRange.
+
+brokerpolicy:hasDocumentStorage rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty; 
+	rdfs:domain brokerpolicy:ServiceModelSAPHANAApp;
+	rdfs:range brokerpolicy:QVDocumentStorageRange.
+
+brokerpolicy:hasAvailability rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty; 
+	rdfs:domain brokerpolicy:ServiceModelSAPHANAApp;
+	rdfs:range brokerpolicy:QVAvailabilityRange.
+
+
+
+### Service Model subclassification
+
+brokerpolicy:ServiceModelSAPHANAApp a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/brokerpolicy>;
+    rdfs:label "SAP HANA App Service Model";
+    rdfs:comment """<p>This service model is an entry point to template specification of SAP HANA Apps.</p> """;
+    rdfs:subClassOf usdl-core:ServiceModel .
+
+### Service Model instantiation and association.
+
+brokerpolicy:BrokerPolicySAPHANAApp a brokerpolicy:ServiceModelSAPHANAApp; 
+	usdl-core:hasEntityInvolvement brokerpolicy:EntityInvolvementSAPHANAApp;
+	usdl-core-cb:hasClassificationDimension fc:rootConcept.
+
+### Entity Involvement instantiation
+
+brokerpolicy:EntityInvolvementSAPHANAApp a usdl-core:EntityInvolvement;
+	usdl-core:withBusinessRole usdl-business-roles:intermediary;
+	usdl-core:ofBusinessEntity brokerpolicy:SAPHANAApp .
+
+### Business Entity instantiation
+
+brokerpolicy:SAPHANAApp a gr:BusinessEntity .
+
+### Service Level Profile subclassification
+
+brokerpolicy:ServiceLevelProfileUserBasedApps a rdfs:Class, owl:Class;
+   rdfs:label "Service Level Profile for User-based Apps";
+   rdfs:comment """<p> This profile applies to apps that scale based on the number of app users.</p> """;
+   rdfs:subClassOf usdl-sla:ServiceLevelProfile .
+
+#brokerpolicy:ServiceLevelProfileTransactionBasedApps a rdfs:Class, owl:Class;
+#   rdfs:label "Service Level Profile for Transaction-based Apps";
+#   rdfs:comment """<p> This profile applies to apps that scale based on the number of transactions.</p> """;
+#   rdfs:subClassOf usdl-sla:ServiceLevelProfile .
+
+#brokerpolicy:ServiceLevelProfileMessageBasedApps a rdfs:Class, owl:Class;
+#   rdfs:label "Service Level Profile for Message-based Apps";
+#   rdfs:comment """<p> This profile applies to apps that scale based on the number of messages.</p> """;
+#   rdfs:subClassOf usdl-sla:ServiceLevelProfile .
+
+
+### Service Level subclassification
+
+#brokerpolicy:ServiceLevelForAppConfiguration a rdfs:Class, owl:Class;
+#   rdfs:label "Service Level for Configuration of User-based Apps";
+#   rdfs:comment """<p> This service level applies to configuration of apps that scale based on the number of app users.</p> """;
+#   rdfs:subClassOf usdl-sla:ServiceLevel .
+
+brokerpolicy:ServiceLevelForAppSizing a rdfs:Class, owl:Class;
+   rdfs:label "Service Level for Sizing of User-based Apps";
+   rdfs:comment """<p> This service level applies to sizing of apps that scale based on the number of app users.</p> """;
+   rdfs:subClassOf usdl-sla:ServiceLevel .
+
+### Service Level Expression subclassification
+
+brokerpolicy:SLExpressionForAppSizing a rdfs:Class, owl:Class;
+   rdfs:label "Service Level Expression for Sizing of User-based Apps";
+   rdfs:comment """<p> This service level expression applies to sizing of apps that scale based on the number of app users.</p> """;
+   rdfs:subClassOf usdl-sla:ServiceLevelExpression .
+
+#brokerpolicy:SLExpressionForAppConfiguration a rdfs:Class, owl:Class;
+#   rdfs:label "Service Level Expression for Configuration of User-based Apps";
+#   rdfs:comment """<p> This service level expression applies to configuration of apps that scale based on the number of app users.</p> """;
+#   rdfs:subClassOf usdl-sla:ServiceLevelExpression .
+
+### Variable subclassification
+
+brokerpolicy:VarNumberOfUsers a rdfs:Class, owl:Class;
+   rdfs:label "Variable for declaring number of users in User-based Apps";
+   rdfs:comment """<p> This variable applies to sizing of apps that scale based on the number of app users.</p> """;
+   rdfs:subClassOf usdl-sla:Variable .
+   
+#brokerpolicy:VarNumberOfConnections a rdfs:Class, owl:Class;
+#   rdfs:label "Variable for declaring number of connections to SAP connectivity service in User-based Apps";
+#   rdfs:comment """<p> This variable applies to sizing of apps that scale based on the number of app users.</p> """;
+#   rdfs:subClassOf usdl-sla:Variable .
+   
+#brokerpolicy:VarNumberOfComputeUnits a rdfs:Class, owl:Class;
+#   rdfs:label "Variable for declaring number of compute units in User-based Apps";
+#   rdfs:comment """<p> This variable applies to sizing of apps that scale based on the number of app users.</p> """;
+#   rdfs:subClassOf usdl-sla:Variable .
+   
+brokerpolicy:VarDocumentStorage a rdfs:Class, owl:Class;
+   rdfs:label "Variable for declaring the document storage measured in GBs in User-based Apps";
+   rdfs:comment """<p> This variable applies to sizing of apps that scale based on the number of app users.</p> """;
+   rdfs:subClassOf usdl-sla:Variable .
+   
+brokerpolicy:VarAvailability a rdfs:Class, owl:Class;
+   rdfs:label "Variable for declaring the availability of the service in User-based Apps";
+   rdfs:comment """<p> This variable applies to sizing of apps that scale based on the number of app users.</p> """;
+   rdfs:subClassOf usdl-sla:Variable .
+
+#brokerpolicy:VarEgressBandwidth a rdfs:Class, owl:Class;
+#   rdfs:label "Variable for declaring egress bandwidth in User-based Apps";
+#   rdfs:comment """<p> This variable applies to sizing of apps that scale based on the number of app users.</p> """;
+#   rdfs:subClassOf usdl-sla:Variable .
+   
+### gr:QuantitativeValue subclassification
+
+brokerpolicy:QVNumberOfUsersRange a rdfs:Class, owl:Class;
+   gr:hasMinValueInteger "1"^^xsd:integer;
+   gr:hasMaxValueInteger "10000"^^xsd:integer;
+   gr:hasUnitOfMeasurement ""^^xsd:string;
+   usdl-core-cb:isRange "true"^^xsd:boolean;
+   rdfs:subClassOf gr:QuantitativeValueInteger .
+
+brokerpolicy:QVDocumentStorageRange a rdfs:Class, owl:Class;
+   gr:hasMinValueInteger "1"^^xsd:integer;
+   gr:hasMaxValueInteger "10000"^^xsd:integer;
+   gr:hasUnitOfMeasurement ""^^xsd:string;
+   usdl-core-cb:isRange "true"^^xsd:boolean;
+   rdfs:subClassOf gr:QuantitativeValueInteger .
+
+brokerpolicy:QVAvailabilityRange a rdfs:Class, owl:Class;
+   gr:hasMinValueFloat "1"^^xsd:float;
+   gr:hasMaxValueFloat "10000"^^xsd:float;
+   gr:hasUnitOfMeasurement ""^^xsd:string;
+   usdl-core-cb:isRange "true"^^xsd:boolean;
+   rdfs:subClassOf gr:QuantitativeValueFloat .
+
+### Subproperties to connect Service Model to distinguished Service Level Profiles
+
+brokerpolicy:hasSLProfileForUserBasedApps a rdf:Property, owl:ObjectProperty;
+   rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile;
+   rdfs:label "has Service Level Profile for User-based Apps";
+   rdfs:comment """<p> This property connects a service model specified in this template with the service level profile for user-based apps.</p> """;
+   rdfs:domain brokerpolicy:ServiceModelSAPHANAApp;
+   rdfs:range brokerpolicy:ServiceLevelProfileUserBasedApps .
+
+brokerpolicy:hasSLProfileForTransactionBasedApps a rdf:Property, owl:ObjectProperty;
+   rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile;
+   rdfs:label "has Service Level Profile for Transaction-based Apps";
+   rdfs:comment """<p> This property connects a service model specified in this template with the service level profile for transaction-based apps.</p> """;
+   rdfs:domain brokerpolicy:ServiceModelSAPHANAApp;
+   rdfs:range brokerpolicy:ServiceLevelProfileTransactionBasedApps .
+
+brokerpolicy:hasSLProfileForMessageBasedApps a rdf:Property, owl:ObjectProperty;
+   rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile;
+   rdfs:label "has Service Level Profile for Message-based Apps";
+   rdfs:comment """<p> This property connects a service model specified in this template with the service level profile for message-based apps.</p> """;
+   rdfs:domain brokerpolicy:ServiceModelSAPHANAApp;
+   rdfs:range brokerpolicy:ServiceLevelProfileMessageBasedApps .
+
+### Subproperties to connect Service Level Profiles to distinguished Service Levels
+
+brokerpolicy:hasSLForAppSizing a rdf:Property, owl:ObjectProperty;
+   rdfs:subPropertyOf usdl-sla:hasServiceLevel;
+   rdfs:label "has Service Level for App Sizing";
+   rdfs:comment """<p> This property connects a service level profile specified in this template (domain) with the service level specified in this template (range).</p> """;
+   rdfs:domain brokerpolicy:ServiceLevelProfileUserBasedApps;
+   rdfs:range brokerpolicy:ServiceLevelForAppSizing .
+
+#brokerpolicy:hasSLForAppConfiguration a rdf:Property, owl:ObjectProperty;
+#   rdfs:subPropertyOf usdl-sla:hasServiceLevel;
+#   rdfs:label "has Service Level for App Configuration";
+#   rdfs:comment """<p> This property connects a service level profile specified in this template (domain) with the service level specified in this template (range).</p> """;
+#   rdfs:domain brokerpolicy:ServiceLevelProfileUserBasedApps;
+#   rdfs:range brokerpolicy:ServiceLevelForAppConfiguration .
+
+### Subproperties to connect Service Levels to distinguished Service Level expressions
+
+brokerpolicy:hasSLExpressionForAppSizing a rdf:Property, owl:ObjectProperty;
+   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression;
+   rdfs:label "has Service Level Expression for App Sizing";
+   rdfs:comment """<p> This property connects a service level specified in this template (domain) with the service level expression specified in this template (range).</p> """;
+   rdfs:domain brokerpolicy:ServiceLevelForAppSizing;
+   rdfs:range brokerpolicy:SLExpressionForAppSizing .
+
+
+### Subproperties to connect Service Level Expressions to distinguished Variables
+
+brokerpolicy:hasVariableNumberOfUsers a rdf:Property, owl:ObjectProperty;
+   rdfs:subPropertyOf usdl-sla:hasVariable;
+   rdfs:label "has variable for number of users";
+   rdfs:comment """<p> This property connects a service level expression in this template (domain) with the variable type specified in this template (range).</p> """;
+   rdfs:domain brokerpolicy:SLExpressionForAppSizing;
+   rdfs:range brokerpolicy:VarNumberOfUsers .
+   
+#brokerpolicy:hasVariableNumberOfConnections a rdf:Property, owl:ObjectProperty;
+#   rdfs:subPropertyOf usdl-sla:hasVariable;
+#   rdfs:label "has variable for number of connections";
+#   rdfs:comment """<p> This property connects a service level expression in this template (domain) with the variable type specified in this template (range).</p> """;
+#   rdfs:domain brokerpolicy:SLExpressionForAppSizing;
+#   rdfs:range brokerpolicy:VarNumberOfConnections .
+   
+#brokerpolicy:hasVariableNumberOfComputeUnits a rdf:Property, owl:ObjectProperty;
+#   rdfs:subPropertyOf usdl-sla:hasVariable;
+#   rdfs:label "has variable for number of compute units";
+#   rdfs:comment """<p> This property connects a service level expression in this template (domain) with the variable type specified in this template (range).</p> """;
+#   rdfs:domain brokerpolicy:SLExpressionForAppSizing;
+#   rdfs:range brokerpolicy:VarNumberOfComputeUnits .
+   
+brokerpolicy:hasVariableDocumentStorage a rdf:Property, owl:ObjectProperty;
+   rdfs:subPropertyOf usdl-sla:hasVariable;
+   rdfs:label "has variable for document storage";
+   rdfs:comment """<p> This property connects a service level expression in this template (domain) with the variable type specified in this template (range).</p> """;
+   rdfs:domain brokerpolicy:SLExpressionForAppSizing;
+   rdfs:range brokerpolicy:VarDocumentStorage .
+
+brokerpolicy:hasVariableAvailability a rdf:Property, owl:ObjectProperty;
+   rdfs:subPropertyOf usdl-sla:hasVariable;
+   rdfs:label "has variable for availability";
+   rdfs:comment """<p> This property connects a service level expression in this template (domain) with the variable type specified in this template (range).</p> """;
+   rdfs:domain brokerpolicy:SLExpressionForAppSizing;
+   rdfs:range brokerpolicy:VarAvailability .
+
+#brokerpolicy:hasVariableEgressBandwidth a rdf:Property, owl:ObjectProperty;
+#   rdfs:subPropertyOf usdl-sla:hasVariable;
+#   rdfs:label "has variable for egress bandwidth";
+#   rdfs:comment """<p> This property connects a service level expression in this template (domain) with the variable type specified in this template (range).</p> """;
+#   rdfs:domain brokerpolicy:SLExpressionForAppSizing;
+#   rdfs:range brokerpolicy:VarEgressBandwidth .
+   
+### Subproperties to connect Variables to distinguished gr:QuantitativeValues
+
+brokerpolicy:hasDefaultNumberOfUsersRange a rdf:Property, owl:ObjectProperty;
+   rdfs:subPropertyOf usdl-sla:hasDefault;
+   rdfs:label "has default for number of users range";
+   rdfs:comment """<p> This property connects a variable in this template (domain) with the gr:QuantitativeValue type specified in this template (range).</p> """;
+   rdfs:domain brokerpolicy:VarNumberOfUsers;
+   rdfs:range brokerpolicy:QVNumberOfUsersRange .
+
+brokerpolicy:hasDefaultDocumentStorageRange a rdf:Property, owl:ObjectProperty;
+   rdfs:subPropertyOf usdl-sla:hasDefault;
+   rdfs:label "has default for document storage range";
+   rdfs:comment """<p> This property connects a variable in this template (domain) with the gr:QuantitativeValue type specified in this template (range).</p> """;
+   rdfs:domain brokerpolicy:VarDocumentStorage;
+   rdfs:range brokerpolicy:QVDocumentStorageRange .
+   
+brokerpolicy:hasDefaultAvailabilityRange a rdf:Property, owl:ObjectProperty;
+   rdfs:subPropertyOf usdl-sla:hasDefault;
+   rdfs:label "has default for availability range";
+   rdfs:comment """<p> This property connects a variable in this template (domain) with the gr:QuantitativeValue type specified in this template (range).</p> """;
+   rdfs:domain brokerpolicy:VarAvailability;
+   rdfs:range brokerpolicy:QVAvailabilityRange .
+   
+### Value ranges as instances of explicitly specified subclasses of gr:QuantitativeValue class
+
+brokerpolicy:NOUBronze a brokerpolicy:QVNumberOfUsersRange; 
+   gr:hasMinValueInteger "1"^^xsd:integer;
+   gr:hasMaxValueInteger "10"^^xsd:integer.
+
+brokerpolicy:NOUSilver a brokerpolicy:QVNumberOfUsersRange; 
+   gr:hasMinValueInteger "11"^^xsd:integer;
+   gr:hasMaxValueInteger "100"^^xsd:integer.
+
+brokerpolicy:NOUGold a brokerpolicy:QVNumberOfUsersRange; 
+   gr:hasMinValueInteger "101"^^xsd:integer;
+   gr:hasMaxValueInteger "1000"^^xsd:integer.
+
+brokerpolicy:DSBronze a brokerpolicy:QVDocumentStorageRange; 
+   gr:hasMinValueInteger "1"^^xsd:integer;
+   gr:hasMaxValueInteger "10"^^xsd:integer;
+   gr:hasUnitOfMeasurement "GB"^^xsd:string .
+
+brokerpolicy:DSSilver a brokerpolicy:QVDocumentStorageRange; 
+   gr:hasMinValueInteger "11"^^xsd:integer;
+   gr:hasMaxValueInteger "100"^^xsd:integer;
+   gr:hasUnitOfMeasurement "GB"^^xsd:string .
+
+brokerpolicy:DSGold a brokerpolicy:QVDocumentStorageRange; 
+   gr:hasMinValueInteger "101"^^xsd:integer;
+   gr:hasMaxValueInteger "1000"^^xsd:integer;
+   gr:hasUnitOfMeasurement "GB"^^xsd:string .
+   
+brokerpolicy:HighAvailability a brokerpolicy:QVAvailabilityRange; 
+   gr:hasMinValueFloat "99.9"^^xsd:float;
+   gr:hasMaxValueFloat "100"^^xsd:float;
+   gr:hasUnitOfMeasurement "P1"^^xsd:string .
+
+brokerpolicy:MediumAvailability a brokerpolicy:QVAvailabilityRange; 
+   gr:hasMinValueFloat "99"^^xsd:float;
+   gr:hasMaxValueFloat "99.9"^^xsd:float;
+   gr:hasUnitOfMeasurement "P1"^^xsd:string .
+
+brokerpolicy:LowAvailability a brokerpolicy:QVAvailabilityRange; 
+   gr:hasMinValueFloat "95"^^xsd:float;
+   gr:hasMaxValueFloat "99"^^xsd:float;
+   gr:hasUnitOfMeasurement "P1"^^xsd:string .
+

@@ -1,0 +1,149 @@
+@base <http://www.broker-cloud.eu/service-descriptions/CAS/broker#> .
+@prefix cas: <http://www.broker-cloud.eu/service-descriptions/CAS/broker#>.
+@prefix cas-pref-att: <http://www.broker-cloud.eu/service-descriptions/CAS/broker#>.
+@prefix sp: <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> . 
+@prefix fc: <http://www.broker-cloud.eu/service-descriptions/CAS/categories#>.
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#>.
+@prefix usdl-pref: <http://www.linked-usdl.org/ns/usdl-pref#> .
+@prefix pref-att:  <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE> .
+@prefix owl: <http://www.w3.org/2002/07/owl#>  .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+@prefix s: <http://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+
+
+<http://www.broker-cloud.eu/service-descriptions/CAS/broker/> rdf:type owl:Ontology ;
+owl:imports <http://linked-usdl.org/ns/usdl-sla> ,
+<http://purl.org/goodrelations/v1#> ,
+<http://www.linked-usdl.org/ns/usdl-core> .
+
+
+<>
+  	a owl:Ontology;
+  	owl:imports <http://linked-usdl.org/ns/usdl-sla> ,
+	<http://purl.org/goodrelations/v1#> ,
+	<http://www.linked-usdl.org/ns/usdl-core> ,
+    <http://www.broker-cloud.eu/service-descriptions/CAS/categories#> ,
+    <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> , 
+    <http://www.broker-cloud.eu/service-descriptions/CAS/broker#>;
+	rdfs:label "CAS Service Level Policies" ;
+	dcterms:title "CAS Service Level Policies" ;
+	dcterms:description "Description of CAS Service Level Policies" ;
+	dcterms:created "2014-02-13"^^xsd:date ;
+	dcterms:modified "2014-10-21"^^xsd:date ;
+	owl:versionInfo "001" ;
+	dcterms:creator sp:CAS_Software_AG;
+    dcterms:publisher "Antonia Schwichtenberg".
+
+
+
+### Business Entity CAS Software AG
+
+cas:CAS_Software_AG a gr:BusinessEntity ;
+	foaf:homepage <http://www.cas.de> ;
+	foaf:logo <http://www.cas.de/typo3temp/pics/C_f1652c8982.gif> ;
+	gr:legalName "CAS Software AG"^^xsd:string ;
+	gr:taxID "DE143593148"^^xsd:string.
+	
+	### Descriptions of Apps in general 
+
+cas:App rdfs:subClassOf usdl-core:Service, gr:ProductOrService. 
+usdl-core:Service rdfs:subClassOf rdf:class. 
+cas:dependsOn rdfs:subPropertyOf rdf:predicate;
+rdfs:domain cas:App;
+rdfs:range cas:App. 
+
+sp:DefaultApp rdf:type cas:App;
+dcterms:title "Default App";
+dcterms:creator sp:CAS_Software_AG.
+
+
+### General broker policy spec 
+cas:CASServiceModel rdfs:subClassOf usdl-core:ServiceModel. 
+cas:CASBrokerPolicy rdf:type cas:CASServiceModel;
+	usdl-core:hasEntityInvolvement cas:CASEntitiyInvolvement;
+	usdl-core-cb:hasClassificationDimension fc:roles, fc:branches, fc:types. 
+
+### Entity involvement
+cas:CASEntitiyInvolvement rdf:type usdl-core:EntityInvolvement;
+	usdl-core:withBusinessRole  cas:Intermediary;
+	usdl-core:ofBusinessEntity cas:CAS_Software_AG. 
+cas:Intermediary rdf:type usdl-core:BusinessRole.
+
+### Business Entity CAS Software AG
+cas:CAS_Software_AG a gr:BusinessEntity ;
+	foaf:homepage <http://www.cas.de> ;
+	foaf:logo <http://www.cas.de/typo3temp/pics/C_f1652c8982.gif> ;
+	gr:legalName "CAS Software AG"^^xsd:string ;
+	gr:taxID "DE143593148"^^xsd:string.
+
+### Business Entity CAS Software AG
+cas:someISV a gr:BusinessEntity ;
+	foaf:homepage <http://www.someISV.de> ;
+	foaf:logo <http://www.someISV.de/pics/logo.gif> ;
+	gr:legalName "Some ISV Coop."^^xsd:string ;
+	gr:taxID "DE123456789"^^xsd:string.
+	
+#################################################################################
+### Broker Policy 
+cas:CASBrokerPolicy cas:hasServiceLevelProfileCAS cas:CASServiceLevelProfileSilver.	
+
+#################################################################################
+#### Service Level Profiles 
+
+cas:ServiceLevelProfileSilver rdf:type cas:CASServiceLevelProfile ; 
+cas:hasServiceLevelAvailability cas:SilverAvailability;  
+cas:hasServiceLevelSecurity cas:SilverSecurity. 
+
+#####################################################################################
+### Service Levels 
+## for silver 
+cas:SilverAvailability rdf:type cas:Availability;
+cas:hasSLE-Availability cas:SLE-SilverAvailability.
+
+cas:SilverSecurity rdf:type cas:Security;
+cas:hasSLE-Security cas:SLE-SilverSecurity.
+
+#####################################################################################
+### Service Level Expressions 
+## for silver 
+
+cas:SLE-SilverAvailability rdf:type cas:SLE-Availability;
+cas:hasVariableAvailability  cas:SilverAvailability.   
+
+cas:SLE-SilverSecurity rdf:type cas:SLE-Security;
+cas:hasVariableSecurity  cas:SilverSecurity.  
+
+#####################################################################################
+### Variables 
+
+cas:SilverAvailability rdf:type cas:Availability;
+cas:hasDefaultAvailability cas:AvailabilityMedium.
+
+cas:SilverSecurity rdf:type  cas:Security;
+cas:hasDefaultSecurity cas:ASMVmedium.
+
+
+###################################################################################
+### Values 
+
+### Availability
+
+cas:AvailabilityMedium rdf:type cas:AllowedAvailabilityValue;
+rdfs:label "Medium Availability for apps is between 99,5 and 100%";
+gr:hasUnitOfMeasurement "P1"^^xsd:string; #Percent
+gr:hasMinValue "99,5"^^xsd:int;
+gr:hasMaxValue "100"^^xsd:int. 
+
+### Security Management 
+
+cas:ASMVmedium rdf:type cas:AllowedSecurityManagementValue;
+gr:lesser cas:ASMVhigh. 

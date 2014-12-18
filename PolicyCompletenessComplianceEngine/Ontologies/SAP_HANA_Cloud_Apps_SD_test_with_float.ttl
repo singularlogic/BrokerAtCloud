@@ -1,0 +1,81 @@
+#@prefix : <http://www.semanticweb.org/owl/owlapi/turtle#> .
+
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> .
+
+@prefix brokerpolicy: <http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/brokerpolicy#> .
+
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+
+@prefix SD: <http://www.provider1.com/service-description1#> .
+
+@base <http://www.provider1.com/service-description1/> .
+
+
+<http://www.provider1.com/service-description1/> rdf:type owl:Ontology .
+
+SD:Service1 a usdl-core:Service;
+    usdl-core:hasServiceModel SD:ServiceModelSAPHANAAppInstance .
+
+SD:ServiceModelSAPHANAAppInstance a brokerpolicy:ServiceModelSAPHANAApp; # put . for demo
+	brokerpolicy:hasSLProfileForUserBasedApps SD:ServiceLevelProfileUserBasedAppsInstance .
+	#brokerpolicy:hasSLProfileForUserBasedApps brokerpolicy:ServiceLevelProfileTransactionBasedAppsInstance.	
+	#brokerpolicy:hasSLProfileForUserBasedApps SD:ServiceLevelForAppSizingInstance .
+	#brokerpolicy:hasSLForAppSizing SD:ServiceLevelProfileUserBasedAppsInstance .
+	#brokerpolicy:hasSLForAppSizing SD:ServiceLevelForAppSizingInstance .
+
+SD:ServiceLevelProfileUserBasedAppsInstance a brokerpolicy:ServiceLevelProfileUserBasedApps;
+	brokerpolicy:hasSLForAppSizing SD:ServiceLevelForAppSizingInstance .
+	
+SD:ServiceLevelForAppSizingInstance a brokerpolicy:ServiceLevelForAppSizing;
+	brokerpolicy:hasSLExpressionForAppSizing SD:SLExpressionForAppSizingInstance .
+
+SD:SLExpressionForAppSizingInstance a brokerpolicy:SLExpressionForAppSizing;
+	brokerpolicy:hasVariableNumberOfUsers SD:VarNumberOfUsersInstance;
+	brokerpolicy:hasVariableDocumentStorage SD:VarDocumentStorageInstance;
+	brokerpolicy:hasVariableAvailability SD:VarAvailabilityInstance .
+
+SD:VarAvailabilityInstance a brokerpolicy:VarAvailability;
+	brokerpolicy:hasDefaultAvailabilityRange SD:QVAvailabilityRangeInstance .
+	
+SD:VarNumberOfUsersInstance a brokerpolicy:VarNumberOfUsers;
+	brokerpolicy:hasDefaultNumberOfUsersRange SD:QVNumberOfUsersRangeInstance .
+	
+SD:VarDocumentStorageInstance a brokerpolicy:VarDocumentStorage;
+	brokerpolicy:hasDefaultDocumentStorageRange SD:QVDocumentStorageRangeInstance .
+	
+SD:QVAvailabilityRangeInstance a brokerpolicy:QVAvailabilityRange;
+	gr:hasMinValueFloat "96"^^xsd:float;
+	gr:hasMaxValueFloat "98"^^xsd:float;
+	gr:hasUnitOfMeasurement "P1"^^xsd:string .
+
+SD:QVNumberOfUsersRangeInstance a brokerpolicy:QVNumberOfUsersRange;
+	gr:hasMinValueInteger "50"^^xsd:integer;
+    gr:hasMaxValueInteger "80"^^xsd:integer.
+    
+SD:QVDocumentStorageRangeInstance a brokerpolicy:QVDocumentStorageRange;
+	gr:hasValueInteger "80"^^xsd:integer; # put . for demo
+	#gr:hasValueInteger brokerpolicy:VarNumberOfUsers;
+	#gr:hasValueInteger "2000"^^xsd:integer;
+	gr:hasUnitOfMeasurement "GB"^^xsd:string .
+	#gr:hasUnitOfMeasurement "MB"^^xsd:string .
+	
+
+	
+
+    
+    
+    
+
+

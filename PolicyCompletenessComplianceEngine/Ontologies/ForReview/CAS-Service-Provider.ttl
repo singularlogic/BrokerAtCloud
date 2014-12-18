@@ -1,0 +1,61 @@
+@base <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> .
+@prefix sp: <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> .
+@prefix cas: <http://www.broker-cloud.eu/service-descriptions/CAS/broker#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#>  .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix s: <http://schema.org/> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+
+
+################################################################################
+# This ontology describes service provider that develop and deploy apps 
+# on CAS Software AG´s Open platform and SmartDesign Concept. 
+#################################################################################
+
+<>
+  	a owl:Ontology;
+	rdfs:label "CAS Cloud xRM App Provider" ;
+	dcterms:title "CAS Cloud xRM App Provider" ;
+	dcterms:description "Description of CAS Cloud xRM App Provider" ;
+	dcterms:created "2014-02-13"^^xsd:date ;
+	dcterms:modified "2014-11-11"^^xsd:date ;
+	owl:versionInfo "003" .
+
+
+### Business Entity CAS Software AG
+
+#sp:CAS_Software_AG a gr:BusinessEntity ;
+##foaf:homepage <http://www.cas.de> ;
+#foaf:logo <http://www.cas.de/typo3temp/pics/C_f1652c8982.gif> ;
+#gr:legalName "CAS Software AG"^^xsd:string ;
+#cas:hasProviderCertifications cas:APCVgold;
+#gr:taxID "DE143593148"^^xsd:string.
+
+### Business Entity Some Partner  
+#sp:somePartner a gr:BusinessEntity ;
+#foaf:homepage <http://www.somepartner.de> ;
+#foaf:logo <http://www.somepartner.de/image.gif> ;
+#gr:legalName "Some Partner"^^xsd:string ;
+#cas:hasProviderCertifications cas:APCVpremium; 
+#gr:taxID "DE135791113"^^xsd:string.
+
+### Business Entity ISV1
+sp:ISV1 a gr:BusinessEntity ;
+	foaf:homepage <http://www.ISV1.de> ;
+	foaf:logo <http://www.ISV1.de/pics/logo.gif> ;
+	gr:legalName "ISV 1 Coop."^^xsd:string ;
+	cas:hasProviderCertifications cas:APCVdeveloper;
+	gr:taxID "DE987654321"^^xsd:string.
+
+### Business Entity someISV
+#sp:someISV a gr:BusinessEntity ;
+#	foaf:homepage <http://www.someISV.de> ;
+#	foaf:logo <http://www.someISV.de/pics/logo.gif> ;
+#	gr:legalName "Some ISV Coop."^^xsd:string ;
+#	cas:hasProviderCertifications cas:APCVpremium;
+#	gr:taxID "DE123456789"^^xsd:string.
