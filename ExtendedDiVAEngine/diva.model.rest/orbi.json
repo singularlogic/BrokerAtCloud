@@ -1,0 +1,393 @@
+[
+    {
+        "OfferingName": "P11U1O6",
+        "ServiceProvider": "provider1",
+        "BrokerPolicy": "OrbiPolicy",
+        "ServiceLevelProfile": "OrbiServiceLevelProfile",
+        "GroundingURL": "http://213.249.38.70/",
+        "VariableSpace": [
+            {
+                "VarName": "HTTPResponseTime",
+                "VarType": "Integer",
+                "Unit": "ms",
+                "MaxAcceptableThreshold": "2000"
+            },
+            {
+                "VarName": "MemoryLoad",
+                "VarType": "Integer",
+                "Unit": "Percentage",
+                "MaxAcceptableThreshold": "95"
+            },
+            {
+                "VarName": "StorageLoad",
+                "VarType": "Integer",
+                "Unit": "Percentage",
+                "MaxAcceptableThreshold": "95"
+            },
+            {
+                "VarName": "RequestPerSecond",
+                "VarType": "float",
+                "Unit": "Requests per Second",
+                "MaxAcceptableThreshold": "500000"
+            },
+            {
+                "VarName": "Uptime",
+                "VarType": "Integer",
+                "Unit": "Seconds",
+                "MinAcceptableThreshold": "20"
+            }
+        ],
+        "ServiceDependencies": [
+             {"ServiceInstanceReferenceName": "P11U1O6_Database"},
+             {"ServiceInstanceReferenceName": "P11U1O6_AS"}
+        ]
+    }
+,
+    {
+        "OfferingName": "P11U1O6_Database",
+        "ServiceProvider": "provider1",
+        "BrokerPolicy": "DatabasePolicy",
+        "ServiceLevelProfile": "MonolithicDBServiceLevelProfile",
+        "GroundingURL": "http://213.249.38.70",
+        "VariableSpace": [
+            {
+                "VarName": "Threads",
+                "VarType": "float",
+                "Unit": "Number of threads",
+                "MinAcceptableThreshold": "5"
+            },
+            {
+                "VarName": "Questions",
+                "VarType": "float",
+                "Unit": "Number of questions",
+                "MaxAcceptableThreshold": "10000"
+            },
+            {
+                "VarName": "SlowQueries",
+                "VarType": "float",
+                "Unit": "Number of queries",
+                "MaxAcceptableThreshold": "5000"
+            },
+            {
+                "VarName": "AvgOfQueriesPecSecond",
+                "VarType": "float",
+                "Unit": "Queries per Second",
+                "MaxAcceptableThreshold": "5000"
+            }
+         ]
+    }
+,
+    {
+        "OfferingName": "P11U1O6_AS",
+        "ServiceProvider": "provider1",
+        "BrokerPolicy": "ApplicationServerPolicy",
+        "ServiceLevelProfile": "ElasticASServiceLevelProfile",
+        "GroundingURL": "http://213.249.38.70",
+        "VariableSpace": [
+            {
+                "VarName": "TotalAccesses",
+                "VarType": "Integer",
+                "Unit": "Number of Total Accesses",
+                "MaxAcceptableThreshold": "100000"
+            }, 
+            {
+                "VarName": "CPUSpeed",
+                "VarType": "float",
+                "Unit": "MHz",
+                "MinAcceptableThreshold": "1600"
+            },
+            {
+                "VarName": "CPUCores",
+                "VarType": "Integer",
+                "Unit": "Number of vCPUs",
+                "MinAcceptableThreshold": "1"
+            },
+            {
+                "VarName": "CPULoadAvgPerCore",
+                "VarType": "float",
+                "Unit": "Average Load per Core",
+                "MaxAcceptableThreshold": "0.8"
+            },
+            {
+                "VarName": "MemoryFree",
+                "VarType": "Integer",
+                "Unit": "Number of Bytes",
+                "MinAcceptableThreshold": "1000000000"
+            },
+            {
+                "VarName": "MemoryTotal",
+                "VarType": "Integer",
+                "Unit": "Number of Bytes",
+                "MinAcceptableThreshold": "1000000000"
+            }
+        ]
+    }
+    
+    
+    
+,    
+    
+    
+    {
+        "OfferingName": "P11U1O7",
+        "ServiceProvider": "provider1",
+        "BrokerPolicy": "OrbiPolicy",
+        "ServiceLevelProfile": "OrbiServiceLevelProfile",
+        "GroundingURL": "http://213.249.38.70/",
+        "VariableSpace": [
+            {
+                "VarName": "HTTPResponseTime",
+                "VarType": "Integer",
+                "Unit": "ms",
+                "MaxAcceptableThreshold": "2000"
+            },
+            {
+                "VarName": "MemoryLoad",
+                "VarType": "Integer",
+                "Unit": "Percentage",
+                "MaxAcceptableThreshold": "95"
+            },
+            {
+                "VarName": "StorageLoad",
+                "VarType": "Integer",
+                "Unit": "Percentage",
+                "MaxAcceptableThreshold": "95"
+            },
+            {
+                "VarName": "RequestPerSecond",
+                "VarType": "float",
+                "Unit": "Requests per Second",
+                "MaxAcceptableThreshold": "500000"
+            },
+            {
+                "VarName": "Uptime",
+                "VarType": "Integer",
+                "Unit": "Seconds",
+                "MinAcceptableThreshold": "0"
+            }
+        ],
+        "ServiceDependencies": [
+             {"ServiceInstanceReferenceName": "P11U1O7_Database"},
+             {"ServiceInstanceReferenceName": "P11U1O7_AS"}
+        ]
+    }
+,
+    {
+        "OfferingName": "P11U1O7_Database",
+        "ServiceProvider": "provider1",
+        "BrokerPolicy": "DatabasePolicy",
+        "ServiceLevelProfile": "MonolithicDBServiceLevelProfile",
+        "GroundingURL": "http://213.249.38.70",
+        "VariableSpace": [
+            {
+                "VarName": "Threads",
+                "VarType": "float",
+                "Unit": "Number of threads",
+                "MinAcceptableThreshold": "5"
+            },
+            {
+                "VarName": "Questions",
+                "VarType": "float",
+                "Unit": "Number of questions",
+                "MaxAcceptableThreshold": "10000"
+            },
+            {
+                "VarName": "SlowQueries",
+                "VarType": "float",
+                "Unit": "Number of queries",
+                "MaxAcceptableThreshold": "5000"
+            },
+            {
+                "VarName": "AvgOfQueriesPecSecond",
+                "VarType": "float",
+                "Unit": "Queries per Second",
+                "MaxAcceptableThreshold": "5000"
+            }
+         ]
+    }
+,
+    {
+        "OfferingName": "P11U1O7_AS",
+        "ServiceProvider": "provider1",
+        "BrokerPolicy": "ApplicationServerPolicy",
+        "ServiceLevelProfile": "ElasticASServiceLevelProfile",
+        "GroundingURL": "http://213.249.38.70",
+        "VariableSpace": [
+            {
+                "VarName": "TotalAccesses",
+                "VarType": "Integer",
+                "Unit": "Number of Total Accesses",
+                "MaxAcceptableThreshold": "100000"
+            }, 
+            {
+                "VarName": "CPUSpeed",
+                "VarType": "float",
+                "Unit": "MHz",
+                "MinAcceptableThreshold": "1600"
+            },
+            {
+                "VarName": "CPUCores",
+                "VarType": "Integer",
+                "Unit": "Number of vCPUs",
+                "MinAcceptableThreshold": "4"
+            },
+            {
+                "VarName": "CPULoadAvgPerCore",
+                "VarType": "float",
+                "Unit": "Average Load per Core",
+                "MaxAcceptableThreshold": "0.8"
+            },
+            {
+                "VarName": "MemoryFree",
+                "VarType": "Integer",
+                "Unit": "Number of Bytes",
+                "MinAcceptableThreshold": "1000000000"
+            },
+            {
+                "VarName": "MemoryTotal",
+                "VarType": "Integer",
+                "Unit": "Number of Bytes",
+                "MinAcceptableThreshold": "1000000000"
+            }
+        ]
+    }
+    
+    
+,
+
+
+
+
+
+
+
+
+
+
+
+
+    {
+        "OfferingName": "P11U1O8",
+        "ServiceProvider": "provider1",
+        "BrokerPolicy": "OrbiPolicy",
+        "ServiceLevelProfile": "OrbiServiceLevelProfile",
+        "GroundingURL": "http://213.249.38.70/",
+        "VariableSpace": [
+            {
+                "VarName": "HTTPResponseTime",
+                "VarType": "Integer",
+                "Unit": "ms",
+                "MaxAcceptableThreshold": "2000"
+            },
+            {
+                "VarName": "MemoryLoad",
+                "VarType": "Integer",
+                "Unit": "Percentage",
+                "MaxAcceptableThreshold": "95"
+            },
+            {
+                "VarName": "StorageLoad",
+                "VarType": "Integer",
+                "Unit": "Percentage",
+                "MaxAcceptableThreshold": "95"
+            },
+            {
+                "VarName": "RequestPerSecond",
+                "VarType": "float",
+                "Unit": "Requests per Second",
+                "MaxAcceptableThreshold": "500000"
+            },
+            {
+                "VarName": "Uptime",
+                "VarType": "Integer",
+                "Unit": "Seconds",
+                "MinAcceptableThreshold": "0"
+            }
+        ],
+        "ServiceDependencies": [
+             {"ServiceInstanceReferenceName": "P11U1O8_Database"},
+             {"ServiceInstanceReferenceName": "P11U1O8_AS"}
+        ]
+    }
+,
+    {
+        "OfferingName": "P11U1O8_Database",
+        "ServiceProvider": "provider1",
+        "BrokerPolicy": "DatabasePolicy",
+        "ServiceLevelProfile": "ElasticDBServiceLevelProfile",
+        "GroundingURL": "http://213.249.38.70",
+        "VariableSpace": [
+            {
+                "VarName": "Threads",
+                "VarType": "float",
+                "Unit": "Number of threads",
+                "MinAcceptableThreshold": "5"
+            },
+            {
+                "VarName": "Questions",
+                "VarType": "float",
+                "Unit": "Number of questions",
+                "MaxAcceptableThreshold": "10000"
+            },
+            {
+                "VarName": "SlowQueries",
+                "VarType": "float",
+                "Unit": "Number of queries",
+                "MaxAcceptableThreshold": "5000"
+            },
+            {
+                "VarName": "AvgOfQueriesPecSecond",
+                "VarType": "float",
+                "Unit": "Queries per Second",
+                "MaxAcceptableThreshold": "5000"
+            }
+         ]
+    }
+,
+    {
+        "OfferingName": "P11U1O8_AS",
+        "ServiceProvider": "provider1",
+        "BrokerPolicy": "ApplicationServerPolicy",
+        "ServiceLevelProfile": "ElasticASServiceLevelProfile",
+        "GroundingURL": "http://213.249.38.70",
+        "VariableSpace": [
+            {
+                "VarName": "TotalAccesses",
+                "VarType": "Integer",
+                "Unit": "Number of Total Accesses",
+                "MaxAcceptableThreshold": "100000"
+            }, 
+            {
+                "VarName": "CPUSpeed",
+                "VarType": "float",
+                "Unit": "MHz",
+                "MinAcceptableThreshold": "1600"
+            },
+            {
+                "VarName": "CPUCores",
+                "VarType": "Integer",
+                "Unit": "Number of vCPUs",
+                "MinAcceptableThreshold": "1"
+            },
+            {
+                "VarName": "CPULoadAvgPerCore",
+                "VarType": "float",
+                "Unit": "Average Load per Core",
+                "MaxAcceptableThreshold": "0.8"
+            },
+            {
+                "VarName": "MemoryFree",
+                "VarType": "Integer",
+                "Unit": "Number of Bytes",
+                "MinAcceptableThreshold": "1000000000"
+            },
+            {
+                "VarName": "MemoryTotal",
+                "VarType": "Integer",
+                "Unit": "Number of Bytes",
+                "MinAcceptableThreshold": "6000000000"
+            }
+        ]
+    }
+    
+]
