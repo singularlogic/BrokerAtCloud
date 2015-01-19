@@ -1,0 +1,383 @@
+@prefix cas:   <http://www.broker-cloud.eu/service-descriptions/CAS/broker#> .
+@prefix vann:  <http://purl.org/vocab/vann/> .
+@prefix usdl-pref: <http://www.linked-usdl.org/ns/usdl-pref#> .
+@prefix pref-att: <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix cpp-fld-profile: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-PROFILE/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix time:  <http://www.w3.org/2006/time#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker> .
+@prefix cpp-profile: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-PROFILE#> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> .
+@prefix cpp-pref: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix sp:    <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> .
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> .
+@prefix att:   <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#> .
+@prefix xml:   <http://www.w3.org/XML/1998/namespace> .
+@prefix attr:  <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#> .
+@prefix vcard: <http://www.w3.org/TR/vcard-rdf/> .
+@prefix fc:    <http://www.broker-cloud.eu/service-descriptions/CAS/categories#> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix cpp-fld-expr: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-EXPRESSION/> .
+@prefix s:     <http://schema.org/> .
+@prefix cpp-fld-pref: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> .
+@prefix pulsar: <http://www.brokeratcloud.eu/persist/types#> .
+@prefix gr:    <http://purl.org/goodrelations/v1#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix cpp-expr: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-EXPRESSION#> .
+@prefix cas-pref-att: <http://www.broker-cloud.eu/service-descriptions/CAS/broker#> .
+
+cas-pref-att:hasDefaultReputationServiceReputationOnProjectmanagement
+        rdfs:domain         cas-pref-att:ReputationServiceReputationOnProjectmanagementPreferenceVariable ;
+        rdfs:range          cas-pref-att:AllowedReputationServiceReputationOnProjectmanagementValue ;
+        rdfs:subPropertyOf  usdl-pref:hasDefaultQualitativeValue .
+
+cas-pref-att:hasUsabilityLearnabilityOnProjectmanagement
+        rdfs:domain         cas-pref-att:CASServiceModel ;
+        rdfs:range          cas-pref-att:AllowedUsabilityLearnabilityOnProjectmanagementValue ;
+        rdfs:subPropertyOf  gr:qualitativeProductOrServiceProperty .
+
+cas-pref-att:UsabilityLearnabilityOnProjectmanagement_LOW
+        a           cas-pref-att:AllowedUsabilityLearnabilityOnProjectmanagementValue ;
+        rdfs:label  "LOW"@en ;
+        gr:lesser   cas-pref-att:UsabilityLearnabilityOnProjectmanagement_MEDIUM .
+
+cas-pref-att:AllowedAccountabilityAuditabilityValue
+        rdfs:subClassOf  gr:QualitativeValue .
+
+cas-pref-att:hasDefaultUsabilityLearnabilityOnProjectmanagement
+        rdfs:domain         cas-pref-att:UsabilityLearnabilityOnProjectmanagementPreferenceVariable ;
+        rdfs:range          cas-pref-att:AllowedUsabilityLearnabilityOnProjectmanagementValue ;
+        rdfs:subPropertyOf  usdl-pref:hasDefaultQualitativeValue .
+
+cas-pref-att:AllowedAgilityElasticityTimeValue
+        rdfs:subClassOf            usdl-sla-cb:FuzzyValue ;
+        gr:hasUnitOfMeasurement    ""^^xsd:string ;
+        usdl-sla-cb:hasMaxKernel   "1000.0"^^xsd:double ;
+        usdl-sla-cb:hasMaxSupport  "1000.0"^^xsd:double ;
+        usdl-sla-cb:hasMinKernel   "0.0"^^xsd:double ;
+        usdl-sla-cb:hasMinSupport  "0.0"^^xsd:double ;
+        usdl-sla-cb:isRange        false ;
+        usdl-sla-cb:moreIsBetter   false .
+
+cas-pref-att:CASBrokerPolicy
+        a                               cas-pref-att:CASServiceModel ;
+        cas-pref-att:hasAccountabilityAuditability
+                cas-pref-att:AllowedAccountabilityAuditabilityValue ;
+        cas-pref-att:hasAgilityElasticityTime
+                cas-pref-att:AllowedAgilityElasticityTimeValue ;
+        cas-pref-att:hasAssuranceAvailability
+                cas-pref-att:AllowedAssuranceAvailabilityValue ;
+        cas-pref-att:hasFinancialBillingProcessOnProjectmanagement
+                cas-pref-att:AllowedFinancialBillingProcessOnProjectmanagementValue ;
+        cas-pref-att:hasPerformanceServiceResponseTimeMaximum
+                cas-pref-att:AllowedPerformanceServiceResponseTimeMaximumValue ;
+        cas-pref-att:hasReputationContractingExperienceOnProjectmanagement
+                cas-pref-att:AllowedReputationContractingExperienceOnProjectmanagementValue ;
+        cas-pref-att:hasReputationProviderBusinessStabilityOnProjectmanagement
+                cas-pref-att:AllowedReputationProviderBusinessStabilityOnProjectmanagementValue ;
+        cas-pref-att:hasReputationServiceReputationOnProjectmanagement
+                cas-pref-att:AllowedReputationServiceReputationOnProjectmanagementValue ;
+        cas-pref-att:hasUsabilityLearnabilityOnProjectmanagement
+                cas-pref-att:AllowedUsabilityLearnabilityOnProjectmanagementValue ;
+        cas-pref-att:hasUsabilityUnderstandabilityOnProjectmanagement
+                cas-pref-att:AllowedUsabilityUnderstandabilityOnProjectmanagementValue ;
+        usdl-core:hasEntityInvolvement  cas-pref-att:CASEntitiyInvolvement ;
+        usdl-sla-cb:hasClassificationDimension
+                fc:rootConcept .
+
+cas-pref-att:ReputationProviderBusinessStabilityOnProjectmanagement_LOW
+        a           cas-pref-att:AllowedReputationProviderBusinessStabilityOnProjectmanagementValue ;
+        rdfs:label  "LOW"@en ;
+        gr:lesser   cas-pref-att:ReputationProviderBusinessStabilityOnProjectmanagement_MEDIUM .
+
+cas-pref-att:hasDefaultAssuranceAvailability
+        rdfs:domain         cas-pref-att:AssuranceAvailabilityPreferenceVariable ;
+        rdfs:range          cas-pref-att:AllowedAssuranceAvailabilityValue ;
+        rdfs:subPropertyOf  usdl-pref:hasDefaultQuantitativeValue .
+
+cas-pref-att:UsabilityUnderstandabilityOnProjectmanagement_HIGH
+        a           cas-pref-att:AllowedUsabilityUnderstandabilityOnProjectmanagementValue ;
+        rdfs:label  "HIGH"@en ;
+        gr:greater  cas-pref-att:UsabilityUnderstandabilityOnProjectmanagement_MEDIUM .
+
+cas-pref-att:AccountabilityAuditabilityPreferenceVariable
+        rdfs:subClassOf      usdl-pref:QualitativeVariable ;
+        usdl-pref:belongsTo  fc:rootConcept ;
+        usdl-pref:refToServiceAttribute
+                attr:attr-accountability-auditability .
+
+cas-pref-att:hasDefaultReputationProviderBusinessStabilityOnProjectmanagement
+        rdfs:domain         cas-pref-att:ReputationProviderBusinessStabilityOnProjectmanagementPreferenceVariable ;
+        rdfs:range          cas-pref-att:AllowedReputationProviderBusinessStabilityOnProjectmanagementValue ;
+        rdfs:subPropertyOf  usdl-pref:hasDefaultQualitativeValue .
+
+cas-pref-att:hasDefaultPerformanceServiceResponseTimeMaximum
+        rdfs:domain         cas-pref-att:PerformanceServiceResponseTimeMaximumPreferenceVariable ;
+        rdfs:range          cas-pref-att:AllowedPerformanceServiceResponseTimeMaximumValue ;
+        rdfs:subPropertyOf  usdl-pref:hasDefaultFuzzyValue .
+
+cas-pref-att:AllowedFinancialBillingProcessOnProjectmanagementValue
+        rdfs:subClassOf  gr:QualitativeValue .
+
+cas-pref-att:UsabilityUnderstandabilityOnProjectmanagementPreferenceVariable
+        rdfs:subClassOf      usdl-pref:QualitativeVariable ;
+        usdl-pref:belongsTo  fc:projectmanagement ;
+        usdl-pref:refToServiceAttribute
+                attr:attr-usability-understandability .
+
+cas-pref-att:hasDefaultFinancialBillingProcessOnProjectmanagement
+        rdfs:domain         cas-pref-att:FinancialBillingProcessOnProjectmanagementPreferenceVariable ;
+        rdfs:range          cas-pref-att:AllowedFinancialBillingProcessOnProjectmanagementValue ;
+        rdfs:subPropertyOf  usdl-pref:hasDefaultQualitativeValue .
+
+cas-pref-att:ReputationServiceReputationOnProjectmanagementPreferenceVariable
+        rdfs:subClassOf      usdl-pref:QualitativeVariable ;
+        usdl-pref:belongsTo  fc:projectmanagement ;
+        usdl-pref:refToServiceAttribute
+                attr:attr-reputation-service-reputation .
+
+cas-pref-att:FinancialBillingProcessOnProjectmanagement_ChargePerYear
+        a           cas-pref-att:AllowedFinancialBillingProcessOnProjectmanagementValue ;
+        rdfs:label  "Charge per year"@en .
+
+cas-pref-att:FinancialBillingProcessOnProjectmanagement_ChargePerDay
+        a           cas-pref-att:AllowedFinancialBillingProcessOnProjectmanagementValue ;
+        rdfs:label  "Charge per day"@en .
+
+cas-pref-att:ReputationProviderBusinessStabilityOnProjectmanagement_HIGH
+        a           cas-pref-att:AllowedReputationProviderBusinessStabilityOnProjectmanagementValue ;
+        rdfs:label  "HIGH"@en ;
+        gr:greater  cas-pref-att:ReputationProviderBusinessStabilityOnProjectmanagement_MEDIUM .
+
+cas-pref-att:ReputationProviderBusinessStabilityOnProjectmanagement_MEDIUM
+        a           cas-pref-att:AllowedReputationProviderBusinessStabilityOnProjectmanagementValue ;
+        rdfs:label  "MEDIUM"@en ;
+        gr:greater  cas-pref-att:ReputationProviderBusinessStabilityOnProjectmanagement_LOW ;
+        gr:lesser   cas-pref-att:ReputationProviderBusinessStabilityOnProjectmanagement_HIGH .
+
+cas-pref-att:AllowedReputationContractingExperienceOnProjectmanagementValue
+        rdfs:subClassOf             gr:QuantitativeValueFloat ;
+        gr:hasMaxValue              "10.0"^^xsd:double ;
+        gr:hasMinValue              "0.0"^^xsd:double ;
+        gr:hasUnitOfMeasurement     ""^^xsd:string ;
+        usdl-sla-cb:higherIsBetter  true ;
+        usdl-sla-cb:isRange         false .
+
+cas-pref-att:CAS_Software_AG
+        a              gr:BusinessEntity ;
+        gr:legalName   "CAS Software AG"^^xsd:string ;
+        gr:taxID       "DE143593148"^^xsd:string ;
+        foaf:homepage  <http://www.cas.de> ;
+        foaf:logo      <http://www.cas.de/typo3temp/pics/C_f1652c8982.gif> .
+
+cas-pref-att:CASServiceModel
+        rdfs:subClassOf  usdl-core:ServiceModel .
+
+cas-pref-att:hasAssuranceAvailability
+        rdfs:domain         cas-pref-att:CASServiceModel ;
+        rdfs:range          cas-pref-att:AllowedAssuranceAvailabilityValue ;
+        rdfs:subPropertyOf  gr:quantitativeProductOrServiceProperty .
+
+cas-pref-att:AllowedPerformanceServiceResponseTimeMaximumValue
+        rdfs:subClassOf            usdl-sla-cb:FuzzyValue ;
+        gr:hasUnitOfMeasurement    ""^^xsd:string ;
+        usdl-sla-cb:hasMaxKernel   "1000.0"^^xsd:double ;
+        usdl-sla-cb:hasMaxSupport  "1000.0"^^xsd:double ;
+        usdl-sla-cb:hasMinKernel   "0.0"^^xsd:double ;
+        usdl-sla-cb:hasMinSupport  "0.0"^^xsd:double ;
+        usdl-sla-cb:isRange        true ;
+        usdl-sla-cb:moreIsBetter   false .
+
+cas-pref-att:AllowedAssuranceAvailabilityValue
+        rdfs:subClassOf             gr:QuantitativeValueFloat ;
+        gr:hasMaxValue              "100.0"^^xsd:double ;
+        gr:hasMinValue              "95.0"^^xsd:double ;
+        gr:hasUnitOfMeasurement     ""^^xsd:string ;
+        usdl-sla-cb:higherIsBetter  false ;
+        usdl-sla-cb:isRange         true .
+
+cas-pref-att:PerformanceServiceResponseTimeMaximumPreferenceVariable
+        rdfs:subClassOf      usdl-pref:FuzzyVariable ;
+        usdl-pref:belongsTo  fc:rootConcept ;
+        usdl-pref:refToServiceAttribute
+                attr:attr-performance-service-response-time-maximum .
+
+cas-pref-att:AccountabilityAuditability_LowAuditability
+        a           cas-pref-att:AllowedAccountabilityAuditabilityValue ;
+        rdfs:label  "low auditability"@en ;
+        gr:lesser   cas-pref-att:AccountabilityAuditability_MediumAuditability .
+
+cas-pref-att:ReputationServiceReputationOnProjectmanagement_MEDIUM
+        a           cas-pref-att:AllowedReputationServiceReputationOnProjectmanagementValue ;
+        rdfs:label  "MEDIUM"@en ;
+        gr:greater  cas-pref-att:ReputationServiceReputationOnProjectmanagement_LOW ;
+        gr:lesser   cas-pref-att:ReputationServiceReputationOnProjectmanagement_HIGH .
+
+cas-pref-att:FinancialBillingProcessOnProjectmanagementPreferenceVariable
+        rdfs:subClassOf      usdl-pref:QualitativeVariable ;
+        usdl-pref:belongsTo  fc:projectmanagement ;
+        usdl-pref:refToServiceAttribute
+                attr:attr-financial-billing-process .
+
+cas-pref-att:ReputationContractingExperienceOnProjectmanagementPreferenceVariable
+        rdfs:subClassOf      usdl-pref:QuantitativeVariable ;
+        usdl-pref:belongsTo  fc:projectmanagement ;
+        usdl-pref:refToServiceAttribute
+                attr:attr-reputation-contracting-experience .
+
+cas-pref-att:AllowedReputationProviderBusinessStabilityOnProjectmanagementValue
+        rdfs:subClassOf  gr:QualitativeValue .
+
+cas-pref-att:CASEntitiyInvolvement
+        a                           usdl-core:EntityInvolvement ;
+        usdl-core:ofBusinessEntity  cas-pref-att:CAS_Software_AG ;
+        usdl-core:withBusinessRole  usdl-business-roles:intermediary .
+
+cas-pref-att:AgilityElasticityTimePreferenceVariable
+        rdfs:subClassOf      usdl-pref:FuzzyVariable ;
+        usdl-pref:belongsTo  fc:rootConcept ;
+        usdl-pref:refToServiceAttribute
+                attr:attr-agility-elasticity-time .
+
+cas-pref-att:hasDefaultUsabilityUnderstandabilityOnProjectmanagement
+        rdfs:domain         cas-pref-att:UsabilityUnderstandabilityOnProjectmanagementPreferenceVariable ;
+        rdfs:range          cas-pref-att:AllowedUsabilityUnderstandabilityOnProjectmanagementValue ;
+        rdfs:subPropertyOf  usdl-pref:hasDefaultQualitativeValue .
+
+cas-pref-att:AssuranceAvailabilityPreferenceVariable
+        rdfs:subClassOf      usdl-pref:QuantitativeVariable ;
+        usdl-pref:belongsTo  fc:rootConcept ;
+        usdl-pref:refToServiceAttribute
+                attr:attr-assurance-availability .
+
+cas-pref-att:hasUsabilityUnderstandabilityOnProjectmanagement
+        rdfs:domain         cas-pref-att:CASServiceModel ;
+        rdfs:range          cas-pref-att:AllowedUsabilityUnderstandabilityOnProjectmanagementValue ;
+        rdfs:subPropertyOf  gr:qualitativeProductOrServiceProperty .
+
+cas-pref-att:hasReputationProviderBusinessStabilityOnProjectmanagement
+        rdfs:domain         cas-pref-att:CASServiceModel ;
+        rdfs:range          cas-pref-att:AllowedReputationProviderBusinessStabilityOnProjectmanagementValue ;
+        rdfs:subPropertyOf  gr:qualitativeProductOrServiceProperty .
+
+cas-pref-att:UsabilityUnderstandabilityOnProjectmanagement_MEDIUM
+        a           cas-pref-att:AllowedUsabilityUnderstandabilityOnProjectmanagementValue ;
+        rdfs:label  "MEDIUM"@en ;
+        gr:greater  cas-pref-att:UsabilityUnderstandabilityOnProjectmanagement_LOW ;
+        gr:lesser   cas-pref-att:UsabilityUnderstandabilityOnProjectmanagement_HIGH .
+
+cas-pref-att:AllowedUsabilityUnderstandabilityOnProjectmanagementValue
+        rdfs:subClassOf  gr:QualitativeValue .
+
+cas-pref-att:UsabilityUnderstandabilityOnProjectmanagement_LOW
+        a           cas-pref-att:AllowedUsabilityUnderstandabilityOnProjectmanagementValue ;
+        rdfs:label  "LOW"@en ;
+        gr:lesser   cas-pref-att:UsabilityUnderstandabilityOnProjectmanagement_MEDIUM .
+
+cas-pref-att:hasReputationContractingExperienceOnProjectmanagement
+        rdfs:domain         cas-pref-att:CASServiceModel ;
+        rdfs:range          cas-pref-att:AllowedReputationContractingExperienceOnProjectmanagementValue ;
+        rdfs:subPropertyOf  gr:quantitativeProductOrServiceProperty .
+
+cas-pref-att:App  rdfs:subClassOf  usdl-core:Service .
+
+cas-pref-att:hasReputationServiceReputationOnProjectmanagement
+        rdfs:domain         cas-pref-att:CASServiceModel ;
+        rdfs:range          cas-pref-att:AllowedReputationServiceReputationOnProjectmanagementValue ;
+        rdfs:subPropertyOf  gr:qualitativeProductOrServiceProperty .
+
+cas-pref-att:hasAgilityElasticityTime
+        rdfs:domain         cas-pref-att:CASServiceModel ;
+        rdfs:range          cas-pref-att:AllowedAgilityElasticityTimeValue ;
+        rdfs:subPropertyOf  usdl-sla-cb:fuzzyServiceProperty .
+
+cas-pref-att:hasFinancialBillingProcessOnProjectmanagement
+        rdfs:domain         cas-pref-att:CASServiceModel ;
+        rdfs:range          cas-pref-att:AllowedFinancialBillingProcessOnProjectmanagementValue ;
+        rdfs:subPropertyOf  gr:qualitativeProductOrServiceProperty .
+
+cas-pref-att:hasDefaultAgilityElasticityTime
+        rdfs:domain         cas-pref-att:AgilityElasticityTimePreferenceVariable ;
+        rdfs:range          cas-pref-att:AllowedAgilityElasticityTimeValue ;
+        rdfs:subPropertyOf  usdl-pref:hasDefaultFuzzyValue .
+
+cas-pref-att:UsabilityLearnabilityOnProjectmanagementPreferenceVariable
+        rdfs:subClassOf      usdl-pref:QualitativeVariable ;
+        usdl-pref:belongsTo  fc:projectmanagement ;
+        usdl-pref:refToServiceAttribute
+                attr:attr-usability-learnability .
+
+cas-pref-att:AccountabilityAuditability_MediumAuditability
+        a           cas-pref-att:AllowedAccountabilityAuditabilityValue ;
+        rdfs:label  "medium auditability"@en ;
+        gr:greater  cas-pref-att:AccountabilityAuditability_LowAuditability ;
+        gr:lesser   cas-pref-att:AccountabilityAuditability_HighAuditability .
+
+cas-pref-att:UsabilityLearnabilityOnProjectmanagement_HIGH
+        a           cas-pref-att:AllowedUsabilityLearnabilityOnProjectmanagementValue ;
+        rdfs:label  "HIGH"@en ;
+        gr:greater  cas-pref-att:UsabilityLearnabilityOnProjectmanagement_MEDIUM .
+
+cas-pref-att:AllowedUsabilityLearnabilityOnProjectmanagementValue
+        rdfs:subClassOf  gr:QualitativeValue .
+
+cas-pref-att:hasAccountabilityAuditability
+        rdfs:domain         cas-pref-att:CASServiceModel ;
+        rdfs:range          cas-pref-att:AllowedAccountabilityAuditabilityValue ;
+        rdfs:subPropertyOf  gr:qualitativeProductOrServiceProperty .
+
+cas-pref-att:hasDefaultAccountabilityAuditability
+        rdfs:domain         cas-pref-att:AccountabilityAuditabilityPreferenceVariable ;
+        rdfs:range          cas-pref-att:AllowedAccountabilityAuditabilityValue ;
+        rdfs:subPropertyOf  usdl-pref:hasDefaultQualitativeValue .
+
+cas-pref-att:ReputationServiceReputationOnProjectmanagement_HIGH
+        a           cas-pref-att:AllowedReputationServiceReputationOnProjectmanagementValue ;
+        rdfs:label  "HIGH"@en ;
+        gr:greater  cas-pref-att:ReputationServiceReputationOnProjectmanagement_MEDIUM .
+
+cas-pref-att:AllowedReputationServiceReputationOnProjectmanagementValue
+        rdfs:subClassOf  gr:QualitativeValue .
+
+cas-pref-att:AccountabilityAuditability_HighAuditability
+        a           cas-pref-att:AllowedAccountabilityAuditabilityValue ;
+        rdfs:label  "high auditability"@en ;
+        gr:greater  cas-pref-att:AccountabilityAuditability_MediumAuditability .
+
+cas-pref-att:ReputationProviderBusinessStabilityOnProjectmanagementPreferenceVariable
+        rdfs:subClassOf      usdl-pref:QualitativeVariable ;
+        usdl-pref:belongsTo  fc:projectmanagement ;
+        usdl-pref:refToServiceAttribute
+                attr:attr-reputation-provider-business-stability .
+
+cas-pref-att:UsabilityLearnabilityOnProjectmanagement_MEDIUM
+        a           cas-pref-att:AllowedUsabilityLearnabilityOnProjectmanagementValue ;
+        rdfs:label  "MEDIUM"@en ;
+        gr:greater  cas-pref-att:UsabilityLearnabilityOnProjectmanagement_LOW ;
+        gr:lesser   cas-pref-att:UsabilityLearnabilityOnProjectmanagement_HIGH .
+
+cas-pref-att:ReputationServiceReputationOnProjectmanagement_LOW
+        a           cas-pref-att:AllowedReputationServiceReputationOnProjectmanagementValue ;
+        rdfs:label  "LOW"@en ;
+        gr:lesser   cas-pref-att:ReputationServiceReputationOnProjectmanagement_MEDIUM .
+
+cas-pref-att:hasPerformanceServiceResponseTimeMaximum
+        rdfs:domain         cas-pref-att:CASServiceModel ;
+        rdfs:range          cas-pref-att:AllowedPerformanceServiceResponseTimeMaximumValue ;
+        rdfs:subPropertyOf  usdl-sla-cb:fuzzyServiceProperty .
+
+cas-pref-att:hasDefaultReputationContractingExperienceOnProjectmanagement
+        rdfs:domain         cas-pref-att:ReputationContractingExperienceOnProjectmanagementPreferenceVariable ;
+        rdfs:range          cas-pref-att:AllowedReputationContractingExperienceOnProjectmanagementValue ;
+        rdfs:subPropertyOf  usdl-pref:hasDefaultQuantitativeValue .
+
+cas-pref-att:FinancialBillingProcessOnProjectmanagement_ChargePerMonth
+        a           cas-pref-att:AllowedFinancialBillingProcessOnProjectmanagementValue ;
+        rdfs:label  "Charge per month"@en .

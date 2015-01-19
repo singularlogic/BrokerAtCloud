@@ -1,0 +1,9 @@
+
+Security Management -XOR- SM Encryption Type
+
+Numeric Range instead of Numeric Range
+
+
+Bugfix: on hasXxxxFloat (queries fixed)
+
+Bugfix: on missing numeric ranges values on non-mandatory attributes

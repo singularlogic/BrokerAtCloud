@@ -1,0 +1,147 @@
+@base <http://www.broker-cloud.eu/service-descriptions/CAS/categories#> .
+@prefix fc: <http://www.broker-cloud.eu/service-descriptions/CAS/categories#> .
+@prefix sp: <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#>  .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#>.
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#>. 
+
+
+#################################################################################################
+# This ontology describes functional categories for apps offered on CAS Software AG´s platform. 
+# Criteria used for the preference bases selection and that are valid for all kinds of categories 
+# are defined on the top level concept. Every SmartDesign App to be deployed on CAS Open platform falls 
+# under at least one of these categories defined below. 
+#################################################################################################
+
+<http://www.broker-cloud.eu/service-descriptions/CAS/categories>
+	a owl:Ontology;
+	rdfs:label "CAS Cloud xRM App categories" ;
+	dcterms:title "CAS Cloud xRM App categories" ;
+	dcterms:description "Description of CAS Cloud xRM App categories" ;
+	dcterms:created "2014-07-08"^^xsd:date ;
+	dcterms:modified "2014-11-11"^^xsd:date ;
+	dcterms:creator sp:CAS_Software_AG;
+    dcterms:publisher "Antonia Schwichtenberg";
+	owl:versionInfo "003" .
+
+
+### Classification of apps ######################################################################
+
+fc:CASConceptScheme a skos:ConceptScheme;
+dcterms:title "Root for all classification dimensions.";
+skos:prefLabel "Root Concept Scheme"@en ;
+	skos:altLabel "Root Begriffsschema"@de ;
+skos:hasTopConcept fc:rootConcept.
+
+
+fc:rootConcept a usdl-core-cb:ClassificationDimension;
+	skos:prefLabel "Root Concept"@en ;
+	skos:altLabel "Wurzel Begriff, der alle Klassifikationsdimensionen umfasst."@de ;
+	skos:narrower fc:roles, fc:branches, fc:types ;
+	skos:inScheme fc:CASConceptScheme .
+
+### roles ### 
+fc:roles a usdl-core-cb:ClassificationDimension;
+dcterms:title "Roles for which an app can be useful.";
+skos:prefLabel "Role"@en ;
+	skos:altLabel "Rolle"@de ;
+	skos:broader fc:rootConcept ;
+	skos:narrower fc:projectmanager, fc:developer, fc:marketing, fc:sales;
+	skos:inScheme fc:CASConceptScheme .
+	
+fc:projectmanager a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Project management"@en ;
+	skos:altLabel "Projektmanagement"@de ;
+	skos:broader fc:roles ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:developer a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Developer"@en ;
+	skos:altLabel "Entwickler"@de ;
+	skos:broader fc:roles ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:marketing a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Marketing"@en ;
+	skos:altLabel "Marketing"@de ;
+	skos:broader fc:roles ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:sales a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Sales"@en ;
+	skos:altLabel "Vertrieb"@de ;
+	skos:broader fc:roles ;
+	skos:inScheme fc:CASConceptScheme .
+
+### branches ###
+fc:branches a usdl-core-cb:ClassificationDimension;  
+	dcterms:title "Branches whithin which an app can be used.";
+	skos:prefLabel "Business sector"@en ;
+	skos:altLabel "Branche"@de ;
+	skos:broader fc:rootConcept ;
+	skos:narrower fc:automobile, fc:insurance, fc:energy, fc:trade, fc:aviation ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:automobile a usdl-core-cb:ClassificationDimension ;
+	skos:skos:prefLabel "Automobile industry"@en ;
+	skos:altLabel "Automobile Industrie"@de ;
+	skos:broader fc:branches ;
+	skos:topConceptOf fc:branches ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:insurance a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Insurance"@en ;
+	skos:altLabel "Versicherungsbranche"@de ;
+	skos:broader fc:branches ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:energy a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Energy"@en ;
+	skos:altLabel "Energie und Versorgung"@de ;
+	skos:broader fc:branches ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:trade a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Trade"@en ;
+	skos:altLabel "Handel"@de ;
+	skos:broader fc:branches ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:aviation a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Aviation"@en ;
+	skos:altLabel "Flugfahrt"@de ;
+	skos:broader fc:branches ;
+	skos:inScheme fc:CASConceptScheme .
+
+### types ###
+fc:types a usdl-core-cb:ClassificationDimension ;  
+	dcterms:title "Types of apps (apps that have the same type can be replaced by each other).";
+	skos:prefLabel "Types of apps and services"@en ;
+	skos:altLabel "Arten von Apps"@de ;
+	skos:broader fc:rootConcept ;
+	skos:narrower fc:calendar, fc:contacs, fc:map ;
+	skos:inScheme fc:CASConceptScheme .	
+
+fc:calendar a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Calendar Apps"@en ;
+	skos:altLabel "Kalender Apps"@de ;
+	skos:broader fc:types ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:contacts a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Contact Apps"@en ;
+	skos:altLabel "Address Apps"@de ;
+	skos:broader fc:types ; 
+	skos:inScheme fc:CASConceptScheme .
+
+fc:map a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Map Apps"@en ;
+	skos:altLabel "Karten Apps"@de ;
+	skos:broader fc:types ; 
+	skos:inScheme fc:CASConceptScheme .
+

@@ -1,0 +1,1660 @@
+@prefix cas:   <http://www.broker-cloud.eu/service-descriptions/CAS/broker#> .
+@prefix usdl-pref: <http://www.linked-usdl.org/ns/usdl-pref#> .
+@prefix vann:  <http://purl.org/vocab/vann/> .
+@prefix pref-att: <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix cpp-fld-profile: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-PROFILE/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix time:  <http://www.w3.org/2006/time#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker> .
+@prefix cpp-profile: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-PROFILE#> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> .
+@prefix cpp-pref: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix sp:    <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> .
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> .
+@prefix att:   <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#> .
+@prefix xml:   <http://www.w3.org/XML/1998/namespace> .
+@prefix attr:  <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#> .
+@prefix vcard: <http://www.w3.org/TR/vcard-rdf/> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix fc:    <http://www.broker-cloud.eu/service-descriptions/CAS/categories#> .
+@prefix cpp-fld-expr: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-EXPRESSION/> .
+@prefix s:     <http://schema.org/> .
+@prefix cpp-fld-pref: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> .
+@prefix pulsar: <http://www.brokeratcloud.eu/persist/types#> .
+@prefix gr:    <http://purl.org/goodrelations/v1#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix cpp-expr: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-EXPRESSION#> .
+@prefix cas-pref-att: <http://www.broker-cloud.eu/service-descriptions/CAS/broker#> .
+
+attr:attr-agility-extensibility
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:13:55Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability to add new features or services to existing services"^^xsd:string ;
+        dcterms:identifier   "attr-agility-extensibility"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:13:55Z"^^xsd:dateTime ;
+        dcterms:title        "Extensibility"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+attr:attr-security-physical-environmental-security
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:54:37+03:00"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Policies and processes in use by the service provider to protect the provider facilities from unauthorized access, damage or interference"^^xsd:string ;
+        dcterms:identifier   "attr-security-physical-environmental-security"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:54:37+03:00"^^xsd:dateTime ;
+        dcterms:title        "Physical & Environmental Security"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+usdl-pref:hasDefaultDatatypeValue
+        a                 rdf:Property ;
+        rdfs:comment      "<p>The datatype value of a preference variable.</p>\r\n" ;
+        rdfs:domain       usdl-pref:DatatypeVariable ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "has default datatype value" ;
+        rdfs:range        rdfs:Datatype .
+
+attr:test-bbbb  a            usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-26T15:02:47Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "test-bbbb"^^xsd:string ;
+        dcterms:modified     "2014-05-26T15:32:24Z"^^xsd:dateTime ;
+        dcterms:title        "BBBB"^^xsd:string ;
+        skos:broader         attr:test-root .
+
+cas-pref-att:CASServiceModel
+        rdfs:subClassOf  usdl-core:ServiceModel .
+
+usdl-core-cb:  a                       owl:Ontology ;
+        rdfs:label                     "Linked USDL SLA Cloud Broker"@en , "Linked USDL Core Cloud Broker"@en ;
+        dcterms:created                "2014-09-30"^^xsd:date ;
+        dcterms:creator                usdl-sla-cb:afriesen ;
+        dcterms:description            "<p>This vocabulary provides a Broker@Cloud extension to the core module of Linked USDL required by the optimization mechanism. It introduces a root class for multi-dimensional classification taxonomies and provides a specification for fuzzy values .</p>"@en , "<p>This vocabulary provides a Broker@Cloud extension to the SLA module of Linked USDL. It introduces properties allowing to use not only quantitative but also qualitative and fuzzy values in SLA specifications .</p>"@en ;
+        dcterms:issued                 "2014-09-30"^^xsd:date ;
+        dcterms:modified               "2014-09-30"^^xsd:date ;
+        dcterms:title                  "Linked USDL SLA Cloud Broker"@en , "Linked USDL Core Cloud Broker"@en ;
+        vann:preferredNamespacePrefix  "usdl-core-cb" ;
+        vann:preferredNamespaceUri     "http://www.linked-usdl.org/ns/usdl-core/cloud-broker#" ;
+        owl:versionInfo                "1.0" .
+
+fc:roles  a             usdl-sla-cb:ClassificationDimension ;
+        dcterms:title   "Roles for which an app can be useful." ;
+        skos:altLabel   "Rolle"@de ;
+        skos:broader    fc:rootConcept ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:narrower   fc:sales , fc:developer , fc:projectmanagement , fc:marketing ;
+        skos:prefLabel  "Role"@en .
+
+usdl-sla-cb:hasDefaultDatatypeProperty
+        a                 rdf:Property ;
+        rdfs:comment      "<p>The default simple datatype value of the variable.</p>\r\n" ;
+        rdfs:domain       usdl-sla:Variable ;
+        rdfs:isDefinedBy  <http://linked-usdl.org/ns/usdl-sla/cloud-broker> ;
+        rdfs:label        "has default datatype property" ;
+        rdfs:range        rdfs:Datatype .
+
+attr:test-root-zzzz  a       usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-24T20:08:58Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "test-root-zzzz"^^xsd:string ;
+        dcterms:modified     "2014-06-15T15:41:54Z"^^xsd:dateTime ;
+        dcterms:title        "ZZZZ"^^xsd:string ;
+        skos:broader         attr:test-root .
+
+usdl-pref:jverginadis
+        a          foaf:Person ;
+        foaf:name  "Yiannis Verginadis" .
+
+attr:attr-security-access-control-privilege-management-rbac
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:51:44Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-security-access-control-privilege-management-rbac"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:51:44Z"^^xsd:dateTime ;
+        dcterms:title        "Role based Access Control (RBAC)"^^xsd:string ;
+        skos:broader         attr:attr-security-access-control-privilege-management .
+
+usdl-pref:hasPreference
+        a                 rdf:Property ;
+        rdfs:comment      "<p>Consumer preference descriptions </p>\r\n" ;
+        rdfs:domain       usdl-pref:ConsumerPreferenceProfile ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "has preference" ;
+        rdfs:range        usdl-pref:ConsumerPreference .
+
+usdl-pref:DatatypeVariable
+        a                 rdfs:Class , owl:Class ;
+        rdfs:comment      "<p> A DatatypeVariable is used to reference a datatype value.</p> " ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "Datatype Variable" ;
+        rdfs:subClassOf   usdl-pref:PreferenceVariable .
+
+attr:attr-accountability-supply-chain
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:10:41Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The service provider ensures that any SLAs that must be supported by its suppliers are supported"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-supply-chain"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:10:41Z"^^xsd:dateTime ;
+        dcterms:title        "Provider Supply Chain"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+usdl-pref:BooleanVariable
+        a                 rdfs:Class , owl:Class ;
+        rdfs:comment      "<p> A BooleanVariable is a special case of QualitativeVariable, used to reference a boolean value.</p> " ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "Boolean Variable" ;
+        rdfs:subClassOf   usdl-pref:PreferenceVariable .
+
+attr:attr-performance-service-response-time-minimum
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:05:02Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-service-response-time-minimum"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:05:02Z"^^xsd:dateTime ;
+        dcterms:title        "Minimum Response time"^^xsd:string ;
+        skos:broader         attr:attr-performance-service-response-time .
+
+attr:attr-reputation-sustainability-energy-consumption
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:35:29+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-reputation-sustainability-energy-consumption"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:35:29+03:00"^^xsd:dateTime ;
+        dcterms:title        "Energy consumption"^^xsd:string ;
+        skos:broader         attr:attr-reputation-sustainability .
+
+attr:attr-performance-capacity-memory
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:57:29Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-memory"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:57:29Z"^^xsd:dateTime ;
+        dcterms:title        "Memory"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-performance-capacity-clock-speed
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:56:52Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-clock-speed"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:56:52Z"^^xsd:dateTime ;
+        dcterms:title        "Clock Speed"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-reputation-ease-of-doing-business
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T13:32:31Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Client satisfaction with the ability to do business with a service provider"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-ease-of-doing-business"^^xsd:string ;
+        dcterms:modified     "2014-07-18T13:32:31Z"^^xsd:dateTime ;
+        dcterms:title        "Ease of doing business"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+usdl-sla-cb:hasMinKernel
+        a                   rdf:Property ;
+        rdfs:comment        "<p>Indicates a min kernel.</p>"@en ;
+        rdfs:domain         usdl-sla-cb:FuzzyValue ;
+        rdfs:isDefinedBy    usdl-core-cb: ;
+        rdfs:label          "has min kernel"@en ;
+        rdfs:range          xsd:float ;
+        rdfs:subPropertyOf  gr:hasMinValueFloat .
+
+attr:attr-agility  a         usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:20:44+03:00"^^xsd:dateTime ;
+        dcterms:description  "Indicates the impact of a service upon a client's ability to change direction, strategy, or tactics quickly and with minimal disruption"^^xsd:string ;
+        dcterms:identifier   "attr-agility"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:11:30+03:00"^^xsd:dateTime ;
+        dcterms:title        "Agility"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+attr:attr-assurance-serviceability-documentation
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:30:49+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-serviceability-documentation"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:13:51+03:00"^^xsd:dateTime ;
+        dcterms:title        "Documentation"^^xsd:string ;
+        skos:broader         attr:attr-assurance-serviceability .
+
+attr:attr-usability-operability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:24:11+03:00"^^xsd:dateTime ;
+        dcterms:description  "The ability of a service to be easily operated by users"^^xsd:string ;
+        dcterms:identifier   "attr-usability-operability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:24:11+03:00"^^xsd:dateTime ;
+        dcterms:title        "Operability"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+attr:attr-performance-monitoring-level
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:06:03Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-monitoring-level"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:06:03Z"^^xsd:dateTime ;
+        dcterms:title        "Monitoring Level"^^xsd:string ;
+        skos:broader         attr:attr-performance-monitoring .
+
+attr:attr-assurance-serviceability-os-support
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T09:14:14Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-serviceability-os-support"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:14:14Z"^^xsd:dateTime ;
+        dcterms:title        "Operating Systems Support"^^xsd:string ;
+        skos:broader         attr:attr-assurance-serviceability .
+
+attr:attr-performance-service-response-time-maximum
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:04:46+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-service-response-time-maximum"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:04:46+03:00"^^xsd:dateTime ;
+        dcterms:title        "Maximum Response time"^^xsd:string ;
+        skos:broader         attr:attr-performance-service-response-time .
+
+attr:attr-financial-cost-data-inbound
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:32:20Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-financial-cost-data-inbound"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:25:29Z"^^xsd:dateTime ;
+        dcterms:title        "Data - Inbound"^^xsd:string ;
+        skos:broader         attr:attr-financial-cost .
+
+attr:attr-assurance  a       usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:16:36Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Indicates how likely it is that the service will be available as specified"^^xsd:string ;
+        dcterms:identifier   "attr-assurance"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:47:41Z"^^xsd:dateTime ;
+        dcterms:title        "Assurance"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+attr:attr-performance-accuracy
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:01:37+03:00"^^xsd:dateTime ;
+        dcterms:description  "The extent to which a service adheres to its requirements"^^xsd:string ;
+        dcterms:identifier   "attr-performance-accuracy"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:01:37+03:00"^^xsd:dateTime ;
+        dcterms:title        "Accuracy"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+attr:attr-financial-cost-storage
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:32:46Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-financial-cost-storage"^^xsd:string ;
+        dcterms:modified     "2014-05-23T18:32:46Z"^^xsd:dateTime ;
+        dcterms:title        "Storage"^^xsd:string ;
+        skos:broader         attr:attr-financial-cost .
+
+attr:attr-usability-reusability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:25:27+03:00"^^xsd:dateTime ;
+        dcterms:description  "How generic the service is and how easy it is to be used in different cloud applications"^^xsd:string ;
+        dcterms:identifier   "attr-usability-reusability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:25:27+03:00"^^xsd:dateTime ;
+        dcterms:title        "Reusability"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+attr:attr-accountability-personnel-requirements-technical-competency-of-support
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:36:47Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-accountability-personnel-requirements-technical-competency-of-support"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:36:47Z"^^xsd:dateTime ;
+        dcterms:title        "Technical competency of the support employees"^^xsd:string ;
+        skos:broader         attr:attr-accountability-personnel-requirements .
+
+attr:attr-security-management-encrypted-storage
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:57:10+03:00"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-security-management-encrypted-storage"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:57:10+03:00"^^xsd:dateTime ;
+        dcterms:title        "Encrypted Storage"^^xsd:string ;
+        skos:broader         attr:attr-security-management .
+
+attr:test-aaaa  a            usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-25T10:56:14Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "test-aaaa"^^xsd:string ;
+        dcterms:modified     "2014-05-25T10:56:14Z"^^xsd:dateTime ;
+        dcterms:title        "AAAA"^^xsd:string ;
+        skos:broader         attr:test-root .
+
+usdl-pref:belongsTo  a    rdf:Property ;
+        rdfs:comment      "<p> Associating optimisation attributes with any of the available service dimensions for which they are meaningful. </p>\r\n" ;
+        rdfs:domain       usdl-pref:PreferenceVariable ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "belongs to" ;
+        rdfs:range        usdl-sla-cb:ClassificationDimension .
+
+attr:attr-performance-suitability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:02:58Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "How closely do the capabilities of the service match the needs of the client"^^xsd:string ;
+        dcterms:identifier   "attr-performance-suitability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:02:58Z"^^xsd:dateTime ;
+        dcterms:title        "Suitability"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+attr:attr-security-access-control-privilege-management-authentication-schemes
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:51:22Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-security-access-control-privilege-management-authentication-schemes"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:51:22Z"^^xsd:dateTime ;
+        dcterms:title        "Supported authentication schemes"^^xsd:string ;
+        skos:broader         attr:attr-security-access-control-privilege-management .
+
+attr:attr-agility-elasticity-time
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:25:30Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-agility-elasticity-time"^^xsd:string ;
+        dcterms:modified     "2014-05-23T18:25:30Z"^^xsd:dateTime ;
+        dcterms:title        "Time"^^xsd:string ;
+        skos:broader         attr:attr-agility-elasticity .
+
+attr:attr-security-proactive-threat-vulnerability-management-firewall-utm
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:55:50Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-security-proactive-threat-vulnerability-management-firewall-utm"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:55:50Z"^^xsd:dateTime ;
+        dcterms:title        "Firewall (UTM-unified threat management)"^^xsd:string ;
+        skos:broader         attr:attr-security-proactive-threat-vulnerability-management .
+
+attr:attr-assurance-recoverability-recovery-time
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:53:21+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-recoverability-recovery-time"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:53:21+03:00"^^xsd:dateTime ;
+        dcterms:title        "Recovery Time"^^xsd:string ;
+        skos:broader         attr:attr-assurance-recoverability .
+
+attr:attr-accountability-certifications
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:35:05Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The service provider maintains current certifications for standards relevant to their clients' requirements"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-certifications"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:35:05Z"^^xsd:dateTime ;
+        dcterms:title        "Provider Certifications"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+usdl-pref:hasPreferenceExpression
+        a                 rdf:Property ;
+        rdfs:comment      "<p>Consumer preference expressions.</p>\r\n" ;
+        rdfs:domain       usdl-pref:ConsumerPreference ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "has preference expression" ;
+        rdfs:range        usdl-pref:ConsumerPreferenceExpression .
+
+attr:test-root-yyyy  a       usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-24T20:08:40Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "test-root-yyyy"^^xsd:string ;
+        dcterms:modified     "2014-05-24T20:08:40Z"^^xsd:dateTime ;
+        dcterms:title        "YYYY"^^xsd:string ;
+        skos:broader         attr:test-root .
+
+usdl-pref:ConsumerPreference
+        a                 rdfs:Class , owl:Class ;
+        rdfs:comment      "<p>A ConsumerPreference specifies a preference on a specific topic. For this purpose it may reference a ConsumerPreferenceExpression.</p> " ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "Consumer Preference" .
+
+usdl-pref:ConsumerPreferenceExpression
+        a                 rdfs:Class , owl:Class ;
+        rdfs:comment      "<p>A ConsumerPreferenceExpression specifies an expression that is evaluated in the context of a consumer preference. For this purpose it may reference a set of preference variables (quantitative, qualitative or fuzzy variables).</p>\r\n" ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "Consumer Preference Expression" .
+
+fc:automobile  a        usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel   "Automobile Industrie"@de ;
+        skos:broader    fc:branches ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:prefLabel  "Automobile industry"@en .
+
+attr:attr-agility-scalability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:16:59Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of a service provider to increase or decrease the amount of service available to meet client requirements"^^xsd:string ;
+        dcterms:identifier   "attr-agility-scalability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:16:59Z"^^xsd:dateTime ;
+        dcterms:title        "Scalability"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+usdl-sla-cb:SAP-Karlsruhe
+        a              foaf:Organization ;
+        foaf:homepage  <http://www.sap.com> ;
+        foaf:member    usdl-sla-cb:afriesen ;
+        foaf:name      "SAP Research Center Karlsruhe, SAP SE" .
+
+attr:attr-performance-capacity-memory-speed
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:57:47Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-memory-speed"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:57:47Z"^^xsd:dateTime ;
+        dcterms:title        "Memory Speed"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-assurance-recoverability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:48:56Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "It is the degree to which a service is able to quickly resume a normal state of operation after an unplanned disruption"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-recoverability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:48:56Z"^^xsd:dateTime ;
+        dcterms:title        "Recoverability"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+attr:attr-reputation-service-reputation
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:35:14+03:00"^^xsd:dateTime ;
+        dcterms:description  "It is the linguistic expression of the reputation of the cloud service  as perceived by its clients"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-service-reputation"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:26:51+03:00"^^xsd:dateTime ;
+        dcterms:title        "Service Reputation"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+cas-pref-att:AppPortfolio
+        a       cas-pref-att:Measuring .
+
+fc:rootConcept  a          usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel      "Wurzel Begriff, der alle Klassifikationsdimensionen umfasst."@de ;
+        skos:inScheme      fc:CASConceptScheme ;
+        skos:narrower      fc:types , fc:branches , fc:roles ;
+        skos:prefLabel     "Root Concept"@en ;
+        skos:topConceptOf  fc:CASConceptScheme .
+
+attr:attr-accountability-governance
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:31:58Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The processes used by the service provider to manage client expectations, issues and service performance"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-governance"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:31:58Z"^^xsd:dateTime ;
+        dcterms:title        "Governance"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+attr:attr-reputation-sustainability-societal-impact
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T13:35:01Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-reputation-sustainability-societal-impact"^^xsd:string ;
+        dcterms:modified     "2014-07-18T13:35:01Z"^^xsd:dateTime ;
+        dcterms:title        "Societal impact"^^xsd:string ;
+        skos:broader         attr:attr-reputation-sustainability .
+
+attr:attr-root  a            usdl-pref:ServiceAttribute ;
+        dcterms:created      "1900-01-01T01:41:48+01:34"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Broker@Cloud Service Attribute Categorization Root"^^xsd:string ;
+        dcterms:identifier   "attr-root"^^xsd:string ;
+        dcterms:modified     "2014-10-15T19:09:08.613+03:00"^^xsd:dateTime ;
+        dcterms:title        "Service Attributes Root (Extended SMICloud)"^^xsd:string .
+
+attr:attr-performance-capacity-num-of-threads-per-core
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:56:30Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-num-of-threads-per-core"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:56:30Z"^^xsd:dateTime ;
+        dcterms:title        "Number of Threads per Core"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-assurance-maintainability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:48:37Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "It refers to the ability for the service provider to make modifications to the service to keep the service in a condition of good repair"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-maintainability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:48:37Z"^^xsd:dateTime ;
+        dcterms:title        "Maintainability"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+fc:aviation  a          usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel   "Flugfahrt"@de ;
+        skos:broader    fc:branches ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:prefLabel  "Aviation"@en .
+
+attr:attr-performance-capacity-storage-redundancy
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:58:39Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-storage-redundancy"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:58:39Z"^^xsd:dateTime ;
+        dcterms:title        "Storage Redundancy"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+cas-pref-att:CASEntitiyInvolvement
+        a                           usdl-core:EntityInvolvement ;
+        usdl-core:ofBusinessEntity  cas-pref-att:CAS_Software_AG ;
+        usdl-core:withBusinessRole  usdl-business-roles:intermediary .
+
+attr:attr-security-retention-disposition
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:56:25Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The service provider's data retention and disposition processes meet the clients' requirements"^^xsd:string ;
+        dcterms:identifier   "attr-security-retention-disposition"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:56:25Z"^^xsd:dateTime ;
+        dcterms:title        "Retention/Disposition"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+cas-pref-att:CAS_Software_AG
+        a              gr:BusinessEntity ;
+        gr:legalName   "CAS Software AG"^^xsd:string ;
+        gr:taxID       "DE143593148"^^xsd:string ;
+        foaf:homepage  <http://www.cas.de> ;
+        foaf:logo      <http://www.cas.de/typo3temp/pics/C_f1652c8982.gif> .
+
+usdl-pref:hasClassificationCategory
+        a                 rdf:Property ;
+        rdfs:comment      "<p>This property is used in order to associate the Consumer Preference profile with at least one service dimension. </p>\r\n" ;
+        rdfs:domain       usdl-pref:ConsumerPreferenceProfile ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "has classification category" ;
+        rdfs:range        usdl-sla-cb:ClassificationDimension .
+
+cas-pref-att:SupportStatistics
+        a       cas-pref-att:Measuring .
+
+usdl-sla-cb:hasMaxMembershipValue
+        a                   rdf:Property ;
+        rdfs:comment        "<p>Indicates a max membership value.</p>"@en ;
+        rdfs:domain         usdl-sla-cb:FuzzyValue ;
+        rdfs:isDefinedBy    usdl-core-cb: ;
+        rdfs:label          "has max membership value"@en ;
+        rdfs:range          xsd:float ;
+        rdfs:subPropertyOf  gr:hasValueFloat .
+
+fc:map  a               usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel   "Karten Apps"@de ;
+        skos:broader    fc:types ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:prefLabel  "Map Apps"@en .
+
+attr:attr-reputation-contracting-experience
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T13:31:30Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Indicators of client effort and satisfaction with the process of entering into the agreements required to use a service"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-contracting-experience"^^xsd:string ;
+        dcterms:modified     "2014-07-18T13:31:30Z"^^xsd:dateTime ;
+        dcterms:title        "Contracting Experience"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+usdl-sla-cb:FuzzyValue
+        a                 rdfs:Class , owl:Class ;
+        rdfs:comment      "<p>FuzzyValue extends the notion of quantitative value specified in Good Relations to fuzzy values as specified by the Broker@Cloud optimization mechanism. This class is used by the optimization mechanism and preferences specification developed in the Broker@Cloud project for specification of imprecise (fuzzy) values in consumer preferences specifications.</p>"@en ;
+        rdfs:isDefinedBy  usdl-core-cb: ;
+        rdfs:label        "Fuzzy Value"@en ;
+        rdfs:subClassOf   gr:QuantitativeValueFloat .
+
+usdl-pref:hasPreferenceProfile
+        a                 rdf:Property ;
+        rdfs:comment      "<p>Consumer Preference Profiles. We assume here that Consumer is described as an instance of gr:BusinessEntity.</p>\r\n" ;
+        rdfs:domain       gr:BusinessEntity ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "has preference profile" ;
+        rdfs:range        usdl-pref:ConsumerPreferenceProfile .
+
+attr:attr-performance-monitoring-middelware
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:06:19Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-monitoring-middelware"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:06:19Z"^^xsd:dateTime ;
+        dcterms:title        "Monitoring Middelware"^^xsd:string ;
+        skos:broader         attr:attr-performance-monitoring .
+
+attr:attr-reputation-sustainability-economical-impact
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T13:34:41Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-reputation-sustainability-economical-impact"^^xsd:string ;
+        dcterms:modified     "2014-07-18T13:34:41Z"^^xsd:dateTime ;
+        dcterms:title        "Economical impact"^^xsd:string ;
+        skos:broader         attr:attr-reputation-sustainability .
+
+cas-pref-att:Monitoring
+        a       cas-pref-att:Measuring .
+
+attr:attr-security-data-geographic-political
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:52:25Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The client's constraints on service location based on geography or politics"^^xsd:string ;
+        dcterms:identifier   "attr-security-data-geographic-political"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:52:25Z"^^xsd:dateTime ;
+        dcterms:title        "Data Geographic/Political"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:test-root-xxxx  a       usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-24T20:08:24Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "test-root-xxxx"^^xsd:string ;
+        dcterms:modified     "2014-05-24T20:08:24Z"^^xsd:dateTime ;
+        dcterms:title        "XXXX"^^xsd:string ;
+        skos:broader         attr:test-root .
+
+attr:attr-assurance-service-stability-cpu
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:29:16+03:00"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-service-stability-cpu"^^xsd:string ;
+        dcterms:modified     "2014-05-23T21:29:16+03:00"^^xsd:dateTime ;
+        dcterms:title        "CPU"^^xsd:string ;
+        skos:broader         attr:attr-assurance-service-stability .
+
+attr:attr-reputation-sustainability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:34:01+03:00"^^xsd:dateTime ;
+        dcterms:description  "The impact on the economy, society and the environment of the service provider"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-sustainability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:34:01+03:00"^^xsd:dateTime ;
+        dcterms:title        "Sustainability"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+attr:attr-financial-cost
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:19:47+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-financial-cost"^^xsd:string ;
+        dcterms:modified     "2014-05-23T21:19:47+03:00"^^xsd:dateTime ;
+        dcterms:title        "Cost"^^xsd:string ;
+        skos:broader         attr:attr-financial .
+
+fc:calendar  a          usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel   "Kalender Apps"@de ;
+        skos:broader    fc:types ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:prefLabel  "Calendar Apps"@en .
+
+attr:attr-agility-robustness
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:47:23Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Refers to the extent to which a service keeps working even in the presence of inconsistent or incomplete data"^^xsd:string ;
+        dcterms:identifier   "attr-agility-robustness"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:47:23Z"^^xsd:dateTime ;
+        dcterms:title        "Robustness"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+fc:marketing  a         usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel   "Marketing"@de ;
+        skos:broader    fc:roles ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:prefLabel  "Marketing"@en .
+
+attr:attr-accountability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:description  "Measures the properties related to the cloud service provider organization"^^xsd:string ;
+        dcterms:identifier   "attr-accountability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T10:29:44+03:00"^^xsd:dateTime ;
+        dcterms:title        "Accountability"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+cas-pref-att:QS  a  cas-pref-att:Measuring .
+
+attr:attr-agility-elasticity
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:24:03Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of a service to adjust its resource consumption to meet demand"^^xsd:string ;
+        dcterms:identifier   "attr-agility-elasticity"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:13:32Z"^^xsd:dateTime ;
+        dcterms:title        "Elasticity"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+usdl-pref:ICCS  a      foaf:Organization ;
+        foaf:homepage  <http://www.iccs.gr/eng/> ;
+        foaf:member    usdl-pref:jverginadis , usdl-pref:yverginadis ;
+        foaf:name      "ICCS" .
+
+usdl-sla-cb:hasServiceModel
+        a                 rdf:Property ;
+        rdfs:comment      "<p>Connects Service to a ServiceModel.</p>"@en ;
+        rdfs:domain       usdl-core:Service ;
+        rdfs:isDefinedBy  usdl-core-cb: ;
+        rdfs:label        "has classification dimension"@en ;
+        rdfs:range        usdl-core:ServiceModel .
+
+attr:attr-performance-monitoring
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:05:46Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "It indicates how much the monitoring capability is supported regarding the offered cloud services"^^xsd:string ;
+        dcterms:identifier   "attr-performance-monitoring"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:05:46Z"^^xsd:dateTime ;
+        dcterms:title        "Monitoring"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+attr:attr-performance-capacity-network-throughput
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T14:59:00+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-network-throughput"^^xsd:string ;
+        dcterms:modified     "2014-07-18T14:59:00+03:00"^^xsd:dateTime ;
+        dcterms:title        "Network Throughput"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+fc:developer  a         usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel   "Entwickler"@de ;
+        skos:broader    fc:roles ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:prefLabel  "Developer"@en .
+
+attr:attr-performance-service-response-time-average-value
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:34:16+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-service-response-time-average-value"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:05:21+03:00"^^xsd:dateTime ;
+        dcterms:title        "Average Response time"^^xsd:string ;
+        skos:broader         attr:attr-performance-service-response-time .
+
+attr:attr-financial-cost-operation-cost
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:32:03Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-financial-cost-operation-cost"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:25:18Z"^^xsd:dateTime ;
+        dcterms:title        "Operating cost"^^xsd:string ;
+        skos:broader         attr:attr-financial-cost .
+
+attr:attr-performance
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:20:08+03:00"^^xsd:dateTime ;
+        dcterms:description  "It covers the features and functions of the provided services"^^xsd:string ;
+        dcterms:identifier   "attr-performance"^^xsd:string ;
+        dcterms:modified     "2014-07-18T14:41:37+03:00"^^xsd:dateTime ;
+        dcterms:title        "Performance"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+attr:attr-agility-adaptability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:13:04Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of the service provider to adjust to changes in client requirements"^^xsd:string ;
+        dcterms:identifier   "attr-agility-adaptability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:13:04Z"^^xsd:dateTime ;
+        dcterms:title        "Adaptability"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+<http://www.broker-cloud.eu/service-descriptions/CAS/categories>
+        a                    owl:Ontology ;
+        rdfs:label           "CAS Cloud xRM App categories" ;
+        dcterms:created      "2014-07-08"^^xsd:date ;
+        dcterms:creator      sp:CAS_Software_AG ;
+        dcterms:description  "Description of CAS Cloud xRM App categories" ;
+        dcterms:modified     "2014-11-11"^^xsd:date ;
+        dcterms:publisher    "Antonia Schwichtenberg" ;
+        dcterms:title        "CAS Cloud xRM App categories" ;
+        owl:versionInfo      "003" .
+
+fc:branches  a          usdl-sla-cb:ClassificationDimension ;
+        dcterms:title   "Branches whithin which an app can be used." ;
+        skos:altLabel   "Branche"@de ;
+        skos:broader    fc:rootConcept ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:narrower   fc:automobile , fc:aviation , fc:energy , fc:trade , fc:insurance ;
+        skos:prefLabel  "Business sector"@en .
+
+attr:attr-usability-accessibility
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:59:26+03:00"^^xsd:dateTime ;
+        dcterms:description  "The degree to which a service is operable by users with disabilities"^^xsd:string ;
+        dcterms:identifier   "attr-usability-accessibility"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:59:26+03:00"^^xsd:dateTime ;
+        dcterms:title        "Accessibility"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+attr:attr-financial-agility
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T09:41:28Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The flexibility and elasticity of the financial aspects of the CSP's services"^^xsd:string ;
+        dcterms:identifier   "attr-financial-agility"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:41:28Z"^^xsd:dateTime ;
+        dcterms:title        "Financial Agility"^^xsd:string ;
+        skos:broader         attr:attr-financial .
+
+usdl-sla-cb:isRange  a    rdf:Property ;
+        rdfs:comment      "<p>Indicates if an instance of a value class is a numeric or fuzzy range rather than a single value if the value is true. If the value is false only single values have to be provided in the service description. </p>"@en ;
+        rdfs:domain       gr:QuantitativeValue ;
+        rdfs:isDefinedBy  usdl-core-cb: ;
+        rdfs:label        "instance of a value class is a range rather than a single value"@en ;
+        rdfs:range        xsd:boolean .
+
+attr:attr-reputation-brand-name
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:34:52+03:00"^^xsd:dateTime ;
+        dcterms:description  "It is the linguistic expression of the reputation of the cloud service provider as perceived by its consumers"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-brand-name"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:26:38+03:00"^^xsd:dateTime ;
+        dcterms:title        "Brand Name"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+attr:attr-performance-interoperability-layer
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:03:51Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-interoperability-layer"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:03:51Z"^^xsd:dateTime ;
+        dcterms:title        "Interoperability Layer"^^xsd:string ;
+        skos:broader         attr:attr-performance-interoperability .
+
+attr:attr-agility-portability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:16:33Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of a client to easily move a service from one service provider to another with minimal disruption"^^xsd:string ;
+        dcterms:identifier   "attr-agility-portability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:16:33Z"^^xsd:dateTime ;
+        dcterms:title        "Portability"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+<http://www.linked-usdl.org/ns/usdl-pref>
+        a                              owl:Ontology ;
+        dc:creator                     usdl-pref:jverginadis , usdl-pref:afriesen , usdl-pref:ipatiniotakis ;
+        dc:description                 "<p>Simple vocabulary for describing consumer preference. This vocabulary is based on the work on Linked USDL in the Broker@Cloud project.</p>\r\n<p>Preferences module of Linked USDL. Consumer preferences are a common way to formally specify consumer preferences on services offered on a cloud service brokerage platform.</p>\r\n" ;
+        dc:modified                    "2014-09-08"^^xsd:date ;
+        dc:title                       "USDL Preferences" ;
+        vann:preferredNamespacePrefix  "usdl-pref" ;
+        vann:preferredNamespaceUri     "http://www.linked-usdl.org/ns/usdl-pref#" ;
+        foaf:page                      <http://www.linked-usdl.org/ns/usdl-pref.html> .
+
+usdl-pref:hasPrefVariable
+        a                 rdf:Property ;
+        rdfs:comment      "<p>Preference variables for a consumer preference expression.</p>\r\n" ;
+        rdfs:domain       usdl-pref:ConsumerPreferenceExpression ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "has preference variable" ;
+        rdfs:range        usdl-pref:PreferenceVariable .
+
+usdl-pref:PreferenceVariable
+        a                 rdfs:Class , owl:Class ;
+        rdfs:comment      "<p>A Preference Variable is an abstract class for the subclasses QuantitativeVariable, QualitativeVariable, FuzzyVariable, and DatatypeVariable.</p>\r\n" ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "Preference Variable" .
+
+attr:attr-performance-functionality-quality-of-features
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:02:40Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-functionality-quality-of-features"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:02:40Z"^^xsd:dateTime ;
+        dcterms:title        "Quality of Features"^^xsd:string ;
+        skos:broader         attr:attr-performance-functionality .
+
+attr:attr-security-data-privacy-loss
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:53:42Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Client restrictions on access and use of client data are enforced by the service provider. Any failures of these protections are promptly detected and reported to the client"^^xsd:string ;
+        dcterms:identifier   "attr-security-data-privacy-loss"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:53:42Z"^^xsd:dateTime ;
+        dcterms:title        "Data Privacy & Data Loss"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:attr-usability-understandability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:25:06+03:00"^^xsd:dateTime ;
+        dcterms:description  "The ease with which users can understand the capabilities and operation of the service"^^xsd:string ;
+        dcterms:identifier   "attr-usability-understandability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:25:06+03:00"^^xsd:dateTime ;
+        dcterms:title        "Understandability"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+<http://www.broker-cloud.eu/service-descriptions/CAS/broker>
+        a                    owl:Ontology ;
+        rdfs:label           "CAS Cloud Broker Policies" ;
+        dcterms:created      "2014-11-26"^^xsd:date ;
+        dcterms:description  "Description of CAS Cloud Broker Policies" ;
+        dcterms:modified     "2014-11-26"^^xsd:date ;
+        dcterms:title        "CAS Cloud Broker Policies" ;
+        owl:versionInfo      "010" .
+
+attr:attr-security-access-control-privilege-management
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:50:58Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Policies and processes in use by the service provider to ensure that only the provider and client personnel with appropriate status/reasons to make use of or modify data/work products may do so"^^xsd:string ;
+        dcterms:identifier   "attr-security-access-control-privilege-management"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:50:58Z"^^xsd:dateTime ;
+        dcterms:title        "Access Control & Privilege Management"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:attr-assurance-serviceability-type-of-support
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:30:19+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-serviceability-type-of-support"^^xsd:string ;
+        dcterms:modified     "2014-05-23T21:30:19+03:00"^^xsd:dateTime ;
+        dcterms:title        "Type of Support"^^xsd:string ;
+        skos:broader         attr:attr-assurance-serviceability .
+
+attr:attr-performance-service-response-time
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:33:18Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "An indicator of the time between when a service is requested and when the response is available"^^xsd:string ;
+        dcterms:identifier   "attr-performance-service-response-time"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:04:24Z"^^xsd:dateTime ;
+        dcterms:title        "Service Response Time"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+usdl-pref:hasDefaultQualitativeValue
+        a                 rdf:Property ;
+        rdfs:comment      "<p>The qualitative value of a preference variable.</p>\r\n" ;
+        rdfs:domain       usdl-pref:QualitativeVariable ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "has default qualitative value" ;
+        rdfs:range        gr:QualitativeValue .
+
+usdl-pref:FuzzyVariable
+        a                 rdfs:Class , owl:Class ;
+        rdfs:comment      "<p> A FuzzyVariable is used to reference a fuzzy value.</p> " ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "Fuzzy Variable" ;
+        rdfs:subClassOf   usdl-pref:PreferenceVariable .
+
+attr:attr-security-data-integrity
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:53:07Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Keeping the data that is created, used, and stored in its correct form so that clients may be confident that it is accurate and valid"^^xsd:string ;
+        dcterms:identifier   "attr-security-data-integrity"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:53:07Z"^^xsd:dateTime ;
+        dcterms:title        "Data Integrity"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+usdl-pref:ServiceAttribute
+        a                 rdfs:Class , owl:Class ;
+        rdfs:comment      "<p>The ServiceAttribute class forms a classification of cloud service attributes used for optimization. It is a subclass of skos:Concept and uses its properties: skos:broader, skos:narrower to express the hierarchical relation between the attributes. This classification is derived and extends the Service Measurement Index in order to encompass both precise and imprecise attributes. SMI is currently being developed by the Cloud Services Measurement Initiative Consortium</p>"@en ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "Service Attribute"@en ;
+        rdfs:subClassOf   skos:Concept .
+
+attr:test-root  a            usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:48:25+03:00"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "test-root"^^xsd:string ;
+        dcterms:modified     "2014-10-22T15:13:43.79+03:00"^^xsd:dateTime ;
+        dcterms:title        "Test Root"^^xsd:string .
+
+cas-pref-att:MeasuredBy
+        a            rdf:Property ;
+        rdfs:domain  gr:QualitativeValue , gr:QuantitativeValue ;
+        <http://www.w3.org/2000/01/rdf-schema#range:>
+                cas-pref-att:Measuring .
+
+usdl-pref:hasDefaultFuzzyValue
+        a                 rdf:Property ;
+        rdfs:comment      "<p>The fuzzy value of a preference variable.</p>\r\n" ;
+        rdfs:domain       usdl-pref:FuzzyVariable ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "has default fuzzy value" ;
+        rdfs:range        usdl-sla-cb:FuzzyValue .
+
+attr:attr-performance-functionality
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:02:07Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The specific features provided by a service"^^xsd:string ;
+        dcterms:identifier   "attr-performance-functionality"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:02:07Z"^^xsd:dateTime ;
+        dcterms:title        "Functionality"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+usdl-sla-cb:hasMaxKernel
+        a                   rdf:Property ;
+        rdfs:comment        "<p>Indicates a max kernel.</p>"@en ;
+        rdfs:domain         usdl-sla-cb:FuzzyValue ;
+        rdfs:isDefinedBy    usdl-core-cb: ;
+        rdfs:label          "has max kernel"@en ;
+        rdfs:range          xsd:float ;
+        rdfs:subPropertyOf  gr:hasMaxValueFloat .
+
+fc:sales  a             usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel   "Vertrieb"@de ;
+        skos:broader    fc:roles ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:prefLabel  "Sales"@en .
+
+attr:attr-reputation  a      usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:21:41+03:00"^^xsd:dateTime ;
+        dcterms:description  "It is related to the reputation of the Service provider and of the cloud service offerings that are provided"^^xsd:string ;
+        dcterms:identifier   "attr-reputation"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:26:05+03:00"^^xsd:dateTime ;
+        dcterms:title        "Reputation"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+attr:attr-assurance-service-stability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:28:13Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The degree to which the service is resistant to change, deterioration, or displacement"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-service-stability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:54:41Z"^^xsd:dateTime ;
+        dcterms:title        "Service Stability"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+attr:attr-security  a        usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:21:05+03:00"^^xsd:dateTime ;
+        dcterms:description  "It indicates the effectiveness of a cloud service provider's controls on access to services, service data, and the physical facilities from which services are provided"^^xsd:string ;
+        dcterms:identifier   "attr-security"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:07:41+03:00"^^xsd:dateTime ;
+        dcterms:title        "Security and Privacy"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+usdl-sla-cb:ClassificationDimension
+        a                 rdfs:Class , owl:Class ;
+        rdfs:comment      "<p>Classification Dimension serves as a root class for platform-specific taxonomies providing vocabularies for classification of services according to different aspects (dimensions) available for classification on a cloud service brokerage platform according to Broker@Cloud methodology. This class is used by the optimization mechanism developed in the Broker@Cloud project for identification of applicable taxonomies.</p>"@en ;
+        rdfs:isDefinedBy  usdl-core-cb: ;
+        rdfs:label        "Classification Dimension"@en ;
+        rdfs:subClassOf   skos:Concept .
+
+attr:attr-performance-functionality-features
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:02:21Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-functionality-features"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:02:21Z"^^xsd:dateTime ;
+        dcterms:title        "Features"^^xsd:string ;
+        skos:broader         attr:attr-performance-functionality .
+
+attr:attr-reputation-provider-ethicality
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T13:33:42Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Ethicality refers to the manner in which the service provider conducts business; it includes business practices and ethics outside the scope of regulatory compliance. It also includes fair practices with suppliers, customers, and employees"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-provider-ethicality"^^xsd:string ;
+        dcterms:modified     "2014-07-18T13:33:42Z"^^xsd:dateTime ;
+        dcterms:title        "Provider Ethicality"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+attr:attr-security-proactive-threat-vulnerability-management
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:55:12Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Mechanisms in place to ensure that the service is protected against known recurring threats as well as new evolving vulnerabilities"^^xsd:string ;
+        dcterms:identifier   "attr-security-proactive-threat-vulnerability-management"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:55:12Z"^^xsd:dateTime ;
+        dcterms:title        "Proactive Threat & Vulnerability Management"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:attr-assurance-service-stability-memory
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:29:30Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-service-stability-memory"^^xsd:string ;
+        dcterms:modified     "2014-05-23T18:29:30Z"^^xsd:dateTime ;
+        dcterms:title        "Memory"^^xsd:string ;
+        skos:broader         attr:attr-assurance-service-stability .
+
+attr:attr-usability-learnability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:23:48+03:00"^^xsd:dateTime ;
+        dcterms:description  "The effort required of users to learn to use the service"^^xsd:string ;
+        dcterms:identifier   "attr-usability-learnability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:23:48+03:00"^^xsd:dateTime ;
+        dcterms:title        "Learnability"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+fc:energy  a            usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel   "Energie und Versorgung"@de ;
+        skos:broader    fc:branches ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:prefLabel  "Energy"@en .
+
+usdl-sla-cb:hasDefaultQualitativeProperty
+        a                 rdf:Property ;
+        rdfs:comment      "<p>The default qualitative value of the variable.</p>\r\n" ;
+        rdfs:domain       usdl-sla:Variable ;
+        rdfs:isDefinedBy  <http://linked-usdl.org/ns/usdl-sla/cloud-broker> ;
+        rdfs:label        "has default qualitative property" ;
+        rdfs:range        gr:QualitativeValue .
+
+fc:CASConceptScheme  a      skos:ConceptScheme ;
+        dcterms:title       "Root for all classification dimensions." ;
+        skos:altLabel       "Root Begriffsschema"@de ;
+        skos:hasTopConcept  fc:rootConcept ;
+        skos:prefLabel      "Root Concept Scheme"@en .
+
+attr:attr-accountability-contract-sla-verification
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:35:43Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The service provider makes available to clients SLAs adequate to manage the service and mitigate risks of service failure"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-contract-sla-verification"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:35:43Z"^^xsd:dateTime ;
+        dcterms:title        "Provider Contract/SLA Verification"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+usdl-pref:ipatiniotakis
+        a          foaf:Person ;
+        foaf:name  "Ioannis Patiniotakis" .
+
+attr:attr-usability  a       usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:58:49+03:00"^^xsd:dateTime ;
+        dcterms:description  "It is related to the ease with which a service can be used"^^xsd:string ;
+        dcterms:identifier   "attr-usability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:58:49+03:00"^^xsd:dateTime ;
+        dcterms:title        "Usability"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+cas-pref-att:App  rdfs:subClassOf  usdl-core:Service .
+
+fc:projectmanagement  a  usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel   "Projektmanagement"@de ;
+        skos:broader    fc:roles ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:prefLabel  "Project management"@en .
+
+usdl-pref:Weight  a       rdfs:Class , owl:Class ;
+        rdfs:comment      "<p> It is used to weight a consumer preference.</p> " ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "Weight" ;
+        rdfs:subClassOf   gr:QuantitativeValueFloat .
+
+attr:attr-financial-cost-data-outbound
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:32:35Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-financial-cost-data-outbound"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:25:36Z"^^xsd:dateTime ;
+        dcterms:title        "Data - Outbound"^^xsd:string ;
+        skos:broader         attr:attr-financial-cost .
+
+usdl-sla-cb:hasMaxSupport
+        a                   rdf:Property ;
+        rdfs:comment        "<p>Indicates a max support.</p>"@en ;
+        rdfs:domain         usdl-sla-cb:FuzzyValue ;
+        rdfs:isDefinedBy    usdl-core-cb: ;
+        rdfs:label          "has max support"@en ;
+        rdfs:range          xsd:float ;
+        rdfs:subPropertyOf  gr:hasMaxValueFloat .
+
+usdl-pref:QuantitativeVariable
+        a                 rdfs:Class , owl:Class ;
+        rdfs:comment      "<p> A QuantitativeVariable is used to reference a quantitative value.</p> " ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "Quantitative Variable" ;
+        rdfs:subClassOf   usdl-pref:PreferenceVariable .
+
+usdl-pref:hasDefaultQuantitativeValue
+        a                 rdf:Property ;
+        rdfs:comment      "<p>The quantitative value of a preference variable.</p>\r\n" ;
+        rdfs:domain       usdl-pref:QuantitativeVariable ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "has default quantitative value" ;
+        rdfs:range        gr:QuantitativeValue .
+
+usdl-sla-cb:afriesen  a  foaf:Person ;
+        foaf:name  "Andreas Friesen" .
+
+attr:attr-performance-interoperability-level
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:04:06Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-interoperability-level"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:04:06Z"^^xsd:dateTime ;
+        dcterms:title        "Interoperability level"^^xsd:string ;
+        skos:broader         attr:attr-performance-interoperability .
+
+attr:attr-assurance-resiliency-fault-tolerance
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:54:24Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of a service to continue to operate properly in the event of a failure in one or more of its components"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-resiliency-fault-tolerance"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:54:24Z"^^xsd:dateTime ;
+        dcterms:title        "Resiliency/Fault Tolerance"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+attr:attr-accountability-ownership
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:34:26Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The level of rights a client has over client data, software licenses, and intellectual property associated with a service"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-ownership"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:34:26Z"^^xsd:dateTime ;
+        dcterms:title        "Ownership"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+attr:attr-assurance-service-stability-uptime
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:29:02+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-service-stability-uptime"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:55:15+03:00"^^xsd:dateTime ;
+        dcterms:title        "Uptime"^^xsd:string ;
+        skos:broader         attr:attr-assurance-service-stability .
+
+attr:attr-security-management
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:56:50+03:00"^^xsd:dateTime ;
+        dcterms:description  "The capabilities of service providers to ensure application, data, and infrastructure security based on the security requirements of the client"^^xsd:string ;
+        dcterms:identifier   "attr-security-management"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:56:50+03:00"^^xsd:dateTime ;
+        dcterms:title        "Security Management"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:attr-financial-structure
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T09:41:49Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "How responsive to the client's needs are the cloud service provider's pricing and billing components"^^xsd:string ;
+        dcterms:identifier   "attr-financial-structure"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:41:49Z"^^xsd:dateTime ;
+        dcterms:title        "Financial Structure"^^xsd:string ;
+        skos:broader         attr:attr-financial .
+
+fc:insurance  a         usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel   "Versicherungsbranche"@de ;
+        skos:broader    fc:branches ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:prefLabel  "Insurance"@en .
+
+attr:attr-accountability-compliance
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:30:22Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "It examines whether or not, standards, processes, and policies committed to by the service provider, are followed"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-compliance"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:30:22Z"^^xsd:dateTime ;
+        dcterms:title        "Compliance"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+usdl-sla-cb:hasDefaultQuantitativeProperty
+        a                   rdf:Property ;
+        rdfs:comment        "<p>The default quantitative value of the variable. Subproperties of this property can be used to refer also to fuzzy values since FuzzyValue is specified as a subclass of gr:QuantitativeValueFloat.</p>" ;
+        rdfs:isDefinedBy    <http://linked-usdl.org/ns/usdl-sla/cloud-broker> ;
+        rdfs:label          "has default quantitative property" ;
+        rdfs:subPropertyOf  usdl-sla:hasDefault .
+
+usdl-sla-cb:fuzzyServiceProperty
+        a                   rdf:Property ;
+        rdfs:comment        "<p>Indicates a fuzzy service property.</p>"@en ;
+        rdfs:domain         usdl-core:Service ;
+        rdfs:isDefinedBy    usdl-core-cb: ;
+        rdfs:label          "fuzzy service property"@en ;
+        rdfs:range          usdl-sla-cb:FuzzyValue ;
+        rdfs:subPropertyOf  gr:hasQuantitativeProductOrServiceProperty .
+
+usdl-pref:afriesen  a  foaf:Person ;
+        foaf:name  "Andreas Friesen" .
+
+attr:attr-usability-client-personnel-requirements
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:00:27+03:00"^^xsd:dateTime ;
+        dcterms:description  "The minimum number of personnel satisfying roles, skills, experience, education, and certification required of the client to effectively utilize a service"^^xsd:string ;
+        dcterms:identifier   "attr-usability-client-personnel-requirements"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:00:27+03:00"^^xsd:dateTime ;
+        dcterms:title        "Client Personnel Requirements"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+usdl-pref:ConsumerPreferenceProfile
+        a                 rdfs:Class , owl:Class ;
+        rdfs:comment      "<p>A ConsumerPreferenceProfile might reference one or more consumer preferences. ConsumerPreferenceProfile is associated to a FunctionalServiceCategory. </p> " ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "Consumer Preference Profile" .
+
+fc:contacts  a          usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel   "Address Apps"@de ;
+        skos:broader    fc:types ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:prefLabel  "Contact Apps"@en .
+
+attr:attr-performance-capacity
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:42:01Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The maximum amount of a service that a service provider can deliver while meeting agreed SLAs"^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:42:01Z"^^xsd:dateTime ;
+        dcterms:title        "Capacity"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+attr:attr-assurance-serviceability-free-support
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:29:49+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-serviceability-free-support"^^xsd:string ;
+        dcterms:modified     "2014-05-23T21:29:49+03:00"^^xsd:dateTime ;
+        dcterms:title        "Free Support"^^xsd:string ;
+        skos:broader         attr:attr-assurance-serviceability .
+
+attr:attr-performance-capacity-storage-throughput
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:58:20Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-storage-throughput"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:58:20Z"^^xsd:dateTime ;
+        dcterms:title        "Storage Throughput"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-usability-installability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:23:17+03:00"^^xsd:dateTime ;
+        dcterms:description  "Installability characterizes the time and effort required to get a service ready for delivery (where applicable)"^^xsd:string ;
+        dcterms:identifier   "attr-usability-installability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:23:17+03:00"^^xsd:dateTime ;
+        dcterms:title        "Installability"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+attr:attr-assurance-serviceability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:28:31Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ease and efficiency of performing maintenance and correcting problems with the service"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-serviceability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:13:22Z"^^xsd:dateTime ;
+        dcterms:title        "Serviceability"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+attr:attr-performance-interoperability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:03:30Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of a service to easily interact with other services (from the same service provider and from other service providers)"^^xsd:string ;
+        dcterms:identifier   "attr-performance-interoperability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:03:30Z"^^xsd:dateTime ;
+        dcterms:title        "Interoperability"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+attr:attr-performance-monitoring-analytics-framework
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:06:31Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-monitoring-analytics-framework"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:06:31Z"^^xsd:dateTime ;
+        dcterms:title        "Analytics framework"^^xsd:string ;
+        skos:broader         attr:attr-performance-monitoring .
+
+attr:attr-reputation-sustainability-carbon-footprint
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T13:35:43Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-reputation-sustainability-carbon-footprint"^^xsd:string ;
+        dcterms:modified     "2014-07-18T13:35:43Z"^^xsd:dateTime ;
+        dcterms:title        "Carbon footprint"^^xsd:string ;
+        skos:broader         attr:attr-reputation-sustainability .
+
+usdl-pref:refToServiceAttribute
+        a                 rdf:Property ;
+        rdfs:comment      "<p>Optimization attribute for a preference variable.</p>\r\n" ;
+        rdfs:domain       usdl-pref:PreferenceVariable ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "ref to optimization attribute" ;
+        rdfs:range        usdl-pref:ServiceAttribute .
+
+attr:attr-performance-capacity-turbo-frequency
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:57:11Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-turbo-frequency"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:57:11Z"^^xsd:dateTime ;
+        dcterms:title        "Turbo Frequency"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-usability-transparency
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:24:46+03:00"^^xsd:dateTime ;
+        dcterms:description  "The extent to which users are able to determine when changes in a feature or component of the service occur and whether these changes impact usability"^^xsd:string ;
+        dcterms:identifier   "attr-usability-transparency"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:24:46+03:00"^^xsd:dateTime ;
+        dcterms:title        "Transparency"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+usdl-sla-cb:hasMinSupport
+        a                   rdf:Property ;
+        rdfs:comment        "<p>Indicates a min support.</p>"@en ;
+        rdfs:domain         usdl-sla-cb:FuzzyValue ;
+        rdfs:isDefinedBy    usdl-core-cb: ;
+        rdfs:label          "has min support"@en ;
+        rdfs:range          xsd:float ;
+        rdfs:subPropertyOf  gr:hasMinValueFloat .
+
+attr:attr-accountability-personnel-requirements
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:36:10Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The extent to which service provider personnel have the skills, experience, education, and certifications required to effectively deliver a service"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-personnel-requirements"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:36:10Z"^^xsd:dateTime ;
+        dcterms:title        "Provider Personnel Requirements"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+attr:attr-financial-billing-process
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T09:23:02Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The level of integration that is available between the client and cloud service provider's billing systems and the predictability of periodic bills"^^xsd:string ;
+        dcterms:identifier   "attr-financial-billing-process"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:23:02Z"^^xsd:dateTime ;
+        dcterms:title        "Billing Process"^^xsd:string ;
+        skos:broader         attr:attr-financial .
+
+attr:attr-financial  a       usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:22:34+03:00"^^xsd:dateTime ;
+        dcterms:description  "It is related to the amount of money spent on the service by the client"^^xsd:string ;
+        dcterms:identifier   "attr-financial"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:22:34+03:00"^^xsd:dateTime ;
+        dcterms:title        "Financial"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+usdl-sla-cb:higherIsBetter
+        a                 rdf:Property ;
+        rdfs:comment      "<p>Indicates if a higher value corresponds to a better value of the utility function, e.g., 99% availability is better than 95%. True means higher is better. False means lower is better. </p>"@en ;
+        rdfs:domain       gr:QuantitativeValue ;
+        rdfs:isDefinedBy  usdl-core-cb: ;
+        rdfs:label        "interpretation direction of a quantitative value range as a utility function"@en ;
+        rdfs:range        xsd:boolean .
+
+attr:attr-accountability-auditability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:29:34Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of a client to verify that the service provider is adhering to the standards, processes, and policies that they follow"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-auditability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:29:34Z"^^xsd:dateTime ;
+        dcterms:title        "Auditability"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+attr:attr-assurance-serviceability-support-satisfaction
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:30:36Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-serviceability-support-satisfaction"^^xsd:string ;
+        dcterms:modified     "2014-05-23T18:30:36Z"^^xsd:dateTime ;
+        dcterms:title        "Support satisfaction"^^xsd:string ;
+        skos:broader         attr:attr-assurance-serviceability .
+
+attr:attr-reputation-provider-business-stability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:33:22+03:00"^^xsd:dateTime ;
+        dcterms:description  "The likelihood that the service provider will continue to exist throughout the contracted term"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-provider-business-stability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:33:22+03:00"^^xsd:dateTime ;
+        dcterms:title        "Provider business stability"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+attr:attr-assurance-reliability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:53:48Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "It reflects measures of how a service operates without failure under given conditions during a given time period"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-reliability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:53:48Z"^^xsd:dateTime ;
+        dcterms:title        "Reliability"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+<http://www.linked-usdl.org/ns/usdl-pref#SAP%20SE>
+        a              foaf:Organization ;
+        foaf:homepage  <http://www.sap.com> ;
+        foaf:member    usdl-pref:afriesen ;
+        foaf:name      "SAP SE" .
+
+usdl-pref:QualitativeVariable
+        a                 rdfs:Class , owl:Class ;
+        rdfs:comment      "<p> A QualitativeVariable is used to reference a qualitative value.</p> " ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "Qualitative Variable" ;
+        rdfs:subClassOf   usdl-pref:PreferenceVariable .
+
+attr:attr-performance-capacity-num-of-cores
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:42:21Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-num-of-cores"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:42:21Z"^^xsd:dateTime ;
+        dcterms:title        "Number of Cores"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+cas-pref-att:CodeAnalysis
+        a       cas-pref-att:Measuring .
+
+usdl-pref:hasWeight  a    rdf:Property ;
+        rdfs:comment      "<p>The relative weight of a consumer preference within a profile.</p>\r\n" ;
+        rdfs:domain       usdl-pref:ConsumerPreference ;
+        rdfs:isDefinedBy  <http://www.linked-usdl.org/ns/usdl-pref> ;
+        rdfs:label        "has weight" ;
+        rdfs:range        usdl-pref:Weight .
+
+fc:trade  a             usdl-sla-cb:ClassificationDimension ;
+        skos:altLabel   "Handel"@de ;
+        skos:broader    fc:branches ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:prefLabel  "Trade"@en .
+
+attr:attr-assurance-availability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:27:57+03:00"^^xsd:dateTime ;
+        dcterms:description  "The amount of time that a client can make use of a service"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-availability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:48:14+03:00"^^xsd:dateTime ;
+        dcterms:title        "Availability"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+usdl-sla-cb:dependsOn
+        a                 rdf:Property ;
+        rdfs:comment      "<p>Indicates if a service depends on an other service. </p>"@en ;
+        rdfs:domain       usdl-core:Service ;
+        rdfs:isDefinedBy  usdl-core-cb: ;
+        rdfs:label        "depends on"@en ;
+        rdfs:range        usdl-core:Service .
+
+attr:attr-security-data-privacy-loss-audit-trailing
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:54:00+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-security-data-privacy-loss-audit-trailing"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:54:00+03:00"^^xsd:dateTime ;
+        dcterms:title        "Audit Trailing"^^xsd:string ;
+        skos:broader         attr:attr-security-data-privacy-loss .
+
+cas-pref-att:Measuring
+        a       rdfs:Class .
+
+attr:attr-performance-capacity-storage-capacity
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:58:03Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-storage-capacity"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:58:03Z"^^xsd:dateTime ;
+        dcterms:title        "Storage Capacity"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+cas-pref-att:CASBrokerPolicy
+        a                               cas-pref-att:CASServiceModel ;
+        usdl-core:hasEntityInvolvement  cas-pref-att:CASEntitiyInvolvement ;
+        usdl-sla-cb:hasClassificationDimension
+                fc:rootConcept .
+
+attr:attr-agility-flexibility
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:16:15Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability to add or remove predefined features from a service"^^xsd:string ;
+        dcterms:identifier   "attr-agility-flexibility"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:16:15Z"^^xsd:dateTime ;
+        dcterms:title        "Flexibility"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+fc:types  a             usdl-sla-cb:ClassificationDimension ;
+        dcterms:title   "Types of apps (apps that have the same type can be replaced by each other)." ;
+        skos:altLabel   "Arten von Apps"@de ;
+        skos:broader    fc:rootConcept ;
+        skos:inScheme   fc:CASConceptScheme ;
+        skos:narrower   fc:map , fc:contacs , fc:calendar ;
+        skos:prefLabel  "Types of apps and services"@en .
+
+usdl-sla-cb:hasClassificationDimension
+        a                   rdf:Property ;
+        rdfs:comment        "<p>Indicates a classification dimension of a Service restricted to the taxonomies sub-classified under the usdl-core-cb:ClassificationDimension class.</p>"@en ;
+        rdfs:domain         usdl-core:Service ;
+        rdfs:isDefinedBy    usdl-core-cb: ;
+        rdfs:label          "has classification dimension"@en ;
+        rdfs:range          usdl-sla-cb:ClassificationDimension ;
+        rdfs:subPropertyOf  usdl-core:hasClassification .
+
+attr:attr-security-management-encryption-type
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:57:28+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-security-management-encryption-type"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:57:28+03:00"^^xsd:dateTime ;
+        dcterms:title        "Encryption Type"^^xsd:string ;
+        skos:broader         attr:attr-security-management .

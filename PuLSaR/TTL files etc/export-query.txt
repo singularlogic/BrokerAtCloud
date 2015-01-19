@@ -1,0 +1,39 @@
+prefix cas: <http://www.broker-cloud.eu/service-descriptions/CAS/broker#>
+prefix cas-pref-att: <http://www.broker-cloud.eu/service-descriptions/CAS/broker-pref-attr#>
+prefix sp: <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> 
+prefix fc: <http://www.broker-cloud.eu/service-descriptions/CAS/categories#>
+prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> 
+prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> 
+prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> 
+prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>
+prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> 
+prefix usdl-pref: <http://www.linked-usdl.org/ns/usdl-pref#> 
+prefix pref-att:  <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE/> 
+prefix owl: <http://www.w3.org/2002/07/owl#>  
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  
+prefix xml: <http://www.w3.org/XML/1998/namespace> 
+prefix xsd: <http://www.w3.org/2001/XMLSchema#> 
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+prefix foaf: <http://xmlns.com/foaf/0.1/> 
+prefix dcterms: <http://purl.org/dc/terms/> 
+prefix gr: <http://purl.org/goodrelations/v1> 
+prefix s: <http://schema.org/> 
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+prefix attr: <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#>
+prefix gr: <http://purl.org/goodrelations/v1#>
+prefix skos: <http://www.w3.org/2004/02/skos/core#>
+# ICCS prefixes
+prefix cpp-profile: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-PROFILE#>
+prefix cpp-pref: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE#>
+prefix cpp-expr: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-EXPRESSION#>
+prefix cpp-fld-profile: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-PROFILE/>
+prefix cpp-fld-pref: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE/>
+prefix cpp-fld-expr: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-EXPRESSION/>
+
+construct {?s ?p ?o }
+where {
+  ?s ?p ?o .
+# comment out the two following lines to get a full export
+  filter ( regex(str(?s),'^http://www.broker-cloud.eu/service-descriptions/CAS/broker#','') 
+    || regex(str(?s),'^http://www.broker-cloud.eu/service-descriptions/CAS/broker-pref-attr#','') )
+}
