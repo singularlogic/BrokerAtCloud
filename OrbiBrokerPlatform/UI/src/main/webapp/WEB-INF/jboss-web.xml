@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-web>
+  <context-root>/orbibroker</context-root>
+  <resource-ref>
+    <res-ref-name>jdbc/BROKERDB</res-ref-name>
+    <jndi-name>java:jboss/datasources/BROKERDB</jndi-name>
+  </resource-ref>
+  <security-domain>java:/jaas/BROKERAppRealm</security-domain>
+</jboss-web>

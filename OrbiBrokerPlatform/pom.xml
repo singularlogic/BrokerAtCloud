@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>ORBI</name>
+
+    <description>Orbi for Broker@Cloud Project</description>
+    <packaging>pom</packaging>
+    <groupId>org.broker.orbi</groupId>
+    <artifactId>parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+
+    <modules>
+        <!--util -->
+        <module>UTIL</module>
+        <!-- Main User Interface -->
+        <module>UI</module>
+        <!-- Broker Monitoring Prob -->
+	<module>MonitoringProb</module>
+	<!-- Broker Topic Msg -->
+	<module>BrokerTopicMsgObject</module>
+	<!-- Broker Topic Listener -->
+	<module>BrokerTopic</module>
+        <!-- ear that bundles the main UI -->
+        <module>BrokerEar</module>
+  </modules>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.source.charset>UTF-8</project.source.charset>
+        <project.source.encoding>UTF-8</project.source.encoding>
+        <java.source.version>1.7</java.source.version>
+        <java.target.version>1.7</java.target.version>
+
+        <!-- CXF -->
+        <cxf.version>2.7.10</cxf.version>
+        <!--JUnit -->
+        <junit.version>4.7</junit.version>            	
+        <!-- MySQL -->
+        <!--<c3p0.pooling.version>0.9.1.2</c3p0.pooling.version> -->
+        <mysql.driver.version>5.1.29</mysql.driver.version>
+        <hsql.driver.version>2.2.8</hsql.driver.version>        
+        <slf4j.version>1.6.1</slf4j.version>
+    </properties>
+
+
+    <dependencyManagement>
+        <dependencies>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <charset>${project.source.charset}</charset>
+                    <encoding>${project.source.encoding}</encoding>
+                    <source>${java.version.source}</source>
+                    <target>${java.version.target}</target>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                            <goal>test-jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.2</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+        </plugins>
+    </build>
+
+</project>
