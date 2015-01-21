@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventBuilder name="avgCpuLoadStreamBuilder"
+  statistics="enable" trace="enable" xmlns="http://wso2.org/carbon/eventbuilder">
+  <from eventAdaptorName="WSO2EventAdaptor" eventAdaptorType="wso2event">
+    <property name="stream">avgCpuLoadStream</property>
+    <property name="version">1.0.0</property>
+  </from>
+  <mapping customMapping="disable" type="wso2event"/>
+  <to streamName="avgCpuLoadStream" version="1.0.0"/>
+</eventBuilder>

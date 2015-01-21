@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<executionPlan name="avgLoad" statistics="enable" trace="enable" xmlns="http://wso2.org/carbon/eventprocessor">
+  <description/>
+  <siddhiConfiguration>
+    <property name="siddhi.persistence.snapshot.time.interval.minutes">0</property>
+    <property name="siddhi.enable.distributed.processing">false</property>
+  </siddhiConfiguration>
+  <importedStreams>
+    <stream as="cpuLoadStream" name="cpuLoadStream" version="1.0.0"/>
+    <stream as="memoryLoadStream" name="memoryLoadStream" version="1.0.0"/>
+    <stream as="storageLoadStream" name="storageLoadStream" version="1.0.0"/>
+  </importedStreams>
+  <queryExpressions><![CDATA[
+from cpuLoadStream#window.time(15 minutes)
+select service, avg(cpuLoad) as avgCpuLoad
+group by service
+insert into avgCpuLoadStream;
+
+from memoryLoadStream#window.time(15 minutes)
+select service, avg(memoryLoad) as avgMemoryLoad
+group by service
+insert into avgMemoryLoadStream;
+
+from storageLoadStream#window.time(15 minutes)
+select service, avg(storageLoad) as avgStorageLoad
+group by service
+insert into avgStorageLoadStream;
+  ]]></queryExpressions>
+  <exportedStreams>
+    <stream name="avgCpuLoadStream" valueOf="avgCpuLoadStream" version="1.0.0"/>
+    <stream name="avgMemoryLoadStream" valueOf="avgMemoryLoadStream" version="1.0.0"/>
+    <stream name="avgStorageLoadStream" valueOf="avgStorageLoadStream" version="1.0.0"/>
+  </exportedStreams>
+</executionPlan>

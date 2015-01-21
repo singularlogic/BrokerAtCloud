@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<executionPlan name="impendingFailureMedium" statistics="enable"
+  trace="enable" xmlns="http://wso2.org/carbon/eventprocessor">
+  <description/>
+  <siddhiConfiguration>
+    <property name="siddhi.persistence.snapshot.time.interval.minutes">0</property>
+    <property name="siddhi.enable.distributed.processing">false</property>
+  </siddhiConfiguration>
+  <importedStreams>
+    <stream as="avgCpuLoadStream" name="avgCpuLoadStream" version="1.0.0"/>
+    <stream as="avgMemoryLoadStream" name="avgMemoryLoadStream" version="1.0.0"/>
+    <stream as="avgStorageLoadStream" name="avgStorageLoadStream" version="1.0.0"/>
+    <stream as="processesStream" name="processesStream" version="1.0.0"/>
+    <stream as="requestsStream" name="requestsStream" version="1.0.0"/>
+  </importedStreams>
+  <queryExpressions><![CDATA[
+from avgCpuLoadStream[avgCpuLoad >= 95] as c
+join avgMemoryLoadStream[avgMemoryLoad >= 95 and avgMemoryLoad < 99] as m on c.service == m.service
+select c.service, 'cpuOverload, memoryOverload' as cause
+insert into impendingFailureMediumStream;
+
+from avgCpuLoadStream[avgCpuLoad >= 95 and avgCpuLoad < 99] as c
+join avgMemoryLoadStream[avgMemoryLoad >= 95] as m on c.service == m.service
+select c.service, 'cpuOverload, memoryOverload' as cause
+insert into impendingFailureMediumStream;
+
+from avgCpuLoadStream[avgCpuLoad >= 95] as c
+join avgStorageLoadStream[avgStorageLoad >= 95 and avgStorageLoad < 99] as s on c.service == s.service
+select c.service, 'cpuOverload, storageOverload' as cause
+insert into impendingFailureMediumStream;
+
+from avgCpuLoadStream[avgCpuLoad >= 95 and avgCpuLoad < 99] as c
+join avgStorageLoadStream[avgStorageLoad >= 95] as s on c.service == s.service
+select c.service, 'cpuOverload, storageOverload' as cause
+insert into impendingFailureMediumStream;
+
+from avgMemoryLoadStream[avgMemoryLoad >= 95] as m
+join avgStorageLoadStream[avgStorageLoad >= 95 and avgStorageLoad < 99] as s on m.service == s.service
+select m.service, 'memoryOverload, storageOverload' as cause
+insert into impendingFailureMediumStream;
+
+from avgMemoryLoadStream[avgMemoryLoad >= 95 and avgMemoryLoad < 99] as m
+join avgStorageLoadStream[avgStorageLoad >= 95] as s on m.service == s.service
+select m.service, 'memoryOverload, storageOverload' as cause
+insert into impendingFailureMediumStream;
+
+from processesStream[processes >= 750 and processes < 1000]
+select service, 'processOverload' as cause
+insert into impendingFailureMediumStream;
+
+from requestsStream[requests >= 750 and requests < 1000]
+select service, 'requestOverload' as cause
+insert into impendingFailureMediumStream;
+  ]]></queryExpressions>
+  <exportedStreams>
+    <stream name="impendingFailureMediumStream" valueOf="impendingFailureMediumStream" version="1.0.0"/>
+  </exportedStreams>
+</executionPlan>

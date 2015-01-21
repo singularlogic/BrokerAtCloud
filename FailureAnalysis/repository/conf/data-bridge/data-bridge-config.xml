@@ -1,0 +1,16 @@
+<dataBridgeConfiguration xmlns="http://wso2.org/carbon/databridge">
+
+    <StreamDefinitionStore>org.wso2.carbon.databridge.streamdefn.registry.datastore.RegistryStreamDefinitionStore</StreamDefinitionStore>
+
+    <workerThreads>10</workerThreads>
+    <eventBufferCapacity>10000</eventBufferCapacity>
+    <clientTimeoutMS>30000</clientTimeoutMS>
+    <keySpaceName>EVENT_KS</keySpaceName>
+
+    <thriftDataReceiver>
+        <hostName>0.0.0.0</hostName>
+        <port>7661</port>
+        <securePort>7761</securePort>
+    </thriftDataReceiver>
+
+</dataBridgeConfiguration>

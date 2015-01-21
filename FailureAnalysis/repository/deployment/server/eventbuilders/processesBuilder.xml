@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventBuilder name="processesStreamBuilder"
+  statistics="enable" trace="enable" xmlns="http://wso2.org/carbon/eventbuilder">
+  <from eventAdaptorName="MBJMSInputAdaptor" eventAdaptorType="jms">
+    <property name="transport.jms.Destination">Threads</property>
+  </from>
+  <mapping customMapping="enable" type="json">
+    <property>
+      <from jsonPath="Threads"/>
+      <to name="processes" type="int"/>
+    </property>
+    <property>
+      <from jsonPath="Offering"/>
+      <to name="service" type="string"/>
+    </property>
+  </mapping>
+  <to streamName="processesStream" version="1.0.0"/>
+</eventBuilder>

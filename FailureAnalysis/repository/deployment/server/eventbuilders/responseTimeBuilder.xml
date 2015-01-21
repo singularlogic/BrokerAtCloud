@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventBuilder name="responseTimeStreamBuilder"
+  statistics="enable" trace="enable" xmlns="http://wso2.org/carbon/eventbuilder">
+  <from eventAdaptorName="MBJMSInputAdaptor" eventAdaptorType="jms">
+    <property name="transport.jms.Destination">HTTPResponseTime</property>
+  </from>
+  <mapping customMapping="enable" type="json">
+    <property>
+      <from jsonPath="HTTPResponseTime"/>
+      <to name="responseTime" type="int"/>
+    </property>
+    <property>
+      <from jsonPath="Offering"/>
+      <to name="service" type="string"/>
+    </property>
+  </mapping>
+  <to streamName="responseTimeStream" version="1.0.0"/>
+</eventBuilder>
