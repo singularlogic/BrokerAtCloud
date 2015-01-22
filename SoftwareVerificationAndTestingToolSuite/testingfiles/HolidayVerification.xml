@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Protocol id="0" name="HolidayBookingProtocol">
+  <Notice id="1" text="Verification report for protocol: HolidayBookingProtocol">
+    <Analysis id="2" text="Memory is correctly initialised"/>
+    <Analysis id="3" text="Operation is deterministic: bookDays()"/>
+    <Analysis id="4" text="Operation is deterministic: back()"/>
+    <Analysis id="5" text="Operation is deterministic: select(rowNumber)"/>
+    <Analysis id="6" text="Operation is deterministic: choose(fromDay, untilDay)"/>
+    <Analysis id="7" text="Operation is deterministic: save()"/>
+    <Analysis id="8" text="Operation is deterministic: delete()"/>
+  </Notice>
+  <Memory id="9" name="HolidayBookingMemory">
+    <Notice id="10" text="Initialisation check for memory: HolidayBookingMemory">
+      <Analysis id="11" text="Memory is correctly initialised"/>
+    </Notice>
+    <Constant id="12" name="minusOne" type="Integer">-1</Constant>
+    <Constant id="13" name="zero" type="Integer">0</Constant>
+    <Constant id="14" name="one" type="Integer">1</Constant>
+    <Constant id="15" name="emptyList" type="List[Integer]"/>
+    <Constant id="16" name="maxHolidays" type="Integer">5</Constant>
+    <Constant id="17" name="twelfth" type="Integer">12</Constant>
+    <Constant id="18" name="thirteenth" type="Integer">13</Constant>
+    <Constant id="19" name="sixteenth" type="Integer">16</Constant>
+    <Constant id="20" name="seventeenth" type="Integer">17</Constant>
+    <Constant id="21" name="twentythird" type="Integer">23</Constant>
+    <Variable id="22" name="rowIndex" type="Integer"/>
+    <Variable id="23" name="rowCount" type="Integer"/>
+    <Variable id="24" name="totalHolidays" type="Integer"/>
+    <Variable id="25" name="firstDay" type="Integer"/>
+    <Variable id="26" name="lastDay" type="Integer"/>
+    <Variable id="27" name="bookedDays" type="Integer"/>
+    <Variable id="28" name="firstDays" type="List[Integer]"/>
+    <Variable id="29" name="lastDays" type="List[Integer]"/>
+    <Binding id="30">
+      <Assignment id="31" name="equals" type="Void">
+        <Variable ref="22" name="rowIndex"/>
+        <Constant ref="13" name="zero"/>
+      </Assignment>
+      <Assignment id="32" name="equals" type="Void">
+        <Variable ref="23" name="rowCount"/>
+        <Constant ref="13" name="zero"/>
+      </Assignment>
+      <Assignment id="33" name="equals" type="Void">
+        <Variable ref="25" name="firstDay"/>
+        <Constant ref="13" name="zero"/>
+      </Assignment>
+      <Assignment id="34" name="equals" type="Void">
+        <Variable ref="26" name="lastDay"/>
+        <Constant ref="13" name="zero"/>
+      </Assignment>
+      <Assignment id="35" name="equals" type="Void">
+        <Variable ref="24" name="totalHolidays"/>
+        <Constant ref="13" name="zero"/>
+      </Assignment>
+      <Assignment id="36" name="equals" type="Void">
+        <Variable ref="27" name="bookedDays"/>
+        <Constant ref="13" name="zero"/>
+      </Assignment>
+      <Assignment id="37" name="equals" type="Void">
+        <Variable ref="28" name="firstDays"/>
+        <Constant ref="15" name="emptyList"/>
+      </Assignment>
+      <Assignment id="38" name="equals" type="Void">
+        <Variable ref="29" name="lastDays"/>
+        <Constant ref="15" name="emptyList"/>
+      </Assignment>
+    </Binding>
+  </Memory>
+  <Operation id="39" name="bookDays">
+    <Notice id="40" text="Completeness check for operation: bookDays">
+      <Notice id="41" text="Operation accepts universal input"/>
+      <Analysis id="42" text="Scenario bookDays/ok accepts universal input"/>
+    </Notice>
+    <Scenario id="43" name="bookDays/ok">
+      <Effect id="44">
+        <Assignment id="45" name="equals" type="Void">
+          <Variable ref="25" name="firstDay"/>
+          <Constant ref="13" name="zero"/>
+        </Assignment>
+        <Assignment id="46" name="equals" type="Void">
+          <Variable ref="26" name="lastDay"/>
+          <Constant ref="13" name="zero"/>
+        </Assignment>
+        <Assignment id="47" name="equals" type="Void">
+          <Variable ref="27" name="bookedDays"/>
+          <Constant ref="13" name="zero"/>
+        </Assignment>
+      </Effect>
+    </Scenario>
+  </Operation>
+  <Operation id="48" name="back">
+    <Notice id="49" text="Completeness check for operation: back">
+      <Notice id="50" text="Operation accepts universal input"/>
+      <Analysis id="51" text="Scenario back/ok accepts universal input"/>
+    </Notice>
+    <Scenario id="52" name="back/ok"/>
+  </Operation>
+  <Operation id="53" name="select">
+    <Notice id="54" text="Completeness check for operation: select">
+      <Notice id="55" text="Operation partitions its input space:">
+        <Analysis id="56" text="input 1 = and(equals(rowNumber, minusOne), equals(rowNumber, minus(rowCount, one)))"/>
+        <Analysis id="57" text="input 2 = and(lessThan(rowNumber, minusOne), lessThan(rowNumber, minus(rowCount, one)))"/>
+        <Analysis id="58" text="input 3 = and(moreThan(rowNumber, minusOne), moreThan(rowNumber, minus(rowCount, one)))"/>
+      </Notice>
+      <Analysis id="59" text="Scenario select/fail accepts input 1"/>
+      <Analysis id="60" text="Scenario select/fail accepts input 2"/>
+      <Analysis id="61" text="Scenario select/fail accepts input 3"/>
+    </Notice>
+    <Input id="62" name="rowNumber" type="Integer"/>
+    <Scenario id="63" name="select/fail">
+      <Binding id="64">
+        <Assignment id="65" name="equals" type="Void">
+          <Input ref="62" name="rowNumber"/>
+          <Constant ref="12" name="minusOne"/>
+        </Assignment>
+      </Binding>
+      <Condition id="66">
+        <Proposition id="67" name="or" type="Boolean">
+          <Comparison id="68" name="notMoreThan" type="Boolean">
+            <Input ref="62" name="rowNumber"/>
+            <Constant ref="12" name="minusOne"/>
+          </Comparison>
+          <Comparison id="69" name="moreThan" type="Boolean">
+            <Input ref="62" name="rowNumber"/>
+            <Arithmetic id="70" name="minus" type="Integer">
+              <Variable ref="23" name="rowCount"/>
+              <Constant ref="14" name="one"/>
+            </Arithmetic>
+          </Comparison>
+        </Proposition>
+      </Condition>
+    </Scenario>
+    <Scenario id="71" name="select/low">
+      <Binding id="72">
+        <Assignment id="73" name="moreThan" type="Void">
+          <Input ref="62" name="rowNumber"/>
+          <Constant ref="12" name="minusOne"/>
+        </Assignment>
+      </Binding>
+      <Condition id="74">
+        <Proposition id="75" name="and" type="Boolean">
+          <Comparison id="76" name="moreThan" type="Boolean">
+            <Input ref="62" name="rowNumber"/>
+            <Constant ref="12" name="minusOne"/>
+          </Comparison>
+          <Comparison id="77" name="lessThan" type="Boolean">
+            <Input ref="62" name="rowNumber"/>
+            <Arithmetic id="78" name="minus" type="Integer">
+              <Variable ref="23" name="rowCount"/>
+              <Constant ref="14" name="one"/>
+            </Arithmetic>
+          </Comparison>
+        </Proposition>
+      </Condition>
+      <Effect id="79">
+        <Assignment id="80" name="equals" type="Void">
+          <Variable ref="22" name="rowIndex"/>
+          <Arithmetic id="81" name="plus" type="Integer">
+            <Input ref="62" name="rowNumber"/>
+            <Constant ref="14" name="one"/>
+          </Arithmetic>
+        </Assignment>
+      </Effect>
+    </Scenario>
+    <Scenario id="82" name="select/high">
+      <Binding id="83">
+        <Assignment id="84" name="equals" type="Void">
+          <Input ref="62" name="rowNumber"/>
+          <Arithmetic id="85" name="minus" type="Integer">
+            <Variable ref="23" name="rowCount"/>
+            <Constant ref="14" name="one"/>
+          </Arithmetic>
+        </Assignment>
+      </Binding>
+      <Condition id="86">
+        <Proposition id="87" name="and" type="Boolean">
+          <Comparison id="88" name="moreThan" type="Boolean">
+            <Input ref="62" name="rowNumber"/>
+            <Constant ref="12" name="minusOne"/>
+          </Comparison>
+          <Comparison id="89" name="equals" type="Boolean">
+            <Input ref="62" name="rowNumber"/>
+            <Arithmetic id="90" name="minus" type="Integer">
+              <Variable ref="23" name="rowCount"/>
+              <Constant ref="14" name="one"/>
+            </Arithmetic>
+          </Comparison>
+        </Proposition>
+      </Condition>
+      <Effect id="91">
+        <Assignment id="92" name="equals" type="Void">
+          <Variable ref="22" name="rowIndex"/>
+          <Arithmetic id="93" name="plus" type="Integer">
+            <Input ref="62" name="rowNumber"/>
+            <Constant ref="14" name="one"/>
+          </Arithmetic>
+        </Assignment>
+      </Effect>
+    </Scenario>
+  </Operation>
+  <Operation id="94" name="choose">
+    <Notice id="95" text="Completeness check for operation: choose">
+      <Notice id="96" text="Operation partitions its input space:">
+        <Analysis id="97" text="input 1 = and(equals(fromDay, twelfth), lessThan(fromDay, seventeenth))"/>
+        <Analysis id="98" text="input 2 = and(lessThan(fromDay, twelfth), lessThan(fromDay, seventeenth))"/>
+        <Analysis id="99" text="input 3 = and(moreThan(fromDay, twelfth), lessThan(fromDay, seventeenth))"/>
+        <Analysis id="100" text="input 4 = and(moreThan(fromDay, twelfth), equals(fromDay, seventeenth))"/>
+        <Analysis id="101" text="input 5 = and(moreThan(fromDay, twelfth), moreThan(fromDay, seventeenth))"/>
+      </Notice>
+      <Analysis id="102" text="Scenario choose/one accepts input 1"/>
+      <Analysis id="103" text="Scenario choose/one accepts input 2"/>
+      <Analysis id="104" text="Scenario choose/four accepts input 3"/>
+      <Analysis id="105" text="Scenario choose/seven accepts input 4"/>
+      <Analysis id="106" text="Scenario choose/seven accepts input 5"/>
+    </Notice>
+    <Input id="107" name="fromDay" type="Integer"/>
+    <Input id="108" name="untilDay" type="Integer"/>
+    <Scenario id="109" name="choose/one">
+      <Binding id="110">
+        <Assignment id="111" name="equals" type="Void">
+          <Input ref="107" name="fromDay"/>
+          <Constant ref="17" name="twelfth"/>
+        </Assignment>
+        <Assignment id="112" name="equals" type="Void">
+          <Input ref="108" name="untilDay"/>
+          <Constant ref="17" name="twelfth"/>
+        </Assignment>
+      </Binding>
+      <Condition id="113">
+        <Comparison id="114" name="notMoreThan" type="Boolean">
+          <Input ref="107" name="fromDay"/>
+          <Constant ref="17" name="twelfth"/>
+        </Comparison>
+      </Condition>
+      <Effect id="115">
+        <Assignment id="116" name="equals" type="Void">
+          <Variable ref="25" name="firstDay"/>
+          <Input ref="107" name="fromDay"/>
+        </Assignment>
+        <Assignment id="117" name="equals" type="Void">
+          <Variable ref="26" name="lastDay"/>
+          <Input ref="108" name="untilDay"/>
+        </Assignment>
+        <Assignment id="118" name="equals" type="Void">
+          <Variable ref="27" name="bookedDays"/>
+          <Constant ref="14" name="one"/>
+        </Assignment>
+      </Effect>
+    </Scenario>
+    <Scenario id="119" name="choose/four">
+      <Binding id="120">
+        <Assignment id="121" name="equals" type="Void">
+          <Input ref="107" name="fromDay"/>
+          <Constant ref="18" name="thirteenth"/>
+        </Assignment>
+        <Assignment id="122" name="equals" type="Void">
+          <Input ref="108" name="untilDay"/>
+          <Constant ref="19" name="sixteenth"/>
+        </Assignment>
+      </Binding>
+      <Condition id="123">
+        <Proposition id="124" name="and" type="Boolean">
+          <Comparison id="125" name="moreThan" type="Boolean">
+            <Input ref="107" name="fromDay"/>
+            <Constant ref="17" name="twelfth"/>
+          </Comparison>
+          <Comparison id="126" name="lessThan" type="Boolean">
+            <Input ref="107" name="fromDay"/>
+            <Constant ref="20" name="seventeenth"/>
+          </Comparison>
+        </Proposition>
+      </Condition>
+      <Effect id="127">
+        <Assignment id="128" name="equals" type="Void">
+          <Variable ref="25" name="firstDay"/>
+          <Input ref="107" name="fromDay"/>
+        </Assignment>
+        <Assignment id="129" name="equals" type="Void">
+          <Variable ref="26" name="lastDay"/>
+          <Input ref="108" name="untilDay"/>
+        </Assignment>
+        <Assignment id="130" name="equals" type="Void">
+          <Variable ref="27" name="bookedDays"/>
+          <Arithmetic id="131" name="plus" type="Integer">
+            <Arithmetic id="132" name="minus" type="Integer">
+              <Input ref="108" name="untilDay"/>
+              <Input ref="107" name="fromDay"/>
+            </Arithmetic>
+            <Constant ref="14" name="one"/>
+          </Arithmetic>
+        </Assignment>
+      </Effect>
+    </Scenario>
+    <Scenario id="133" name="choose/seven">
+      <Binding id="134">
+        <Assignment id="135" name="equals" type="Void">
+          <Input ref="107" name="fromDay"/>
+          <Constant ref="20" name="seventeenth"/>
+        </Assignment>
+        <Assignment id="136" name="equals" type="Void">
+          <Input ref="108" name="untilDay"/>
+          <Constant ref="21" name="twentythird"/>
+        </Assignment>
+      </Binding>
+      <Condition id="137">
+        <Comparison id="138" name="notLessThan" type="Boolean">
+          <Input ref="107" name="fromDay"/>
+          <Constant ref="20" name="seventeenth"/>
+        </Comparison>
+      </Condition>
+      <Effect id="139">
+        <Assignment id="140" name="equals" type="Void">
+          <Variable ref="25" name="firstDay"/>
+          <Input ref="107" name="fromDay"/>
+        </Assignment>
+        <Assignment id="141" name="equals" type="Void">
+          <Variable ref="26" name="lastDay"/>
+          <Input ref="108" name="untilDay"/>
+        </Assignment>
+        <Assignment id="142" name="equals" type="Void">
+          <Variable ref="27" name="bookedDays"/>
+          <Arithmetic id="143" name="plus" type="Integer">
+            <Arithmetic id="144" name="minus" type="Integer">
+              <Input ref="108" name="untilDay"/>
+              <Input ref="107" name="fromDay"/>
+            </Arithmetic>
+            <Constant ref="14" name="one"/>
+          </Arithmetic>
+        </Assignment>
+      </Effect>
+    </Scenario>
+  </Operation>
+  <Operation id="145" name="save">
+    <Notice id="146" text="Completeness check for operation: save">
+      <Notice id="147" text="Operation partitions its input space:">
+        <Analysis id="148" text="input 1 = and(moreThan(bookedDays, zero), excludes(firstDays, firstDay), equals(bookedDays, minus(maxHolidays, totalHolidays)))"/>
+        <Analysis id="149" text="input 2 = and(moreThan(bookedDays, zero), excludes(firstDays, firstDay), lessThan(bookedDays, minus(maxHolidays, totalHolidays)))"/>
+        <Analysis id="150" text="input 3 = and(moreThan(bookedDays, zero), excludes(firstDays, firstDay), moreThan(bookedDays, minus(maxHolidays, totalHolidays)))"/>
+        <Analysis id="151" text="input 4 = and(equals(bookedDays, zero), excludes(firstDays, firstDay), lessThan(bookedDays, minus(maxHolidays, totalHolidays)))"/>
+        <Analysis id="152" text="input 5 = and(lessThan(bookedDays, zero), excludes(firstDays, firstDay), lessThan(bookedDays, minus(maxHolidays, totalHolidays)))"/>
+      </Notice>
+      <Analysis id="153" text="Scenario save/ok accepts input 1"/>
+      <Analysis id="154" text="Scenario save/ok accepts input 2"/>
+      <Analysis id="155" text="Scenario save/overflow accepts input 3"/>
+      <Analysis id="156" text="Scenario save/fail accepts input 4"/>
+      <Analysis id="157" text="Scenario save/fail accepts input 5"/>
+    </Notice>
+    <Output id="158" name="oFirstDay" type="Integer"/>
+    <Output id="159" name="oLastDay" type="Integer"/>
+    <Scenario id="160" name="save/ok">
+      <Binding id="161">
+        <Assignment id="162" name="equals" type="Void">
+          <Output ref="158" name="oFirstDay"/>
+          <Variable ref="25" name="firstDay"/>
+        </Assignment>
+        <Assignment id="163" name="equals" type="Void">
+          <Output ref="159" name="oLastDay"/>
+          <Variable ref="26" name="lastDay"/>
+        </Assignment>
+      </Binding>
+      <Condition id="164">
+        <Proposition id="165" name="and" type="Boolean">
+          <Comparison id="166" name="moreThan" type="Boolean">
+            <Variable ref="27" name="bookedDays"/>
+            <Constant ref="13" name="zero"/>
+          </Comparison>
+          <Membership id="167" name="excludes" type="Boolean">
+            <Variable ref="28" name="firstDays"/>
+            <Variable ref="25" name="firstDay"/>
+          </Membership>
+          <Comparison id="168" name="notMoreThan" type="Boolean">
+            <Variable ref="27" name="bookedDays"/>
+            <Arithmetic id="169" name="minus" type="Integer">
+              <Constant ref="16" name="maxHolidays"/>
+              <Variable ref="24" name="totalHolidays"/>
+            </Arithmetic>
+          </Comparison>
+        </Proposition>
+      </Condition>
+      <Effect id="170">
+        <Assignment id="171" name="equals" type="Void">
+          <Variable ref="24" name="totalHolidays"/>
+          <Arithmetic id="172" name="plus" type="Integer">
+            <Variable ref="27" name="bookedDays"/>
+            <Variable ref="24" name="totalHolidays"/>
+          </Arithmetic>
+        </Assignment>
+        <Assignment id="173" name="moreThan" type="Void">
+          <Variable ref="23" name="rowCount"/>
+          <Variable ref="23" name="rowCount"/>
+        </Assignment>
+        <Assignment id="174" name="equals" type="Void">
+          <Variable ref="28" name="firstDays"/>
+          <Manipulation id="175" name="insert" type="List[Integer]">
+            <Variable ref="28" name="firstDays"/>
+            <Variable ref="25" name="firstDay"/>
+          </Manipulation>
+        </Assignment>
+        <Assignment id="176" name="equals" type="Void">
+          <Variable ref="29" name="lastDays"/>
+          <Manipulation id="177" name="insert" type="List[Integer]">
+            <Variable ref="29" name="lastDays"/>
+            <Variable ref="26" name="lastDay"/>
+          </Manipulation>
+        </Assignment>
+      </Effect>
+    </Scenario>
+    <Scenario id="178" name="save/overflow">
+      <Binding id="179">
+        <Assignment id="180" name="equals" type="Void">
+          <Output ref="158" name="oFirstDay"/>
+          <Constant ref="13" name="zero"/>
+        </Assignment>
+        <Assignment id="181" name="equals" type="Void">
+          <Output ref="159" name="oLastDay"/>
+          <Constant ref="13" name="zero"/>
+        </Assignment>
+      </Binding>
+      <Condition id="182">
+        <Proposition id="183" name="and" type="Boolean">
+          <Comparison id="184" name="moreThan" type="Boolean">
+            <Variable ref="27" name="bookedDays"/>
+            <Constant ref="13" name="zero"/>
+          </Comparison>
+          <Membership id="185" name="excludes" type="Boolean">
+            <Variable ref="28" name="firstDays"/>
+            <Variable ref="25" name="firstDay"/>
+          </Membership>
+          <Comparison id="186" name="moreThan" type="Boolean">
+            <Variable ref="27" name="bookedDays"/>
+            <Arithmetic id="187" name="minus" type="Integer">
+              <Constant ref="16" name="maxHolidays"/>
+              <Variable ref="24" name="totalHolidays"/>
+            </Arithmetic>
+          </Comparison>
+        </Proposition>
+      </Condition>
+    </Scenario>
+    <Scenario id="188" name="save/duplicate">
+      <Binding id="189">
+        <Assignment id="190" name="equals" type="Void">
+          <Output ref="158" name="oFirstDay"/>
+          <Constant ref="13" name="zero"/>
+        </Assignment>
+        <Assignment id="191" name="equals" type="Void">
+          <Output ref="159" name="oLastDay"/>
+          <Constant ref="13" name="zero"/>
+        </Assignment>
+      </Binding>
+      <Condition id="192">
+        <Proposition id="193" name="and" type="Boolean">
+          <Comparison id="194" name="moreThan" type="Boolean">
+            <Variable ref="27" name="bookedDays"/>
+            <Constant ref="13" name="zero"/>
+          </Comparison>
+          <Membership id="195" name="includes" type="Boolean">
+            <Variable ref="28" name="firstDays"/>
+            <Variable ref="25" name="firstDay"/>
+          </Membership>
+        </Proposition>
+      </Condition>
+    </Scenario>
+    <Scenario id="196" name="save/fail">
+      <Binding id="197">
+        <Assignment id="198" name="equals" type="Void">
+          <Output ref="158" name="oFirstDay"/>
+          <Constant ref="13" name="zero"/>
+        </Assignment>
+        <Assignment id="199" name="equals" type="Void">
+          <Output ref="159" name="oLastDay"/>
+          <Constant ref="13" name="zero"/>
+        </Assignment>
+      </Binding>
+      <Condition id="200">
+        <Comparison id="201" name="notMoreThan" type="Boolean">
+          <Variable ref="27" name="bookedDays"/>
+          <Constant ref="13" name="zero"/>
+        </Comparison>
+      </Condition>
+    </Scenario>
+  </Operation>
+  <Operation id="202" name="delete">
+    <Notice id="203" text="Completeness check for operation: delete">
+      <Notice id="204" text="Operation accepts universal input"/>
+      <Analysis id="205" text="Scenario delete/ok accepts universal input"/>
+    </Notice>
+    <Output id="206" name="oFirstDay" type="Integer"/>
+    <Output id="207" name="oLastDay" type="Integer"/>
+    <Scenario id="208" name="delete/ok">
+      <Binding id="209">
+        <Assignment id="210" name="equals" type="Void">
+          <Output ref="206" name="oFirstDay"/>
+          <Variable ref="25" name="firstDay"/>
+        </Assignment>
+        <Assignment id="211" name="equals" type="Void">
+          <Output ref="207" name="oLastDay"/>
+          <Variable ref="26" name="lastDay"/>
+        </Assignment>
+      </Binding>
+      <Effect id="212">
+        <Assignment id="213" name="equals" type="Void">
+          <Variable ref="25" name="firstDay"/>
+          <Manipulation id="214" name="searchAt" type="Integer">
+            <Variable ref="28" name="firstDays"/>
+            <Variable ref="22" name="rowIndex"/>
+          </Manipulation>
+        </Assignment>
+        <Assignment id="215" name="equals" type="Void">
+          <Variable ref="26" name="lastDay"/>
+          <Manipulation id="216" name="searchAt" type="Integer">
+            <Variable ref="29" name="lastDays"/>
+            <Variable ref="22" name="rowIndex"/>
+          </Manipulation>
+        </Assignment>
+        <Assignment id="217" name="equals" type="Void">
+          <Variable ref="27" name="bookedDays"/>
+          <Arithmetic id="218" name="plus" type="Integer">
+            <Arithmetic id="219" name="minus" type="Integer">
+              <Variable ref="26" name="lastDay"/>
+              <Variable ref="25" name="firstDay"/>
+            </Arithmetic>
+            <Constant ref="14" name="one"/>
+          </Arithmetic>
+        </Assignment>
+        <Assignment id="220" name="equals" type="Void">
+          <Variable ref="24" name="totalHolidays"/>
+          <Arithmetic id="221" name="minus" type="Integer">
+            <Variable ref="24" name="totalHolidays"/>
+            <Variable ref="27" name="bookedDays"/>
+          </Arithmetic>
+        </Assignment>
+        <Assignment id="222" name="equals" type="Void">
+          <Variable ref="28" name="firstDays"/>
+          <Manipulation id="223" name="removeAt" type="List[Integer]">
+            <Variable ref="28" name="firstDays"/>
+            <Variable ref="22" name="rowIndex"/>
+          </Manipulation>
+        </Assignment>
+        <Assignment id="224" name="equals" type="Void">
+          <Variable ref="29" name="lastDays"/>
+          <Manipulation id="225" name="removeAt" type="List[Integer]">
+            <Variable ref="29" name="lastDays"/>
+            <Variable ref="22" name="rowIndex"/>
+          </Manipulation>
+        </Assignment>
+        <Assignment id="226" name="lessThan" type="Void">
+          <Variable ref="23" name="rowCount"/>
+          <Variable ref="23" name="rowCount"/>
+        </Assignment>
+      </Effect>
+    </Scenario>
+  </Operation>
+</Protocol>

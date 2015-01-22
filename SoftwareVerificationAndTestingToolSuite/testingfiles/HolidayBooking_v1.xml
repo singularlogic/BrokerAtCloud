@@ -1,0 +1,479 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Service name="HolidayBookingService">
+    <!-- The SAP OpenUI5 leave requesting service -->
+    
+	<Protocol name="HolidayBookingProtocol">
+	
+		<Memory name="HolidayBookingMemory">
+		      <!-- arithmetical constants -->
+		  <Constant name="zero" type="Integer">0</Constant>
+		  <Constant name="one" type="Integer">1</Constant>
+		  
+		      <!-- empty list constant -->
+		  <Constant name="emptyList" type="List[Integer]"/>
+		  
+		      <!-- maximum number of days holiday allowed -->
+		  <Constant name="maxHolidays" type="Integer">5</Constant>
+		  
+		      <!-- some predefined dates to choose -->
+		  <Constant name="twelfth" type="Integer">12</Constant>
+		  <Constant name="thirteenth" type="Integer">13</Constant>
+		  <Constant name="fourteenth" type="Integer">14</Constant>
+		  <Constant name="fifteenth" type="Integer">15</Constant>
+		  <Constant name="eighteenth" type="Integer">18</Constant>
+		  
+		      <!-- the selected row index in the list view -->
+		  <Variable name="rowIndex" type="Integer"/>
+		      <!-- the size of the list in the list view -->
+		  <Variable name="rowCount" type="Integer"/>
+		  
+		      <!-- the total number of days holiday booked -->
+		  <Variable name="totalHolidays" type="Integer"/>
+		  
+		      <!-- the temporary selections in the edit view -->
+		  <Variable name="firstDay" type="Integer"/>
+		  <Variable name="lastDay" type="Integer"/>
+		  <Variable name="bookedDays" type="Integer"/>
+		  
+		      <!-- the list of booked days as parallel lists -->
+		  <Variable name="firstDays" type="List[Integer]"/>
+		  <Variable name="lastDays" type="List[Integer]"/>
+		  
+		  <Binding>
+		      <Assignment name="equals">
+		          <Variable name="rowIndex"/>
+		          <Constant name="zero"/>
+		      </Assignment>
+		      <Assignment name="equals">
+		          <Variable name="rowCount"/>
+		          <Constant name="zero"/>
+		      </Assignment>
+		      <Assignment name="equals">
+		          <Variable name="firstDay"/>
+		          <Constant name="zero"/>
+		      </Assignment>
+		      <Assignment name="equals">
+		          <Variable name="lastDay"/>
+		          <Constant name="zero"/>
+		      </Assignment>
+		      <Assignment name="equals">
+		          <Variable name="totalHolidays"/>
+		          <Constant name="zero"/>
+		      </Assignment>
+		      <Assignment name="equals">
+		          <Variable name="bookedDays"/>
+		          <Constant name="zero"/>
+		      </Assignment>
+		      <Assignment name="equals">
+		          <Variable name="firstDays"/>
+		          <Constant name="emptyList"/>
+		      </Assignment>
+		      <Assignment name="equals">
+		          <Variable name="lastDays"/>
+		          <Constant name="emptyList"/>
+		      </Assignment>
+		  </Binding>
+		</Memory>
+		
+		<Operation name="bookDays">
+		    <!-- go to edit screen; always succeeds, clears chosen dates -->
+		    <Scenario name="bookDays/ok">
+		        <Effect>
+		            <Assignment name="equals">
+		                <Variable name="firstDay"/>
+		                <Constant name="zero"/>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="lastDay"/>
+		                <Constant name="zero"/>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="bookedDays"/>
+		                <Constant name="zero"/>
+		            </Assignment>
+		        </Effect>
+		    </Scenario>
+		</Operation>
+		
+		<Operation name="back">
+		    <!-- return to view screen; always succeeds -->
+		    <Scenario name="back/ok"/>
+		</Operation>
+		
+		<Operation name="select">
+		    <!-- select one booked holiday period from the list -->
+		    <Input name="rowNumber" type="Integer"/>
+		    
+		    <Scenario name="select/fail">
+		        <!-- select an out-of-range row number -->
+                <Binding>
+                    <Assignment name="equals">
+                        <Input name="rowNumber"/>
+                        <Constant name="zero"/>
+                    </Assignment>
+                </Binding>
+                <Condition>
+                    <Proposition name="or">
+                        <Comparison name="notMoreThan">
+                            <Input name="rowNumber"/>
+                            <Constant name="zero"/>
+                        </Comparison>
+                        <Comparison name="moreThan">
+                            <Input name="rowNumber"/>
+                            <Variable name="rowCount"/>
+                        </Comparison>
+                    </Proposition>
+                </Condition>
+		    </Scenario>
+		    
+		    <Scenario name="select/low">
+		        <!-- select a valid low row number -->
+                <Binding>
+                    <Assignment name="moreThan">
+                        <Input name="rowNumber"/>
+                        <Constant name="zero"/>
+                    </Assignment>
+                </Binding>
+                <Condition>
+                    <Proposition name="and">
+                        <Comparison name="moreThan">
+                            <Input name="rowNumber"/>
+                            <Constant name="zero"/>
+                        </Comparison>
+                        <Comparison name="lessThan">
+                            <Input name="rowNumber"/>
+                            <Variable name="rowCount"/>
+                        </Comparison>
+                    </Proposition>
+                </Condition>
+                <Effect>
+                    <Assignment name="equals">
+                        <Variable name="rowIndex"/>
+                        <Input name="rowNumber"/>
+                    </Assignment>
+                </Effect>
+		    </Scenario>
+		    
+		    <Scenario name="select/high">
+		        <!-- select a valid high row number -->
+		        <Binding>
+                    <Assignment name="equals">
+                        <Input name="rowNumber"/>
+                        <Variable name="rowCount"/>
+                    </Assignment>
+                </Binding>
+                <Condition>
+                    <Proposition name="and">
+                        <Comparison name="moreThan">
+                            <Input name="rowNumber"/>
+                            <Constant name="zero"/>
+                        </Comparison>
+                        <Comparison name="equals">
+                            <Input name="rowNumber"/>
+                            <Variable name="rowCount"/>
+                        </Comparison>
+                    </Proposition>
+                </Condition>
+                <Effect>
+                    <Assignment name="equals">
+                        <Variable name="rowIndex"/>
+                        <Input name="rowNumber"/>
+                    </Assignment>
+                </Effect>    
+		    </Scenario>
+		</Operation>
+		
+		<Operation name="choose">
+		    <!-- choose a block of holiday to take -->
+		    <Input name="fromDay" type="Integer"/>
+		    <Input name="untilDay" type="Integer"/>
+		    
+		    <Scenario name="choose/one">
+		        <!-- choose a single day -->
+		        <Binding>
+		            <!-- pick the 12th as the sample one-day booking -->
+		            <Assignment name="equals">
+		                <Input name="fromDay"/>
+		                <Constant name="twelfth"/>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Input name="untilDay"/>
+		                <Constant name="twelfth"/>
+		            </Assignment>
+		        </Binding>
+		        <Condition>
+		            <!-- say, anything up to and including the 12th -->
+		            <Comparison name="notMoreThan">
+		                <Input name="fromDay"/>
+		                <Constant name="twelfth"/>
+		            </Comparison>
+		        </Condition>
+		        <Effect>
+		            <Assignment name="equals">
+		                <Variable name="firstDay"/>
+		                <Input name="fromDay"/>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="lastDay"/>
+		                <Input name="untilDay"/>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="bookedDays"/>
+		                <Constant name="one"/>
+		            </Assignment>
+		        </Effect>
+		    </Scenario>
+		    
+		    <Scenario name="choose/two">
+		        <!-- choose a pair of days -->
+		        <Binding>
+		            <!-- pick the 13-14th as the sample two-day booking -->
+		            <Assignment name="equals">
+		                <Input name="fromDay"/>
+		                <Constant name="thirteenth"/>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Input name="untilDay"/>
+		                <Constant name="fourteenth"/>
+		            </Assignment>
+		        </Binding>
+		        <Condition>
+		            <!-- say, anything over the 12th and less than 15th -->
+		            <Proposition name="and">
+		                <Comparison name="moreThan">
+		                    <Input name="fromDay"/>
+		                    <Constant name="twelfth"/>
+		                </Comparison>
+		                <Comparison name="lessThan">
+		                    <Input name="fromDay"/>
+		                    <Constant name="fifteenth"/>
+		                </Comparison>
+		            </Proposition>
+		        </Condition>
+		        <Effect>
+		            <Assignment name="equals">
+		                <Variable name="firstDay"/>
+		                <Input name="fromDay"/>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="lastDay"/>
+		                <Input name="untilDay"/>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="bookedDays"/>
+		                <Arithmetic name="plus">
+		                    <Arithmetic name="minus" type="Integer">
+		                        <Input name="untilDay"/>
+		                        <Input name="fromDay"/>
+		                    </Arithmetic>
+		                    <Constant name="one"/>
+		                </Arithmetic>
+		            </Assignment>
+		        </Effect>
+		    </Scenario>
+		    
+		    <Scenario name="choose/four">
+		        <!-- choose a block of four days -->
+		        <Binding>
+		            <!-- pick the 15-18th as the sample four-day booking -->
+		            <Assignment name="equals">
+		                <Input name="fromDay"/>
+		                <Constant name="fifteenth"/>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Input name="untilDay"/>
+		                <Constant name="eighteenth"/>
+		            </Assignment>
+		        </Binding>
+		        <Condition>
+		            <!-- say, anything including and more than the 15th -->
+		            <Comparison name="notLessThan">
+		                <Input name="fromDay"/>
+		                <Constant name="fifteenth"/>
+		            </Comparison>
+		        </Condition>
+		        <Effect>
+		            <Assignment name="equals">
+		                <Variable name="firstDay"/>
+		                <Input name="fromDay"/>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="lastDay"/>
+		                <Input name="untilDay"/>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="bookedDays"/>
+		                <Arithmetic name="plus">
+		                    <Arithmetic name="minus" type="Integer">
+		                        <Input name="untilDay"/>
+		                        <Input name="fromDay"/>
+		                    </Arithmetic>
+		                    <Constant name="one"/>
+		                </Arithmetic>
+		            </Assignment>
+		        </Effect>
+		    </Scenario>
+		</Operation>
+		
+		<Operation name="save">
+		    <!-- Save the currently chosen block of days -->
+		    
+		    <Scenario name="save/ok">
+		        <!-- the chosen block was added to booked total -->
+		        
+		        <Condition>
+		            <Proposition name="and">
+		                <Comparison name="moreThan">
+		                    <Variable name="bookedDays"/>
+		                    <Constant name="zero"/>
+		                </Comparison>
+		                <Comparison name="notMoreThan" type="Boolean">
+		                    <Arithmetic name="plus" type="Integer">
+		                        <Variable name="bookedDays"/>
+						    	<Variable name="totalHolidays"/>
+					        </Arithmetic>
+					        <Constant name="maxHolidays"/>
+		                </Comparison>
+		            </Proposition>
+		        </Condition>
+		        <Effect>
+		            <Assignment name="equals">
+		                <Variable name="totalHolidays"/>
+		                <Arithmetic name="plus" type="Integer">
+		                    <Variable name="bookedDays"/>
+							<Variable name="totalHolidays"/>
+					    </Arithmetic>		                
+		            </Assignment>
+		            <Assignment name="moreThan">
+		                <Variable name="rowCount"/>
+		                <Variable name="rowCount"/>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="firstDays"/>
+		                <Manipulation name="insert" type="List[Integer]">
+		                    <Variable name="firstDays"/>
+		                    <Variable name="firstDay"/>
+		                </Manipulation>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="lastDays"/>
+		                <Manipulation name="insert" type="List[Integer]">
+		                    <Variable name="lastDays"/>
+		                    <Variable name="lastDay"/>
+		                </Manipulation>
+		            </Assignment>		            
+		        </Effect>
+		    </Scenario>
+		    
+		    <Scenario name="save/block">
+		        <!-- the chosen block exceeded the allowed total -->
+		        <Condition>
+		            <Proposition name="and">
+		                <Comparison name="moreThan">
+		                    <Variable name="bookedDays"/>
+		                    <Constant name="zero"/>
+		                </Comparison>
+		                <Comparison name="moreThan" type="Boolean">
+		                    <Arithmetic name="plus" type="Integer">
+		                        <Variable name="bookedDays"/>
+							    <Variable name="totalHolidays"/>
+					        </Arithmetic>
+					        <Constant name="maxHolidays"/>
+		                </Comparison>		            
+		            </Proposition>
+		        </Condition>
+		    </Scenario>
+		    
+		    <Scenario name="save/fail">
+		        <!-- no block of days was selected -->
+		        <Condition>
+		           <Comparison name="notMoreThan">
+		               <Variable name="bookedDays"/>
+		               <Constant name="zero"/>
+		           </Comparison>
+		        </Condition>
+		    </Scenario>
+		    
+		</Operation>
+
+		<Operation name="delete">
+		    <!-- return to view screen; always succeeds; deletes an entry -->
+		    <Scenario name="delete/ok">
+		        <Effect>
+		            <Assignment name="equals">
+		                <Variable name="firstDay"/>
+		                <Manipulation name="searchAt" type="Integer">
+		                    <Variable name="firstDays"/>
+		                    <Variable name="rowIndex"/>
+		                </Manipulation>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="lastDay"/>
+		                <Manipulation name="searchAt" type="Integer">
+		                    <Variable name="lastDays"/>
+		                    <Variable name="rowIndex"/>
+		                </Manipulation>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="bookedDays"/>
+		                <Arithmetic name="plus">
+		                    <Arithmetic name="minus" type="Integer">
+		                        <Variable name="lastDay"/>
+		                        <Variable name="firstDay"/>
+		                    </Arithmetic>
+		                    <Constant name="one"/>
+		                </Arithmetic>
+		            </Assignment>		 
+		            <Assignment name="equals">
+		                <Variable name="totalHolidays"/>
+		                <Arithmetic name="minus" type="Integer">
+							<Variable name="totalHolidays"/>
+		                    <Variable name="bookedDays"/>
+					    </Arithmetic>		                
+		            </Assignment>		                       
+		            <Assignment name="equals">
+		                <Variable name="firstDays"/>
+		                <Manipulation name="removeAt" type="List[Integer]">
+		                    <Variable name="firstDays"/>
+		                    <Variable name="rowIndex"/>
+		                </Manipulation>
+		            </Assignment>
+		            <Assignment name="equals">
+		                <Variable name="lastDays"/>
+		                <Manipulation name="removeAt" type="List[Integer]">
+		                    <Variable name="lastDays"/>
+		                    <Variable name="rowIndex"/>
+		                </Manipulation>
+		            </Assignment>
+		            <Assignment name="lessThan">
+		                <Variable name="rowCount"/>
+		                <Variable name="rowCount"/>
+		            </Assignment>
+		        </Effect>
+		    </Scenario>
+		</Operation>
+	</Protocol>
+	
+	<Machine name="HolidayBookingMachine">
+        <State name="ViewDays" initial="true">
+            <Transition name="bookDays/ok" source="ViewDays" target="BookDays"/>
+            <Transition name="select/fail" source="ViewDays" target="ViewDays"/>
+            <Transition name="select/low" source="ViewDays" target="DeleteDays"/>
+            <Transition name="select/high" source="ViewDays" target="DeleteDays"/>
+        </State>
+        <State name="BookDays">
+            <Transition name="back/ok" source="BookDays" target="ViewDays"/>
+            <Transition name="choose/one" source="BookDays" target="BookDays"/>
+            <Transition name="choose/two" source="BookDays" target="BookDays"/>
+            <Transition name="choose/four" source="BookDays" target="BookDays"/>
+            <Transition name="save/ok" source="BookDays" target="ViewDays"/>
+            <Transition name="save/block" source="BookDays" target="BookDays"/>
+            <Transition name="save/fail" source="BookDays" target="BookDays"/>
+        </State>
+        <State name="DeleteDays">
+            <Transition name="back/ok" source="DeleteDays" target="ViewDays"/>
+            <Transition name="delete/ok" source="DeleteDays" target="ViewDays"/>
+            <Transition name="choose/one" source="DeleteDays" target="BookDays"/>
+        </State>
+	</Machine>
+</Service>

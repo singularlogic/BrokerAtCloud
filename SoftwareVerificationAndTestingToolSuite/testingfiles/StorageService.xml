@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Service name="StorageService">
+  <!-- Example high volume storage service with file versioning -->
+  
+  <Protocol name="StorageService">
+    
+    <Memory name="StorageService">
+      <!-- zero, one constants -->
+      <Constant name="zero" type="Integer">0</Constant>
+      <Constant name="one" type="Integer">1</Constant>
+      
+      <!-- known and unknown users -->
+      <Constant name="knownUser" type="String">Jane Good</Constant>
+      <Constant name="knownPassword" type="String">serendipity</Constant>
+      <Constant name="badUser" type="String">Jim Hacker</Constant>
+      <Constant name="badPassword" type="String">backdoor</Constant>
+
+      <!-- SLA related information -->
+      <Constant name="storageLimit" type="Integer">100</Constant>
+      <Constant name="encryption" type="Integer">192</Constant>
+      
+      <!-- example document sizes -->
+      <Constant name="smallDoc" type="Integer">20</Constant>
+      <Constant name="largeDoc" type="Integer">100</Constant>
+      
+      <!-- Initial values for list, map -->
+      <Constant name="emptyVersions" type="List[Integer]"/>
+      <Constant name="emptyRepository" type="Map[Integer, List[Integer]]"/>
+      <!-- memory variables -->
+      <Variable name="storageUsed" type="Integer"/>
+      <Variable name="docCounter" type="Integer"/>
+      <Variable name="docVersions" type="List[Integer]"/>
+      <Variable name="docRepository" type="Map[Integer, List[Integer]]"/>
+      
+      <Binding>
+        <!-- set up the initial memory state -->
+        <Assignment name="equals">
+          <Variable name="storageUsed"/>
+          <Constant name="zero"/>
+        </Assignment>
+        <Assignment name="equals">
+          <Variable name="docCounter"/>
+          <Constant name="zero"/>
+        </Assignment>
+        <Assignment name="equals">
+          <Variable name="docVersions"/>
+          <Constant name="emptyVersions"/>
+        </Assignment>
+        <Assignment name="equals">
+          <Variable name="docRepository"/>
+          <Constant name="emptyRepository"/>
+        </Assignment>
+      </Binding>
+    </Memory>
+         
+    <Operation name="login">
+      <!-- reports SLA on success -->
+      <Input name="userName" type="String"/>
+      <Input name="password" type="String"/>
+      <Output name="terabyte" type="Integer"/>
+      <Output name="encrypt" type="Integer"/>
+        
+      <Scenario name="login/ok">
+        <!-- the successful or happy path -->
+        <Binding>
+          <!-- suggest inputs to trigger this path -->
+          <Assignment name="equals">
+            <Input name="userName"/>
+            <Constant name="knownUser"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="password"/>
+            <Constant name="knownPassword"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the condition guarding this path -->
+          <Proposition name="and">
+            <Comparison name="equals">
+              <Input name="userName"/>
+              <Constant name="knownUser"/>
+            </Comparison>
+            <Comparison name="equals">
+              <Input name="password"/>
+              <Constant name="knownPassword"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <!-- report SLA storage and encryption -->
+          <Assignment name="equals">
+            <Output name="terabyte"/>
+            <Constant name="storageLimit"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Output name="encrypt"/>
+            <Constant name="encryption"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="login/error">
+        <!-- the unsuccessful or unhappy path -->
+        <Binding>
+          <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="userName"/>
+            <Constant name="badUser"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="password"/>
+            <Constant name="badPassword"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the condition guarding this path -->
+          <Proposition name="or">
+            <Comparison name="notEquals">
+              <Input name="userName"/>
+              <Constant name="knownUser"/>
+            </Comparison>
+            <Comparison name="notEquals">
+              <Input name="password"/>
+              <Constant name="knownPassword"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <!-- no effect -->
+      </Scenario>
+    </Operation>
+      
+    <Operation name="logout">
+      <!-- logout requires no parameters -->
+      <Scenario name="logout/ok">
+        <!-- only one unconditional path -->
+      </Scenario>
+    </Operation>
+    
+    <Operation name="putDocument">
+      <!-- reports remaining storage and version on success -->
+      <Input name="docid" type="Integer"/>
+      <Input name="document" type="Integer"/>
+      <Output name="terabyte" type="Integer"/>
+      <Output name="version" type="Integer"/>
+      
+      <Scenario name="putDocument/new">
+        <!-- store a new document, docid is new -->
+        <Binding>
+          <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="docid"/>
+            <Arithmetic name="plus" type="Integer">
+              <Variable name="docCounter"/>
+              <Constant name="one"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="document"/>
+            <Constant name="smallDoc"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the condition guarding this path -->
+          <Proposition name="and">
+          
+            <!-- extra condition added after protocol check -->
+
+            <Comparison name="moreThan">
+              <Input name="docid"/>
+              <Constant name="zero"/>
+            </Comparison>
+           
+            <Comparison name="equals">
+              <Input name="docid"/>
+              <Arithmetic name="plus" type="Integer">
+                <Variable name="docCounter"/>
+                <Constant name="one"/>
+              </Arithmetic>
+            </Comparison>
+            <Comparison name="lessThan">
+              <Variable name="storageUsed"/>
+              <Arithmetic name="minus" type="Integer">
+                <Constant name="storageLimit"/>
+                <Input name="document"/>
+              </Arithmetic>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <!-- update the storage used -->
+          <Assignment name="equals">
+            <Variable name="storageUsed"/>
+            <Arithmetic name="plus" type="Integer">
+              <Variable name="storageUsed"/>
+              <Input name="document"/>
+            </Arithmetic>
+          </Assignment>
+          <!-- update the document counter -->
+          <Assignment name="equals">
+            <Variable name="docCounter"/>
+            <Input name="docid"/>
+          </Assignment>
+          <!-- create a singleton list for versions -->
+          <Assignment name="equals">
+            <Variable name="docVersions"/>
+            <Manipulation name="insert" type="List[Integer]">
+              <Constant name="emptyVersions"/>
+              <Input name="document"/>
+            </Manipulation>
+          </Assignment>
+          <!-- update the document repository -->
+          <Assignment name="equals">
+            <Variable name="docRepository"/>
+            <Manipulation name="replaceAt" type="Map[Integer, List[Integer]]">
+              <Variable name="docRepository"/>
+              <Input name="docid"/>
+              <Variable name="docVersions"/>
+            </Manipulation>
+          </Assignment>
+          <!-- report remaining storage and version number -->
+          <Assignment name="equals">
+            <Output name="terabyte"/>
+            <Arithmetic name="minus" type="Integer">
+              <Constant name="storageLimit"/>
+              <Variable name="storageUsed"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment name="equals">
+            <Output name="version"/>
+            <Manipulation name="size" type="Integer">
+              <Variable name="docVersions"/>
+            </Manipulation>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="putDocument/update">
+        <!-- store a new version, docid exists already -->
+        <Binding>
+          <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="docid"/>
+            <Variable name="docCounter"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="document"/>
+            <Constant name="smallDoc"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the condition guarding this path -->
+          <Proposition name="and">
+            <Comparison name="moreThan">
+              <Input name="docid"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="notMoreThan">
+              <Input name="docid"/>
+              <Variable name="docCounter"/>
+            </Comparison>
+            <Comparison name="lessThan">
+              <Variable name="storageUsed"/>
+              <Arithmetic name="minus" type="Integer">
+                <Constant name="storageLimit"/>
+                <Input name="document"/>
+              </Arithmetic>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <!-- update the storage used -->
+          <Assignment name="equals">
+            <Variable name="storageUsed"/>
+            <Arithmetic name="plus" type="Integer">
+              <Variable name="storageUsed"/>
+              <Input name="document"/>
+            </Arithmetic>
+          </Assignment>
+          <!-- add to the previous list of versions -->
+          <Assignment name="equals">
+            <Variable name="docVersions"/>
+            <Manipulation name="insert" type="List[Integer]">
+              <Manipulation name="searchAt" type="List[Integer]">
+                <Variable name="docRepository"/>
+                <Input name="docid"/>
+              </Manipulation>
+              <Input name="document"/>
+            </Manipulation>
+          </Assignment>
+          <!-- update the document repository -->
+          <Assignment name="equals">
+            <Variable name="docRepository"/>
+            <Manipulation name="replaceAt" type="Map[Integer, List[Integer]]">
+              <Variable name="docRepository"/>
+              <Input name="docid"/>
+              <Variable name="docVersions"/>
+            </Manipulation>
+          </Assignment>
+          <!-- report remaining storage and version number -->
+          <Assignment name="equals">
+            <Output name="terabyte"/>
+            <Arithmetic name="minus" type="Integer">
+              <Constant name="storageLimit"/>
+              <Variable name="storageUsed"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment name="equals">
+            <Output name="version"/>
+            <Manipulation name="size" type="Integer">
+              <Variable name="docVersions"/>
+            </Manipulation>
+          </Assignment>
+        </Effect>
+      </Scenario>
+
+      <Scenario name="putDocument/blocked">
+        <!-- cannot store, when storage limit reached -->
+        <Binding>
+          <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="docid"/>
+            <Variable name="docCounter"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="document"/>
+            <Constant name="largeDoc"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <Proposition name="and">
+            <Comparison name="moreThan">
+              <Input name="docid"/>
+              <Constant name="zero"/>
+            </Comparison>
+            
+            <Comparison name="notMoreThan">
+              <Variable name="docid"/>
+              
+              <!-- changed boundary expression after protocol check -->
+
+              <Arithmetic name="plus" type="Integer">
+                <Variable name="docCounter"/>
+                <Constant name="one"/>
+              </Arithmetic>
+              
+            </Comparison>
+            
+            <Comparison name="notLessThan">
+              <Variable name="storageUsed"/>
+              <Arithmetic name="minus" type="Integer">
+                <Constant name="storageLimit"/>
+                <Input name="document"/>
+              </Arithmetic>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <!-- report remaining storage available -->
+          <Assignment name="equals">
+            <Output name="terabyte"/>
+            <Arithmetic name="minus" type="Integer">
+              <Constant name="storageLimit"/>
+              <Variable name="storageUsed"/>
+            </Arithmetic>
+          </Assignment>
+        </Effect>
+      </Scenario>
+
+      <Scenario name="putDocument/error">
+        <!-- invalid document id, out of range -->
+        <Binding>
+          <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="docid"/>
+            <Constant name="zero"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="document"/>
+            <Constant name="largeDoc"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <Proposition name="or">
+            <Comparison name="notMoreThan">
+              <Input name="docid"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="moreThan">
+              <Variable name="docid"/>
+              <Arithmetic name="plus" type="Integer">
+                <Variable name="docCounter"/>
+                <Constant name="one"/>
+              </Arithmetic>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <!-- no effect -->
+      </Scenario>
+    </Operation>
+
+    <Operation name="getDocument">
+      <!-- returns the document and version on success -->
+      <Input name="docid" type="Integer"/>
+      <Output name="document" type="Integer"/>
+      <Output name="version" type="Integer"/>
+      
+      <Scenario name="getDocument/ok">
+        <!-- retrieve the latest version -->
+        <Binding>
+          <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="docid"/>
+            <Variable name="docCounter"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the condition guarding this path -->
+          <Proposition name="and">
+            <Comparison name="moreThan">
+              <Input name="docid"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="notMoreThan">
+              <Input name="docid"/>
+              <Variable name="docCounter"/>
+            </Comparison>
+            <Membership name="notEmpty">
+              <Manipulation name="searchAt" type="List[Integer]">
+                <Variable name="docRepository"/>
+                <Input name="docid"/>
+              </Manipulation> 
+            </Membership>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <!-- find the previous list of versions -->
+          <Assignment name="equals">
+            <Variable name="docVersions"/>
+            <Manipulation name="searchAt" type="List[Integer]">
+              <Variable name="docRepository"/>
+              <Input name="docid"/>
+            </Manipulation> 
+          </Assignment>
+          <!-- calculate the current version -->
+          <Assignment name="equals">
+            <Output name="version"/>
+            <Manipulation name="size" type="Integer">
+              <Variable name="docVersions"/>
+            </Manipulation>
+          </Assignment>
+          <!-- extract the latest version -->
+          <Assignment name="equals">
+            <Output name="document"/>
+            <Manipulation name="searchAt" type="Integer">
+              <Variable name="docVersions"/>
+              <Output name="version"/>
+            </Manipulation> 
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="getDocument/error">
+        <!-- supply a bad document identifier -->
+        <Binding>
+          <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="docid"/>
+            <Constant name="zero"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the condition guarding this path -->
+          <Proposition name="or">
+            <Comparison name="notMoreThan">
+              <Input name="docid"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="moreThan">
+              <Input name="docid"/>
+              <Variable name="docCounter"/>
+            </Comparison>
+            <Membership name="isEmpty">
+              <Manipulation name="searchAt" type="List[Integer]">
+                <Variable name="docRepository"/>
+                <Input name="docid"/>
+              </Manipulation> 
+            </Membership>
+          </Proposition>
+        </Condition>
+        <!-- no effect -->
+      </Scenario>
+    </Operation>
+    
+    <Operation name="getVersion">
+      <!-- returns the document on success -->
+      <Input name="docid" type="Integer"/>
+      <Input name="version" type="Integer"/>
+      <Output name="document" type="Integer"/>
+      
+      <Scenario name="getVersion/ok">
+        <!-- supply an in-range version identifier -->
+        <Binding>
+          <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="docid"/>
+            <Variable name="docCounter"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="version"/>
+            <Constant name="one"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <Proposition name="and">
+            <Comparison name="moreThan">
+              <Input name="docid"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="notMoreThan">
+              <Input name="docid"/>
+              <Variable name="docCounter"/>
+            </Comparison>
+            <Comparison name="moreThan">
+              <Input name="version"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="notMoreThan">
+              <Variable name="version"/>
+              <Manipulation name="size" type="Integer">
+                <Manipulation name="searchAt" type="List[Integer]">
+                  <Variable name="docRepository"/>
+                  <Input name="docid"/>
+                </Manipulation>
+              </Manipulation>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <!-- find the previous list of versions -->
+          <Assignment name="equals">
+            <Variable name="docVersions"/>
+            <Manipulation name="searchAt" type="List[Integer]">
+              <Variable name="docRepository"/>
+              <Input name="docid"/>
+            </Manipulation> 
+          </Assignment>
+          <!-- extract the latest version -->
+          <Assignment name="equals">
+            <Output name="document"/>
+            <Manipulation name="searchAt" type="Integer">
+              <Variable name="docVersions"/>
+              <Input name="version"/>
+            </Manipulation> 
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="getVersion/error">
+        <!-- supply an out-of-range version identifier -->
+        <Binding>
+          <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="docid"/>
+            <Variable name="docCounter"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="version"/>
+            <Constant name="zero"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <Proposition name="or">
+            <Comparison name="notMoreThan">
+              <Input name="docid"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="moreThan">
+              <Input name="docid"/>
+              <Variable name="docCounter"/>
+            </Comparison>
+            <Comparison name="notMoreThan">
+              <Input name="version"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="moreThan">
+              <Variable name="version"/>
+              <Manipulation name="size" type="Integer">
+                <Manipulation name="searchAt" type="List[Integer]">
+                  <Variable name="docRepository"/>
+                  <Input name="docid"/>
+                </Manipulation>
+              </Manipulation>
+            </Comparison>
+          </Proposition>
+        </Condition>
+      </Scenario>
+      <!-- no effect -->
+    </Operation>
+    
+    <Operation name="deleteVersion">
+      <!-- returns the remaining storage on success -->
+      <Input name="docid" type="Integer"/>
+      <Input name="version" type="Integer"/>
+      <Output name="terabyte" type="Integer"/>
+      
+      <Scenario name="deleteVersion/ok">
+        <!-- supply an in-range version identifier -->
+        <Binding>
+          <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="docid"/>
+            <Variable name="docCounter"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="version"/>
+            <Constant name="one"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <Proposition name="and">
+            <Comparison name="moreThan">
+              <Input name="docid"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="notMoreThan">
+              <Input name="docid"/>
+              <Variable name="docCounter"/>
+            </Comparison>
+            <Comparison name="moreThan">
+              <Input name="version"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="notMoreThan">
+              <Variable name="version"/>
+              <Manipulation name="size" type="Integer">
+                <Manipulation name="searchAt" type="List[Integer]">
+                  <Variable name="docRepository"/>
+                  <Input name="docid"/>
+                </Manipulation>
+              </Manipulation>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <!-- find the previous list of versions -->
+          <Assignment name="equals">
+            <Variable name="docVersions"/>
+            <Manipulation name="searchAt" type="List[Integer]">
+              <Variable name="docRepository"/>
+              <Input name="docid"/>
+            </Manipulation> 
+          </Assignment>
+          <!-- update the storage used -->
+          <Assignment name="equals">
+            <Variable name="storageUsed"/>
+            <Arithmetic name="minus" type="Integer">
+              <Variable name="storageUsed"/>
+              <Manipulation name="searchAt" type="Integer">
+                <Variable name="docVersions"/>
+                <Input name="version"/>
+              </Manipulation>
+            </Arithmetic>
+          </Assignment>
+          <!-- delete the last version from the repository -->
+          <Assignment name="equals">
+            <Variable name="docRepository"/>
+            <Manipulation name="replaceAt" type="Map[Integer, List[Integer]]">
+              <Variable name="docRepository"/>
+              <Input name="docid"/>
+              <Manipulation name="removeAt" type="List[Integer]">
+                <Variable name="docVersions"/>
+                <Input name="version"/>
+              </Manipulation>
+            </Manipulation>
+          </Assignment>
+          <!-- report remaining storage available -->
+          <Assignment name="equals">
+            <Output name="terabyte"/>
+            <Arithmetic name="minus" type="Integer">
+              <Constant name="storageLimit"/>
+              <Variable name="storageUsed"/>
+            </Arithmetic>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="deleteVersion/error">
+        <!-- supply an out-of-range version identifier -->
+        <Binding>
+          <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="docid"/>
+            <Variable name="docCounter"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="version"/>
+            <Constant name="zero"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <Proposition name="or">
+            <Comparison name="notMoreThan">
+              <Input name="docid"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="moreThan">
+              <Input name="docid"/>
+              <Variable name="docCounter"/>
+            </Comparison>
+            <Comparison name="notMoreThan">
+              <Input name="version"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="moreThan">
+              <Variable name="version"/>
+              <Manipulation name="size" type="Integer">
+                <Manipulation name="searchAt" type="List[Integer]">
+                  <Variable name="docRepository"/>
+                  <Input name="docid"/>
+                </Manipulation>
+              </Manipulation>
+            </Comparison>
+          </Proposition>
+        </Condition>
+      </Scenario>
+      <!-- no effect -->
+    </Operation>
+    
+  </Protocol>
+  
+  <Machine name="StorageService">
+    <!-- has two states for being logged out, or logged in -->
+    
+    <State name="LoggedOut" initial="true">
+      <!-- can only attempt to log in -->
+      <Transition name="login/ok" source="LoggedOut" target="LoggedIn"/>
+      <Transition name="login/error" source="LoggedOut" target="LoggedOut"/>
+    </State>
+    
+    <State name="LoggedIn">
+      <!-- can attempt any other operation and log out -->
+      <Transition name="logout/ok" source="LoggedIn" target="LoggedOut"/>
+      
+      <!-- Refined versions of putDocument/ok transition after validation -->
+      
+      <Transition name="putDocument/new" source="LoggedIn" target="LoggedIn"/>
+      <Transition name="putDocument/update" source="LoggedIn" target="LoggedIn"/>
+              
+      <Transition name="putDocument/blocked" source="LoggedIn" target="LoggedIn"/>
+      <Transition name="putDocument/error" source="LoggedIn" target="LoggedIn"/>
+      <Transition name="getDocument/ok" source="LoggedIn" target="LoggedIn"/>
+      <Transition name="getDocument/error" source="LoggedIn" target="LoggedIn"/>
+      <Transition name="getVersion/ok" source="LoggedIn" target="LoggedIn"/>
+      <Transition name="getVersion/error" source="LoggedIn" target="LoggedIn"/>
+      <Transition name="deleteVersion/ok" source="LoggedIn" target="LoggedIn"/>
+      <Transition name="deleteVersion/error" source="LoggedIn" target="LoggedIn"/>
+    </State>
+    
+  </Machine>
+
+</Service>

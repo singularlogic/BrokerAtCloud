@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Service name="LoginService">
+  <!-- a simple login service with state changes -->
+  
+  <Protocol name="LoginProtocol">
+  
+    <Memory>
+      <!-- declares two distinguished constants -->
+      <Constant name="knownUser" type="String">Jane Good</Constant>
+      <Constant name="knownPass" type="String">serendipity</Constant>
+      <Constant name="badUser" type="String">Jim Hacker</Constant>
+      <Constant name="badPass" type="String">backdoor</Constant>
+    </Memory>
+    
+    <Operation name="login">
+      <!-- login accepts two input parameters -->
+      <Input name="userName" type="String"/>
+      <Input name="password" type="String"/>
+        
+      <Scenario name="login/ok">
+        <!-- the successful or happy path -->
+        <Binding>
+          <!-- suggest inputs to trigger this path -->
+          <Assignment name="equals">
+            <Input name="userName"/>
+            <Constant name="knownUser"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="password"/>
+            <Constant name="knownPass"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the condition guarding this path -->
+          <Proposition name="and">
+            <Comparison name="equals">
+              <Input name="userName"/>
+              <Constant name="knownUser"/>
+            </Comparison>
+            <Comparison name="equals">
+              <Input name="password"/>
+              <Constant name="knownPass"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+      </Scenario>
+      
+      <Scenario name="login/error">
+        <!-- the unsuccessful or unhappy path -->
+        <Binding>
+          <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="userName"/>
+            <Constant name="badUser"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="password"/>
+            <Constant name="badPass"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the condition guarding this path -->
+          <Proposition name="or">
+            <Comparison name="notEquals">
+              <Input name="userName"/>
+              <Constant name="knownUser"/>
+            </Comparison>
+            <Comparison name="notEquals">
+              <Input name="password"/>
+              <Constant name="knownPass"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+      </Scenario>
+    </Operation>
+    
+    <Operation name="logout">
+      <!-- logout requires no parameters -->
+      <Scenario name="logout/ok">
+        <!-- only one unconditional path -->
+      </Scenario>
+    </Operation>
+    
+    <Operation name="timeout">
+      <!-- timeout requires no parameters -->
+      <Scenario name="timeout/ok"/>
+    </Operation>
+        
+  </Protocol>
+  
+  <Machine name="LoginMachine">
+    <!-- has two states for being logged out, or logged in -->
+    
+    <State name="LoggedOut" initial="true">
+      <!-- can only attempt to log in -->
+      <Transition name="login/ok" source="LoggedOut" target="LoggedIn"/>
+      <Transition name="login/error" source="LoggedOut" target="LoggedOut"/>
+    </State>
+    
+    <State name="LoggedIn">
+      <!-- can only attempt to log out -->
+      <Transition name="logout/ok" source="LoggedIn" target="LoggedOut"/>
+      <Transition name="timeout/ok" source="LoggedIn" target="LoggedOut"/>
+    </State>
+    
+  </Machine>
+  
+</Service>

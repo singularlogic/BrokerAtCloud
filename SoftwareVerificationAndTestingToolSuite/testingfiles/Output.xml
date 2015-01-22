@@ -1,0 +1,622 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Service id="0" name="StorageService">
+  <Protocol id="1" name="StorageService">
+    <Memory id="2" name="StorageService">
+      <Constant id="3" name="zero" type="Integer">0</Constant>
+      <Constant id="4" name="one" type="Integer">1</Constant>
+      <Constant id="5" name="knownUser" type="String">Jane Good</Constant>
+      <Constant id="6" name="knownPassword" type="String">serendipity</Constant>
+      <Constant id="7" name="badUser" type="String">Jim Hacker</Constant>
+      <Constant id="8" name="badPassword" type="String">backdoor</Constant>
+      <Constant id="9" name="storageLimit" type="Integer">100</Constant>
+      <Constant id="10" name="encryption" type="Integer">192</Constant>
+      <Constant id="11" name="smallDoc" type="Integer">20</Constant>
+      <Constant id="12" name="largeDoc" type="Integer">100</Constant>
+      <Constant id="13" name="emptyVersions" type="List[Integer]"/>
+      <Constant id="14" name="emptyRepository" type="Map[Integer, List[Integer]]"/>
+      <Variable id="15" name="storageUsed" type="Integer"/>
+      <Variable id="16" name="docCounter" type="Integer"/>
+      <Variable id="17" name="docVersions" type="List[Integer]"/>
+      <Variable id="18" name="docRepository" type="Map[Integer, List[Integer]]"/>
+      <Binding id="19">
+        <Assignment id="20" name="equals" type="Void">
+          <Variable ref="15" name="storageUsed"/>
+          <Constant ref="3" name="zero"/>
+        </Assignment>
+        <Assignment id="21" name="equals" type="Void">
+          <Variable ref="16" name="docCounter"/>
+          <Constant ref="3" name="zero"/>
+        </Assignment>
+        <Assignment id="22" name="equals" type="Void">
+          <Variable ref="17" name="docVersions"/>
+          <Constant ref="13" name="emptyVersions"/>
+        </Assignment>
+        <Assignment id="23" name="equals" type="Void">
+          <Variable ref="18" name="docRepository"/>
+          <Constant ref="14" name="emptyRepository"/>
+        </Assignment>
+      </Binding>
+    </Memory>
+    <Operation id="24" name="login">
+      <Input id="25" name="userName" type="String"/>
+      <Input id="26" name="password" type="String"/>
+      <Output id="27" name="terabyte" type="Integer"/>
+      <Output id="28" name="encrypt" type="Integer"/>
+      <Scenario id="29" name="login/ok">
+        <Binding id="30">
+          <Assignment id="31" name="equals" type="Void">
+            <Input ref="25" name="userName"/>
+            <Constant ref="5" name="knownUser"/>
+          </Assignment>
+          <Assignment id="32" name="equals" type="Void">
+            <Input ref="26" name="password"/>
+            <Constant ref="6" name="knownPassword"/>
+          </Assignment>
+        </Binding>
+        <Condition id="33">
+          <Proposition id="34" name="and" type="Boolean">
+            <Comparison id="35" name="equals" type="Boolean">
+              <Input ref="25" name="userName"/>
+              <Constant ref="5" name="knownUser"/>
+            </Comparison>
+            <Comparison id="36" name="equals" type="Boolean">
+              <Input ref="26" name="password"/>
+              <Constant ref="6" name="knownPassword"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect id="37">
+          <Assignment id="38" name="equals" type="Void">
+            <Output ref="27" name="terabyte"/>
+            <Constant ref="9" name="storageLimit"/>
+          </Assignment>
+          <Assignment id="39" name="equals" type="Void">
+            <Output ref="28" name="encrypt"/>
+            <Constant ref="10" name="encryption"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      <Scenario id="40" name="login/error">
+        <Binding id="41">
+          <Assignment id="42" name="equals" type="Void">
+            <Input ref="25" name="userName"/>
+            <Constant ref="7" name="badUser"/>
+          </Assignment>
+          <Assignment id="43" name="equals" type="Void">
+            <Input ref="26" name="password"/>
+            <Constant ref="8" name="badPassword"/>
+          </Assignment>
+        </Binding>
+        <Condition id="44">
+          <Proposition id="45" name="or" type="Boolean">
+            <Comparison id="46" name="notEquals" type="Boolean">
+              <Input ref="25" name="userName"/>
+              <Constant ref="5" name="knownUser"/>
+            </Comparison>
+            <Comparison id="47" name="notEquals" type="Boolean">
+              <Input ref="26" name="password"/>
+              <Constant ref="6" name="knownPassword"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+      </Scenario>
+    </Operation>
+    <Operation id="48" name="logout">
+      <Scenario id="49" name="logout/ok"/>
+    </Operation>
+    <Operation id="50" name="putDocument">
+      <Input id="51" name="docid" type="Integer"/>
+      <Input id="52" name="document" type="Integer"/>
+      <Output id="53" name="terabyte" type="Integer"/>
+      <Output id="54" name="version" type="Integer"/>
+      <Scenario id="55" name="putDocument/new">
+        <Binding id="56">
+          <Assignment id="57" name="equals" type="Void">
+            <Input ref="51" name="docid"/>
+            <Arithmetic id="58" name="plus" type="Integer">
+              <Variable ref="16" name="docCounter"/>
+              <Constant ref="4" name="one"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment id="59" name="equals" type="Void">
+            <Input ref="52" name="document"/>
+            <Constant ref="11" name="smallDoc"/>
+          </Assignment>
+        </Binding>
+        <Condition id="60">
+          <Proposition id="61" name="and" type="Boolean">
+            <Comparison id="62" name="equals" type="Boolean">
+              <Input ref="51" name="docid"/>
+              <Arithmetic id="63" name="plus" type="Integer">
+                <Variable ref="16" name="docCounter"/>
+                <Constant ref="4" name="one"/>
+              </Arithmetic>
+            </Comparison>
+            <Comparison id="64" name="lessThan" type="Boolean">
+              <Variable ref="15" name="storageUsed"/>
+              <Arithmetic id="65" name="minus" type="Integer">
+                <Constant ref="9" name="storageLimit"/>
+                <Input ref="52" name="document"/>
+              </Arithmetic>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect id="66">
+          <Assignment id="67" name="equals" type="Void">
+            <Variable ref="15" name="storageUsed"/>
+            <Arithmetic id="68" name="plus" type="Integer">
+              <Variable ref="15" name="storageUsed"/>
+              <Input ref="52" name="document"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment id="69" name="equals" type="Void">
+            <Variable ref="16" name="docCounter"/>
+            <Input ref="51" name="docid"/>
+          </Assignment>
+          <Assignment id="70" name="equals" type="Void">
+            <Variable ref="17" name="docVersions"/>
+            <Manipulation id="71" name="insert" type="List[Integer]">
+              <Constant ref="13" name="emptyVersions"/>
+              <Input ref="52" name="document"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment id="72" name="equals" type="Void">
+            <Variable ref="18" name="docRepository"/>
+            <Manipulation id="73" name="replaceAt" type="Map[Integer, List[Integer]]">
+              <Variable ref="18" name="docRepository"/>
+              <Input ref="51" name="docid"/>
+              <Variable ref="17" name="docVersions"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment id="74" name="equals" type="Void">
+            <Output ref="53" name="terabyte"/>
+            <Arithmetic id="75" name="minus" type="Integer">
+              <Constant ref="9" name="storageLimit"/>
+              <Variable ref="15" name="storageUsed"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment id="76" name="equals" type="Void">
+            <Output ref="54" name="version"/>
+            <Manipulation id="77" name="size" type="Integer">
+              <Variable ref="17" name="docVersions"/>
+            </Manipulation>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      <Scenario id="78" name="putDocument/update">
+        <Binding id="79">
+          <Assignment id="80" name="equals" type="Void">
+            <Input ref="51" name="docid"/>
+            <Variable ref="16" name="docCounter"/>
+          </Assignment>
+          <Assignment id="81" name="equals" type="Void">
+            <Input ref="52" name="document"/>
+            <Constant ref="11" name="smallDoc"/>
+          </Assignment>
+        </Binding>
+        <Condition id="82">
+          <Proposition id="83" name="and" type="Boolean">
+            <Comparison id="84" name="moreThan" type="Boolean">
+              <Input ref="51" name="docid"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="85" name="notMoreThan" type="Boolean">
+              <Input ref="51" name="docid"/>
+              <Variable ref="16" name="docCounter"/>
+            </Comparison>
+            <Comparison id="86" name="lessThan" type="Boolean">
+              <Variable ref="15" name="storageUsed"/>
+              <Arithmetic id="87" name="minus" type="Integer">
+                <Constant ref="9" name="storageLimit"/>
+                <Input ref="52" name="document"/>
+              </Arithmetic>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect id="88">
+          <Assignment id="89" name="equals" type="Void">
+            <Variable ref="15" name="storageUsed"/>
+            <Arithmetic id="90" name="plus" type="Integer">
+              <Variable ref="15" name="storageUsed"/>
+              <Input ref="52" name="document"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment id="91" name="equals" type="Void">
+            <Variable ref="17" name="docVersions"/>
+            <Manipulation id="92" name="insert" type="List[Integer]">
+              <Manipulation id="93" name="searchAt" type="List[Integer]">
+                <Variable ref="18" name="docRepository"/>
+                <Input ref="51" name="docid"/>
+              </Manipulation>
+              <Input ref="52" name="document"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment id="94" name="equals" type="Void">
+            <Variable ref="18" name="docRepository"/>
+            <Manipulation id="95" name="replaceAt" type="Map[Integer, List[Integer]]">
+              <Variable ref="18" name="docRepository"/>
+              <Input ref="51" name="docid"/>
+              <Variable ref="17" name="docVersions"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment id="96" name="equals" type="Void">
+            <Output ref="53" name="terabyte"/>
+            <Arithmetic id="97" name="minus" type="Integer">
+              <Constant ref="9" name="storageLimit"/>
+              <Variable ref="15" name="storageUsed"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment id="98" name="equals" type="Void">
+            <Output ref="54" name="version"/>
+            <Manipulation id="99" name="size" type="Integer">
+              <Variable ref="17" name="docVersions"/>
+            </Manipulation>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      <Scenario id="100" name="putDocument/blocked">
+        <Binding id="101">
+          <Assignment id="102" name="equals" type="Void">
+            <Input ref="51" name="docid"/>
+            <Variable ref="16" name="docCounter"/>
+          </Assignment>
+          <Assignment id="103" name="equals" type="Void">
+            <Input ref="52" name="document"/>
+            <Constant ref="12" name="largeDoc"/>
+          </Assignment>
+        </Binding>
+        <Condition id="104">
+          <Proposition id="105" name="and" type="Boolean">
+            <Comparison id="106" name="moreThan" type="Boolean">
+              <Input ref="51" name="docid"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="107" name="notMoreThan" type="Boolean">
+              <Input ref="51" name="docid"/>
+              <Variable ref="16" name="docCounter"/>
+            </Comparison>
+            <Comparison id="108" name="notLessThan" type="Boolean">
+              <Variable ref="15" name="storageUsed"/>
+              <Arithmetic id="109" name="minus" type="Integer">
+                <Constant ref="9" name="storageLimit"/>
+                <Input ref="52" name="document"/>
+              </Arithmetic>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect id="110">
+          <Assignment id="111" name="equals" type="Void">
+            <Output ref="53" name="terabyte"/>
+            <Arithmetic id="112" name="minus" type="Integer">
+              <Constant ref="9" name="storageLimit"/>
+              <Variable ref="15" name="storageUsed"/>
+            </Arithmetic>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      <Scenario id="113" name="putDocument/error">
+        <Binding id="114">
+          <Assignment id="115" name="equals" type="Void">
+            <Input ref="51" name="docid"/>
+            <Constant ref="3" name="zero"/>
+          </Assignment>
+          <Assignment id="116" name="equals" type="Void">
+            <Input ref="52" name="document"/>
+            <Constant ref="12" name="largeDoc"/>
+          </Assignment>
+        </Binding>
+        <Condition id="117">
+          <Proposition id="118" name="or" type="Boolean">
+            <Comparison id="119" name="notMoreThan" type="Boolean">
+              <Input ref="51" name="docid"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="120" name="moreThan" type="Boolean">
+              <Input ref="51" name="docid"/>
+              <Arithmetic id="121" name="plus" type="Integer">
+                <Variable ref="16" name="docCounter"/>
+                <Constant ref="4" name="one"/>
+              </Arithmetic>
+            </Comparison>
+          </Proposition>
+        </Condition>
+      </Scenario>
+    </Operation>
+    <Operation id="122" name="getDocument">
+      <Input id="123" name="docid" type="Integer"/>
+      <Output id="124" name="document" type="Integer"/>
+      <Output id="125" name="version" type="Integer"/>
+      <Scenario id="126" name="getDocument/ok">
+        <Binding id="127">
+          <Assignment id="128" name="equals" type="Void">
+            <Input ref="123" name="docid"/>
+            <Variable ref="16" name="docCounter"/>
+          </Assignment>
+        </Binding>
+        <Condition id="129">
+          <Proposition id="130" name="and" type="Boolean">
+            <Comparison id="131" name="moreThan" type="Boolean">
+              <Input ref="123" name="docid"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="132" name="notMoreThan" type="Boolean">
+              <Input ref="123" name="docid"/>
+              <Variable ref="16" name="docCounter"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect id="133">
+          <Assignment id="134" name="equals" type="Void">
+            <Variable ref="17" name="docVersions"/>
+            <Manipulation id="135" name="searchAt" type="List[Integer]">
+              <Variable ref="18" name="docRepository"/>
+              <Input ref="123" name="docid"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment id="136" name="equals" type="Void">
+            <Output ref="125" name="version"/>
+            <Manipulation id="137" name="size" type="Integer">
+              <Variable ref="17" name="docVersions"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment id="138" name="equals" type="Void">
+            <Output ref="124" name="document"/>
+            <Manipulation id="139" name="searchAt" type="Integer">
+              <Variable ref="17" name="docVersions"/>
+              <Output ref="125" name="version"/>
+            </Manipulation>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      <Scenario id="140" name="getDocument/error">
+        <Binding id="141">
+          <Assignment id="142" name="equals" type="Void">
+            <Input ref="123" name="docid"/>
+            <Constant ref="3" name="zero"/>
+          </Assignment>
+        </Binding>
+        <Condition id="143">
+          <Proposition id="144" name="or" type="Boolean">
+            <Comparison id="145" name="notMoreThan" type="Boolean">
+              <Input ref="123" name="docid"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="146" name="moreThan" type="Boolean">
+              <Input ref="123" name="docid"/>
+              <Variable ref="16" name="docCounter"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+      </Scenario>
+    </Operation>
+    <Operation id="147" name="getVersion">
+      <Input id="148" name="docid" type="Integer"/>
+      <Input id="149" name="version" type="Integer"/>
+      <Output id="150" name="document" type="Integer"/>
+      <Scenario id="151" name="getVersion/ok">
+        <Binding id="152">
+          <Assignment id="153" name="equals" type="Void">
+            <Input ref="148" name="docid"/>
+            <Variable ref="16" name="docCounter"/>
+          </Assignment>
+          <Assignment id="154" name="equals" type="Void">
+            <Input ref="149" name="version"/>
+            <Constant ref="4" name="one"/>
+          </Assignment>
+        </Binding>
+        <Condition id="155">
+          <Proposition id="156" name="and" type="Boolean">
+            <Comparison id="157" name="moreThan" type="Boolean">
+              <Input ref="148" name="docid"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="158" name="notMoreThan" type="Boolean">
+              <Input ref="148" name="docid"/>
+              <Variable ref="16" name="docCounter"/>
+            </Comparison>
+            <Comparison id="159" name="moreThan" type="Boolean">
+              <Input ref="149" name="version"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="160" name="notMoreThan" type="Boolean">
+              <Input ref="149" name="version"/>
+              <Manipulation id="161" name="size" type="Integer">
+                <Manipulation id="162" name="searchAt" type="List[Integer]">
+                  <Variable ref="18" name="docRepository"/>
+                  <Input ref="148" name="docid"/>
+                </Manipulation>
+              </Manipulation>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect id="163">
+          <Assignment id="164" name="equals" type="Void">
+            <Variable ref="17" name="docVersions"/>
+            <Manipulation id="165" name="searchAt" type="List[Integer]">
+              <Variable ref="18" name="docRepository"/>
+              <Input ref="148" name="docid"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment id="166" name="equals" type="Void">
+            <Output ref="150" name="document"/>
+            <Manipulation id="167" name="searchAt" type="Integer">
+              <Variable ref="17" name="docVersions"/>
+              <Input ref="149" name="version"/>
+            </Manipulation>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      <Scenario id="168" name="getVersion/error">
+        <Binding id="169">
+          <Assignment id="170" name="equals" type="Void">
+            <Input ref="148" name="docid"/>
+            <Variable ref="16" name="docCounter"/>
+          </Assignment>
+          <Assignment id="171" name="equals" type="Void">
+            <Input ref="149" name="version"/>
+            <Constant ref="3" name="zero"/>
+          </Assignment>
+        </Binding>
+        <Condition id="172">
+          <Proposition id="173" name="or" type="Boolean">
+            <Comparison id="174" name="notMoreThan" type="Boolean">
+              <Input ref="148" name="docid"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="175" name="moreThan" type="Boolean">
+              <Input ref="148" name="docid"/>
+              <Variable ref="16" name="docCounter"/>
+            </Comparison>
+            <Comparison id="176" name="notMoreThan" type="Boolean">
+              <Input ref="149" name="version"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="177" name="moreThan" type="Boolean">
+              <Input ref="149" name="version"/>
+              <Manipulation id="178" name="size" type="Integer">
+                <Manipulation id="179" name="searchAt" type="List[Integer]">
+                  <Variable ref="18" name="docRepository"/>
+                  <Input ref="148" name="docid"/>
+                </Manipulation>
+              </Manipulation>
+            </Comparison>
+          </Proposition>
+        </Condition>
+      </Scenario>
+    </Operation>
+    <Operation id="180" name="deleteVersion">
+      <Input id="181" name="docid" type="Integer"/>
+      <Input id="182" name="version" type="Integer"/>
+      <Output id="183" name="terabyte" type="Integer"/>
+      <Scenario id="184" name="deleteVersion/ok">
+        <Binding id="185">
+          <Assignment id="186" name="equals" type="Void">
+            <Input ref="181" name="docid"/>
+            <Variable ref="16" name="docCounter"/>
+          </Assignment>
+          <Assignment id="187" name="equals" type="Void">
+            <Input ref="182" name="version"/>
+            <Constant ref="4" name="one"/>
+          </Assignment>
+        </Binding>
+        <Condition id="188">
+          <Proposition id="189" name="and" type="Boolean">
+            <Comparison id="190" name="moreThan" type="Boolean">
+              <Input ref="181" name="docid"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="191" name="notMoreThan" type="Boolean">
+              <Input ref="181" name="docid"/>
+              <Variable ref="16" name="docCounter"/>
+            </Comparison>
+            <Comparison id="192" name="moreThan" type="Boolean">
+              <Input ref="182" name="version"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="193" name="notMoreThan" type="Boolean">
+              <Input ref="182" name="version"/>
+              <Manipulation id="194" name="size" type="Integer">
+                <Manipulation id="195" name="searchAt" type="List[Integer]">
+                  <Variable ref="18" name="docRepository"/>
+                  <Input ref="181" name="docid"/>
+                </Manipulation>
+              </Manipulation>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect id="196">
+          <Assignment id="197" name="equals" type="Void">
+            <Variable ref="17" name="docVersions"/>
+            <Manipulation id="198" name="searchAt" type="List[Integer]">
+              <Variable ref="18" name="docRepository"/>
+              <Input ref="181" name="docid"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment id="199" name="equals" type="Void">
+            <Variable ref="15" name="storageUsed"/>
+            <Arithmetic id="200" name="minus" type="Integer">
+              <Variable ref="15" name="storageUsed"/>
+              <Manipulation id="201" name="searchAt" type="Integer">
+                <Variable ref="17" name="docVersions"/>
+                <Input ref="182" name="version"/>
+              </Manipulation>
+            </Arithmetic>
+          </Assignment>
+          <Assignment id="202" name="equals" type="Void">
+            <Variable ref="18" name="docRepository"/>
+            <Manipulation id="203" name="replaceAt" type="Map[Integer, List[Integer]]">
+              <Variable ref="18" name="docRepository"/>
+              <Input ref="181" name="docid"/>
+              <Manipulation id="204" name="removeAt" type="List[Integer]">
+                <Variable ref="17" name="docVersions"/>
+                <Input ref="182" name="version"/>
+              </Manipulation>
+            </Manipulation>
+          </Assignment>
+          <Assignment id="205" name="equals" type="Void">
+            <Output ref="183" name="terabyte"/>
+            <Arithmetic id="206" name="minus" type="Integer">
+              <Constant ref="9" name="storageLimit"/>
+              <Variable ref="15" name="storageUsed"/>
+            </Arithmetic>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      <Scenario id="207" name="deleteVersion/error">
+        <Binding id="208">
+          <Assignment id="209" name="equals" type="Void">
+            <Input ref="181" name="docid"/>
+            <Variable ref="16" name="docCounter"/>
+          </Assignment>
+          <Assignment id="210" name="equals" type="Void">
+            <Input ref="182" name="version"/>
+            <Constant ref="3" name="zero"/>
+          </Assignment>
+        </Binding>
+        <Condition id="211">
+          <Proposition id="212" name="or" type="Boolean">
+            <Comparison id="213" name="notMoreThan" type="Boolean">
+              <Input ref="181" name="docid"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="214" name="moreThan" type="Boolean">
+              <Input ref="181" name="docid"/>
+              <Variable ref="16" name="docCounter"/>
+            </Comparison>
+            <Comparison id="215" name="notMoreThan" type="Boolean">
+              <Input ref="182" name="version"/>
+              <Constant ref="3" name="zero"/>
+            </Comparison>
+            <Comparison id="216" name="moreThan" type="Boolean">
+              <Input ref="182" name="version"/>
+              <Manipulation id="217" name="size" type="Integer">
+                <Manipulation id="218" name="searchAt" type="List[Integer]">
+                  <Variable ref="18" name="docRepository"/>
+                  <Input ref="181" name="docid"/>
+                </Manipulation>
+              </Manipulation>
+            </Comparison>
+          </Proposition>
+        </Condition>
+      </Scenario>
+    </Operation>
+  </Protocol>
+  <Machine id="219" name="StorageService">
+    <State id="220" name="LoggedOut" initial="true">
+      <Transition id="221" name="login/ok" source="LoggedOut" target="LoggedIn"/>
+      <Transition id="222" name="login/error" source="LoggedOut" target="LoggedOut"/>
+    </State>
+    <State id="223" name="LoggedIn">
+      <Transition id="224" name="logout/ok" source="LoggedIn" target="LoggedOut"/>
+      <Transition id="225" name="putDocument/ok" source="LoggedIn" target="LoggedIn"/>
+      <Transition id="226" name="putDocument/blocked" source="LoggedIn" target="LoggedIn"/>
+      <Transition id="227" name="putDocument/error" source="LoggedIn" target="LoggedIn"/>
+      <Transition id="228" name="getDocument/ok" source="LoggedIn" target="LoggedIn"/>
+      <Transition id="229" name="getDocument/error" source="LoggedIn" target="LoggedIn"/>
+      <Transition id="230" name="getVersion/ok" source="LoggedIn" target="LoggedIn"/>
+      <Transition id="231" name="getVersion/error" source="LoggedIn" target="LoggedIn"/>
+      <Transition id="232" name="deleteVersion/ok" source="LoggedIn" target="LoggedIn"/>
+      <Transition id="233" name="deleteVersion/error" source="LoggedIn" target="LoggedIn"/>
+    </State>
+  </Machine>
+</Service>

@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Service name="AccountService">
+  <!-- an account service with memory updates -->
+
+  <Protocol name="AccountProtocol">
+  
+    <Memory>
+      <!-- declares four constants and two variables -->
+      <Constant name="zero" type="Integer">0</Constant>
+      <Constant name="empty" type="String"></Constant>
+      <Constant name="true" type="Boolean">true</Constant>
+      <Constant name="false" type="Boolean">false</Constant>
+    
+      <Variable name="balance" type="Integer"/>
+      <Variable name="holder" type="String"/>
+      <Binding>
+        <!-- initial binding of the variables -->
+        <Assignment name="equals">
+          <Variable name="balance"/>
+          <Constant name="zero"/>
+        </Assignment>
+        <Assignment name="equals">
+          <Variable name="holder"/>
+          <Constant name="empty"/>
+        </Assignment>
+      </Binding>
+    </Memory>
+  
+    <Operation name="open">
+      <!-- accepts one input, and yields one output -->
+      <Input name="customer" type="String"/>
+      <Output name="result" type="Boolean"/>
+      
+      <Scenario name="open/ok">
+        <!-- the successful or happy path -->
+        <Binding>
+         <!-- suggest inputs to trigger this path -->
+          <Assignment  name="notEquals">
+            <Input name="customer"/>
+            <Constant name="empty"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the input condition guarding this path -->
+          <Comparison name="notEquals">
+            <Input name="customer"/>
+            <Constant name="empty"/>
+          </Comparison>
+        </Condition>
+        <Effect>
+          <!-- set a memory variable and set the output -->
+          <Assignment name="equals">
+            <Variable name="holder"/>
+            <Input name="customer"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Output name="result"/>
+            <Constant name="true"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+    
+      <Scenario name="open/error">
+        <!-- the unsuccessful or unhappy path -->
+        <Binding>
+         <!-- suggest input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="customer"/>
+            <Constant name="empty"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the input condition guarding this path -->
+          <Comparison name="equals">
+            <Input name="customer"/>
+            <Constant name="empty"/>
+          </Comparison>
+        </Condition>
+        <Effect>
+          <!-- simply set the output -->
+          <Assignment name="equals">
+            <Output name="result"/>
+            <Constant name="false"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+    </Operation>
+    
+    <Operation name="close">
+      <!-- has no inputs, but yields one output -->
+      <Output name="result" type="Boolean"/>
+      
+      <Scenario name="close/ok">
+        <!-- cannot suggest any input bindings -->
+        <Condition>
+          <!-- the memory condition guarding this path -->
+          <Comparison name="equals">
+            <Variable name="balance"/>
+            <Constant name="zero"/>
+          </Comparison>
+        </Condition>
+        <Effect>
+          <!-- simply set the output -->
+          <Assignment name="equals">
+            <Output name="result"/>
+            <Constant name="true"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+    
+      <Scenario name="close/error">
+        <!-- cannot suggest any input bindings -->
+        <Condition>
+          <!-- the memory condition guarding this path -->
+          <Comparison name="notEquals">
+            <Variable name="balance"/>
+            <Constant name="zero"/>
+          </Comparison>
+        </Condition>
+        <Effect>
+          <!-- simply set the output -->
+          <Assignment name="equals">
+            <Output name="result"/>
+            <Constant name="false"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+    </Operation>
+    
+    <Operation name="inspect">
+      <!-- has no inputs, but yields one output -->
+      <Output name="amount" type="Integer"/>
+      
+      <Scenario name="inspect/ok">
+      <!-- has a single unconditional branch -->
+        <Effect>
+          <!-- simply set the output -->
+          <Assignment name="equals">
+            <Output name="amount"/>
+            <Variable name="balance"/>
+          </Assignment>
+        </Effect>        
+      </Scenario>     
+    </Operation>
+
+    <Operation name="deposit">
+      <!-- accepts one input and yields one output -->
+      <Input name="amount" type="Integer"/>
+      <Output name="result" type="Boolean"/>
+
+      <Scenario name="deposit/ok">
+        <!-- the successful, or happy path -->
+        <Binding>
+          <!-- suggest inputs to trigger this path -->
+          <Assignment name="moreThan">
+            <Input name="amount"/>
+            <Constant name="zero"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the input condition guarding this path -->
+          <Comparison name="moreThan">
+            <Input name="amount"/>
+            <Constant name="zero"/>
+          </Comparison>
+        </Condition>
+        <Effect>
+          <!-- sets a memory variable and the output -->
+          <Assignment name="equals">
+            <Variable name="balance"/>
+            <Arithmetic name="plus" type="Integer">
+              <Variable name="balance"/>
+              <Input name="amount"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment name="equals">
+            <Output name="result"/>
+            <Constant name="true"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="deposit/error">
+        <!-- the unsuccessful, or unhappy path -->
+        <Binding>
+          <!-- suggest an input that triggers this path -->
+          <Assignment name="equals">
+            <Input name="amount"/>
+            <Constant name="zero"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the input condition guarding this path -->
+          <Comparison name="notMoreThan">
+            <Input name="amount"/>
+            <Constant name="zero"/>
+          </Comparison>
+        </Condition>
+        <Effect>
+          <!-- simply set the output -->
+          <Assignment name="equals">
+            <Output name="result"/>
+            <Constant name="false"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+    </Operation>
+    
+    <Operation name="withdraw">
+      <!-- accepts one input and yields one output -->
+      <Input name="amount" type="Integer"/>
+      <Output name="result" type="Boolean"/>
+
+      <Scenario name="withdraw/ok">
+        <!-- the successful, or happy path -->
+        <Binding>
+          <!-- suggest an input to trigger this path -->
+          <Assignment name="equals">
+            <Input name="amount"/>
+            <Variable name="balance"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the combined input/memory condition guarding this path -->
+          <Proposition name="and">
+            <Comparison name="moreThan">
+              <Input name="amount"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="notMoreThan">
+              <Input name="amount"/>
+              <Variable name="balance"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <!-- sets a memory variable and the output -->
+          <Assignment name="equals">
+            <Variable name="balance"/>
+            <Arithmetic name="minus" type="Integer">
+              <Variable name="balance"/>
+              <Input name="amount"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment name="equals">
+            <Output name="result"/>
+            <Constant name="true"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="withdraw/error">
+        <!-- the first unhappy path, with an unsuitable amount -->
+        <Binding>
+          <!-- suggest a nonsense value for the amount -->
+          <Assignment name="equals">
+            <Input name="amount"/>
+            <Constant name="zero"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the input condition guarding this path -->
+          <Comparison name="notMoreThan">
+            <Input name="amount"/>
+            <Constant name="zero"/>
+          </Comparison>
+        </Condition>
+        <Effect>
+          <!-- simply set the output -->
+          <Assignment name="equals">
+            <Output name="result"/>
+            <Constant name="false"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+            
+      <Scenario name="withdraw/blocked">
+        <!-- the second unhappy path, with an insufficient balance -->
+        <Binding>
+          <!-- suggest a too large amount -->
+          <Assignment name="moreThan">
+            <Input name="amount"/>
+            <Variable name="balance"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <!-- the combined input/memory condition guarding this path -->
+          <Proposition name="and">
+            <Comparison name="moreThan">
+              <Input name="amount"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="moreThan">
+              <Input name="amount"/>
+              <Variable name="balance"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <!-- simply set the output -->
+          <Assignment name="equals">
+            <Output name="result"/>
+            <Constant name="false"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+            
+    </Operation>
+    
+  </Protocol>
+  
+  <Machine name="AccountMachine">
+    <!-- has two states, one idle and the other active -->
+  
+    <State name="Closed" initial="true">
+      <!-- can only attempt to open the account -->
+      <Transition name="open/ok" source="Closed" target="Open"/>
+      <Transition name="open/error" source="Closed" target="Closed"/>
+    </State>
+    
+    <State name="Open">
+      <!-- can attempt everything except open the account -->
+      <Transition name="close/ok" source="Open" target="Closed"/>
+      <Transition name="close/error" source="Open" target="Open"/>
+      <Transition name="deposit/ok" source="Open" target="Open"/>
+      <Transition name="deposit/error" source="Open" target="Open"/>
+      <Transition name="withdraw/ok" source="Open" target="Open"/>
+      <Transition name="withdraw/error" source="Open" target="Open"/>
+      <Transition name="withdraw/blocked" source="Open" target="Open"/>
+      <Transition name="inspect/ok" source="Open" target="Open"/>
+    </State>
+    
+  </Machine>
+
+</Service>

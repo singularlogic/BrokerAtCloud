@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Service name="StackService">
+  <!-- a stack service -->
+  
+  <Protocol name="StackServiceProtocol">
+
+    <Memory name="StackServiceMemory">
+      <!-- declare constants for empty List -->      
+      <Constant name="emptyList" type="List[Integer]"/>
+      
+      <!-- declare integer constants for 0,1, 2, 3 -->
+      <Constant name="zero" type="Integer">0</Constant>
+      <Constant name="one" type="Integer">1</Constant>
+      <Constant name="two" type="Integer">2</Constant>
+	  <Constant name="three" type="Integer">3</Constant>
+	  <Constant name="true" type="Boolean">true</Constant>
+	  <Constant name="false" type="Boolean">false</Constant>
+	  
+      <!-- declare variables for the stack -->
+      <Variable name="myList" type="List[Integer]"/>
+      
+      <!-- declare counters for the maximum size and current size (= position in the stack) -->
+      <Variable name="crtSize" type="Integer"/>
+      <Variable name="maxSize" type="Integer"/>
+      
+      <Binding>
+        <!-- bind all variables initially to zero -->
+        <Assignment name="equals">
+          <Variable name="crtSize"/>
+          <Constant name="zero"/>
+        </Assignment>
+        <Assignment name="equals">
+          <Variable name="maxSize"/>
+          <Constant name="zero"/>
+        </Assignment>
+        <!-- bind all lists initially to the empty list -->
+        <Assignment name="equals">
+          <Variable name="myList"/>
+          <Constant name="emptyList"/>
+        </Assignment>
+      </Binding>
+    </Memory>
+  
+  	<Operation name="create">
+      <!-- accepts the size of the stack, should be at least 3, and yields one output  -->
+      <Input name="size" type="Integer"/>
+      <Output name="result" type="Boolean"/>
+      <Scenario name="create/ok">
+        <!-- successful path, if size > 2  -->
+        <Binding>
+          <Assignment name="moreThan">
+            <Input name="size"/>
+            <Constant name="two"/>
+          </Assignment>
+        </Binding>
+
+        <Condition>
+		  <Comparison name="moreThan">
+		    <Input name="size"/>
+		    <Variable name="two"/>
+		  </Comparison>				
+        </Condition>
+
+        <Effect>
+			<Assignment name="equals">
+				<Variable name="maxSize"/>
+				<Input name="size"/>			
+			</Assignment>
+		    <Assignment name="equals">
+			 <Output name="result"/>
+			 <Constant name="true"/>
+			</Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="create/error">
+        <!-- unsuccessful path -->
+        <Binding>
+            <Assignment name="lessThan">
+             <Input name="size"/>
+             <Constant name="three"/>
+            </Assignment>
+        </Binding>
+        <Condition>
+   		     <Comparison name="lessThan">
+			    <Input name="size"/>
+				<Constant name="three"/>
+			</Comparison>			 
+        </Condition>
+		 <Effect>
+		    <Assignment name="equals">
+			 <Output name="result"/>
+			 <Constant name="false"/>
+			</Assignment>
+         </Effect>
+      </Scenario>
+    </Operation>
+	
+    <Operation name="push">
+      <!-- accepts an integer as input and returns true/false if successfully pushed or not -->
+      <Input name="x" type="Integer"/>
+      <Output name="result" type="Boolean"/>   
+         
+      <Scenario name="push/notFull">
+        <!-- successful path if list is not full -->
+        <Condition>
+            <Comparison name="lessThan">
+             <Variable name="crtSize"/>
+             <Arithmetic name="minus" type="Integer">
+              <Variable name="maxSize"/>
+              <Constant name="one"/>
+            </Arithmetic>	
+            </Comparison>          
+        </Condition>
+        <Effect>
+          <!-- each assignment is evaluated sequentially -->
+          <Assignment name="equals">
+            <!-- increment the current size by one -->
+            <Variable name="crtSize"/>
+            <Arithmetic name="plus" type="Integer">
+              <Variable name="crtSize"/>
+              <Constant name="one"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment name="equals">
+            <!-- reset myList list to a constructed list -->
+            <Variable name="myList"/>
+            <Manipulation name="insertAt">
+              <Variable name="myList"/>
+              <Variable name="crtSize"/>
+              <Input name="x"/>
+            </Manipulation>		
+          </Assignment>    
+		   <Assignment name="equals">
+			 <Output name="result"/>
+			 <Constant name="true"/>
+			</Assignment>			  
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="push/full">
+        <!-- successful path if list is almost full -->
+        <Condition>
+            <Comparison name="equals">
+             <Variable name="crtSize"/>
+             <Arithmetic name="minus" type="Integer">
+              <Variable name="maxSize"/>
+              <Constant name="one"/>
+            </Arithmetic>	
+            </Comparison>          
+        </Condition>
+        <Effect>
+          <!-- each assignment is evaluated sequentially -->
+          <Assignment name="equals">
+            <!-- increment the row count by one -->
+            <Variable name="crtSize"/>
+            <Arithmetic name="plus" type="Integer">
+              <Variable name="crtSize"/>
+              <Constant name="one"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment name="equals">
+            <Variable name="myList"/>
+            <Manipulation name="insertAt">
+              <Variable name="myList"/>
+              <Variable name="crtSize"/>
+              <Input name="x"/>
+            </Manipulation>		
+          </Assignment>    
+		   <Assignment name="equals">
+			 <Output name="result"/>
+			 <Constant name="true"/>
+			</Assignment>			  
+        </Effect>
+      </Scenario>
+      <Scenario name="push/error">
+        <!-- unsuccessful path, if list is full -->         
+        <Condition>
+            <Comparison name="equals">
+              <Variable name="crtSize"/>
+              <Variable name="maxSize"/>
+            </Comparison>          
+        </Condition>
+        <Effect>
+ 		   <Assignment name="equals">
+			 <Output name="result"/>
+			 <Constant name="false"/>
+		   </Assignment>  
+        </Effect>
+      </Scenario>
+    </Operation>
+    
+    <Operation name="pop">
+        <Output name="result" type="Boolean"/>
+        
+        <Scenario name="pop/empty">
+        <!-- deletes the only entry -->
+        <Condition>
+            <Comparison name="equals">
+              <Variable name="crtSize"/>
+              <Constant name="one"/>
+            </Comparison>          
+        </Condition>
+        <Effect>
+          <Assignment name="equals">
+            <Variable name="myList"/>
+            <Manipulation name="removeAt">
+              <Variable name="myList"/>
+              <Variable name="crtSize"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment name="equals">
+            <Variable name="crtSize"/>
+            <Constant name="zero" type="Integer"/>
+          </Assignment>
+		   <Assignment name="equals">
+			 <Output name="result"/>
+			 <Constant name="true"/>
+		   </Assignment>  
+        </Effect>
+      </Scenario>
+      
+	  <Scenario name="pop/notEmpty">
+        <!-- deletes the another entry -->
+        <Condition>
+            <Comparison name="moreThan">
+              <Variable name="crtSize"/>
+              <Constant name="one"/>
+            </Comparison>          
+        </Condition>
+        <Effect>
+          <Assignment name="equals">
+            <Variable name="myList"/>
+            <Manipulation name="removeAt">
+              <Variable name="myList"/>
+              <Variable name="crtSize"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment name="equals">
+		   <Variable name="crtSize"/>
+			<Arithmetic name="minus" type="Integer">
+              <Variable name="crtSize"/>
+              <Constant name="one"/>
+            </Arithmetic>		             
+          </Assignment>
+		   <Assignment name="equals">
+			 <Output name="result"/>
+			 <Constant name="true"/>
+		   </Assignment>  
+        </Effect>
+      </Scenario>	             
+          
+   <Scenario name="pop/error">
+        <!-- error -->
+        <Condition>
+            <Comparison name="equals">
+              <Variable name="crtSize"/>
+              <Constant name="zero"/>
+            </Comparison>          
+        </Condition>
+        <Effect>         
+		   <Assignment name="equals">
+			 <Output name="result"/>
+			 <Constant name="false"/>
+		   </Assignment>  
+        </Effect>
+      </Scenario>
+    </Operation>
+  </Protocol>
+  
+  <Machine name="StackServiceMachine">
+    <State name="NotAllocated" initial="true">
+      <Transition name="create/ok" source="NotAllocated" target="Empty"/>
+      <Transition name="create/error" source="NotAllocated" target="NotAllocated"/>
+    </State>
+    <State name="Empty">
+      <Transition name="push/notFull" source="Empty" target="Partial"/>
+      <Transition name="pop/error" source="Empty" target="Empty"/>
+    </State>
+    <State name="Partial">
+      <Transition name="push/notFull" source="Partial" target="Partial"/>
+      <Transition name="push/full" source="Partial" target="Full"/>
+      <Transition name="pop/empty" source="Partial" target="Empty"/>
+      <Transition name="pop/notEmpty" source="Partial" target="Partial"/>
+    </State>
+    <State name="Full">
+      <Transition name="push/error" source="Full" target="Full"/>
+      <Transition name="pop/notEmpty" source="Full" target="Partial"/>
+    </State>
+	</Machine>
+
+</Service>
+

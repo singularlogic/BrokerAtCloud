@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Memory>
+  <Constant name="zero" type="Integer"/>
+  <Constant name="one" type="Integer">1</Constant>
+  <Constant name="neg" type="Integer">-42</Constant>
+  <Constant name="shrt" type="Short">42</Constant>
+  <Constant name="long" type="Long">327678</Constant>
+  <Constant name="fltPi" type="Float">3.14</Constant>
+  <Constant name="dblPi" type="Double">3.14159262</Constant>
+  <Constant name="negPi" type="Double">-3.14159262</Constant>
+  <Constant name="name" type="String">John Smith</Constant>
+  <Constant name="char" type="Character">c</Constant>
+  <Constant name="true" type="Boolean">true</Constant>
+  <Constant name="TrUe" type="Boolean">TrUe</Constant>
+  <Constant name="false" type="Boolean">false</Constant>
+  
+  <Constant name="lst1" type="List[Integer]"/>
+  <Constant name="lst2" type="List[Double]">[7]</Constant>
+  <Constant name="lst3" type="List[Float]">[7, 4, 7]</Constant>
+  <Constant name="set1" type="Set[Integer]"/>
+  <Constant name="set2" type="Set[Double]">[7]</Constant>
+  <Constant name="set3" type="Set[Short]">[7, 4, 7]</Constant>
+  <Constant name="map1" type="Map[String, Integer]"/>
+  <Constant name="map2" type="Map[String, Double]">{a=7}</Constant>
+  <Constant name="map3" type="Map[Character, Long]">{a=7, b=4, c=7}</Constant>
+</Memory>

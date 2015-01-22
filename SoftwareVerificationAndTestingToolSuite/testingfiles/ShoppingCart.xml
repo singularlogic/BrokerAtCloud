@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Service name="ShoppingService">
+
+  <!-- a simple shopping cart service -->
+
+  <Protocol name="ShoppingService">
+
+  <Memory name="ShoppingService">
+    <!-- zero, one, false, true constants -->
+    <Constant name="zero" type="Integer">0</Constant>
+    <Constant name="one" type="Integer">1</Constant>
+    <Constant name="false" type="Boolean">false</Constant>
+    <Constant name="true" type="Boolean">true</Constant>
+    <Constant name="myBillingInfo" type="String">John Smith, 013623567</Constant>
+    <Constant name="badBillingInfo" type="String">John Smish, 213633567</Constant>
+
+    <!-- available and unavailable DVDs -->
+    <Constant name="available" type="String">DVD1</Constant>
+    <Constant name="unavailable" type="String">DVD2</Constant>
+
+    <!-- constants for the initial stock and empty cart -->
+    <Constant name="initialStock" type="Map[String, Integer]">
+       {DVD1=100, DVD2=0, DVD3=5, DVD4=2}
+    </Constant>
+    <Constant name="emptyCart" type="Map[String, Integer]">
+       {DVD1=0, DVD2=0, DVD3=0, DVD4=0}
+    </Constant>
+
+    <!-- variables for the current memory state -->
+    <Variable name="currentStock" type="Map[String, Integer]"/>
+    <Variable name="shoppingCart" type="Map[String, Integer]"/>
+
+    <Binding>
+      <!-- set up the current stock and initial cart -->
+      <Assignment name="equals">
+        <Variable name="currentStock"/>
+        <Constant name="initialStock"/>
+      </Assignment>
+      <Assignment name="equals">
+        <Variable name="shoppingCart"/>
+        <Constant name="emptyCart"/>
+      </Assignment>
+    </Binding>
+  </Memory>
+
+  <Operation name="enterShop">
+    <!-- Start or continue shopping -->
+    <Scenario name="enterShop/ok">
+    </Scenario>
+  </Operation>
+
+  <Operation name="exitShop">
+    <!-- Quit shopping at any time -->
+    <Scenario name="exitShop/ok">
+      <Effect>
+        <!-- reset the stock and cart to initial state -->
+        <Assignment name="equals">
+          <Variable name="currentStock"/>
+          <Constant name="initialStock"/>
+        </Assignment>
+        <Assignment name="equals">
+          <Variable name="shoppingCart"/>
+          <Constant name="emptyCart"/>
+        </Assignment>
+      </Effect>
+    </Scenario>
+  </Operation>
+
+  <Operation name="addItem">
+    <!-- Add item to the shopping cart -->
+    <Input name="item" type="String"/>
+    <Output name="quantity" type="Integer"/>
+
+    <Scenario name="addItem/ok">
+      <Binding>
+        <Assignment name="equals">
+          <Input name="item"/>
+          <Constant name="available"/>
+        </Assignment>
+      </Binding>
+      <Condition>
+        <Comparison name="moreThan">
+          <Manipulation name="searchAt" type="Integer">
+            <Variable name="currentStock"/>
+            <Input name="item"/>
+          </Manipulation>
+          <Constant name="zero" type="Integer"/>
+        </Comparison>
+      </Condition>
+      <Effect>
+        <!-- take off current stock -->
+        <Assignment name="equals">
+          <Variable name="currentStock"/>
+          <Manipulation name="replaceAt">
+            <Variable name="currentStock"/>
+            <Input name="item"/>
+            <Arithmetic name="minus" type="Integer">
+              <Manipulation name="searchAt" type="Integer">
+                <Variable name="currentStock"/>
+                <Input name="item"/>
+              </Manipulation>
+              <Constant name="one" type="Integer"/>
+            </Arithmetic>
+          </Manipulation>
+        </Assignment>
+        <!-- add to shopping cart -->
+        <Assignment name="equals">
+          <Variable name="shoppingCart"/>
+          <Manipulation name="replaceAt">
+            <Variable name="shoppingCart"/>
+            <Input name="item"/>
+            <Arithmetic name="plus" type="Integer">
+              <Manipulation name="searchAt" type="Integer">
+                <Variable name="shoppingCart"/>
+                <Input name="item"/>
+              </Manipulation>
+              <Constant name="one" type="Integer"/>
+            </Arithmetic>
+          </Manipulation>
+        </Assignment>
+        <!-- return quantity of item -->
+        <Assignment name="equals">
+          <Output name="quantity"/>
+          <Manipulation name="searchAt" type="Integer">
+            <Variable name="shoppingCart"/>
+            <Input name="item"/>
+          </Manipulation>
+        </Assignment>
+      </Effect>
+    </Scenario>
+
+    <Scenario name="addItem/error">
+      <Binding>
+        <Assignment name="equals">
+          <Input name="item"/>
+          <Constant name="unavailable"/>
+        </Assignment>
+      </Binding>
+      <Condition>
+        <Comparison name="notMoreThan">
+          <Manipulation name="searchAt" type="Integer">
+            <Variable name="currentStock"/>
+            <Input name="item"/>
+          </Manipulation>
+          <Constant name="zero" type="Integer"/>
+        </Comparison>
+      </Condition>
+      <Effect>
+        <!-- return quantity of item -->
+        <Assignment name="equals">
+          <Output name="quantity"/>
+          <Manipulation name="searchAt" type="Integer">
+            <Variable name="shoppingCart"/>
+            <Input name="item"/>
+          </Manipulation>
+        </Assignment>
+      </Effect>
+    </Scenario>
+  </Operation>
+
+  <Operation name="removeItem">
+    <!-- Remove item from the shopping cart -->
+    <Input name="item" type="String"/>
+    <Output name="quantity" type="Integer"/>
+
+    <Scenario name="removeItem/ok">
+      <Binding>
+        <Assignment name="equals">
+          <Input name="item"/>
+          <Constant name="available"/>
+        </Assignment>
+      </Binding>
+      <Condition>
+        <Comparison name="moreThan">
+          <Manipulation name="searchAt" type="Integer">
+            <Variable name="shoppingCart"/>
+            <Input name="item"/>
+          </Manipulation>
+          <Constant name="zero" type="Integer"/>
+        </Comparison>
+      </Condition>
+      <Effect>
+        <!-- take off shopping cart -->
+        <Assignment name="equals">
+          <Variable name="shoppingCart"/>
+          <Manipulation name="replaceAt">
+            <Variable name="shoppingCart"/>
+            <Input name="item"/>
+            <Arithmetic name="minus" type="Integer">
+              <Manipulation name="searchAt" type="Integer">
+                <Variable name="shoppingCart"/>
+                <Input name="item"/>
+              </Manipulation>
+              <Constant name="one" type="Integer"/>
+            </Arithmetic>
+          </Manipulation>
+        </Assignment>
+        <!-- add to current stock -->
+        <Assignment name="equals">
+          <Variable name="currentStock"/>
+          <Manipulation name="replaceAt">
+            <Variable name="currentStock"/>
+            <Input name="item"/>
+            <Arithmetic name="plus" type="Integer">
+              <Manipulation name="searchAt" type="Integer">
+                <Variable name="currentStock"/>
+                <Input name="item"/>
+              </Manipulation>
+              <Constant name="one" type="Integer"/>
+            </Arithmetic>
+          </Manipulation>
+        </Assignment>
+        <!-- return quantity of item -->
+        <Assignment name="equals">
+          <Output name="quantity"/>
+          <Manipulation name="searchAt" type="Integer">
+            <Variable name="shoppingCart"/>
+            <Input name="item"/>
+          </Manipulation>
+        </Assignment>
+      </Effect>
+    </Scenario>
+
+    <Scenario name="removeItem/error">
+      <Binding>
+        <Assignment name="equals">
+          <Input name="item"/>
+          <Constant name="unavailable"/>
+        </Assignment>
+      </Binding>
+      <Condition>
+        <Comparison name="notMoreThan">
+          <Manipulation name="searchAt" type="Integer">
+            <Variable name="shoppingCart"/>
+            <Input name="item"/>
+          </Manipulation>
+          <Constant name="zero" type="Integer"/>
+        </Comparison>
+      </Condition>
+      <Effect>
+        <!-- return quantity of item -->
+        <Assignment name="equals">
+          <Output name="quantity"/>
+          <Manipulation name="searchAt" type="Integer">
+            <Variable name="shoppingCart"/>
+            <Input name="item"/>
+          </Manipulation>
+        </Assignment>
+      </Effect>
+    </Scenario>
+  </Operation>
+
+  <Operation name="clearItems">
+    <!-- Remove all items from shopping cart -->
+    <Scenario name="clearItems/ok">
+      <Effect>
+        <!-- reset the stock and cart to initial state -->
+        <Assignment name="equals">
+          <Variable name="currentStock"/>
+          <Constant name="initialStock"/>
+        </Assignment>
+        <Assignment name="equals">
+          <Variable name="shoppingCart"/>
+          <Constant name="emptyCart"/>
+        </Assignment>
+      </Effect>
+    </Scenario>
+  </Operation>
+
+  <Operation name="checkout">
+    <Output name="result" type="Boolean"/>
+
+    <!-- Proceed to the checkout with items -->
+    <Scenario name="checkout/ok">
+      <Condition>
+        <Comparison name="notEquals">
+          <Variable name="shoppingCart"/>
+          <Constant name="emptyCart"/>
+        </Comparison>
+      </Condition>
+      <Effect>
+        <Assignment name="equals">
+          <Output name="result"/>
+          <Constant name="true"/>
+        </Assignment>
+      </Effect>
+    </Scenario>
+
+    <!-- Proceed to the checkout with no items -->
+    <Scenario name="checkout/error">
+      <Condition>
+        <Comparison name="equals">
+          <Variable name="shoppingCart"/>
+          <Constant name="emptyCart"/>
+        </Comparison>
+      </Condition>
+      <Effect>
+        <Assignment name="equals">
+          <Output name="result"/>
+          <Constant name="false"/>
+        </Assignment>
+      </Effect>
+    </Scenario>
+  </Operation>
+
+  <Operation name="payBill">
+    <!-- Supply billing and shipping details -->
+    <Input name="billingInfo" type="String"/>
+    <Output name="result" type="Boolean"/>
+
+    <!-- supply valid billing details -->
+    <Scenario name="payBill/ok">
+      <Binding>
+        <Assignment name="equals">
+          <Input name="billingInfo"/>
+          <Constant name="myBillingInfo"/>
+        </Assignment>
+      </Binding>
+      <Condition>
+        <Comparison name="equals">
+          <Input name="billingInfo"/>
+          <Constant name="myBillingInfo"/>
+        </Comparison>
+      </Condition>
+      <Effect>
+        <Assignment name="equals">
+          <Output name="result"/>
+          <Constant name="true"/>
+        </Assignment>
+      </Effect>
+    </Scenario>
+
+    <!-- supply invalid billing details -->
+    <Scenario name="payBill/error">
+      <Binding>
+        <Assignment name="equals">
+          <Input name="billingInfo"/>
+          <Constant name="badBillingInfo"/>
+        </Assignment>
+      </Binding>
+      <Condition>
+        <Comparison name="notEquals">
+          <Input name="billingInfo"/>
+          <Constant name="myBillingInfo"/>
+        </Comparison>
+      </Condition>
+      <Effect>
+        <Assignment name="equals">
+          <Output name="result"/>
+          <Constant name="false"/>
+        </Assignment>
+      </Effect>
+    </Scenario>
+  </Operation>
+
+  <Operation name="confirmBill">
+    <!-- Confirm billing and shipping details -->
+    <Scenario name="confirmBill/ok">
+    </Scenario>
+  </Operation>
+
+  </Protocol>
+
+  <Machine name="ShoppingService">
+    <State name="Initial" initial="true">
+      <Transition name="enterShop/ok" source="Initial" target="Shopping"/>
+      <Transition name="exitShop/ok" source="Initial" target="Final"/>
+    </State>
+
+    <State name="Shopping">
+      <Transition name="addItem/ok" source="Shopping" target="Shopping"/>
+      <Transition name="addItem/error" source="Shopping" target="Shopping"/>
+      <Transition name="removeItem/ok" source="Shopping" target="Shopping"/>
+      <Transition name="removeItem/error" source="Shopping" target="Shopping"/>
+      <Transition name="checkout/ok" source="Shopping" target="Checkout"/>
+      <Transition name="checkout/error" source="Shopping" target="Shopping"/>
+      <Transition name="clearItems/ok" source="Shopping" target="Shopping"/>
+      <Transition name="exitShop/ok" source="Shopping" target="Final"/>
+    </State>
+
+    <State name="Checkout">
+      <Transition name="payBill/ok" source="Checkout" target="Payment"/>
+      <Transition name="payBill/error" source="Checkout" target="Checkout"/>
+      <Transition name="enterShop/ok" source="Checkout" target="Shopping"/>
+      <Transition name="exitShop/ok" source="Checkout" target="Final"/>
+    </State>
+
+    <State name="Payment">
+      <Transition name="confirmBill/ok" source="Payment" target="Final"/>
+      <Transition name="checkout/ok" source="Payment" target="Checkout"/>
+      <Transition name="exitShop/ok" source="Payment" target="Final"/>
+    </State>
+
+    <State name="Final">
+    </State>
+
+  </Machine>
+
+
+</Service>

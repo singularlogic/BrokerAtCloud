@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Service name="ContactService">
+  <!-- a contact list service with indexed selection -->
+  
+  <Protocol name="ContactService">
+
+    <Memory name="ContactService">
+      <!-- declare constants for the empty String and empty List -->
+      <Constant name="emptyString" type="String"/>
+      <Constant name="emptyList" type="List[String]"/>
+      
+      <!-- declare integer constants for 1, 0 -->
+      <Constant name="zero" type="Integer">0</Constant>
+      <Constant name="one" type="Integer">1</Constant>
+  
+      <!-- declare variables for the forename, and surname lists -->
+      <Variable name="forenameList" type="List[String]"/>
+      <Variable name="surnameList" type="List[String]"/>
+      
+      <!-- declare counters for the row and selection -->
+      <Variable name="rowCount" type="Integer"/>
+      <Variable name="selectedRow" type="Integer"/>
+      
+      <Binding>
+        <!-- bind all counters initially to zero -->
+        <Assignment name="equals">
+          <Variable name="rowCount"/>
+          <Constant name="zero"/>
+        </Assignment>
+        <Assignment name="equals">
+          <Variable name="selectedRow"/>
+          <Constant name="zero"/>
+        </Assignment>
+        <!-- bind all lists initially to the empty list -->
+        <Assignment name="equals">
+          <Variable name="forenameList"/>
+          <Constant name="emptyList"/>
+        </Assignment>
+        <Assignment name="equals">
+          <Variable name="surnameList"/>
+          <Constant name="emptyList"/>
+        </Assignment>
+      </Binding>
+    </Memory>
+  
+    <Operation name="addEntry">
+      <!-- accepts a forename and surname as inputs -->
+      <Input name="forename" type="String"/>
+      <Input name="surname" type="String"/>
+      
+      <Scenario name="addEntry/ok">
+        <!-- successful path, if names are non-empty strings -->
+        <Binding>
+          <Assignment name="notEquals">
+            <Input name="forename"/>
+            <Constant name="emptyString"/>
+          </Assignment>
+          <Assignment name="notEquals">
+            <Input name="surname"/>
+            <Constant name="emptyString"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <Proposition name="and">
+            <Comparison name="notEquals">
+              <Input name="forename"/>
+              <Constant name="emptyString"/>
+            </Comparison>
+            <Comparison name="notEquals">
+              <Input name="surname"/>
+              <Constant name="emptyString"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <!-- each assignment is evaluated sequentially -->
+          <Assignment name="equals">
+            <!-- increment the row count by one -->
+            <Variable name="rowCount"/>
+            <Arithmetic name="plus" type="Integer">
+              <Variable name="rowCount"/>
+              <Constant name="one"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment name="equals">
+            <!-- reset the forename list to a constructed list -->
+            <Variable name="forenameList"/>
+            <Manipulation name="insertAt">
+              <Variable name="forenameList"/>
+              <Variable name="rowCount"/>
+              <Input name="forename"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment name="equals">
+            <!-- reset the surname list to a constructed list -->
+            <Variable name="surnameList"/>
+            <Manipulation name="insertAt">
+              <Variable name="surnameList"/>
+              <Variable name="rowCount"/>
+              <Input name="surname"/>
+            </Manipulation>
+          </Assignment>
+          <!-- and the selected row remains unaffected -->
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="addEntry/error">
+        <!-- unsuccessful path, if either name is an empty string -->
+        <Binding>
+          <Assignment name="equals">
+            <Input name="forename"/>
+            <Constant name="emptyString"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Input name="surname"/>
+            <Constant name="emptyString"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <Proposition name="or">
+            <Comparison name="equals">
+              <Input name="forename"/>
+              <Constant name="emptyString"/>
+            </Comparison>
+            <Comparison name="equals">
+              <Input name="surname"/>
+              <Constant name="emptyString"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <!-- having no effect is a legitimate option -->
+      </Scenario>
+    </Operation>
+    
+    <Operation name="removeEntry">
+      <!-- behaviour is entirely dependent on the state of memory -->
+    
+      <Scenario name="removeEntry/onlyEntry">
+        <!-- deletes the only entry and clears the selection -->
+        <Condition>
+          <Proposition name="and">
+            <Comparison name="equals">
+              <Variable name="rowCount"/>
+              <Constant name="one"/>
+            </Comparison>
+            <Comparison name="equals">
+              <Variable name="selectedRow"/>
+              <Variable name="rowCount"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <Assignment name="equals">
+            <Variable name="forenameList"/>
+            <Manipulation name="removeAt">
+              <Variable name="forenameList"/>
+              <Variable name="rowCount"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment name="equals">
+            <Variable name="surnameList"/>
+            <Manipulation name="removeAt">
+              <Variable name="surnameList"/>
+              <Variable name="rowCount"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment name="equals">
+            <Variable name="rowCount"/>
+            <Constant name="zero" type="Integer"/>
+          </Assignment>
+          <Assignment name="equals">
+            <Variable name="selectedRow"/>
+            <Constant name="zero"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="removeEntry/medialEntry">
+        <!-- removes a medial entry in the list, so advancing the selection -->
+        <Condition>
+          <Proposition name="and">
+            <Comparison name="moreThan">
+              <Variable name="rowCount"/>
+              <Constant name="one"/>
+            </Comparison>
+            <Comparison name="lessThan">
+              <Variable name="selectedRow"/>
+              <Variable name="rowCount"/>
+            </Comparison>
+            <Comparison name="moreThan">
+              <Variable name="selectedRow"/>
+              <Constant name="zero"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <Assignment name="equals">
+            <Variable name="forenameList"/>
+            <Manipulation name="removeAt">
+              <Variable name="forenameList"/>
+              <Variable name="selectedRow"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment name="equals">
+            <Variable name="surnameList"/>
+            <Manipulation name="removeAt">
+              <Variable name="surnameList"/>
+              <Variable name="selectedRow"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment name="equals">
+            <Variable name="rowCount"/>
+            <Arithmetic name="minus" type="Integer">
+              <Variable name="rowCount"/>
+              <Constant name="one"/>
+            </Arithmetic>
+          </Assignment>
+        </Effect>
+      </Scenario>
+            
+      <Scenario name="removeEntry/finalEntry">
+        <!-- removes the last entry in the list and clears the selection -->
+        <Condition>
+          <Proposition name="and">
+            <Comparison name="moreThan">
+              <Variable name="rowCount"/>
+              <Constant name="one"/>
+            </Comparison>
+            <Comparison name="equals">
+              <Variable name="selectedRow"/>
+              <Variable name="rowCount"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+           <Assignment name="equals">
+            <Variable name="forenameList"/>
+            <Manipulation name="removeAt">
+              <Variable name="forenameList"/>
+              <Variable name="selectedRow"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment name="equals">
+            <Variable name="surnameList"/>
+            <Manipulation name="removeAt">
+              <Variable name="surnameList"/>
+              <Variable name="selectedRow"/>
+            </Manipulation>
+          </Assignment>
+          <Assignment name="equals">
+            <Variable name="rowCount"/>
+            <Arithmetic name="minus" type="Integer">
+              <Variable name="rowCount"/>
+              <Constant name="one"/>
+            </Arithmetic>
+          </Assignment>
+          <Assignment name="equals">
+            <Variable name="selectedRow"/>
+            <Constant name="zero"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="removeEntry/ignore">
+        <!-- do nothing if the selection is outside range -->
+        <Condition>
+          <Proposition name="or">
+            <Comparison name="moreThan">
+              <Variable name="selectedRow"/>
+              <Constant name="rowCount"/>
+            </Comparison>
+            <Comparison name="notMoreThan">
+              <Variable name="selectedRow"/>
+              <Variable name="zero"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+      </Scenario>
+      
+    </Operation>
+    
+    <Operation name="selectRow">
+      <Input name="rowNumber" type="Integer"/>
+        
+      <Scenario name="selectRow/low">
+        <!-- chooses a low selection value in the binding -->
+        <Binding>
+          <Assignment name="moreThan">
+            <Input name="rowNumber"/>
+            <Constant name="zero"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <Proposition name="and">
+            <Comparison name="moreThan">
+              <Input name="rowNumber"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="lessThan">
+              <Input name="rowNumber"/>
+              <Variable name="rowCount"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <Assignment name="equals">
+            <Variable name="selectedRow"/>
+            <Input name="rowNumber"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="selectRow/high">
+        <!-- chooses a high selection value in the binding -->
+        <Binding>
+          <Assignment name="equals">
+            <Input name="rowNumber"/>
+            <Variable name="rowCount"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <Proposition name="and">
+            <Comparison name="moreThan">
+              <Input name="rowNumber"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="equals">
+              <Input name="rowNumber"/>
+              <Variable name="rowCount"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <Assignment name="equals">
+            <Variable name="selectedRow"/>
+            <Input name="rowNumber"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="selectRow/ignore">
+        <!-- choose a selection that is out of range -->
+        <Binding>
+          <Assignment name="equals">
+            <Input name="rowNumber"/>
+            <Constant name="zero"/>
+          </Assignment>
+        </Binding>
+        <Condition>
+          <Proposition name="or">
+            <Comparison name="notMoreThan">
+              <Input name="rowNumber"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="moreThan">
+              <Input name="rowNumber"/>
+              <Variable name="rowCount"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+      </Scenario>
+    </Operation>
+    
+    <Operation name="unselectRow">
+      <Scenario name="unselectRow/ok">
+        <!-- succeeds when a row is selected -->
+        <Condition>
+          <Proposition name="and">
+            <Comparison name="moreThan">
+              <Input name="selectedRow"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="notMoreThan">
+              <Input name="selectedRow"/>
+              <Variable name="rowCount"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <Effect>
+          <Assignment name="equals">
+            <Variable name="selectedRow"/>
+            <Constant name="zero"/>
+          </Assignment>
+        </Effect>
+      </Scenario>
+      
+      <Scenario name="unselectRow/ignore">
+        <!-- ignored in cases where no row is selected -->
+        <Condition>
+          <Proposition name="or">
+            <Comparison name="notMoreThan">
+              <Input name="selectedRow"/>
+              <Constant name="zero"/>
+            </Comparison>
+            <Comparison name="moreThan">
+              <Input name="selectedRow"/>
+              <Variable name="rowCount"/>
+            </Comparison>
+          </Proposition>
+        </Condition>
+        <!-- do nothing -->
+      </Scenario>
+ 
+     </Operation>
+  </Protocol>
+  
+  <Machine name="ContactService">
+    <!-- includes every transition for whose existence we want to test -->
+    
+    <State name="EmptyTable" initial="true">
+      <Transition name="addEntry/ok" source="EmptyTable" target="NonEmptyTable"/>
+      <Transition name="addEntry/error" source="EmptyTable" target="EmptyTable"/>
+      <Transition name="selectRow/ignore" source="EmptyTable" target="EmptyTable"/>
+      <Transition name="unselectRow/ignore" source="EmptyTable" target="EmptyTable"/>
+      <Transition name="removeEntry/ignore" source="EmptyTable" target="EmptyTable"/>
+    </State>
+    <State name="NonEmptyTable">
+      <Transition name="addEntry/ok" source="NonEmptyTable" target="NonEmptyTable"/>
+      <Transition name="addEntry/error" source="NonEmptyTable" target="NonEmptyTable"/>
+      <Transition name="selectRow/low" source="NonEmptyTable" target="RowSelected"/>
+      <Transition name="selectRow/high" source="NonEmptyTable" target="RowSelected"/>
+      <Transition name="selectRow/ignore" source="NonEmptyTable" target="NonEmptyTable"/>
+      <Transition name="unselectRow/ignore" source="NonEmptyTable" target="NonEmptyTable"/>
+      <Transition name="removeEntry/ignore" source="NonEmptyTable" target="NonEmptyTable"/>
+    </State>
+    <State name="RowSelected">
+      <Transition name="addEntry/ok" source="RowSelected" target="RowSelected"/>
+      <Transition name="addEntry/error" source="RowSelected" target="RowSelected"/>
+      <Transition name="selectRow/low" source="RowSelected" target="RowSelected"/>
+      <Transition name="selectRow/high" source="RowSelected" target="RowSelected"/>
+      <Transition name="selectRow/ignore" source="RowSelected" target="RowSelected"/>
+      <Transition name="unselectRow/ok" source="RowSelected" target="NonEmptyTable"/>
+      <Transition name="removeEntry/onlyEntry" source="RowSelected" target="EmptyTable"/>
+      <Transition name="removeEntry/finalEntry" source="RowSelected" target="NonEmptyTable"/>
+      <Transition name="removeEntry/medialEntry" source="RowSelected" target="RowSelected"/>      
+    </State>
+  </Machine>
+
+</Service>
+

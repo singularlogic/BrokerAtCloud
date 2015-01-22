@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<Service name ="ApprovalCockpitService">
+	<Protocol name="ApprovalCockpitProtocol">
+		<Memory>
+			
+			<Constant name="false" type="Boolean">false</Constant>
+
+			<Constant name="maxDays" type="Integer">5</Constant>
+			<Constant name="DaysNotOK" type="Integer">6</Constant>
+			<Constant name="FullDaysOK" type="Integer">5</Constant>
+			<Constant name="DaysOK" type="Integer">4</Constant>
+
+            <Variable name="daysAvailable" type="Integer"/>
+
+
+			<Binding>
+				<!-- initial binding - bootstrapping -->
+				<Assignment name="equals">
+					<Variable name="daysAvailable"/>
+					<Constant name="maxDays"/>
+				</Assignment>
+			</Binding>
+		</Memory>
+		<!--Operation name="executeNewRequest">
+			
+			<Input name="daysRequired" type="Integer"/>
+			<Output name="daysUsed" type="Integer"/>
+
+			<Scenario name="executeNewRequest/Ok"> 
+				<Condition> 
+					<Comparison name="notMoreThan">
+						<Variable name="daysRequired"/>
+						<Variable name="daysAvailable"/>
+					</Comparison>
+				</Condition> 
+				<Effect>
+					<Assignment name="equals">
+						<Variable name="currentRow"/>
+						<Constant name="i1"/>
+					</Assignment>
+					
+				</Effect>
+			</Scenario>
+		</Operation-->
+		
+		<Operation name="executeDaysNotOK">
+			<Input name="requestedDays" type="Integer"/>
+			<Scenario name="executeDaysNotOK/fail">
+				<Binding> 
+					<Assignment name="equals">
+						<Variable name="requestedDays"/>
+						<Constant name="DaysNotOK"/>
+					</Assignment>
+				</Binding>
+				<Condition>
+					<Comparison name="moreThan">
+						<Variable name="requestedDays"/>
+						<Variable name="daysAvailable"/>
+					</Comparison>
+				</Condition>
+			</Scenario>
+		</Operation>
+
+		<Operation name="executeDaysOK">
+			<Input name="requestedDays" type="Integer"/>
+			
+			<Scenario name="executeDaysOK/ok">
+				<Binding> 
+					<Assignment name="equals">
+						<Input name="requestedDays"/>
+						<Constant name="DaysOK"/>
+					</Assignment>
+				</Binding>
+				<Condition>
+					<Comparison name="notLessThan">
+						<Input name="daysAvailable"/>
+						<Variable name="requestedDays"/>
+					</Comparison>
+				</Condition>
+				<Effect>
+					<Assignment name="equals">
+						<Variable name="daysAvailable"/>
+						<Arithmetic name="minus" type="Integer">
+							<Variable name="daysAvailable"/>
+							<Input name="requestedDays"/>
+						</Arithmetic>
+					</Assignment>
+				</Effect>
+			</Scenario>
+			<Scenario name="executeDaysOK/fail">
+				<Condition>
+					<Comparison name="moreThan">
+						<Variable name="requestedDays"/>
+						<Variable name="daysAvailable"/>
+					</Comparison>	
+				</Condition>
+			</Scenario>
+		</Operation>
+
+		<Operation name="executeFullDays">
+			<Input name="requestedDays" type="Integer"/>
+			
+			<Scenario name="executeFullDays/ok">
+				<Binding> 
+					<Assignment name="equals">
+						<Variable name="requestedDays"/>
+						<Constant name="FullDaysOK"/>
+					</Assignment>
+				</Binding>
+				<Condition>
+					<Comparison name="notLessThan">
+						<Input name="daysAvailable"/>
+						<Variable name="requestedDays"/>
+					</Comparison>
+				</Condition>
+				<Effect>
+					<Assignment name="equals">
+						<Variable name="daysAvailable"/>
+						<Arithmetic name="minus" type="Integer">
+							<Variable name="daysAvailable"/>
+							<Input name="requestedDays"/>
+						</Arithmetic>
+					</Assignment>
+				</Effect>
+			</Scenario>
+			<Scenario name="executeFullDays/fail">
+				<Condition>
+					<Comparison name="moreThan">
+						<Variable name="requestedDays"/>
+						<Variable name="daysAvailable"/>
+					</Comparison>	
+				</Condition>
+			</Scenario>
+		</Operation>
+
+		<Operation name="cancelDays">
+			<Input name="requestedDays" type="Integer"/>
+
+			<Scenario name="cancelDays/ok">
+				<Binding> 
+					<Assignment name="equals">
+						<Input name="requestedDays"/>
+						<Constant name="DaysOK"/>
+					</Assignment>
+				</Binding>
+				<Condition> 
+					<Comparison name="equals">
+						<Constant name="maxDays"/>
+						<Arithmetic name="plus" type="Integer">
+							<Variable name="daysAvailable"/>
+							<Input name="requestedDays"/>
+						</Arithmetic>
+					</Comparison>
+				</Condition>
+				<Effect>
+					<Assignment name="equals">
+						<Variable name="daysAvailable"/>
+						<Arithmetic name="plus">
+							<Variable name="daysAvailable"/>
+							<Input name="requestedDays"/>
+						</Arithmetic>
+					</Assignment>
+				</Effect>
+			</Scenario>
+		</Operation>
+		<Operation name="cancelFullDays">
+			<Input name="requestedDays" type="Integer"/>
+
+			<Scenario name="cancelFullDays/ok">
+				<Binding> 
+					<Assignment name="equals">
+						<Variable name="requestedDays"/>
+						<Constant name="FullDaysOK"/>
+					</Assignment>
+				</Binding>
+				<Condition> 
+					<Comparison name="equals">
+						<Constant name="maxDays"/>
+						<Arithmetic name="plus" type="Integer">
+							<Variable name="daysAvailable"/>
+							<Input name="requestedDays"/>
+						</Arithmetic>
+					</Comparison>
+				</Condition>
+				<Effect>
+					<Assignment name="equals">
+						<Variable name="daysAvailable"/>
+						<Arithmetic name="plus">
+							<Variable name="daysAvailable"/>
+							<Input name="requestedDays"/>
+						</Arithmetic>
+					</Assignment>
+				</Effect>
+			</Scenario>
+		</Operation>
+
+
+		<Operation name="showDetails">
+			<Scenario name="showDetails/ok">
+				<Condition> 
+					<Comparison name="lessThan">
+						<Variable name="daysAvailable"/>
+						<Constant name="maxDays"/>
+					</Comparison>
+				</Condition>
+			</Scenario>
+			<Scenario name="showDetails/fail">
+				<!-- is this possible at all?-->
+			</Scenario>
+		</Operation>
+
+		<Operation name="newRequest">
+			<Scenario name="newRequest/ok">
+			</Scenario>
+		</Operation>
+
+		<Operation name="back">
+			<Scenario name="back/fromNew">
+			</Scenario>
+			<Scenario name="back/fromDetails">
+			</Scenario>
+		</Operation>
+	</Protocol>
+
+	<Machine name="leaveRequestMachine">
+		<State name="List" initial="true">
+			<Transition name="newRequest/ok" source="List" target="EditDetails"/>
+			<Transition name="showDetails/ok" source="List" target="Details" />
+		</State>
+		<State name="EditDetails" initial="false">
+			<Transition name="back/fromNew" source="EditDetails" target="List"/>
+			<Transition name="executeDaysNotOK/fail" source="EditDetails" target="List"/>
+			<Transition name="executeDaysOK/ok" source="EditDetails" target="List"/>
+			<Transition name="executeDaysOK/fail" source="EditDetails" target="List"/>
+			<Transition name="executeFullDays/ok" source="EditDetails" target="List"/>
+			<Transition name="executeFullDays/fail" source="EditDetails" target="List"/>
+		</State>
+		<State name="Details" initial="false">
+			<Transition name="back/fromDetails" source="Details" target="List"/>
+			<Transition name="cancelDays/ok" source="Details" target="List"/>
+			<Transition name="cancelFullDays/ok" source="Details" target="List"/>
+		</State>
+
+        
+	</Machine>
+</Service>
+	

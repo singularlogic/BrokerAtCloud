@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Machine id="0" name="HolidayBookingMachine">
+  <Notice id="1" text="Validation report for machine: HolidayBookingMachine">
+    <Analysis id="2" text="Events are ignored in state: ViewDays"/>
+    <Analysis id="3" text="Events are ignored in state: BookDays"/>
+    <Analysis id="4" text="Events are ignored in state: DeleteDays"/>
+  </Notice>
+  <State id="5" name="ViewDays" initial="true">
+    <Notice id="6" text="Completeness check for state: ViewDays">
+      <Analysis id="7" text="State ignores the events:">
+        <Event id="8" name="back/ok"/>
+        <Event id="9" name="choose/one"/>
+        <Event id="10" name="choose/four"/>
+        <Event id="11" name="choose/seven"/>
+        <Event id="12" name="save/ok"/>
+        <Event id="13" name="save/overflow"/>
+        <Event id="14" name="save/duplicate"/>
+        <Event id="15" name="save/fail"/>
+        <Event id="16" name="delete/ok"/>
+      </Analysis>
+    </Notice>
+    <Transition id="17" name="bookDays/ok" source="ViewDays" target="BookDays"/>
+    <Transition id="18" name="select/fail" source="ViewDays" target="ViewDays"/>
+    <Transition id="19" name="select/low" source="ViewDays" target="DeleteDays"/>
+    <Transition id="20" name="select/high" source="ViewDays" target="DeleteDays"/>
+  </State>
+  <State id="21" name="BookDays">
+    <Notice id="22" text="Completeness check for state: BookDays">
+      <Analysis id="23" text="State ignores the events:">
+        <Event id="24" name="bookDays/ok"/>
+        <Event id="25" name="select/fail"/>
+        <Event id="26" name="select/low"/>
+        <Event id="27" name="select/high"/>
+        <Event ref="16" name="delete/ok"/>
+      </Analysis>
+    </Notice>
+    <Transition id="28" name="back/ok" source="BookDays" target="ViewDays"/>
+    <Transition id="29" name="choose/one" source="BookDays" target="BookDays"/>
+    <Transition id="30" name="choose/four" source="BookDays" target="BookDays"/>
+    <Transition id="31" name="choose/seven" source="BookDays" target="BookDays"/>
+    <Transition id="32" name="save/ok" source="BookDays" target="ViewDays"/>
+    <Transition id="33" name="save/overflow" source="BookDays" target="BookDays"/>
+    <Transition id="34" name="save/duplicate" source="BookDays" target="BookDays"/>
+    <Transition id="35" name="save/fail" source="BookDays" target="BookDays"/>
+  </State>
+  <State id="36" name="DeleteDays">
+    <Notice id="37" text="Completeness check for state: DeleteDays">
+      <Analysis id="38" text="State ignores the events:">
+        <Event ref="24" name="bookDays/ok"/>
+        <Event ref="25" name="select/fail"/>
+        <Event ref="26" name="select/low"/>
+        <Event ref="27" name="select/high"/>
+        <Event ref="12" name="save/ok"/>
+        <Event ref="13" name="save/overflow"/>
+        <Event ref="14" name="save/duplicate"/>
+        <Event ref="15" name="save/fail"/>
+      </Analysis>
+    </Notice>
+    <Transition id="39" name="back/ok" source="DeleteDays" target="ViewDays"/>
+    <Transition id="40" name="delete/ok" source="DeleteDays" target="ViewDays"/>
+    <Transition id="41" name="choose/one" source="DeleteDays" target="BookDays"/>
+    <Transition id="42" name="choose/four" source="DeleteDays" target="BookDays"/>
+    <Transition id="43" name="choose/seven" source="DeleteDays" target="BookDays"/>
+  </State>
+</Machine>
