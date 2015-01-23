@@ -1,0 +1,1352 @@
+package eu.brokeratcloud.persistence;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+import java.util.Stack;
+import eu.brokeratcloud.persistence.annotations.RdfSubject;
+import eu.brokeratcloud.persistence.annotations.RdfPredicate;
+import eu.brokeratcloud.persistence.annotations.Id;
+import eu.brokeratcloud.fuseki.FusekiClient;
+import com.hp.hpl.jena.query.QueryExecution;
+import com.hp.hpl.jena.query.QuerySolution;
+import com.hp.hpl.jena.query.ResultSet;
+import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
+	private static final Logger logger = LoggerFactory.getLogger( (new Object() { }.getClass().getEnclosingClass()).getName() );
+	//("eu.brokeratcloud.persistence.RdfPersistenceManagerImpl");
+	
+	protected FusekiClient client;
+	protected HashMap<String,Object> managedObjects;
+	protected String defaultNamespacePrefix = "http://www.brokeratcloud.eu/";
+	protected String defaultTypesPrefix = defaultNamespacePrefix + "persist/types";
+	
+	RdfPersistenceManagerImpl() throws java.io.IOException {
+		client = new FusekiClient();
+		managedObjects = new HashMap<String,Object>();
+	}
+	
+	// Public API
+	public void open() {}
+	public void close() {}
+	public boolean isOpen() { return true; }
+	public boolean isClosed() { return !isOpen(); }
+	
+	public void attach(Object o) throws IllegalAccessException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		if (_getObjectTypeUri(o.getClass())==null) return;	// Not persistable
+		String oUri = _getObjectUri(o);
+		if (managedObjects.containsKey(oUri)) return;
+		managedObjects.put(oUri, o);
+	}
+	
+	public void detach(Object o) throws IllegalAccessException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		if (_getObjectTypeUri(o.getClass())==null) return;	// Not persistable
+		String oUri = _getObjectUri(o);
+		if (managedObjects.containsKey(oUri)) {
+			managedObjects.remove(oUri);
+		}
+	}
+	
+	public void clear() {
+		managedObjects.clear();
+	}
+	
+	public void persist(Object o) throws IllegalAccessException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		if (_getObjectTypeUri(o.getClass())==null) return;	// Not persistable
+		String oUri = _getObjectUri(o);
+		// if object is already managed (i.e. persisted or retrieved using find) then just merge any changes
+		if (managedObjects.containsKey(oUri)) {
+			merge(o);
+			return;
+		}
+		// Not managed yet: store object's uri and reference in managed objects hashmap
+		managedObjects.put(oUri, o);
+		
+// TODO: CHECK IF uri ALREADY EXISTS !!!!
+
+		// Prepare RDF insert statement
+		StringBuffer sb = new StringBuffer();
+		sb.append("# Object  : "); sb.append(o.hashCode()); sb.append("\n");
+		sb.append("# Command : INSERT DATA\n");
+		sb.append("INSERT DATA {\n");
+		// Visit all object fields and referenced objects 
+		// and create corresponding statements
+		_travesre(o, new HashMap<Object,Object>(), new Stack<Object>(), sb, null, new HashMap<String,Object>());
+		sb.append("} ;\n");
+		//System.err.println(sb.toString());
+		
+		// Use fuseki client to send statement to Fuseki server
+		//System.err.println("RdfPersistenceManagerImpl: persist: SPARQL Update sent...");
+		client.execute(sb.toString());
+		//System.err.println("RdfPersistenceManagerImpl: persist: SPARQL Update completed");
+	}
+	
+	public void merge(Object o) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		if (_getObjectTypeUri(o.getClass())==null) return;	// Not persistable
+		String oUri = _getObjectUri(o);
+		if (!managedObjects.containsKey(oUri)) return;	// Not managed yet
+		
+		// Prepare RDF delete and insert statement
+		StringBuffer sb = new StringBuffer();
+		sb.append("# Object  : "); sb.append(o.hashCode()); sb.append("\n");
+		sb.append("# Command : DELETE INSERT WHERE\n");
+		sb.append("DELETE { \n");
+		sb.append("\t<"); sb.append(oUri); sb.append(">\t?p\t?o .\n");
+		sb.append("}\n");
+		sb.append("INSERT {\n");
+		// Visit all object fields and referenced objects 
+		// and create corresponding statements
+		_travesre(o, new HashMap<Object,Object>(), new Stack<Object>(), sb, null, new HashMap<String,Object>());
+		sb.append("} \n");
+		sb.append("WHERE {\n");
+		sb.append("\t<"); sb.append(oUri); sb.append(">\t?p\t?o .\n");
+		sb.append("} ; \n\n");
+		//System.err.println(sb.toString());
+		
+		// Use fuseki client to send statement to Fuseki server
+		//System.err.println("RdfPersistenceManagerImpl: merge: SPARQL Update sent...");
+		client.execute(sb.toString());
+		//System.err.println("RdfPersistenceManagerImpl: merge: SPARQL Update completed");
+	}
+	
+	public void refresh(Object o) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		if (_getObjectTypeUri(o.getClass())==null) return;	// Not persistable
+		String oUri = _getObjectUri(o);
+		if (!managedObjects.containsKey(oUri)) return;	// Not managed yet
+		
+		// Retrieve stored data and refresh object fields
+		_retrieveObjectData(oUri, o, new HashMap<String,Object>());
+	}
+	
+	public void remove(Object o) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		if (_getObjectTypeUri(o.getClass())==null) return;	// Not persistable
+		String oUri = _getObjectUri(o);
+		// Remove object's uri and reference from managed objects hashmap
+		if (managedObjects.remove(oUri)==null) return;	// Not managed yet
+		
+		// Prepare RDF delete statement
+		StringBuffer sb = new StringBuffer();
+		HashMap<Object,Object> traversed = new HashMap<Object,Object>();
+		_travesreDelete(o, traversed, new Stack<Object>(), sb);
+		//System.err.println(sb.toString());
+		
+		// Use fuseki client to send statement to Fuseki server
+		//System.err.println("RdfPersistenceManagerImpl: delete: SPARQL Update sent...");
+		client.execute(sb.toString());
+		//System.err.println("RdfPersistenceManagerImpl: delete: SPARQL Update completed");
+	}
+	
+	public List<Object> findAll(Class type) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		String typeUri = _getObjectTypeUri(type);
+		if (typeUri==null) return null;		// Not persistable
+		
+		// retrieve all object uri's of this class
+		StringBuffer sb = new StringBuffer();
+		sb.append("# Class URI : "); sb.append(typeUri); sb.append("\n");
+		sb.append("# Command   : SELECT\n");
+		sb.append("SELECT ?s WHERE { ?s  a  <"+typeUri+"> . }\n\n");
+		//System.err.println("Query = "+sb.toString());
+		
+		return findByQuery(sb.toString());
+//XXX: 2014-06-12: performance improvement ??
+//		return findByQuery2(sb.toString());
+	}
+	
+	public List<Object> findByQuery(String queryStr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		// Use fuseki client to send statement to Fuseki server
+		//System.err.println("RdfPersistenceManagerImpl: findByQuery: SPARQL Select sent...");
+		QueryExecution qeSelect = client.query(queryStr);
+		//System.err.println("RdfPersistenceManagerImpl: findByQuery: SPARQL Select completed");
+		
+		// Perform the simple SPARQL SELECT query
+		try {
+			HashMap<String,Object> visited = new HashMap<String,Object>();
+			HashSet<String> set = new HashSet<String>();
+			
+			// Retrieving the SPARQL Query results
+			ResultSet results = qeSelect.execSelect();
+			String var = results.getResultVars().get(0);
+			while (results.hasNext()) {
+				QuerySolution soln = results.nextSolution();
+				String uri = soln.get(var).toString();
+				set.add(uri);
+			}
+			List<Object> list = new LinkedList<Object>();
+			for (String uri : set) {
+				//System.err.println("Retrieving object with uri: "+uri);
+				Object o = _find(uri, visited);
+				list.add(o);
+			}
+			return list;
+		} finally {
+			qeSelect.close();
+		}
+	}
+	
+//XXX: 2014-06-12: performance improvement ??
+/*	public List<Object> findByQuery2(String queryStr) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		// Use fuseki client to send statement to Fuseki server
+		//System.err.println("RdfPersistenceManagerImpl: findByQuery2: SPARQL Select sent...");
+		QueryExecution qeSelect = client.query(queryStr);
+		//System.err.println("RdfPersistenceManagerImpl: findByQuery2: SPARQL Select completed");
+		QueryExecution qeSelectData = null;
+		
+		// Perform the simple SPARQL SELECT query
+		try {
+			HashMap<String,Object> visited = new HashMap<String,Object>();
+			HashSet<String> set = new HashSet<String>();
+			
+			// Retrieving the SPARQL Query results
+			ResultSet results = qeSelect.execSelect();
+			String var = results.getResultVars().get(0);
+			StringBuilder sb = new StringBuilder("select * where { ?s ?p ?o .   FILTER ( ");
+			boolean first = true;
+			while (results.hasNext()) {
+				QuerySolution soln = results.nextSolution();
+				String uri = soln.get(var).toString();
+				set.add(uri);
+				if (first) first=false; else sb.append("|| ");
+				sb.append("str(?s) = \""); sb.append(uri); sb.append("\" ");
+			}
+			sb.append("  ) } order by ?s ?p ");
+			
+			// Retrieving the data for specified URIs
+			qeSelectData = client.query(sb.toString());
+			HashMap<String,String> temp = new HashMap<String,String>();
+			String prev = "";
+			// Retrieving the SPARQL Query results
+			ResultSet rsData = qeSelectData.execSelect();
+			List<Object> list = new LinkedList<Object>();
+			while (rsData.hasNext()) {
+				QuerySolution soln = rsData.nextSolution();
+				String s = soln.get("s").toString();
+				String p = soln.get("p").toString();
+				String o = soln.get("o").toString();
+				if (!prev.equals(s)) {
+					if (temp.size()>0) {
+						Object obj = _prepareObject(prev, temp, visited);
+						list.add(obj);
+					}
+					temp.clear();
+					prev = s;
+				}
+				temp.put(p, o);
+			}
+			if (temp.size()>0) {
+				Object obj = _prepareObject(prev, temp, visited);
+				list.add(obj);
+			}
+			
+			return list;
+		} finally {
+			qeSelect.close();
+			if (qeSelectData!=null) qeSelectData.close();
+		}
+	}*/
+	
+	public Object find(Object id, Class type) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		String typeUri = _getObjectTypeUri(type);
+		if (typeUri==null) return null;		// Not persistable
+		String oUri = _getObjectUri(id, type);
+		return find(oUri);
+	}
+	
+	public Object find(String oUri) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		return _find(oUri, new HashMap<String,Object>());
+	}
+	
+	public boolean exist(Object o) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		String oUri = _getObjectUri(o);
+		return find(oUri)!=null;
+	}
+	
+	public boolean exist(Object id, Class type) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		return find(id,type)!=null;
+	}
+	
+	public boolean exist(String oUri) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		return find(oUri)!=null;
+	}
+	
+	public String getClassRdfType(Class type) { throw new RdfPersistenceException("METHOD 'getClassRdfType' :  ***  NOT YET IMPLEMENTED  ***"); }
+	public String getFieldUri(Class type, String fieldName) { throw new RdfPersistenceException("METHOD 'getFieldUri' :  ***  NOT YET IMPLEMENTED  ***"); }
+	
+	public void insertRdfTriple(String s, String p, String o) {
+		String stmt = String.format("INSERT DATA { <%s> <%s> <%s> }", s, p, o);
+		client.execute(stmt);
+	}
+	
+	public void removeRdfTriple(String s, String p, String o) {
+		String stmt = String.format("DELETE DATA { <%s> <%s> <%s> }", s, p, o);
+		client.execute(stmt);
+	}
+	
+	//
+	// Internal implementation of persistence manager public API 
+	//
+	protected Object _find(String oUri, HashMap<String,Object> visited) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		if (visited.containsKey(oUri)) return visited.get(oUri);
+		
+		Object o = managedObjects.get(oUri);	// check if object is already managed using its uri
+		if (o!=null) 
+//DEL: System.err.println("ZZZ  FIND: OBJECT IS MANAGED: "+oUri)
+			;	// object is already managed
+		else {
+			o = _createObject(oUri, visited);	// object is not managed. Create a new object instance
+			if (o==null) return null;	//DEL: ???
+			managedObjects.put(oUri, o);	// store object's uri and reference in managed objects hashmap
+		}
+		visited.put(oUri,o);
+		return _retrieveObjectData(oUri, o, visited);	// Retrieve stored data and fill-in object fields
+	}
+	
+//XXX: 2014-06-12: performance improvement ??
+/*	protected Object _prepareObject(String oUri, HashMap<String,String> data, HashMap<String,Object> visited) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		if (visited.containsKey(oUri)) return visited.get(oUri);
+		
+		Object o = managedObjects.get(oUri);	// check if object is already managed using its uri
+		if (o!=null) 
+			;	// object is already managed
+		else {
+			o = _createObject(oUri, visited);	// object is not managed. Create a new object instance
+			if (o==null) return null;	//DEL: ???
+			managedObjects.put(oUri, o);	// store object's uri and reference in managed objects hashmap
+		}
+		visited.put(oUri,o);
+		
+		if (data==null || data.size()==0) throw new RdfPersistenceException("RdfPersistenceManagerImpl: _prepareObject: Object not found in persistence store: uri="+oUri);
+		// Visit all object fields and referenced objects 
+		// and refresh field data
+		_travesre(o, new HashMap<Object,Object>(), new Stack<Object>(), null, data, visited);
+		return o;
+	}*/
+	
+	@SuppressWarnings("unchecked")
+	protected Object _createObject(String uri, HashMap<String,Object> visited) throws java.io.UnsupportedEncodingException {
+		// This method is used in 'find', therefore we expect the object's data will be stored in triple store
+		try {
+			// retrieve object's stored class
+//DEL: if (uri.startsWith(_nullXsdUri_0)) System.err.println("NULL-URI   found");
+			if (uri.startsWith(_nullXsdUri_0)) return null;
+//DEL: System.err.println("XXXXXX    "+uri);
+//DEL: System.err.println("XXXXXX    "+"SELECT ?className WHERE { <"+uri+">\t<"+defaultTypesPrefix+"#class>\t?className . } ");
+			Object typeObj = client.queryValue("SELECT ?className WHERE { <"+uri+">\t<"+defaultTypesPrefix+"#class>\t?className . } ");
+//DEL: if (typeObj==null) System.err.println("NUUUULLLL    "+"SELECT ?className WHERE { <"+uri+">\t<"+defaultTypesPrefix+"#class>\t?className . } ");
+			String typeStr = typeObj.toString();		// if object class was not found then a NullPointerException is thrown at this line
+			int p = typeStr.indexOf("^^");
+			if (p>0) typeStr = typeStr.substring(0,p);
+			
+			// create object instance
+			Class type = Class.forName(typeStr);
+			Object o = type.newInstance();			// Note: Default constructor is required for all persistable objects
+			
+			// extract id value (it is after hash-sign of the object's uri)
+			p = uri.lastIndexOf("#");
+			String idStr;
+			if (p>0) idStr = uri.substring(p+1);
+			else throw new RdfPersistenceException("Could not extract object id from URI: URI format not compatible with RdfPersistenceManagerImpl : "+uri);
+			idStr = java.net.URLDecoder.decode( idStr, "utf-8" );	// decode id
+			
+			// set object's Id
+			Field idFld = _findIdField(type);	// find id field for this class
+												// if id field is not found then exception is thrown
+			RdfPredicate predicate = idFld.getAnnotation(RdfPredicate.class);	// get field's predicate annotation
+			String nameFld = predicate.name().trim();			// get predicate's name
+			//String setterName = predicate.setter().trim();		// get predicate's setter
+			if (nameFld.isEmpty()) nameFld = idFld.getName();	// if no predicate name is specified then use field's name
+			visited.put(uri,o);
+			_setFieldValue(idFld, o, type, nameFld, uri, predicate, idStr, null, visited);		// set object's id field to the extracted value (idStr)
+			
+			return o;
+			
+		} catch (Exception e) {
+			throw new RdfPersistenceException("RdfPersistenceManagerImpl: _createObject: Instantiation failed for class: "+uri, e);
+		}
+	}
+	
+	protected Set<Field> getInheritedFields(Class startClass) {
+		HashSet<Field> set = new HashSet<Field>();
+		Class clss = startClass;
+		while (clss!=null) {
+			for (Field f : clss.getDeclaredFields()) {
+				set.add(f);
+			}
+			clss = clss.getSuperclass();
+		}
+		return set;
+	}
+	
+	// Find class id field
+	protected Field _findIdField(Class clss) {
+		Field idFld = null;
+		for (Field f : getInheritedFields(clss)) {
+			RdfPredicate predicate = f.getAnnotation(RdfPredicate.class);
+			Id id = f.getAnnotation(Id.class);
+			if (predicate==null || id==null) continue;
+			if (idFld!=null) throw new RdfPersistenceException("Multiple fields with @Id and @RdfPredicate annotations in class : "+_getQualifiedName(clss));
+			idFld = f;
+		}
+		// Id field not found
+		if (idFld==null) throw new RdfPersistenceException("No field with @Id and @RdfPredicate annotations in class : "+_getQualifiedName(clss));
+		// Id field found
+		return idFld;
+	}
+	
+	protected Object _retrieveObjectData(String oUri, Object o, HashMap<String,Object> visited) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		// Prepare RDF select query
+		StringBuffer sb = new StringBuffer();
+		sb.append("# Object URI : "); sb.append(oUri); sb.append("\n");
+		sb.append("# Command   : SELECT\n");
+		sb.append("SELECT ?p ?o\n");
+		sb.append("WHERE {\n");
+		sb.append("\t<"); sb.append(oUri); sb.append(">\t?p\t?o .\n");
+		sb.append("} \n\n");
+		//System.err.println("Query = "+sb.toString());
+		
+		// Use fuseki client to send statement to Fuseki server
+		// ...then convert the returned result set into a hash map
+		//System.err.println("RdfPersistenceManagerImpl: find: SPARQL Query sent...");
+		// Perform the simple SPARQL SELECT query
+		QueryExecution qeSelect = client.query(sb.toString());
+		try {
+			// Retrieving the SPARQL Query results
+			ResultSet rs = qeSelect.execSelect();
+			HashMap<String,String> data = _prepareFindResults( rs );
+			//System.err.println("RdfPersistenceManagerImpl: find: SPARQL Query completed");
+			//System.out.println("Query Results = \n"+data);
+			
+			if (data==null || data.size()==0) throw new RdfPersistenceException("RdfPersistenceManagerImpl: find: Object not found in persistence store: uri="+oUri);
+			// Visit all object fields and referenced objects 
+			// and refresh field data
+			visited.put(oUri,o);
+			_travesre(o, new HashMap<Object,Object>(), new Stack<Object>(), null, data, visited);
+			return o;
+		} finally {
+			qeSelect.close();
+		}
+	}
+	
+	protected HashMap<String,String> _prepareFindResults(ResultSet results) {
+		HashMap<String,String> data = new HashMap<String,String>();
+		
+		// Iterating over the SPARQL Query results
+		while (results.hasNext()) {
+			QuerySolution soln = results.nextSolution();
+			//java.util.Iterator<String> it = soln.varNames();
+			String key = soln.get("p").toString();
+			String val = soln.get("o").toString();
+			data.put(key, val);
+		}
+		return data;
+	}
+	
+	protected String _getObjectTypeUri(Class<?> clss) {
+		RdfSubject subject = clss.getAnnotation(RdfSubject.class);
+		if (subject==null) return null;		// Class not persistable
+		String name = subject.name().trim();
+		String ns = subject.namespace().trim();
+		String uri = subject.uri().trim();
+		if (uri.isEmpty()) {	// if no URI is specified for this class, we need to build one. Class uri = namespace + name
+			if (ns.isEmpty()) { ns = defaultTypesPrefix + "/" + ( (clss.getPackage()==null) ? "" : clss.getPackage().getName()+"/" ); }
+								// if no namespace is specified, we create one based on 'defaultTypesPrefix' and class package
+			if (name.isEmpty()) name = clss.getName();		// if no name is specified then use class name
+			String sep = ns.isEmpty() ? "" : (ns.endsWith("/") ? "" : "/");
+			uri = ns+sep+name;		// build uri
+		}
+		return uri;
+	}
+	
+	protected String _getQualifiedName(Class clss) {	// Convenience method (provides flexibility in printing class qualified name and possibly other info)
+		return clss.getName();
+	}
+	
+	public String getObjectUri(Object o) throws IllegalAccessException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		return _getObjectUri(o);
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected String _getObjectUri(Object o) throws IllegalAccessException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		String uri = _getObjectTypeUri(o.getClass());
+		if (uri==null) return null;		// Object class not persistable
+		Class clss = o.getClass();
+
+		Field idFld = _findIdField(clss);	// find id field for this class
+											// if id field is not found then exception is thrown
+		RdfPredicate predicate = idFld.getAnnotation(RdfPredicate.class);	// get id field's predicate annotation
+		String nameFld = predicate.name().trim();			// get predicate name
+		String getterName = predicate.getter().trim();		// get predicate getter
+		if (nameFld.isEmpty()) nameFld = idFld.getName();	// if predicate name is not specified then use field's name
+		Object idValue;
+		if ((idFld.getModifiers() & Modifier.PUBLIC) != 0) {	// if id field is public then get its value directly
+			idValue = idFld.get(o);
+		} else {  												// if field is non-public then use the corresponding getter method
+			if (getterName==null || getterName.trim().isEmpty()) {		// if getter method name is not specified then infer it from predicate name
+				getterName = "get"+Character.toUpperCase(nameFld.charAt(0))+nameFld.substring(1);
+			}
+			idValue = clss.getMethod(getterName).invoke(o);		// id field is non-public, thus we use its getter method
+		}
+		String sep = ((uri.endsWith("#")) ? "" : "#");
+		String idStr = idValue.toString();
+		idStr = java.net.URLEncoder.encode( idStr, "utf-8" );	// encode id so it can be used in a URI
+		uri = uri+sep+idStr;				// build object uri using type uri and object's id field value
+		return uri;
+	}
+	
+	public String getObjectUri(Object idValue, Class clss) throws java.io.UnsupportedEncodingException {
+		return _getObjectUri(idValue, clss);
+	}
+	
+	protected String _getObjectUri(Object idValue, Class clss) throws java.io.UnsupportedEncodingException {
+		String uri = _getObjectTypeUri(clss);
+		if (uri==null) return null;		// Object class not persistable
+		
+		// This call is not really necessary. Used to verify that an Id field exists.
+		Field idFld = _findIdField(clss);	// find id field for this class
+											// if id field is not found then exception is thrown
+		// append Id to entity URI
+		String sep = ((uri.endsWith("#")) ? "" : "#");
+		String idStr = idValue.toString();
+		idStr = java.net.URLEncoder.encode( idStr, "utf-8" );	// encode id so it can be used in a URI
+		uri = uri+sep+idStr;
+		return uri;
+	}
+	
+	protected void _travesre(Object o, HashMap<Object,Object> traversed, Stack<Object> pending, StringBuffer sb, HashMap<String,String> oData, HashMap<String,Object> visited) throws IllegalAccessException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		// if 'oData' parameter is null the method will assume it is a delete-insert statement. Therefore 'sb' parameter must be provided in order to append SPARQL statement
+		// if 'oData' parameter is not null the method will assume it is a query (i.e. find or refresh). The 'sb' parameter can be set to null
+		
+		if (traversed.containsKey(o)) return;	// object has already been visited and processed
+		boolean isUpdate = (oData==null);		// check if it is an update or query (refresh) operation
+		
+		// Get object and type (class) URIs
+		String typeUri = _getObjectTypeUri(o.getClass());
+		String objectUri = _getObjectUri(o);
+		if (typeUri==null || objectUri==null) return;	// Not persistable
+		Class clss = o.getClass();
+		pending.push(o);		// Store a reference to this object in pending stack as a guard
+		
+		// Write SPARQL command begin
+		//sb.append("# Object: "); sb.append(o); sb.append("\n");
+		if (isUpdate) {
+			sb.append("\t<"); sb.append(objectUri); sb.append(">\n");
+		}
+		
+		// iterate through declared class fields
+		for (Field f : getInheritedFields(clss)) {
+			RdfPredicate predicate = f.getAnnotation(RdfPredicate.class);
+			if (predicate==null) continue;		// only fields annotated with @RdfPredicate are considered for persistence
+			String nameFld = predicate.name().trim();
+			String nsFld = predicate.namespace().trim();
+			String uriFld = predicate.uri().trim();
+			if (nameFld.isEmpty()) nameFld = f.getName();	// if no predicate name is specified then use field's name
+			if (uriFld.isEmpty()) {		// if no predicate uri is specified then build one
+				if (nsFld.isEmpty()) nsFld = typeUri;	// if no namespace is specified use class (type) uri
+				String sep = nsFld.isEmpty() ? "" : ((nsFld.endsWith("/")||nsFld.endsWith("#")) ? "" : "/");
+				uriFld = nsFld+sep+nameFld;		// build predicate uri
+			}
+			
+			if (isUpdate) {
+				// Get object field value
+				String value = _getFieldValue(f, o, clss, nameFld, uriFld, predicate.getter().trim(), pending);
+				// Note that this operation might push referenced objects into the pending stack for persistence
+				
+				// Write SPARQL predicate line including field value
+				sb.append("\t\t<"); sb.append(uriFld); sb.append(">\t");
+				sb.append(value); sb.append("\n");
+			}
+			else {	// it is a query (find or refresh), therefore we must set object fields to the provided data ('oData' parameter)
+				if (oData.containsKey(uriFld)) {
+					String value = oData.get(uriFld);
+					// set object field value
+					_setFieldValue(f, o, clss, nameFld, uriFld, predicate, value, oData, visited);
+				}
+			}
+		}
+		
+		// Write SPARQL command end
+		if (isUpdate) {
+			sb.append("\t\t<"); sb.append(defaultTypesPrefix); sb.append("#class>\t\""); sb.append(clss.getName()); sb.append("\"^^<http://www.w3.org/2001/XMLSchema#string> ;\n");
+			sb.append("\t\ta\t<"); sb.append(typeUri); sb.append("> .\n\n");
+		}
+		// Persist any objects being referenced
+		if (isUpdate) {		// also persist any referenced objects
+			traversed.put(o,"");	// store this object in traversed (visited and processed) object in order to avoid subsequent processing
+			Object nextObj;
+			while ((nextObj=pending.pop())!=o) {	// pop referenced objects from penfing stack until the guard is found (i.e. a reference to this object)
+				_travesre(nextObj, traversed, pending, sb, null, visited);
+			}
+		}
+		
+		// Refresh objects being referenced
+		if (!isUpdate) {
+// TODO: ++++++++++++++++++ ALSO, check if refresh cascade is set
+		}
+	}
+	
+	protected void _travesreDelete(Object o, HashMap<Object,Object> traversed, Stack<Object> pending, StringBuffer sb) throws IllegalAccessException, IllegalArgumentException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		if (traversed.containsKey(o)) return;	// object has already been visited and processed
+		if (_isBasicType(o.getClass())) return;		// basic types (primitives, wrappers, String and Date) do not need to be cascade deleted
+		Class tmp = o.getClass();
+		while (tmp.isArray()) tmp = tmp.getComponentType();
+		if (_isBasicType(tmp)) return;		// even arrays of basic types do not need to be cascade deleted
+		
+		// Get object and type (class) URIs
+		String typeUri = _getObjectTypeUri(o.getClass());
+		String objectUri = _getObjectUri(o);
+		if (typeUri==null || objectUri==null) return;	// Not persistable
+		Class clss = o.getClass();
+		pending.push(o);		// Store a reference to this object in pending stack for late processing
+		
+		// add object in traversed (visited) objects in order to avoid double processing
+		traversed.put(o,"");
+		
+		// iterate through declared class fields
+		for (Field f : getInheritedFields(clss)) {
+			RdfPredicate predicate = f.getAnnotation(RdfPredicate.class);
+			if (predicate==null) continue;		// only fields annotated with @RdfPredicate are considered for persistence
+			String nameFld = predicate.name().trim();
+			if (nameFld.isEmpty()) nameFld = f.getName();	// if no predicate name is specified then use field's name
+			
+			// get field type
+			Class typeFld = f.getType();
+			
+			// check if cascade delete option is present
+			String delete = predicate.delete().toLowerCase();
+			//if (!delete.startsWith("cascade")) continue;	// otherwise it is an unknown delete option. So we ignore it
+			
+			if (delete.equals("cascade") || 
+				Map.class.isAssignableFrom(typeFld) && (delete.equals("cascade-keys") || delete.equals("cascade-values")))  ;	// accepted options
+			else ; //continue;	// otherwise it is an unknown delete option. So we ignore it
+			
+			boolean cascade = delete.equals("cascade");
+			
+			// get field value
+			Object fldValue = _getFieldValueFromObject(f, o, clss, nameFld, predicate.getter().trim());
+			if (fldValue==null) continue;	// null values cannot be deleted (obviously :-))
+
+			if (cascade && f.getType().isArray()) {	// Handle arrays in slightly different way
+				// if it is an array find component type
+				while (typeFld.isArray()) typeFld = typeFld.getComponentType();
+				if (_isBasicType(typeFld)) continue;		// basic types do not need to be cascade deleted
+				//else : non-primitive type. Cascade deleting is applicable
+				
+				Object[] arr = (Object[])fldValue;
+				for (int i=0, n=arr.length; i<n; i++) {
+					_travesreDelete(arr[i], traversed, pending, sb);
+				}
+			} else
+			if (cascade && Collection.class.isAssignableFrom(typeFld)) {	// Handle objects implementing Collection interface in slightly different way
+				Iterator it = ((Collection)fldValue).iterator();
+				while (it.hasNext()) {
+					Object elem = it.next();
+					if (_isBasicType(typeFld.getClass())) continue;		// basic types do not need to be cascade deleted
+					_travesreDelete(elem, traversed, pending, sb);
+				}
+			} else
+			if (Map.class.isAssignableFrom(typeFld)) {	// Handle objects implementing Map interface in slightly different way
+				boolean cascadeKey = !delete.equals("cascade-values");
+				boolean cascadeVal = !delete.equals("cascade-keys");
+				Map map = (Map)fldValue;
+				for (Object key : map.keySet()) {
+					Object val = map.get(key);
+					if (cascadeKey && !_isBasicType(key.getClass())) _travesreDelete(key, traversed, pending, sb);
+					if (cascadeVal && !_isBasicType(val.getClass())) _travesreDelete(val, traversed, pending, sb);
+				}
+			} else	// Not a Map or Collection object
+			{
+				if (_isBasicType(fldValue.getClass())) continue;		// basic types do not need to be cascade deleted
+				if (cascade) _travesreDelete(fldValue, traversed, pending, sb);
+			}
+		} // end of loop
+		
+		// Write SPARQL delete statement
+		sb.append("# Object  : "); sb.append(o.hashCode()); sb.append("\n");
+		sb.append("# Command : DELETE WHERE\n");
+		sb.append("DELETE { \n");
+		sb.append("\t<"); sb.append(objectUri); sb.append(">\t?p\t?o .\n");
+		sb.append("}\n");
+		sb.append("WHERE {\n");
+		sb.append("\t<"); sb.append(objectUri); sb.append(">\t?p\t?o .\n");
+		sb.append("} ; \n\n");
+	}
+	
+	// check if class is of a basic type (primitives, wrappers, String and Date)
+	protected boolean _isBasicType(Class clss) {
+		if (_primitive2class.containsKey(clss.getName())) return true;
+		if (_primitiveWrappers.contains(clss)) return true;
+		if (clss.equals(String.class) || clss.equals(Date.class)) return true;
+		return false;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Object _getFieldValueFromObject(Field f, Object o, Class clss, String name, String getter) {
+		// Retrieve field value, either directly (if field is public) or using the corresponding 'getter' method
+		Object value = null;
+		if ((f.getModifiers() & Modifier.PUBLIC)!=0) {
+			// if field is public get the field value directly
+			try {
+				return f.get(o);
+			} catch (Exception e) {
+				throw new RdfPersistenceException("Read failed for field '"+name+"' in class "+_getQualifiedName(clss), e);
+			}
+		} else {
+			// if not a public field then use getter method
+			if (getter==null || getter.trim().isEmpty()) {	// if no getter method is specified then use predicate's name to infer it
+				getter = "get"+Character.toUpperCase(name.charAt(0))+name.substring(1);
+			}
+			try {
+				return clss.getMethod(getter).invoke(o);
+			} catch (Exception e) {
+				// getter method does not exist or invocation failed
+				throw new RdfPersistenceException("Getter method invocation failed for field '"+name+"' in class "+_getQualifiedName(clss), e);
+			}
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected String _getFieldValue(Field f, Object o, Class clss, String name, String uriFld, String getter, Stack<Object> pending) throws RdfPersistenceException {
+		// Retrieve field value, either directly (if field is public) or using the corresponding 'getter' method
+		Object value = _getFieldValueFromObject(f, o, clss, name, getter);
+		// Convert field value to RDF format
+		try {
+			RdfPredicate predicate = f.getAnnotation(RdfPredicate.class);
+			String str = _formatValue(f.getType(), value, uriFld, pending, predicate);
+//DEL: System.err.println("ZZZZZZ   f-type="+f.getType()+"\nfield="+name+"\nobject="+o+"\nstr-value="+str+"\nuri-field="+uriFld+"\ngetter="+getter);
+			return str;
+		} catch (Exception e) {
+			throw new RdfPersistenceException("Java-to-RDF value conversion failed for field '"+name+"' in class "+_getQualifiedName(clss), e);
+		}
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected void _setFieldValue(Field f, Object o, Class clss, String name, String uriFld, RdfPredicate predicate, String strValue, HashMap<String,String> oData, HashMap<String,Object> visited) throws RdfPersistenceException {
+//DEL: System.err.println("RRRRRR    "+f+" "+clss+" "+name+" "+uriFld+" "+strValue);
+		String setter = predicate.setter().trim();
+// TODO: cascade refresh. Possibly we need to add a pending stack + predicate passing to _parseValue & move the next code block to _parseValue & add code for pending stack objects' refresh, at _traverse (last if-block)
+/*		boolean refreshCascade = false;
+		boolean refreshCascadeKey = false;
+		boolean refreshCascadeVal = false;
+		if (predicate!=null) {
+			String refrOpt = predicate.refresh().trim().toLowerCase();
+			refreshCascade = refrOpt.equals("cascade");
+			refreshCascadeKey = refrOpt.equals("cascade-keys");
+			refreshCascadeVal = refrOpt.equals("cascade-values");
+		}*/
+		
+		// Convert RDF value to field's java type
+		Object value = null;
+		try {
+//DEL: System.err.println("PPPPPPPP    "+f.getType()+" "+strValue+" "+uriFld);
+			value = _parseValue(f.getType(), strValue, uriFld, oData, visited);
+		} catch (Exception e) {
+			throw new RdfPersistenceException("RDF-to-Java value conversion failed for field '"+name+"' in class "+_getQualifiedName(clss), e);
+		}
+		
+		// Set field value, either directly (if field is public) or using the corresponding 'setter' method
+		if ((f.getModifiers() & Modifier.PUBLIC)!=0) {
+			// if public field set the value directly
+			try {
+				f.set(o, value);
+			} catch (Exception e) {
+				throw new RdfPersistenceException("Write failed for field '"+name+"' in class "+_getQualifiedName(clss), e);
+			}
+		} else {
+			// if not a public field then use setter method
+			if (setter==null || setter.trim().isEmpty()) {	// if no setter method is specified then use predicate's name to infer it
+				setter = "set"+Character.toUpperCase(name.charAt(0))+name.substring(1);
+			}
+			try {
+				Class<?>[] arr = new Class<?>[1];
+				arr[0] = f.getType();
+				Object[] arrVal = new Object[1];
+				arrVal[0] = value;
+//DEL: System.out.println("MMMMMMMMM   "+setter+"   "+value);
+				clss.getMethod(setter, arr).invoke(o, arrVal);
+			} catch (Exception e) {
+				// setter method does not exist or invocation failed
+				throw new RdfPersistenceException("Setter method invocation failed for field '"+name+"' in class "+_getQualifiedName(clss), e);
+			}
+		}
+	}
+	
+	// Called by '_getFieldValue()'
+	@SuppressWarnings("unchecked")
+	protected String _formatValue(Class typeFld, Object value, String uriFld, Stack<Object> pending, RdfPredicate predicate) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		StringBuffer sb = new StringBuffer();
+		boolean appendType = true;
+		
+// TODO: CHECK gia to an symfwnei o typos toy FIELD me ton typo toy VALUE
+		
+		// check if cascade update is set
+		boolean updateCascade = false;
+		boolean updateCascadeKey = false;
+		boolean updateCascadeVal = false;
+		if (predicate!=null) {
+			String updOpt = predicate.update().trim().toLowerCase();
+			updateCascade = updOpt.equals("cascade");
+			updateCascadeKey = updOpt.equals("cascade-keys");
+			updateCascadeVal = updOpt.equals("cascade-values");
+		}
+		
+		// Write field value into string buffer
+		if (value==null) {	// field is null
+//			sb.append("\"\"");		// or an RDF 'nil' URI
+			sb.append(_nullXsdUri); sb.append(" ;");
+			appendType = false;
+		} else
+		// field type is primitive
+		if (typeFld.isPrimitive() || _primitive2class.containsValue(typeFld)) {
+			sb.append("\""); sb.append(value.toString()); sb.append("\"");
+		} else
+		// field type is array
+//TODO: multi-dimensional arrays
+		if (typeFld.isArray()) {
+			int arrLength = Array.getLength(value);
+			sb.append("\""); sb.append(arrLength); sb.append("\""); sb.append(_java2xsdTypeMapping.get(Integer.class)); sb.append(" ;\n");
+			for (int i=0; i<arrLength; i++) {
+				Object arrValue = Array.get(value, i);
+				if (updateCascade) pending.push(arrValue);
+				sb.append("\t\t<"); sb.append(uriFld); sb.append("#_"); sb.append(i); sb.append(">\t");
+				sb.append( _formatValue(arrValue.getClass(), arrValue, null, pending, predicate) ); 
+				if (i+1<arrLength) sb.append("\n");
+			}
+			appendType = false;
+		} else
+		// field type is Collection (List or Set)
+		if (Collection.class.isAssignableFrom(typeFld)) {
+			Iterator it = ((Collection)value).iterator();
+			int itLength = ((Collection)value).size();
+			int i = 0;
+			sb.append("\""); sb.append(itLength); sb.append("\""); sb.append(_java2xsdTypeMapping.get(Integer.class)); sb.append(" ;\n");
+			while (it.hasNext()) {
+				Object itValue = it.next();
+				if (updateCascade) pending.push(itValue);
+				sb.append("\t\t<"); sb.append(uriFld); sb.append("#_"); sb.append(i); sb.append(">\t");
+				sb.append( _formatValue(itValue.getClass(), itValue, null, pending, predicate) ); 
+				if (i+1<itLength) sb.append("\n");
+				i++;
+			}
+			appendType = false;
+		} else
+		// field type is Map
+		if (Map.class.isAssignableFrom(typeFld)) {
+			Map map = ((Map)value);
+			int mapLength = map.size();
+			int i = 0;
+			sb.append("\""); sb.append(mapLength); sb.append("\""); sb.append(_java2xsdTypeMapping.get(Integer.class)); sb.append(" ;\n");
+			for (Object key : map.keySet()) {
+				Object val = map.get(key);
+				if (updateCascade || updateCascadeKey) pending.push(key);
+				if (updateCascade || updateCascadeVal) pending.push(val);
+				sb.append("\t\t<"); sb.append(uriFld); sb.append("#_"); sb.append(i); sb.append("_name>\t");
+				sb.append( _formatValue(key.getClass(), key, null, pending, predicate) ); sb.append("\n");
+				sb.append("\t\t<"); sb.append(uriFld); sb.append("#_"); sb.append(i); sb.append("_value>\t");
+				sb.append( _formatValue(val.getClass(), val, null, pending, predicate) ); 
+				if (i+1<mapLength) sb.append("\n");
+				i++;
+			}
+			appendType = false;
+		} else
+		// field type is String
+		if (typeFld.equals(String.class)) {
+			sb.append("\""); sb.append( java.net.URLEncoder.encode( value.toString(), "utf-8" ) ); sb.append("\"");
+		} else
+		// field type is java.util.Date
+		if (typeFld.equals(java.util.Date.class)) {
+			Date date = (Date)value;
+			String dateInW3CDateFormat = DateParser.formatW3CDateTime(date);
+			sb.append("\""); sb.append(dateInW3CDateFormat); sb.append("\"");
+		} else
+		// field type a class
+		{	// referenced object
+			String refUri = _getObjectUri(value);
+			if (refUri==null) {
+				sb.append(_nullXsdUri);		// includes "<...>"
+			} else {
+				sb.append("<"); sb.append(refUri); sb.append("> ;");
+				if (updateCascade) pending.push(value);
+			}
+			appendType = false;
+		}
+		
+		// Write value type immediately after value, except when value is a reference to another RDF construct (e.g. a referenced object's data)
+		if (appendType) {
+			String rdfType = _java2xsdTypeMapping.get(typeFld);		// Get RDF type from java-to-rdf type map (loaded during static initialization)
+			if (rdfType==null) {		// if no mapping was found then check if field type is primitive and ...
+				Class primitiveTypeClass = _primitive2class.get(typeFld.getName());		// get the corresponding primitve type wrapper class
+				if (primitiveTypeClass!=null) rdfType = _java2xsdTypeMapping.get(primitiveTypeClass);	// if field type is primitive try getting the corresponfing RDF type using the wrapper class
+			}
+			if (rdfType==null) rdfType = _defaultXsdType;	// if no RDF type was found then use default
+			if (rdfType==null) rdfType = "";				// if no default is specified then don't append value type (string is inferred)
+			sb.append(rdfType); sb.append(" ;");
+		}
+		return sb.toString();
+	}
+	
+	protected Object _parseValue(Class typeFld, String value, String uriFld, HashMap<String,String> oData, HashMap<String,Object> visited) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException, ClassNotFoundException {
+		// check if value is the 'null' uri
+		if (value.startsWith(_nullXsdUri_0)) return null;
+		
+//DEL: System.err.println("XXX   START:  "+typeFld+"   "+value+"  "+uriFld);
+		// Get value and value type
+		String valStr = null;
+		String typStr = null;
+		int pos = value.indexOf("^^");
+		if (pos>=0) {
+			valStr = value.substring(0,pos);	// Value
+			typStr = value.substring(pos+2);	// Value type
+		} else {
+			valStr = value;		// No value type is specified
+		}
+		
+		// map RDF value type onto Java value type
+		Class<?> typeVal = null;
+		if (typStr==null) typeVal = _defaultJavaType; else typeVal = _xsd2javaTypeMapping.get(typStr);		// Get corresponding java type from value type
+		if (typeVal==null) typeVal = _defaultJavaType;		// if no value type is provided or no rdf-to-java type mapping exists then use default
+//DEL: System.err.println("XXX   VAL/TYPE:  "+valStr+"   "+typeVal+"  =?= "+typeFld);
+		
+		// handle value according to field java type
+		if (valStr.equals(_nullXsdUri)) {	// 'null' uri
+			return null;
+		} else
+		if (valStr.isEmpty()) {	// empty string
+			return "";
+		} else
+		// field type is string
+		if (typeFld.equals(String.class)) {
+			return java.net.URLDecoder.decode(valStr, "utf-8");
+		} else
+		// field type is java.util.Date
+		if (typeFld.equals(java.util.Date.class)) {
+			return DateParser.parseW3CDateTime(valStr);
+		} else
+		// field type is primitive
+		if (typeFld.isPrimitive()) {
+			String primType = typeFld.getName();
+			if (primType.equals("boolean")) return Boolean.valueOf(valStr);
+			else if (primType.equals("byte")) return Byte.valueOf(valStr);
+			else if (primType.equals("char")) return Character.valueOf(valStr.charAt(0));
+			else if (primType.equals("double")) return Double.valueOf(valStr);
+			else if (primType.equals("float")) return Float.valueOf(valStr);
+			else if (primType.equals("int")) return Integer.valueOf(valStr);
+			else if (primType.equals("long")) return Long.valueOf(valStr);
+			else if (primType.equals("short")) return Short.valueOf(valStr);
+			else throw new RdfPersistenceException("Unsupported primitive type : "+typeFld);
+		} else
+		// field type is primitive wrapper
+		if (_primitiveWrappers.contains(typeFld)) {
+			if (typeFld.equals(Boolean.class)) return Boolean.valueOf(valStr);
+			else if (typeFld.equals(Byte.class)) return Byte.valueOf(valStr);
+			else if (typeFld.equals(Character.class)) return Character.valueOf(valStr.charAt(0));
+			else if (typeFld.equals(Double.class)) return Double.valueOf(valStr);
+			else if (typeFld.equals(Float.class)) return Float.valueOf(valStr);
+			else if (typeFld.equals(Integer.class)) return Integer.valueOf(valStr);
+			else if (typeFld.equals(Long.class)) return Long.valueOf(valStr);
+			else if (typeFld.equals(Short.class)) return Short.valueOf(valStr);
+			else throw new RdfPersistenceException("Unsupported primitive type : "+typeFld);
+		} else
+		// field type is array
+//TODO: multi-dimensional arrays
+		if (typeFld.isArray()) {
+			int arrLength = Integer.valueOf(valStr);
+			Class ctype = typeFld.getComponentType();	// Component type of array
+			Object newArr = Array.newInstance(ctype, arrLength);
+			for (int i=0; i<arrLength; i++) {
+				String arrValStr = oData.get(uriFld+"#_"+i);
+				Object arrValue = _parseValue(ctype, arrValStr, uriFld, oData, visited);
+				Array.set(newArr, i, arrValue);
+			}
+			return newArr;
+		} else
+		// field type is java.util.List
+		if (List.class.isAssignableFrom(typeFld)) {
+			int listLength = Integer.valueOf(valStr);
+			List newList = null;
+			try { if (!typeFld.isInterface()) newList = (List)typeFld.newInstance(); } catch (InstantiationException e) {}
+			if (newList==null) newList = new LinkedList();
+//DEL: System.err.println("XXX   LIST SIZE : "+listLength);
+			for (int i=0; i<listLength; i++) {
+				String listValStr = oData.get(uriFld+"#_"+i);
+				Class<?> ctype = _findObjectType(listValStr);		// Get element type
+//DEL: System.err.println("EEEEEE  "+_findObjectType(listValStr));
+//DEL: System.err.println("XXX   ITER-"+i+"-A : "+ctype+"   "+listValStr+"   "+uriFld);
+				Object listValue = _parseValue(ctype, listValStr, uriFld, oData, visited);
+				newList.add(listValue);
+//DEL: System.err.println("XXX   ITER-"+i+"-B : "+listValue);
+			}
+			return newList;
+		} else
+		// field type is java.util.Set
+		if (Set.class.isAssignableFrom(typeFld)) {
+			int setLength = Integer.valueOf(valStr);
+			Set newSet = null;
+			try { if (!typeFld.isInterface()) newSet = (Set)typeFld.newInstance(); } catch (InstantiationException e) {}
+			if (newSet==null) newSet = new HashSet();
+			for (int i=0; i<setLength; i++) {
+				String setValStr = oData.get(uriFld+"#_"+i);
+				Class<?> ctype = _findObjectType(setValStr);		// Get element type
+//DEL: System.err.println("EEEEEE  "+_findObjectType(setValStr));
+				Object setValue = _parseValue(ctype, setValStr, uriFld, oData, visited);
+				newSet.add(setValue);
+			}
+			return newSet;
+		} else
+		// field type is java.util.Map
+		if (Map.class.isAssignableFrom(typeFld)) {
+			int mapLength = Integer.valueOf(valStr);
+			Map newMap = null;
+			try { if (!typeFld.isInterface()) newMap = (Map)typeFld.newInstance(); } catch (InstantiationException e) {}
+			if (newMap==null) newMap = new HashMap();
+			for (int i=0; i<mapLength; i++) {
+				String mapKeyValStr = oData.get(uriFld+"#_"+i+"_name");
+				String mapValValStr = oData.get(uriFld+"#_"+i+"_value");
+				Class<?> ctypeKey = _findObjectType(mapKeyValStr);		// Get key type
+				Class<?> ctypeVal = _findObjectType(mapValValStr);		// Get value type
+//DEL: System.err.println("KKKKKK  "+_findObjectType(mapKeyValStr));
+//DEL: System.err.println("VVVVVV  "+_findObjectType(mapValValStr));
+				Object mapKeyValue = _parseValue(ctypeKey, mapKeyValStr, uriFld, oData, visited);
+				Object mapValValue = _parseValue(ctypeVal, mapValValStr, uriFld, oData, visited);
+				newMap.put(mapKeyValue, mapValValue);
+			}
+			return newMap;
+		} else
+		// field type a class
+		{
+			// it is a referenced object
+			String refUri = value;
+//DEL: System.err.println("XXX   FIND: "+refUri);
+			return _find(refUri, visited);	// get referenced object using its uri. If already retrieved and managed the 'find' will just return a reference to it without quering triple store
+		}
+	}
+	
+	protected Class<?> _findObjectType(String value) {
+		// Get value and value type
+		String valStr = null;
+		String typStr = null;
+		int pos = value.indexOf("^^");
+		if (pos>=0) {
+			//valStr = value.substring(0,pos);	// Value
+			typStr = value.substring(pos+2);	// Value type
+		} else {
+			//valStr = value;		// No value type is specified
+			return Object.class;
+		}
+		
+		// map RDF value type onto Java value type
+		Class<?> typeVal = null;
+		if (typStr==null) typeVal = _defaultJavaType; else typeVal = _xsd2javaTypeMapping.get(typStr);		// Get corresponding java type from value type
+		if (typeVal==null) typeVal = Object.class;		// if no value type is provided or no rdf-to-java type mapping exists then use default
+//DEL: System.err.println("_____   VAL/TYPE:  "+valStr+"   "+typeVal+"     <=? "+value);
+		return typeVal;
+	}
+	
+// TODO:  to be provided by persistence factory ???   so persistence managers in different realms can use different mappings
+	//
+	// Stattic data initialization - BEGIN
+	//
+	protected static final boolean debugPrintTypeMappings = true;
+	protected static final HashMap<Class<?>,String> _java2xsdTypeMapping = new HashMap<Class<?>,String>();
+	protected static final HashMap<String,Class<?>> _xsd2javaTypeMapping = new HashMap<String,Class<?>>();
+	
+	static {
+		try {
+			Properties p = new Properties();
+			ClassLoader cloader = RdfPersistenceManagerImpl.class.getClassLoader();
+			p.load( cloader.getResourceAsStream("java2xsdTypeMapping.properties") );
+			
+			for (String c : p.stringPropertyNames()) {
+				String clss = c.trim();
+				if (clss.isEmpty() || clss.equals(".")) _java2xsdTypeMapping.put( Object.class, p.getProperty(clss) );
+				else _java2xsdTypeMapping.put( Class.forName(clss, false, cloader), p.getProperty(clss) );
+			}
+		} catch (Exception e) {
+			//System.err.println("Failed to initialize java-to-xsd type mapping");
+			//e.printStackTrace();
+			logger.error("Failed to initialize java-to-xsd type mapping\n", e);
+		}
+		try {
+			Properties p = new Properties();
+			ClassLoader cloader = RdfPersistenceManagerImpl.class.getClassLoader();
+			p.load( cloader.getResourceAsStream("xsd2javaTypeMapping.properties") );
+			
+			for (String x : p.stringPropertyNames()) {
+				String xsd = x.trim();
+				if (xsd.isEmpty() || xsd.equals(".")) xsd = ".";
+				_xsd2javaTypeMapping.put( xsd, Class.forName(p.getProperty(xsd).trim(), false, cloader) );
+			}
+		} catch (Exception e) {
+			//System.err.println("Failed to initialize xsd-to-java type mapping");
+			//e.printStackTrace();
+			logger.error("Failed to initialize xsd-to-java type mapping\n", e);
+		}
+	}
+	
+	protected static final String _defaultXsdType = _java2xsdTypeMapping.get(Object.class);
+	protected static final Class<?> _defaultJavaType = _xsd2javaTypeMapping.get(".");
+	protected static final String _nullXsdUri_0 = "http://www.brokeratcloud.eu/persist/types#null";
+	protected static final String _nullXsdUri = "<"+_nullXsdUri_0+">";
+	
+	static {
+		if (debugPrintTypeMappings) {
+			logger.debug("--- Java-to-XSD type mappings : begin ---");
+			for (Class c : _java2xsdTypeMapping.keySet()) {
+				logger.debug("{} = {}", c.getName(), _java2xsdTypeMapping.get(c));
+			}
+			logger.debug("<*> = {}", _defaultXsdType);
+			logger.debug("--- Java-to-XSD type mappings : end   ---");
+			
+			logger.debug("--- XSD-to-Java type mappings : begin ---");
+			for (String s : _xsd2javaTypeMapping.keySet()) {
+				logger.debug("{} = {}", s, _xsd2javaTypeMapping.get(s).getName());
+			}
+			logger.debug("<*> = {}", _defaultJavaType.getName());
+			logger.debug("--- XSD-to-Java type mappings : end   ---");
+			
+			logger.info("Java-to-XSD and XSD-to-Java type mappings initialized");
+		}
+	}
+	
+	protected final static HashMap<String,Class<?>> _primitive2class = new HashMap<String,Class<?>>();
+	static {
+		_primitive2class.put("boolean", Boolean.class);
+		_primitive2class.put("byte", Byte.class);
+		_primitive2class.put("char", Character.class);
+		_primitive2class.put("double", Double.class);
+		_primitive2class.put("float", Float.class);
+		_primitive2class.put("int", Integer.class);
+		_primitive2class.put("long", Long.class);
+		_primitive2class.put("short", Short.class);
+	}
+	protected final static LinkedList<Class<?>> _primitiveWrappers = new LinkedList<Class<?>>();
+	static {
+		_primitiveWrappers.add(Boolean.class);
+		_primitiveWrappers.add(Byte.class);
+		_primitiveWrappers.add(Character.class);
+		_primitiveWrappers.add(Double.class);
+		_primitiveWrappers.add(Float.class);
+		_primitiveWrappers.add(Integer.class);
+		_primitiveWrappers.add(Long.class);
+		_primitiveWrappers.add(Short.class);
+	}
+	//
+	// Static data initialization - END
+	//
+	
+	// ===========================================================================================================
+	
+	public Object getSingleValue(Object id, Class type, String fld) throws ClassNotFoundException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		String typeUri = _getObjectTypeUri(type);
+		if (typeUri==null) return null;		// Not persistable
+		String oUri = _getObjectUri(id, type);
+		
+		// iterate through declared class fields
+		String fUri = null;
+		Field field = null;
+		fld = fld.trim();
+		if (fld.isEmpty()) return null;		// No field specified
+		for (Field f : getInheritedFields(type)) {
+			if (!f.getName().equals(fld)) continue;
+			RdfPredicate predicate = f.getAnnotation(RdfPredicate.class);
+			if (predicate==null) return null;		// field found but it is NOT annotated with @RdfPredicate and therefore is not persisted
+			String nameFld = predicate.name().trim();
+			String nsFld = predicate.namespace().trim();
+			String uriFld = predicate.uri().trim();
+			if (nameFld.isEmpty()) nameFld = f.getName();	// if no predicate name is specified then use field's name
+			if (uriFld.isEmpty()) {		// if no predicate uri is specified then build one
+				if (nsFld.isEmpty()) nsFld = typeUri;	// if no namespace is specified use class (type) uri
+				String sep = nsFld.isEmpty() ? "" : ((nsFld.endsWith("/")||nsFld.endsWith("#")) ? "" : "/");
+				uriFld = nsFld+sep+nameFld;		// build predicate uri
+			}
+			fUri = uriFld;
+			field = f;
+			break;		// field found and its URI has been extracted
+		}
+		if (field==null) return null;
+		
+		// Build SPARQL query
+		StringBuffer sb = new StringBuffer();
+		sb.append("# Class URI : "); sb.append(typeUri); sb.append("\n");
+		sb.append("# Command   : SELECT\n");
+		sb.append( String.format("SELECT ?o WHERE { <%s>  <%s>  ?o }", oUri, fUri) );
+		String queryStr = sb.toString();
+		//System.err.println("Query = "+queryStr);
+
+		// Use fuseki client to send query to Fuseki server
+		//System.err.println("RdfPersistenceManagerImpl: getSingleValue: SPARQL Select sent...");
+		QueryExecution qeSelect = client.query(queryStr);
+		//System.err.println("RdfPersistenceManagerImpl: getSingleValue: SPARQL Select completed");
+		
+		// Perform the simple SPARQL SELECT query
+		try {
+			Object value = null;
+			// Retrieving the SPARQL Query results
+			ResultSet results = qeSelect.execSelect();
+			if (results.hasNext()) {
+				QuerySolution soln = results.nextSolution();
+				String var = results.getResultVars().get(0);
+				String valStr = soln.get(var).toString();
+				
+				value = _parseValue(field.getType(), valStr, fUri, new HashMap<String,String>(), new HashMap<String,Object>());
+			}
+			return value;
+		} finally {
+			qeSelect.close();
+		}
+	}
+	
+	public boolean setSingleValue(Object id, Class type, String fld, Object value, boolean addNew) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		String typeUri = _getObjectTypeUri(type);
+		if (typeUri==null) return false;		// Not persistable
+		String oUri = _getObjectUri(id, type);
+		
+		// iterate through declared class fields
+		String fUri = null;
+		Field field = null;
+		fld = fld.trim();
+		if (fld.isEmpty()) return false;		// No field specified
+		RdfPredicate predicate = null;
+		for (Field f : getInheritedFields(type)) {
+			if (!f.getName().equals(fld)) continue;
+			predicate = f.getAnnotation(RdfPredicate.class);
+			if (predicate==null) return false;		// field found but it is NOT annotated with @RdfPredicate and therefore is not persisted
+			String nameFld = predicate.name().trim();
+			String nsFld = predicate.namespace().trim();
+			String uriFld = predicate.uri().trim();
+			if (nameFld.isEmpty()) nameFld = f.getName();	// if no predicate name is specified then use field's name
+			if (uriFld.isEmpty()) {		// if no predicate uri is specified then build one
+				if (nsFld.isEmpty()) nsFld = typeUri;	// if no namespace is specified use class (type) uri
+				String sep = nsFld.isEmpty() ? "" : ((nsFld.endsWith("/")||nsFld.endsWith("#")) ? "" : "/");
+				uriFld = nsFld+sep+nameFld;		// build predicate uri
+			}
+			fUri = uriFld;
+			field = f;
+			break;		// field found and its URI has been extracted
+		}
+		if (field==null) return false;
+		
+		// Prepare value
+		String valStr = _formatValue(field.getType(), value, fUri, new Stack<Object>(), predicate);
+		if (valStr!=null && !valStr.trim().isEmpty()) {
+			valStr = valStr.trim();
+			if (valStr.endsWith(";")) valStr = valStr.substring(0,valStr.length()-1).trim();
+		} else {
+			System.err.println("Empty or invalid value provided: "+value);
+			return false;
+		}
+		
+		// Build SPARQL query
+		StringBuffer sb = new StringBuffer();
+		if (!addNew) {
+			sb.append("# Class URI : "); sb.append(typeUri); sb.append("\n");
+			sb.append("# Command   : DELETE-INSERT-WHERE\n");
+			sb.append( String.format("DELETE { ?s ?p ?o } INSERT { ?s ?p %s } WHERE { ?s ?p ?o . filter regex(str(?s),'%s','') . filter regex(str(?p),'%s','') . }", valStr, oUri, fUri) );
+		} else {
+			sb.append("# Class URI : "); sb.append(typeUri); sb.append("\n");
+			sb.append("# Command   : INSERT DATA\n");
+			sb.append( String.format("INSERT DATA { <%s>  <%s>  %s }", oUri, fUri, valStr) );
+		}
+		String updateStr = sb.toString();
+		System.err.println("Query = "+updateStr);
+		
+		// Use fuseki client to send statement to Fuseki server
+		//System.err.println("RdfPersistenceManagerImpl: setSingleValue: SPARQL Update sent...");
+		client.execute(updateStr);
+		//System.err.println("RdfPersistenceManagerImpl: setSingleValue: SPARQL Update completed");
+		
+		return true;
+	}
+	
+	public boolean removeSingleValue(Object id, Class type, String fld) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, java.io.UnsupportedEncodingException {
+		String typeUri = _getObjectTypeUri(type);
+		if (typeUri==null) return false;		// Not persistable
+		String oUri = _getObjectUri(id, type);
+		
+		// iterate through declared class fields
+		String fUri = null;
+		Field field = null;
+		fld = fld.trim();
+		if (fld.isEmpty()) return false;		// No field specified
+		RdfPredicate predicate = null;
+		for (Field f : getInheritedFields(type)) {
+			if (!f.getName().equals(fld)) continue;
+			predicate = f.getAnnotation(RdfPredicate.class);
+			if (predicate==null) return false;		// field found but it is NOT annotated with @RdfPredicate and therefore is not persisted
+			String nameFld = predicate.name().trim();
+			String nsFld = predicate.namespace().trim();
+			String uriFld = predicate.uri().trim();
+			if (nameFld.isEmpty()) nameFld = f.getName();	// if no predicate name is specified then use field's name
+			if (uriFld.isEmpty()) {		// if no predicate uri is specified then build one
+				if (nsFld.isEmpty()) nsFld = typeUri;	// if no namespace is specified use class (type) uri
+				String sep = nsFld.isEmpty() ? "" : ((nsFld.endsWith("/")||nsFld.endsWith("#")) ? "" : "/");
+				uriFld = nsFld+sep+nameFld;		// build predicate uri
+			}
+			fUri = uriFld;
+			field = f;
+			break;		// field found and its URI has been extracted
+		}
+		if (field==null) return false;
+		
+		// Build SPARQL query
+		StringBuffer sb = new StringBuffer();
+		sb.append("# Class URI : "); sb.append(typeUri); sb.append("\n");
+		sb.append("# Command   : DELETE DATA\n");
+		sb.append( String.format("DELETE { ?s ?p ?o } WHERE { ?s ?p ?o . filter regex(str(?s),'%s','') . filter regex(str(?p),'%s','') . }", oUri, fUri) );
+		String updateStr = sb.toString();
+		System.err.println("Query = "+updateStr);
+		
+		// Use fuseki client to send statement to Fuseki server
+		//System.err.println("RdfPersistenceManagerImpl: removeSingleValue: SPARQL Update sent...");
+		client.execute(updateStr);
+		//System.err.println("RdfPersistenceManagerImpl: removeSingleValue: SPARQL Update completed");
+		
+		return true;
+	}
+	
+	public static void main(String[] args) throws Exception {
+		boolean printHelp = false;
+		if (args.length<4) {
+			if (args.length>1 || args.length==1 && !args[0].equals("/?") && !args[0].equals("-h")) System.err.println("Invalid command: "+java.util.Arrays.toString(args));
+			printHelp = true;
+		} else {
+			RdfPersistenceManagerImpl pm = new RdfPersistenceManagerImpl();
+			if (args[0].trim().equalsIgnoreCase("get")) {
+				Object value = pm.getSingleValue(args[1], Class.forName(args[2]), args[3]);
+				String clss = (value!=null) ? value.getClass().getName() : "";
+				System.out.println("Value: "+value+"  "+clss);
+			} else
+			if (args[0].trim().equalsIgnoreCase("set")) {
+				Object value = pm._parseValue(Class.forName(args[5]), args[4], args[6], new HashMap<String,String>(), new HashMap<String,Object>());
+				boolean result = pm.setSingleValue(args[1], Class.forName(args[2]), args[3], value, Boolean.parseBoolean(args[7]));
+				System.out.println("Value set: "+result);
+			} else
+			if (args[0].trim().equalsIgnoreCase("delete")) {
+				boolean result = pm.removeSingleValue(args[1], Class.forName(args[2]), args[3]);
+				System.out.println("Value deleted: "+result);
+			} else {
+				System.err.println("Unknown command: "+args[0]);
+				printHelp = true;
+			}
+		}
+		if (printHelp) {
+			System.out.println("Usage: get <ID> <CLASS> <FIELD>");
+			System.out.println("       set <ID> <CLASS> <FIELD> <NEW-VALUE> <VALUE-CLASS> <FIELD-URI>");
+			System.out.println("       delete <ID> <CLASS> <FIELD>");
+		}
+	}
+}

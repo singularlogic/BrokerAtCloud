@@ -1,0 +1,283 @@
+@base <http://www.broker-cloud.eu/service-descriptions/CAS/broker#> .
+@prefix cas: <http://www.broker-cloud.eu/service-descriptions/CAS/broker#>.
+@prefix cas-pref-att: <http://www.broker-cloud.eu/service-descriptions/CAS/broker#>.
+@prefix sp: <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> . 
+@prefix fc: <http://www.broker-cloud.eu/service-descriptions/CAS/categories#>.
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> .
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#>.
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> .
+@prefix usdl-pref: <http://www.linked-usdl.org/ns/usdl-pref#> .
+@prefix pref-att:  <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#>  .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  .
+@prefix xml: <http://www.w3.org/XML/1998/namespace#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+@prefix s: <http://schema.org/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+
+################################################################################
+# This ontology describes the general vocabulary available for describing apps. 
+# This is done by broker policies defined by CAS Software AG as a platform provider. 
+# The information is needed in order to check if the properties of the apps 
+# to be deployed on CAS OPEN platform are in accordance to CAS´s regulations. 
+# Additionally, some of these properties are checked either during certification 
+# by code analysis and manual software quality checks or during runtime 
+# by the monitoring engine. 
+# Technically, in this document, we describe all properties relevant for describing 
+# the apps. Alowed values for these properties are defined based on range restrictions 
+# and defintions of allowed value-sets.
+#################################################################################
+
+<>
+  a owl:Ontology;
+	rdfs:label "CAS Cloud Broker Policies" ;
+	dcterms:title "CAS Cloud Broker Policies" ;
+	dcterms:description "Description of CAS Cloud Broker Policies" ;
+	dcterms:created "2014-02-13"^^xsd:date ;
+	dcterms:modified "2014-11-10"^^xsd:date ;
+	owl:versionInfo "009" .
+
+
+
+### Descriptions of Apps in general 
+cas:App rdfs:subClassOf usdl-core:Service. 
+ 
+### General broker policy spec 
+
+cas:CASServiceModel rdfs:subClassOf usdl-core:ServiceModel . 
+
+cas:CASBrokerPolicy a cas:CASServiceModel;
+	usdl-core:hasEntityInvolvement cas:CASEntitiyInvolvement;
+	usdl-core-cb:hasClassificationDimension fc:rootConcept. 
+
+### Entity involvement
+cas:CASEntitiyInvolvement a usdl-core:EntityInvolvement;
+	usdl-core:withBusinessRole  usdl-business-roles:intermediary;
+	usdl-core:ofBusinessEntity cas:CAS_Software_AG. 
+
+### Business Entity CAS Software AG
+cas:CAS_Software_AG a gr:BusinessEntity ;
+	foaf:homepage <http://www.cas.de> ;
+	foaf:logo <http://www.cas.de/typo3temp/pics/C_f1652c8982.gif> ;
+	gr:legalName "CAS Software AG"^^xsd:string ;
+	gr:taxID "DE143593148"^^xsd:string.
+
+
+
+######################################################################################
+### Description of Properties used for characterizing apps: 
+### Auditability, Contracting Experience, Ease of Doing Business, 
+### Extensibility, Updates, Portability, Scalability (ConcurrentUsers, Amount of Data)
+### Availability, Resiliency/Fault Tolerance, Serviceability, costs, Cost Model, 
+### Suitability, Service Response Time (min/max), Data Privacy, Security Management, 
+### Recoverability, Accessibility, Accordance to Client´s requirements, Learnability, 
+### Operability (Compatibility with browsers)
+### Service Provider predicates: Provider Certifications, foaf:homepage, foaf:logo
+### gr:legalName, gr:taxID
+###
+### Todo: rechtliche adresse 
+### ToDo: labels.
+######################################################################################
+
+
+
+######################################################################################
+### Spec of each property 
+######################################################################################
+
+cas:hasAuditability rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty; 
+	rdfs:domain cas:CASServiceModel;
+	rdfs:range cas:AllowedAuditabilityValue; 
+	rdfs:label "Auditierbarkeit"@de;
+	rdfs:label "Auditability"@en;
+	rdfs:comment "Nachvollziehbarkeit von Geschäftsvorfällen. Muss explizit geprüft werden" .
+# AF: You cannot bind property to property, commented out (in all statements below)	
+# AS: label and range ar ealso properties. 
+	#cas:measuredBy cas:QS.
+
+cas:hasAvailability rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty; 
+	rdfs:domain cas:CASServiceModel;
+	rdfs:range cas:AllowedAvailabilityValue; 
+	rdfs:label "Verfügbarkeit"@de;
+	rdfs:label "Availability"@en;
+	rdfs:comment "Hochverfügbarkeitsnachweis vor allem bei externer Schnittstelle" .
+#	cas:measuredBy cas:Monitoring;
+
+
+
+######################################################################################
+### Definition of allowed values/range restrictions for the properties above. 
+######################################################################################
+
+#####################################################################################
+### Quantitative Values   TODO: Describe all!   1, 2, 3, 4
+#####################################################################################
+ 
+cas:AllowedAvailabilityValue rdfs:subClassOf gr:QuantitativeValueFloat;
+	rdfs:label "Allowed Availability for apps is between 95 and 100%";
+	gr:hasUnitOfMeasurement "P1"^^xsd:string; #Percent
+	gr:hasMinValue "95"^^xsd:int;
+	gr:hasMaxValue "100"^^xsd:int;
+	usdl-core-cb:higherIsBetter "true"^^xsd:boolean;
+	usdl-core-cb:isRange "true"^^xsd:boolean .				# ICCS-EMAIL: are you sure? This means that service provider can give a range in its service descriptions for this property
+
+
+#########################################################################################
+### Definition von Qualitative Values   TODO: Describe all!  high, medium, low
+#########################################################################################
+# todo: belongsTo -> ref to root of fc
+
+cas:AllowedAuditabilityValue rdfs:subClassOf gr:QualitativeValue;
+	rdfs:label "Allowed values for Auditability: high, medium, low." .
+
+cas:AAVhigh a cas:AllowedAuditabilityValue;
+	rdfs:label "high auditability"@en.
+
+cas:AAVmedium a cas:AllowedAuditabilityValue;		# ICCS:  cas:AAVmedium		is re-defined later (line 583) as "... a cas:AllowedAccessibilityValue"
+	gr:lesser cas:AAVhigh;
+	rdfs:label "medium auditability"@en.
+
+cas:AAVlow a cas:AllowedAuditabilityValue;			# ICCS:  cas:AAVlow		is re-defined later (line 586) as "... a cas:AllowedAccessibilityValue"
+	gr:lesser cas:AAVmedium;						# ICCS-EMAIL: Just a reminder. Use lesser and greater properties to refer to the immendiately lower or higher individual. Not for every lower/greater individual (this would lead PuLSaR to break)
+	rdfs:label "low auditability"@en.
+
+
+######################################################################################
+### Measurement options: Here are the instances defined by which the 
+### predicates/criteria above can be measured. 
+#####################################################################################
+# AF: I commented out this spec and propose my own variant
+# AS: OK. 
+# ToDo: Change the attribute value definitions above. 
+
+#cas:QS rdf:type gr:Individual, cas:Measuring.
+
+#cas:Monitoring rdf:type gr:ProductOrService, cas:Measuring.
+
+#cas:CodeAnalysis rdf:type gr:ProductOrService, cas:Measuring.
+
+#cas:AppPortfolio rdf:type gr:ProductOrService, cas:Measuring.
+
+# cas:SupportStatistics rdf:type gr:ProductOrService, cas:Measuring.
+
+cas:Measuring a rdfs:Class .
+
+cas:QS a cas:Measuring.
+
+cas:Monitoring a cas:Measuring.
+
+cas:CodeAnalysis a cas:Measuring.
+
+cas:AppPortfolio a cas:Measuring.
+
+cas:SupportStatistics a cas:Measuring.
+
+cas:MeasuredBy a rdf:Property;
+rdfs:domain gr:QuantitativeValue, gr:QualitativeValue;
+rdfs:range: cas:Measuring .
+
+
+######################################################################################
+### Service level profiles
+######################################################################################
+
+######################################################################################
+# see above for the whole definition of cas:CASServiceModel and cas:CASBrokerPolicy
+######################################################################################
+
+## sub-properties 
+## for service level profiles
+cas:hasServiceLevelProfileCAS rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile; 
+	rdfs:domain cas:CASServiceModel;
+	rdfs:range cas:CASServiceLevelProfile.
+
+## for service levels  
+cas:hasServiceLevelAvailability rdfs:subPropertyOf usdl-sla:hasServiceLevel;
+	rdfs:domain cas:CASServiceLevelProfile;
+	rdfs:range cas:CASServiceLevelAvailability.
+
+## for service level expressions 
+cas:hasSLE-Availability rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression;
+	rdfs:domain cas:CASServiceLevelAvailability;
+	rdfs:range cas:SLE-Availability.
+
+## for variables 
+cas:hasVariableAvailability rdfs:subPropertyOf usdl-sla:hasVariable; 
+	rdfs:domain cas:SLE-Availability;
+	rdfs:range cas:VarAvailability.
+
+## for Values -
+cas:hasDefaultAvailability  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue;
+	rdfs:domain cas:VarAvailability;
+	rdfs:range cas:AllowedAvailabilityValue.
+
+#################################################################################
+#### Service Level Profiles 
+cas:CASServiceLevelProfile rdfs:subClassOf usdl-sla:ServiceLevelProfile.
+
+
+#####################################################################################
+### Service Levels 
+cas:ServiceLevelAvailability rdfs:subClassOf usdl-sla:ServiceLevel .
+
+
+#####################################################################################
+### Service Level Expressions 
+cas:SLE-Availability rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+
+
+#####################################################################################
+### Variables 
+cas:VarAvailability rdfs:subClassOf usdl-sla:Variable .
+
+
+
+###################################################################################
+### Values 
+cas:AvailabilityHigh rdf:type cas:AllowedAvailabilityValue;
+	rdfs:label "High Availability for apps is between 99,98 and 100%";
+	gr:hasUnitOfMeasurement "P1"^^xsd:string; #Percent
+	gr:hasMinValue "99,98"^^xsd:int;
+	gr:hasMaxValue "100"^^xsd:int. 
+
+cas:AvailabilityMedium rdf:type cas:AllowedAvailabilityValue;
+	rdfs:label "Medium Availability for apps is between 99,5 and 100%";
+	gr:hasUnitOfMeasurement "P1"^^xsd:string; #Percent
+	gr:hasMinValue "99,5"^^xsd:int;
+	gr:hasMaxValue "100"^^xsd:int. 
+
+cas:AvailabilityLow rdf:type cas:AllowedAvailabilityValue;
+	rdfs:label "Low Availability for apps is between 99 and 100%";
+	gr:hasUnitOfMeasurement "P1"^^xsd:string; #Percent
+	gr:hasMinValue "99"^^xsd:int;
+	gr:hasMaxValue "100"^^xsd:int. 
+
+
+
+##################################################################################
+### Preference Variables 
+################################################################################## 
+
+cas-pref-att:Auditability rdfs:subClassOf usdl-pref:QualitativeVariable;
+	usdl-pref:refToServiceAttribute pref-att:attr-accountability-auditability;
+	usdl-pref:belongsTo fc:rootConcept.
+
+cas-pref-att:hasDefaultCASAuditability rdfs:subPropertyOf usdl-pref:hasDefaultQualitativeValue;
+	rdfs:domain cas-pref-att:Auditability;
+	rdfs:range cas:AllowedAuditabilityValue.
+
+cas-pref-att:Availability rdfs:subClassOf usdl-pref:QuantitativeVariable;
+	usdl-pref:refToServiceAttribute pref-att:attr-assurance-availability;	# ICCS: fixed ref to 'availability' attribute
+	usdl-pref:belongsTo fc:rootConcept.
+
+cas-pref-att:hasDefaultCASAvailability rdfs:subPropertyOf usdl-pref:hasDefaultQuantitativeValue;
+	rdfs:domain cas-pref-att:Availability;
+	rdfs:range cas:AllowedAvailabilityValue.
+
