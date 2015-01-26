@@ -1,0 +1,67 @@
+@base <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> .
+@prefix sp: <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> .
+@prefix cas: <http://www.broker-cloud.eu/service-descriptions/CAS/broker#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#>  .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> .
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> .
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> .
+@prefix fc: <http://www.broker-cloud.eu/service-descriptions/CAS/categories#>.
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+
+# Contact apps
+sp:ServiceModelAddressApp1
+	cas:hasMinimum					[	a		cas:AllowedMinimumValue ;
+										usdl-core-cb:hasMinSupport			"0.06"^^xsd:double ;
+										usdl-core-cb:hasMaxMembershipValue	"0.1"^^xsd:double ;
+										usdl-core-cb:hasMaxSupport  		"0.2"^^xsd:double ;
+										gr:hasUnitOfMeasurement     		"s"^^xsd:string ;
+									] .
+
+sp:ServiceModelAddressApp2
+	cas:hasMinimum					[	a		cas:AllowedMinimumValue ;
+										usdl-core-cb:hasMinSupport			"0.02"^^xsd:double ;
+										usdl-core-cb:hasMaxMembershipValue	"0.04"^^xsd:double ;
+										usdl-core-cb:hasMaxSupport  		"0.1"^^xsd:double ;
+										gr:hasUnitOfMeasurement     		"s"^^xsd:string ;
+									] .
+
+sp:ServiceModelAddressApp3
+	cas:hasMinimum					[	a		cas:AllowedMinimumValue ;
+										usdl-core-cb:hasMinSupport			"0.005"^^xsd:double ;
+										usdl-core-cb:hasMaxMembershipValue	"0.01"^^xsd:double ;
+										usdl-core-cb:hasMaxSupport  		"0.02"^^xsd:double ;
+										gr:hasUnitOfMeasurement     		"s"^^xsd:string ;
+									] .
+
+# Calendar apps
+sp:ServiceModelCalendarApp1
+	cas:hasMinimum					[	a		cas:AllowedMinimumValue ;
+										usdl-core-cb:hasMinSupport			"0.08"^^xsd:double ;
+										usdl-core-cb:hasMaxMembershipValue	"0.12"^^xsd:double ;
+										usdl-core-cb:hasMaxSupport  		"0.25"^^xsd:double ;
+										gr:hasUnitOfMeasurement     		"s"^^xsd:string ;
+									] .
+
+sp:ServiceModelCalendarApp2
+	cas:hasMinimum					[	a		cas:AllowedMinimumValue ;
+										usdl-core-cb:hasMinSupport			"0.04"^^xsd:double ;
+										usdl-core-cb:hasMaxMembershipValue	"0.08"^^xsd:double ;
+										usdl-core-cb:hasMaxSupport  		"0.12"^^xsd:double ;
+										gr:hasUnitOfMeasurement     		"s"^^xsd:string ;
+									] .
+
+sp:ServiceModelCalendarApp3
+	cas:hasMinimum					[	a		cas:AllowedMinimumValue ;
+										usdl-core-cb:hasMinSupport			"0.008"^^xsd:double ;
+										usdl-core-cb:hasMaxMembershipValue	"0.02"^^xsd:double ;
+										usdl-core-cb:hasMaxSupport  		"0.08"^^xsd:double ;
+										gr:hasUnitOfMeasurement     		"s"^^xsd:string ;
+									] .

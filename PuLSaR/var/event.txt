@@ -1,0 +1,7 @@
+# Test SLM event
+.SLM_EVENT_TOPIC = test.topic
+.SLM_EVENT_TYPE  = service-onboarded
+#.SLM_EVENT_TYPE  = service-depreciated
+#.SLM_EVENT_TYPE  = service-updated
+#service-description = SD-7ac2d47a-f97e-41c6-8a7b-9e72be4e30e1
+service-description = http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#CASCalenderApp1
