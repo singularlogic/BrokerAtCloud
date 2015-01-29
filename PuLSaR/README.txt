@@ -15,6 +15,18 @@ INSTALLATION  (on Windows)
 3. Run file "bin\fuseki-setup.bat" (double click on it)
 
 
+COMPILE - BUILD
+===============
+
+1. Run "bin\command.bat" (a console window with command prompt should open)
+
+2. Give "mvn clean package" at command prompt (normally should report success)
+
+3. Give "bin\deps" at command prompt (normally should report success)
+
+After this process the "target" directory should have been created and contain file "target\PuLSaR.war"
+
+
 CHECK INSTALLATION
 ==================
 
