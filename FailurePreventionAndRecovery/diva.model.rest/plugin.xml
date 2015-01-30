@@ -35,14 +35,14 @@
          <action
                label="&amp;Start"
                icon="icons/DivaModelFile.gif"
-               class="diva.rest.actions.SampleAction"
+               class="diva.brokeratcloud.fpr.actions.SampleAction"
                tooltip="Start DiVA Daemon with Rest API"
                menubarPath="divaRest/divaRestGroup"
                toolbarPath="divaRestToolBar"
                id="diva.rest.actions.SampleAction">
          </action>
          <action
-               class="diva.rest.actions.SampleActionStatic"
+               class="diva.brokeratcloud.fpr.actions.SampleActionStatic"
                id="diva.rest.actions.TestStatic"
                label="&amp;Test"
                menubarPath="divaRest/divaRestGroup"
