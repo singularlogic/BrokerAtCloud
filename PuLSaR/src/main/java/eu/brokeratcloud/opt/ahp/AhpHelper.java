@@ -259,7 +259,6 @@ public class AhpHelper extends RootObject {
 		
 		// calculate eigenvector using extend analysis technique
 		logger.trace("Extend Analysis: starting...");
-//XXX: 2015-01-19: testing...		double[] eigenvector = _extendAnalysis(comparisonMatrix);
 		double[] eigenvector = _extendAnalysis2(comparisonMatrix);
 		logger.debug("Extend Analysis: eigenvector: {}", Arrays.toString(eigenvector));
 		
@@ -321,23 +320,6 @@ public class AhpHelper extends RootObject {
 		if (val1!=null && !(str=val1.toString().trim()).isEmpty()) i1 = NumericInterval.valueOf(str);
 		if (val2!=null && !(str=val2.toString().trim()).isEmpty()) i2 = NumericInterval.valueOf(str);
 		
-//XXX: 2015-01-18: commented out in order to check a new implementation
-/*		double l1 = i1!=null ? i1.length() : 0;
-		double l2 = i2!=null ? i2.length() : 0;
-		if (ir!=null && i1!=null && i2!=null) {
-			l1 = i1.join(ir).length();
-			l2 = i2.join(ir).length();
-		}
-		TFN result = null;
-		if (l1>0 && l2>0 || mandatory) result = new TFN(l1/l2);
-		else if (l1==0 && l2>0)  result = new TFN(weight);
-		else if (l1>0  && l2==0) result = new TFN(1/weight);
-		else result = TFN.one();
-		
-//XXX: 2015-01-18: addition
-		return higherIsBetter ? result : result.inv();
-		*/
-//XXX: 2015-01-18: new implementation
 		TFN result = null;
 		if (i1!=null && i2!=null || mandatory) result = null;
 		else if (i1==null && i2!=null) result = new TFN(weight);
@@ -352,17 +334,9 @@ logger.trace("$$$$$$$$$$$$$$$$$   MISSING SERVICE ATTR. VALUE: i1={}, i2={}, rat
 		double[] vals = (double[])allowed;
 		double min = vals[0];
 		double max = vals[1];
-//		if (higherIsBetter) {
-			double lb1 = i1!=null ? i1.getLowerBound() : Double.NEGATIVE_INFINITY;
-			double lb2 = i2!=null ? i2.getLowerBound() : Double.NEGATIVE_INFINITY;
-			result = new TFN( (max-lb2)/(max-lb1) );
-logger.trace("$$$$$$$$$$$$$$$$$   H-IB: lb1={}, lb2={}, min/max={}-{}, rate={}", lb1, lb2, min, max, (max-lb2)/(max-lb1));
-/*		} else {
-			double ub1 = i1!=null ? i1.getUpperBound() : Double.POSITIVE_INFINITY;
-			double ub2 = i2!=null ? i2.getUpperBound() : Double.POSITIVE_INFINITY;
-logger.trace("$$$$$$$$$$$$$$$$$   L-IB: ub1={}, ub2={}, min/max={}-{}, rate={}", ub1, ub2, min, max, (ub2-min)/(ub1-min));
-			result = new TFN( (ub2-min)/(ub1-min) );
-		}*/
+		double lb1 = i1!=null ? i1.getLowerBound() : Double.NEGATIVE_INFINITY;
+		double lb2 = i2!=null ? i2.getLowerBound() : Double.NEGATIVE_INFINITY;
+		result = new TFN( (max-lb2)/(max-lb1) );
 		return result;
 	}
 	// Fuzzy Types (inc/dec/range)
@@ -392,25 +366,6 @@ logger.trace("$$$$$$$$$$$$$$$$$   L-IB: ub1={}, ub2={}, min/max={}-{}, rate={}",
 		if (val1!=null && !(str=val1.toString().trim()).isEmpty()) i1 = TFuzzyInterval.valueOf(str);
 		if (val2!=null && !(str=val2.toString().trim()).isEmpty()) i2 = TFuzzyInterval.valueOf(str);
 		
-//XXX: 2015-01-18: commented out in order to check a new implementation
-/*		//TFN l1 = i1.length();
-		//TFN l2 = i2.length();
-		TFN l1 = i1!=null ? i1.length() : null;
-		TFN l2 = i2!=null ? i2.length() : null;
-		if (ir!=null && i1!=null && i2!=null) {
-			l1 = i1.join(ir).length();
-			l2 = i2.join(ir).length();
-		}
-		TFN result = null;
-		if (l1!=null && l2!=null || mandatory) result = l1.div(l2);
-		else if (l1==null && l2!=null) result = new TFN(weight);
-		else if (l1!=null && l2==null) result = new TFN(1/weight);
-		else result = TFN.one();
-		
-//XXX: 2015-01-18: addition
-		return higherIsBetter ? result : result.inv();
-*/
-//XXX: 2015-01-18: new implementation
 		TFN result = null;
 		if (i1!=null && i2!=null || mandatory) result = null;
 		else if (i1==null && i2!=null) result = new TFN(weight);
@@ -425,17 +380,9 @@ logger.trace("%%%%%%%%%%%%%%%%   MISSING SERVICE ATTR. VALUE: i1={}, i2={}, rate
 		TFN[] vals = (TFN[])allowed;
 		double min = vals[0].getLowerBound();
 		double max = vals[1].getUpperBound();
-//		if (higherIsBetter) {
-			double lb1 = i1!=null ? i1.getLowerBound() : Double.NEGATIVE_INFINITY;
-			double lb2 = i2!=null ? i2.getLowerBound() : Double.NEGATIVE_INFINITY;
-			result = new TFN( (max-lb2)/(max-lb1) );
-logger.trace("%%%%%%%%%%%%%%%%   H-IB: lb1={}, lb2={}, min/max={}-{}, rate={}", lb1, lb2, min, max, (max-lb2)/(max-lb1));
-/*		} else {
-			double ub1 = i1!=null ? i1.getUpperBound() : Double.POSITIVE_INFINITY;
-			double ub2 = i2!=null ? i2.getUpperBound() : Double.POSITIVE_INFINITY;
-logger.trace("%%%%%%%%%%%%%%%%   L-IB: ub1={}, ub2={}, min/max={}-{}, rate={}", ub1, ub2, min, max, (ub2-min)/(ub1-min));
-			result = new TFN( (ub2-min)/(ub1-min) );
-		}*/
+		double lb1 = i1!=null ? i1.getLowerBound() : Double.NEGATIVE_INFINITY;
+		double lb2 = i2!=null ? i2.getLowerBound() : Double.NEGATIVE_INFINITY;
+		result = new TFN( (max-lb2)/(max-lb1) );
 		return result;
 	}
 	// Boolean Type
@@ -508,95 +455,6 @@ logger.trace("%%%%%%%%%%%%%%%%   L-IB: ub1={}, ub2={}, min/max={}-{}, rate={}", 
 		else return TFN.one();
 	}
 	
-	// Implementation of extend analysis
-	protected static double[] _extendAnalysis(TFN[][] matrix) {
-		int size = matrix.length;
-		double[] eigen = _calcExtendAnalysisEigenvector(matrix);
-		
-		// XXX:  This is NOT part of the original Extend Analysis method - BEGIN
-		double[] eigen2;
-		TFN[][] matrix2 = new TFN[size][size];
-		do {
-			// square matrix
-			_squareMatrix(matrix, matrix2);
-			eigen2 = _calcExtendAnalysisEigenvector(matrix2);
-			// swap matrices and eigenvectors
-			double[] vtmp = eigen; eigen = eigen2; eigen2 = vtmp;
-			TFN[][] mtmp = matrix; matrix = matrix2; matrix2 = mtmp;
-		} while (_areVectorsDifferent(eigen, eigen2, 0.01));
-		// XXX:  This is NOT part of the original Extend Analysis method - END
-		
-		return eigen;
-	}
-	
-	protected static void _squareMatrix(TFN[][] M1, TFN[][] M2) {
-		int size = M1.length;
-		for (int i=0; i<size; i++) {
-			for (int j=0; j<size; j++) {
-				M2[i][j] = TFN.zero();
-				for (int k=0; k<size; k++) M2[i][j] = M2[i][j].add( M1[i][k].mul( M1[k][j] ) );
-			}
-		}
-	}
-	
-	protected static boolean _areVectorsDifferent(double[] eigen1, double[] eigen2, double threshold) {
-		int size = eigen1.length;
-		for (int i=0; i<size; i++) {
-			double diff = eigen1[i] - eigen2[i];
-			if (diff < 0) diff = -diff;
-			if (logger.isTraceEnabled()) logger.trace("\tabs({} - {}) = {}", eigen1[i], eigen2[i], diff);
-			if (diff>threshold) return true;
-		}
-		if (logger.isTraceEnabled()) logger.trace("\teigenvectors are (almost) identical");
-		return false;
-	}
-	
-	protected static double[] _calcExtendAnalysisEigenvector(TFN[][] matrix) {
-		// calculate fuzzy synthetic degrees D
-		int N = matrix.length;
-		TFN[] D = new TFN[N];	// the row sum
-		TFN totSum = TFN.zero();
-		for (int i=0; i<N; i++) {
-			D[i] = TFN.zero();
-			for (int j=0; j<N; j++) D[i] = D[i].add(matrix[i][j]);
-			totSum = totSum.add(D[i]);
-		}
-		for (int i=0; i<N; i++) {
-			D[i] = D[i].div(totSum);
-		}
-		
-		// calculate degrees of possibilities (d) that Di is greater than all Dk, k=1..N, i<>k
-		double[] d = new double[N];
-		double sum = 0;
-		for (int i=0; i<N; i++) {
-			double min = 1;
-			for (int j=0; j<N; j++) {
-				double Dil = D[i].getLowerBound();
-				double Djl = D[j].getLowerBound();
-				double Dim = D[i].getMeanValue();
-				double Djm = D[j].getMeanValue();
-				double Diu = D[i].getUpperBound();
-				double Dju = D[j].getUpperBound();
-				double VDij;
-				if (Dim >= Djm) VDij = 1;
-				else if ((Dim <= Djm) && (Djl <= Diu)) {
-					VDij = (Djl - Diu) / ((Dim - Diu) - (Djm - Djl));
-				} else {
-					VDij = 0;
-				}
-				if (VDij<min) min = VDij;
-			}
-			d[i] = min;
-			sum += min;
-		}
-		
-		// normalize d's to get eigenvector
-		for (int i=0; i<N; i++) d[i] /= sum;
-		
-		return d;
-	}
-	
-//XXX: 2015-01-19: BEGIN of alternative implementation
 	protected static double[] _extendAnalysis2(TFN[][] matrix) {
 		// defussify comparison matrix
 		int N = matrix.length;
@@ -660,7 +518,6 @@ logger.trace("%%%%%%%%%%%%%%%%   L-IB: ub1={}, ub2={}, min/max={}-{}, rate={}", 
 		for (int i=0; i<N; i++) diff += Math.abs(v1[i]-v2[i]);
 		return diff;
 	}
-//XXX: 2015-01-19: END of alternative implementation
 	
 	public static class RankedItem implements Comparable<RankedItem> {
 		public ServiceDescription item;
