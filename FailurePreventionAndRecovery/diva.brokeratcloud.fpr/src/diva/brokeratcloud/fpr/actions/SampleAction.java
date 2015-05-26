@@ -22,6 +22,13 @@ import javax.jms.JMSException;
 import javax.ws.rs.core.UriBuilder;
 
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.eclipse.core.resources.IFile;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspaceRoot;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -55,6 +62,7 @@ public class SampleAction implements IWorkbenchWindowActionDelegate {
 	 */
 	public SampleAction() {
 	}
+	private String projectName = null;
 
 	/**
 	 * The action has been activated. The argument of the
@@ -63,12 +71,28 @@ public class SampleAction implements IWorkbenchWindowActionDelegate {
 	 * @see IWorkbenchWindowActionDelegate#run
 	 */
 	public void run(IAction action) {
-		
+		IProgressMonitor progressMonitor = new NullProgressMonitor();
+		IProject prj = null;
+		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
+		try{
+			prj = root.getProjects()[0];
+		}catch(ArrayIndexOutOfBoundsException e){
+			prj =  root.getProject("DefaultProject");
+			try {
+				prj.create(progressMonitor);
+				prj.open(progressMonitor);
+			} catch (CoreException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
 		//load a diva model
+		//IFile file = prj.getFile("default.xmi");
+		this.projectName = prj.getName();
 		Repository.mainRoot = new DivaRoot(
 					org.eclipse.emf.common.util.URI
-						.createPlatformResourceURI("BrokerAtCloud/model/Orbi.diva")
-				);
+						.createPlatformResourceURI(String.format("%s/main.diva", prj.getName())));
+				
 //		Repository.configPool = new ConfigurationsPool(
 //					Repository.mainRoot.getScenarios().iterator().next().getContext().get(0)
 //				);
@@ -149,6 +173,6 @@ public class SampleAction implements IWorkbenchWindowActionDelegate {
 		d.updateModel();
 		d.updateOnRequest("broker", "cloud");
 		d.saveModel(org.eclipse.emf.common.util.URI
-				.createPlatformResourceURI("BrokerAtCloud/model/Orbi-generated.diva"));
+				.createPlatformResourceURI(projectName+"/main-gen.diva"));
 	}
 }

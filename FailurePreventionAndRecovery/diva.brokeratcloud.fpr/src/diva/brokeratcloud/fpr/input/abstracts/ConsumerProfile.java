@@ -3,6 +3,7 @@ package diva.brokeratcloud.fpr.input.abstracts;
 import java.util.Collection;
 
 import diva.brokeratcloud.fpr.input.json.ConsumerProfileJson;
+import diva.brokeratcloud.fpr.input.local.ConsumerProfileLocal;
 
 public abstract class ConsumerProfile {
 

@@ -10,8 +10,7 @@ Require-Bundle: org.eclipse.ui,
  diva.model.simulation;bundle-version="2.0.0",
  diva.model.editor;bundle-version="2.0.0",
  org.apache.commons.io;bundle-version="2.0.1",
- org.junit,
- org.antlr;bundle-version="2.7.6"
+ org.junit
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: lib/aopalliance-repackaged-2.2.0.jar,
@@ -55,5 +54,7 @@ Bundle-ClassPath: lib/aopalliance-repackaged-2.2.0.jar,
  lib/httpmime-4.3.5.jar,
  lib/javax.jms.jar,
  lib/log4j-1.2.17.jar,
- lib/slf4j-1.5.10.wso2v1.jar
+ lib/slf4j-1.5.10.wso2v1.jar,
+ lib/antlr_2.7.6.jar
 Import-Package: diva.parser
+Export-Package: antlr

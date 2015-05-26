@@ -48,6 +48,7 @@ import diva.Property;
 import diva.PropertyPriority;
 import diva.PropertyValue;
 import diva.Scenario;
+import diva.SimulationModel;
 import diva.Term;
 import diva.VariabilityModel;
 import diva.Variable;
@@ -123,7 +124,22 @@ public class DivaRoot {
 			this.root = (VariabilityModel) res.getContents().get(0);			
 		}
 		catch(Exception e){
-			e.printStackTrace();
+			this.root = DivaFactory.eINSTANCE.createVariabilityModel();
+			SimulationModel simu = DivaFactory.eINSTANCE.createSimulationModel();
+			Scenario scenario = DivaFactory.eINSTANCE.createScenario();
+			Context ctx = DivaFactory.eINSTANCE.createContext();
+			scenario.getContext().add(ctx);
+			simu.getScenario().add(scenario);
+			root.setSimulation(simu);
+			res.getContents().add(this.root);
+			try {
+				res.save(Collections.EMPTY_MAP);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			//e.printStackTrace();
 		}
 	}
 	

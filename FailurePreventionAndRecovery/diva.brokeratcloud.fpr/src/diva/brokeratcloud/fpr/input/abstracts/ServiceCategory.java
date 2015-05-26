@@ -3,6 +3,7 @@ package diva.brokeratcloud.fpr.input.abstracts;
 import java.util.List;
 
 import diva.brokeratcloud.fpr.input.json.ServiceCategoryJson;
+import diva.brokeratcloud.fpr.input.local.ServiceCategoryLocal;
 
 public abstract class ServiceCategory {
 

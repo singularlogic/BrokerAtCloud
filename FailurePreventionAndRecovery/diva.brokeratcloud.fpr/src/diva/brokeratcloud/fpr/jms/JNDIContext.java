@@ -6,6 +6,8 @@ import javax.jms.TopicConnectionFactory;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import diva.brokeratcloud.fpr.PropertiesUtil;
+
 public class JNDIContext {
     private InitialContext initContext = null;
     private TopicConnectionFactory topicConnectionFactory = null;
@@ -53,13 +55,14 @@ public class JNDIContext {
      * Create Initial Context with given configuration
      */
     private void createInitialContext() {
-
+    	String address = PropertiesUtil.INSTANCE.get("pubsubServer");
+    	//System.out.println("!!!!!!"+address);
         try {
         	Hashtable env = new Hashtable(); 
         	env.put("java.naming.factory.initial", 
 				"org.wso2.andes.jndi.PropertiesFileInitialContextFactory");
         	env.put("connectionfactory.ConnectionFactory", 
-				"amqp://admin:admin@clientid/carbon?brokerlist='tcp://94.75.243.141:5673'");
+				address);
             initContext = new InitialContext(env);
         } catch (NamingException e) {
             System.out.println("Can not create initial context with given parameters." + e);

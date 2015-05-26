@@ -58,6 +58,13 @@ public class ServiceCategoryJson extends ServiceCategory {
 //	}
 	
 	private void init(){
+		this.categories = Arrays.asList("OrbiServiceModel", "DBServiceModel");
+		this.subCategories = new HashMap<String, String>();
+		this.subCategories.put("GoldenOrbi", "OrbiServiceModel");
+		this.subCategories.put("MonolithicDB", "DBServiceModel");
+	}
+	
+	private void original_init(){
 		try{
 			String query = "SELECT ?x\n"+
 					"WHERE\n" +

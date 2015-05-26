@@ -44,5 +44,6 @@
 	<classpathentry kind="lib" path="lib/javax.jms.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.17.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-1.5.10.wso2v1.jar"/>
+	<classpathentry kind="lib" path="lib/antlr_2.7.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
