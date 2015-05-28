@@ -137,7 +137,8 @@ public class SampleAction implements IWorkbenchWindowActionDelegate {
 			Subscriber.startListening();
 		} catch (JMSException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
+			System.out.println("The pub-sub server is not available at: "+Subscriber.pubsubServer);
 		}
 	}
 

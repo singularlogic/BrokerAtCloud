@@ -17,6 +17,8 @@ import diva.brokeratcloud.fpr.PropertiesUtil;
 import diva.brokeratcloud.fpr.resources.PubSub;
 
 public class Subscriber implements MessageListener {
+	
+	public static String pubsubServer = null;
 
 	public static void startListening() throws JMSException {
 	//public static void main(String[] args) throws JMSException{
@@ -24,6 +26,7 @@ public class Subscriber implements MessageListener {
 		System.setProperty("java.naming.factory.initial", 
 				"org.wso2.andes.jndi.PropertiesFileInitialContextFactory");
 		String address = PropertiesUtil.INSTANCE.get("pubsubServer");
+		pubsubServer = address;
 		//System.out.println(">>>>>>>"+address);
 		System.setProperty("connectionfactory.ConnectionFactory", 
 				address);

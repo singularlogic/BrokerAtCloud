@@ -15,12 +15,14 @@
  */
 package diva.brokeratcloud.fpr.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import diva.brokeratcloud.fpr.input.abstracts.ServiceDependency;
 import diva.brokeratcloud.fpr.input.local.ServiceDependencyLocal;
 
 /**
@@ -43,7 +45,7 @@ public class DcSession {
 		Set<String> required = new HashSet<String>();
 		for(String s : allServices){
 			try{
-				List<String> dep = ServiceDependencyLocal.INSTANCE.getDependency(s);
+				List<String> dep = ServiceDependency.INSTANCE.getDependency(s);
 				if(dep !=null)
 					required.addAll(dep);
 			}
@@ -70,6 +72,22 @@ public class DcSession {
 	 */
 	public Collection<String> getMissed(){
 		return checkOneStep();
+	}
+	
+	public static List<String> getAllRequired(List<String> query){
+		DcSession session = new DcSession("temp");
+		session.addServices(query);
+		List<String> allMissed = new ArrayList<String>();
+		while(true){
+			Collection<String> missed = session.getMissed();
+			if(missed.isEmpty()){
+				return allMissed;
+			}
+			allMissed.addAll(missed);
+			List<String> lst = new ArrayList<String>();
+			lst.addAll(missed);
+			session.addServices(lst);
+		}
 	}
 
 }

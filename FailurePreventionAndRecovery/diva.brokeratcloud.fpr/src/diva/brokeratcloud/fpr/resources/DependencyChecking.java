@@ -1,6 +1,7 @@
 package diva.brokeratcloud.fpr.resources;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jackson.JsonParseException;
@@ -33,6 +35,28 @@ public class DependencyChecking {
 	ObjectMapper mapper = new ObjectMapper();
 	
 	private static Map<String, DcSession> sessions = new HashMap<String, DcSession>();
+	
+//	@GET
+//	@Path("/")
+//	public Object query(){
+//		return "Hello";
+//	}
+	
+	@Path("/")
+	@GET
+	public Object queryAllRequired(
+			@QueryParam("service") List<String> service
+	){
+		try{
+		Collection<String> res = DcSession.getAllRequired(service);
+		System.out.println(res);
+		return res;
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			return null;
+		}
+	}
 	
 	/**
 	 * curl -X PUT -d "[\"song::hui\", \"morin::brice\"]" http://127.0.0.1:8089/fpr/dc/id
@@ -130,4 +154,6 @@ public class DependencyChecking {
 	){
 		sessions.remove(requestId);
 	}
+	
+	
 }

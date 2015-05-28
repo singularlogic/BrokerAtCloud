@@ -7,7 +7,7 @@ import diva.brokeratcloud.fpr.input.local.ServiceDependencyLocal;
 
 public abstract class ServiceDependency {
 	
-	public static ServiceDependency INSTANCE = new ServiceDependencyJson();
+	public static ServiceDependency INSTANCE = new ServiceDependencyLocal();
 
 	public ServiceDependency() {
 		super();

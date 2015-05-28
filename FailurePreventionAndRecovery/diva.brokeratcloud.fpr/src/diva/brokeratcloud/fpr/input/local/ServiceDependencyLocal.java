@@ -59,6 +59,9 @@ public class ServiceDependencyLocal extends ServiceDependency {
 						"SmallUnmeteredServiceLevelProfile"
 				));
 		
+		fakeRepo.put("sp:CASCalenderApp1",Arrays.asList("sp:CASAdressApp1"));
+		fakeRepo.put("a", Arrays.asList("b","c"));
+		fakeRepo.put("b", Arrays.asList("e","c"));
 	}
 	
 	public ServiceDependencyLocal(){
