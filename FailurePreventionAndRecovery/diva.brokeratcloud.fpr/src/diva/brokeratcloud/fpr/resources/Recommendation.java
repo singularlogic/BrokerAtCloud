@@ -1,8 +1,12 @@
 package diva.brokeratcloud.fpr.resources;
 
+import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -17,6 +21,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import diva.Configuration;
@@ -25,6 +30,8 @@ import diva.brokeratcloud.fpr.input.abstracts.ConsumerProfile;
 import diva.brokeratcloud.fpr.input.json.ConsumerProfileJson;
 import diva.brokeratcloud.fpr.model.ConfigurationsPool;
 import diva.brokeratcloud.fpr.model.DivaRoot;
+import diva.brokeratcloud.fpr.model.RecommendationHistory;
+import diva.brokeratcloud.fpr.model.RecommendationHistory.HistoryItem;
 import diva.brokeratcloud.fpr.model.Repository;
 
 /**
@@ -267,6 +274,39 @@ public class Recommendation {
 		return res;
 	}
 	
+	@Path("recommended")
+	@GET
+	public Object getRecommended(
+				@QueryParam("service") String service,
+				@QueryParam("timestamp") String timestamp
+			)
+	{
+		String decodedService = service;
+		try {
+			decodedService = java.net.URLDecoder.decode(service, "UTF-8").trim();
+			System.out.println(decodedService);
+		} catch (UnsupportedEncodingException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
+		List<String> result = new ArrayList<String>();
+		try {
+			Date date = fmt.parse(timestamp);
+			List<HistoryItem> items = 
+					RecommendationHistory.INSTANCE.after(date);
+			for(HistoryItem item : items){
+				if(item.removed.contains(decodedService) && !result.contains(item.customer))
+					result.add(item.customer);
+			}
+			Map<String, List<String>> finalResult = new HashMap<String, List<String>>();
+			finalResult.put("recommended", result);
+			return finalResult;
+		} catch (ParseException e) {
+			return String.format("%s is not a valid W3C datetime representation", timestamp);
+		}
+		
+	}
 
 	private ConfigurationsPool getConfigPool(String recommId){
 		String prefix = getUserProfileId(recommId);

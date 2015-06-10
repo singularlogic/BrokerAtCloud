@@ -42,6 +42,7 @@ import diva.brokeratcloud.fpr.Demo;
 import diva.brokeratcloud.fpr.jms.Subscriber;
 import diva.brokeratcloud.fpr.model.ConfigurationsPool;
 import diva.brokeratcloud.fpr.model.DivaRoot;
+import diva.brokeratcloud.fpr.model.RecommendationHistory;
 import diva.brokeratcloud.fpr.model.Repository;
 import diva.brokeratcloud.fpr.resources.DependencyChecking;
 import diva.brokeratcloud.fpr.resources.PubSub;
@@ -71,6 +72,10 @@ public class SampleAction implements IWorkbenchWindowActionDelegate {
 	 * @see IWorkbenchWindowActionDelegate#run
 	 */
 	public void run(IAction action) {
+		
+		//TODO: will be removed
+		RecommendationHistory.INSTANCE.initSamples();
+		
 		IProgressMonitor progressMonitor = new NullProgressMonitor();
 		IProject prj = null;
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
