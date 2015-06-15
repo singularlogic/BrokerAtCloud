@@ -4,10 +4,11 @@ import java.util.List;
 
 import diva.brokeratcloud.fpr.input.json.ServiceCategoryJson;
 import diva.brokeratcloud.fpr.input.local.ServiceCategoryLocal;
+import diva.brokeratcloud.fpr.input.sparql.ServiceCategorySparql;
 
 public abstract class ServiceCategory {
 
-	public static ServiceCategory INSTANCE = new ServiceCategoryJson();
+	public static ServiceCategory INSTANCE = new ServiceCategorySparql();
 	
 	public ServiceCategory() {
 		super();

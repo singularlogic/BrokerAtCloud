@@ -4,10 +4,11 @@ import java.util.Collection;
 
 import diva.brokeratcloud.fpr.input.json.AdaptRuleJson;
 import diva.brokeratcloud.fpr.input.local.AdaptRuleLocal;
+import diva.brokeratcloud.fpr.input.sparql.AdaptRuleSparql;
 
 public abstract class AdaptRule {
 	
-	public static AdaptRule INSTANCE = new AdaptRuleJson();
+	public static AdaptRule INSTANCE = new AdaptRuleSparql();
 
 	public AdaptRule() {
 		super();

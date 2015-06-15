@@ -4,10 +4,11 @@ import java.util.List;
 
 import diva.brokeratcloud.fpr.input.json.ServiceAttributeJson;
 import diva.brokeratcloud.fpr.input.local.ServiceAttributeLocal;
+import diva.brokeratcloud.fpr.input.sparql.ServiceAttributeSparql;
 
 public abstract class ServiceAttribute {
 	
-	public static ServiceAttribute INSTANCE = new ServiceAttributeJson();
+	public static ServiceAttribute INSTANCE = new ServiceAttributeSparql();
 
 	public ServiceAttribute() {
 		super();
