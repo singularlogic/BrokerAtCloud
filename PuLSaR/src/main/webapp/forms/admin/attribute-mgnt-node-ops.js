@@ -65,9 +65,6 @@
 				deselectTreeNode();
 			}
 		}
-/*		function deleteNodeCascade() {
-			deleteNode(true);
-		}*/
 		function createSibling() {
 			var newPar = getField('parent');
 			var tmp = attrParent;

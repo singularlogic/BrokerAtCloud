@@ -49,10 +49,4 @@ public abstract class RootObject {
 		if (sb.length()>0) sb.insert(0, "RootObject: ");
 		return sb.toString();
 	}
-	
-/*	protected void stopDebug(String mesg) {
-		if (mesg!=null && !mesg.isEmpty()) System.err.println(mesg);
-		System.err.println("PRESS <ENTER> TO CONTINUE...");
-		try{System.in.read();System.in.read();}catch(Exception e){}
-	}*/
 }

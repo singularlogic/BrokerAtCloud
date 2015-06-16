@@ -1,5 +1,6 @@
 package eu.brokeratcloud.common;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -22,6 +23,10 @@ public class ServiceDescription extends BrokerObject {
 	@XmlAttribute
 	@RdfPredicate
 	protected Map<String,Object> serviceAttributes;
+	// Used in consumer feedback component 
+	// NOT persisted in RDF repository
+	@XmlAttribute
+	protected Date lastUsedTimestamp;
 	
 	public ServiceDescription() { serviceAttributes = new HashMap<String,Object>(); }
 	
@@ -45,53 +50,15 @@ public class ServiceDescription extends BrokerObject {
 		serviceAttributes.remove(attrId);
 	}
 	
+	public Date getLastUsedTimestamp() { return lastUsedTimestamp; }
+	public void setLastUsedTimestamp(Date d) { lastUsedTimestamp = d; }
+	
 	public String toString() {
 		return "ServiceDescription: {\n"+super.toString()+
 				"\tservice-name = "+serviceName+
 				"\n\tcategory = "+serviceCategory+
 				"\n\tattributes = "+serviceAttributes+
+				"\n\tlast used timestamp = "+lastUsedTimestamp+
 				"}\n";
 	}
-	
-/*	public static void main(String[] args) throws Exception {
-		System.err.println("Broker@Cloud Service Description management utility");
-		if (args.length==0) showHelp();
-		else if ((args[0]=args[0].trim()).isEmpty()) showHelp();
-		else if (args[0].equalsIgnoreCase("add")) {
-			System.out.println("Please fill-in the following Service Description metadata");
-			String name = readInput("Service name: ");
-			System.out.println("You wrote: "+name);
-			String classifications = null;
-			do {
-				classifications = readInput("Classification dimensions: ");
-				System.out.println("You wrote: "+classifications);
-				if (classifications.equalsIgnoreCase("L")) {
-					System.out.println("Classification dimensions:");
-					System.out.println("++++ LIST classification dimensions in TREE-like format ++++++\n");
-					classifications = null;
-				}
-			} while (classifications==null);
-		} else {
-			System.err.println("Unknown command: "+args[0]);
-			showHelp();
-		}
-	}
-	protected static void showHelp() {
-		System.out.println("+++ TODO HELP +++");
-	}
-	protected static String readInput(String prompt) {
-		do {
-			try {
-				System.out.print(prompt);
-				System.out.flush();
-				java.util.Scanner scan = null;
-				if (scan==null) scan = new java.util.Scanner(System.in);
-				while (!scan.hasNextLine()) Thread.sleep(200);
-				String line = scan.nextLine().trim();
-				if (line.length()>0) return line;
-			} catch (Exception e) {
-				System.err.println(e);
-			}
-		} while (true);
-	}*/
 }

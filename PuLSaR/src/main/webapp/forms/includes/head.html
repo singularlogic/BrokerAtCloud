@@ -1,4 +1,5 @@
 	<!-- SSI HTML HEAD - BEGIN -->
+    <title>Broker@Cloud Project - <%=titlePrefix + pageTitle + titleSuffix%></title>
     <meta charset="utf-8" />
     <link rel="stylesheet" style="text/css" href="../deps/opt/bootstrap.css" />
 	<link rel="stylesheet" type="text/css" href="../deps/themes/default/style.min.css" />
@@ -11,15 +12,11 @@
 			url: '/auth/menu'
 		})
 		.done(function(data){
-			//console.log("renderMenu(): SUCCESS: received data: "+data);
 			$("#pulsar-menu").html( data );
-			//console.log("renderMenu(): SUCCESS: menu updated");
 		})
 		.fail(function( jqXHR, textStatus, errorThrown){
-			//console.log("renderMenu(): FAIL: status: "+textStatus);
 			console.log("renderMenu(): FAIL: error: "+JSON.stringify(errorThrown));
 			$("#pulsar-menu").html( "<span id=\"pulsar-menu-error\"><font color=\"red\"><b>Failed to retrieve menu from server! Reason: </b><i>"+textStatus+"</i></font></span>" );
-			//console.log("renderMenu(): FAIL: menu updated");
 		});
 	}
 	</script>

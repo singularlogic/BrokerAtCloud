@@ -36,7 +36,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 	// RdfPersistenceManager Public API
 	
 	public synchronized void attach(Object o) {
-		//2014-11-19: Addition
 		try {
 			logger.debug("attach: BEGIN: object={}", o);
 			if (managedObjectUris.containsKey(o)) {
@@ -54,7 +53,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 	}
 	
 	public synchronized void detach(Object o) {
-		//2014-11-19: Addition
 		logger.debug("detach: BEGIN: object={}", o);
 		String uri = managedObjectUris.get(o);
 		if (uri!=null) detach(uri);
@@ -64,7 +62,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 	
 	public synchronized void clear() {
 		resetManagerState();
-		//2014-11-19: Addition
 		managedObjects.clear();
 		managedObjectUris.clear();
 	}
@@ -373,7 +370,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 		return o.getClass().getName()+"@"+o.hashCode();
 	}
 	
-	//2014-11-19: Addition
 	protected synchronized void attach(Object o, String uri) {
 		if (uri!=null && !(uri=uri.trim()).isEmpty()) {
 			managedObjects.put(uri, o);
@@ -381,7 +377,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 		}
 	}
 	
-	//2014-11-19: Addition
 	protected synchronized void detach(String uri) {
 		Object o = null;
 		if (uri!=null) o = managedObjects.remove(uri);
@@ -490,7 +485,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 			// generate DELETE statement for main (persisted) object
 			logger.trace("processObjectDelete: Generating DELETE statements for object: uri={}", po.objectUri);
 			generateDeleteWhereStatement(po.objectUri);
-			//2014-11-19: Addition
 			detach(po.objectUri);
 			
 			// scan all persistent object data and mark any referenced objects with cascade-delete for delete
@@ -568,7 +562,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 		// Generate INSERT statements from live object
 		logger.trace("processObject: Generating insert statements for object header information");		// e.g. java-type, rdfs:subClass, rdf:type etc
 		generateObjectHeaders(po, pc);
-		//2014-11-19: Addition
 		attach(o, po.objectUri);
 		
 		logger.trace("processObject: LOOP-2: BEGIN: Generating insert statements for object fields");
@@ -800,7 +793,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 			logger.debug("retrieveObject: END: object has already been processed: returning cached reference");
 			return visited.get(oUri);
 		}
-		//2014-11-19: Addition
 		if (managedObjects.containsKey(oUri)) {
 			//logger.debug("retrieveObject: object is already being managed: refreshing object data");
 			Object mo = managedObjects.get(oUri);
@@ -977,13 +969,13 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 		// checking if it is a collection
 		if (Collection.class.isAssignableFrom(type)) {
 			logger.trace("retrieveFieldValue: \t value is a Collection");
-//logger.warn("!!!!!!!!!   CALLING: retrieveCollection: type={}, pf.type={}", type, pf.type);
+//logger.warn("CALLING: retrieveCollection: type={}, pf.type={}", type, pf.type);
 			pValue = retrieveCollection(type, fieldUri, po, pc, pf, visited, deepRefresh, clearFields, ignoreToken);
 		} else
 		// checking if it is a map
 		if (Map.class.isAssignableFrom(type)) {
 			logger.trace("retrieveFieldValue: \t value is a Map");
-//logger.warn("!!!!!!!!!   CALLING: retrieveMap: type={}, pf.type={}", type, pf.type);
+//logger.warn("CALLING: retrieveMap: type={}, pf.type={}", type, pf.type);
 			pValue = retrieveMap(type, fieldUri, po, pc, pf, visited, deepRefresh, clearFields, ignoreToken);
 		} else
 		
@@ -1011,9 +1003,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 			pValue = parseValue(pValStr);
 			logger.trace("retrieveFieldValue: \t field value: {}", pValue);
 		}
-		/*else {
-			throw new RuntimeException("*** INTERNAL ERROR: Execution MUST NEVER have reached this statement : IT'S A BUG!!! ***");
-		}*/
 		
 		logger.debug("retrieveFieldValue: END: result={}", pValue);
 		return pValue;
@@ -1153,7 +1142,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 		fieldUri = fieldUri+csep;
 		for (int i=0; i<size; i++) {
 			logger.trace("retrieveCollection: LOOP-1: ITERATION #{}: Retrieving element...", i);
-//logger.warn("!!!!!!!!!   CALLING: retrieveFieldValue: elem-type={}, pf.type={}", elemType, pf.type);
 			Object elem = retrieveFieldValue(elemType, fieldUri+i, -1, po, pc, pf, visited, deepRefresh, clearFields, ignoreToken);
 			logger.trace("retrieveCollection: LOOP-1: \t element value={}", elem);
 			col.add( elem );
@@ -1164,7 +1152,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 		return col;
 	}
 	
-//XXX: --------------------------------------------------------------------------------------------------------
 	/**
 	 * Get the underlying class for a type, or null if the type is a variable
 	 * type.
@@ -1190,7 +1177,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 			return null;
 		}
 	}
-//XXX: --------------------------------------------------------------------------------------------------------
 	
 	protected Object retrieveMap(Class type, String fieldUri, PersistentObject po, PersistentClass pc, PersistentField pf, HashMap<String,Object> visited, boolean deepRefresh, boolean clearFields, Object ignoreToken) throws ClassNotFoundException, IllegalAccessException, InstantiationException, InvocationTargetException, UnsupportedEncodingException {
 		logger.debug("retrieveMap: BEGIN: type={}, pf.type={}, field-uri={}, persistent-data={}", type, pf.type, fieldUri, po.data);
@@ -1271,9 +1257,9 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 		fieldUri = fieldUri+msep;
 		for (int i=0; i<size; i++) {
 			logger.trace("retrieveMap: LOOP-1: ITERATION #{}: Retrieving pairs...", i);
-//logger.warn("!!!!!!!!!   CALLING: retrieveFieldValue: key-type={}, pf.type={}", keyType, pf.type);
+//logger.warn("CALLING: retrieveFieldValue: key-type={}, pf.type={}", keyType, pf.type);
 			Object key = retrieveFieldValue(keyType, fieldUri+i+ksep, -1, po, pc, pf, visited, deepRefresh, clearFields, ignoreToken);
-//logger.warn("!!!!!!!!!   CALLING: retrieveFieldValue: value-type={}, pf.type={}", valueType, pf.type);
+//logger.warn("CALLING: retrieveFieldValue: value-type={}, pf.type={}", valueType, pf.type);
 			Object value = retrieveFieldValue(valueType, fieldUri+i+vsep, -1, po, pc, pf, visited, deepRefresh, clearFields, ignoreToken);
 			logger.trace("retrieveMap: LOOP-1: \t pair: key={}, value={}", key, value);
 			map.put( key, value );
@@ -1407,8 +1393,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 			String str = (String)o;
 			str = str.trim();
 			if (str.length()>0) {
-				//XXX: THIS CHECK IS WRONG!!!  (imagine if you want to store a string of the form "...^^...>)
-				//XXX: WHEN REMOVING... CHECK THAT THE REST OF THE CODE DOESN'T BREAK !!!
 				if (str.charAt(0)=='"' && str.charAt(str.length()-1)=='>' && str.indexOf("^^")!=-1) {
 					logger.debug("formatValue: END: Object is already formatted: result={}", str);
 					return str;
@@ -1449,7 +1433,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 		int p1=valStr.lastIndexOf("^^");
 		if (p1>-1) {
 //			logger.trace("parseValue: value has datatype");
-			//if (p2>p1) throw new RdfPersistenceException("Malformed XSD value string: "+valStr);		//XXX: BUG:  what if "....^^..." ;   (this is valid string but will cause an exception to be thrown)
 			lexicalPart = valStr.substring(0,p1);	//.trim();
 			datatypePart = (p1+2<valStr.length()) ? valStr.substring(p1+2).trim().toLowerCase() : "";
 		} else {
@@ -1547,8 +1530,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 			
 			// Looking for an RDF class specification (i.e. an 'rdf:type' or 'a' property indicating RDF class)
 			// If one or more exist and one of them is registered with a java class then that (java) class is returned
-//XXX: WHAT IF it returns rdfs:Class or rdfs:Property or owl:Class ????
-//XXX: SHOULD WE ALSO LOOK IN PARENT CLASSES ????
 			logger.debug("getTypeFromUri: object type is not in persisted data. Looking up its class");			
 			try {
 				String classStr = po.getFieldXsdValue(rdfTypeUri);
@@ -1667,7 +1648,7 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 		PersistentClass pc = getTypeDescriptor(o.getClass());
 		Object idVal = getFieldValue( o, pc.idField );
 		logger.trace("getObjectUri: idVal={}", idVal);
-		String idStr = idVal.toString();		//XXX:  'h xwris ayto? To o 'pc.idFormatter' tha prepei na exei ton swsto typo placeholder sto format string
+		String idStr = idVal.toString();
 		logger.trace("getObjectUri: idStr={}, id-formatter={}", idVal, pc.idFormatter);
 		String oUri = String.format( pc.idFormatter, idStr );
 		logger.debug("getObjectUri: END: result={}", oUri);
@@ -1756,7 +1737,7 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 	
 	protected static boolean isReferenceType(Class ftype) {
 		logger.debug("isReferenceType: type={}", ftype);
-		boolean result = ! isLiteralType(ftype);			//XXX:???: For arrays, collections, maps MUST return true or false ???
+		boolean result = ! isLiteralType(ftype);
 		logger.debug("isReferenceType: result={}", result);
 		return result;
 	}
@@ -1825,10 +1806,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 			if (_typeRdfClasses.containsKey(rdfClass)) throw new RdfPersistenceException("Cannot register RDF class "+rdfClass+" to java class: "+pc.type+". RDF class has already been registered by class: "+_typeRdfClasses.get(rdfClass).type.getName()+". Possibly the same 'rdfType' annotation or preload-specification has been used in both classes");
 			_typeRdfClasses.put(rdfClass, pc);
 			logger.debug("registerTypeWithRdfClass: RDF class: {} registered with java type: {}", rdfClass, pc.type.getName());
-			
-			// Register only the first RDF class specified
-			//logger.trace("registerTypeWithRdfClass: will not register any more RDF class for this java class: {}", pc.type);
-			//break;
 		}
 	}
 	
@@ -1854,12 +1831,8 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 						par = par.trim();
 						
 						if (!checked.contains(par) && !pending.contains(par)) {
-							//pc = _typeRdfClasses.get(par);
-							//type = (pc!=null) ? pc.type : null;
-							//if (type==null) {
-								pc = _typeRdfClasses.get("instance_of:"+par);
-								type = (pc!=null) ? pc.type : null;
-							//}
+							pc = _typeRdfClasses.get("instance_of:"+par);
+							type = (pc!=null) ? pc.type : null;
 							if (type!=null) {
 								logger.trace("getJavaTypeFromRdfType: END: result={}", type.getName());
 								return type;
@@ -1905,7 +1878,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 	protected static final String vsep = "_value";
 	protected static final String rdfTypeUri = "http://www.w3.org/1999/02/22-rdf-syntax-ns#type";
 	protected static final String rdfTypeUriInBrackets = "<"+rdfTypeUri+">";
-	//2014-11-17: Addition
 	protected static final String rdfsBaseUri = "http://www.w3.org/2000/01/rdf-schema#";
 	protected static final String rdfsSubClassOf = rdfsBaseUri+"subClassOf";
 	protected static final String rdfsSubPropertyOf = rdfsBaseUri+"subPropertyOf";
@@ -1917,12 +1889,10 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 	protected static String defaultTypeFieldUri;
 	protected static String defaultTypeFieldUriInBrackets;
 	
-//---------	protected static String defaultXsd2javaBindType;
 	protected static String defaultXsdType = "string";
 	protected static Class<?> defaultJava2xsdBindType;
 	protected static String langStringBindType;
 	protected static HashMap<Class,String> java2xsdBinds;
-//--------	protected static HashMap<Class,Pattern> xsd2javaBinds;
 	protected static HashMap<String,Class> xsd2javaDatatypes;
 	
 	protected static Vector<Pattern> nonRegisterableRdfClasses;
@@ -1932,7 +1902,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 	protected static HashMap<String,PersistentClass> _typeRdfClasses;
 	protected static HashMap<Pattern,PersistentClass> _typePatterns;
 	
-	//2014-11-19: Addition
 	protected static HashMap<String,Object> managedObjects;
 	protected static HashMap<Object,String> managedObjectUris;
 	
@@ -1945,7 +1914,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 			_analyzedTypes = new HashMap<Class,PersistentClass>();
 			_typeRdfClasses = new HashMap<String,PersistentClass>();
 			_typePatterns = new HashMap<Pattern,PersistentClass>();
-			//2014-11-19: Addition
 			managedObjects = new HashMap<String,Object>();
 			managedObjectUris = new HashMap<Object,String>();
 			
@@ -1993,7 +1961,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 		defaultXsdType = "string";
 		
 		_initJava2xsdBindings();
-//--------		_initXsd2javaBindings();
 		_initXsd2javaDatatypes();
 	}
 	
@@ -2033,7 +2000,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 		// binds for primitives
 		xsd2javaDatatypes.put("boolean",java.lang.Boolean.class);
 		xsd2javaDatatypes.put("byte", java.lang.Byte.class);
-		//xsd2javaDatatypes.put("????", java.lang.Character.class);
 		xsd2javaDatatypes.put("double", java.lang.Double.class);
 		xsd2javaDatatypes.put("float", java.lang.Float.class);
 		xsd2javaDatatypes.put("int", java.lang.Integer.class);
@@ -2044,7 +2010,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 		xsd2javaDatatypes.put("datetime", java.util.Date.class);
 		xsd2javaDatatypes.put("string", java.lang.String.class);
 		xsd2javaDatatypes.put("decimal", java.math.BigDecimal.class);
-		//xsd2javaDatatypes.put("integer", java.math.BigInteger.class);
 		xsd2javaDatatypes.put("integer", Integer.class);			// Fuseki converts 'int' datatype to 'integer' during insert
 	}
 	
@@ -2150,7 +2115,6 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 			String key = (String)k;
 			key = key.trim();
 			String value = p.getProperty(key).trim();
-//logger.trace(">>>>   Key={}, Value={}", key, value);
 			
 			// look for class preload directives
 			if (!key.startsWith("class.")) continue;
@@ -2159,11 +2123,9 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 			int dot = clssName.lastIndexOf(".");
 			String setting = (dot+1<clssName.length()) ? clssName.substring(dot+1) : "";
 			clssName = clssName.substring(0,dot);
-//logger.trace(">>>>   Class={}, Setting={}", clssName, setting);
 			
 			// preload and analyze class
 			Class type = types.get(clssName);
-//logger.trace(">>>>   Preloaded Type={}", type);
 			if (type==null) {
 				logger.debug("RdfPresistenceManager: \tPreloading and analyzing class: {}", clssName);
 				type = Class.forName(clssName);
@@ -2173,13 +2135,11 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 				pc.idPattern = null;		// if they (id-formatter & id-pattern) are not provided in class preloading settings
 				types.put(clssName, type);
 			}
-//logger.trace(">>>>   AFTER: Preloaded Type={}", type);
 			
 			// override 'typeUri' with the value provided
 			if (!value.isEmpty()) {
 				logger.debug("RdfPresistenceManager: \tOverriding class metadata: class={}, {}={}", type, setting, value);
 				PersistentClass pc = _analyzedTypes.get(type);
-//logger.trace(">>>>   PC={}", pc);
 				if (pc!=null) {
 					if (setting.equals("")) ;
 					else if (setting.equalsIgnoreCase("uri")) pc.typeUri = value;
@@ -2192,9 +2152,7 @@ public class RdfPersistenceManagerImpl4 implements RdfPersistenceManager {
 					else if (setting.equalsIgnoreCase("id-formatter")) pc.idFormatter = value;
 					else if (setting.equalsIgnoreCase("id-pattern")) pc.idPattern = Pattern.compile(value);
 					else logger.debug("RdfPresistenceManager: \tUnknown setting while preloading: {}", setting);
-//logger.trace(">>>>   AFTER PC={}", pc);
 				}
-//else logger.debug(">>>>   PC is NULL: class={}", type);
 			}
 		}
 		
@@ -2416,7 +2374,6 @@ class PersistentClass {
 				logger.trace("getFieldFromUri: \tis-collection={}", pf.isCollection);
 				if (pf.isCollection && fUri.startsWith(pf.fieldUri+RdfPersistenceManagerImpl4.csep)) return pf;
 				logger.trace("getFieldFromUri: \tis-map={}", pf.isMap);
-//logger.trace("getFieldFromUri: \tIT IS MAP: fUri={}, pf.field-uri={}, msep={}", fUri, pf.fieldUri, RdfPersistenceManagerImpl4.msep);
 				if (pf.isMap && fUri.startsWith(pf.fieldUri+RdfPersistenceManagerImpl4.msep)) return pf;
 				
 				boolean langMatch = (lang==null || (lang=lang.trim()).isEmpty()) ?
@@ -2442,13 +2399,6 @@ class PersistentClass {
 			for (PersistentField pf : fields) {
 				result = pf;
 				logger.trace("getFieldByName: ITERATION: checking with field descriptor: {}", pf.name);
-				/*logger.trace("getFieldByName: \tis-array={}", pf.isArray);
-				if (pf.isArray && fUri.startsWith(pf.name+RdfPersistenceManagerImpl4.asep)) return pf;
-				logger.trace("getFieldByName: \tis-collection={}", pf.isCollection);
-				if (pf.isCollection && fUri.startsWith(pf.fieldUri+RdfPersistenceManagerImpl4.csep)) return pf;
-				logger.trace("getFieldByName: \tis-map={}", pf.isMap);
-//logger.trace("getFieldByName: \tIT IS MAP: fUri={}, pf.field-uri={}, msep={}", fUri, pf.fieldUri, RdfPersistenceManagerImpl4.msep);
-				if (pf.isMap && fUri.startsWith(pf.fieldUri+RdfPersistenceManagerImpl4.msep)) return pf;*/
 				if (logger.isTraceEnabled()) logger.trace("getFieldByName: \tchecking for exact match: {}", fieldName.equals(pf.name));
 				if (fieldName.equals(pf.name)) return pf;
 				logger.trace("getFieldByName: \tNo match");
@@ -2530,12 +2480,6 @@ class PersistentField {
 			while ((typ=typ.getComponentType())!=null) { compType = typ; dim++; }
 			arrayComponentType = compType;
 			arrayDimensions = dim;
-		} else
-		if (isMap) {
-//			throw new RdfPersistenceException("XXX: PersistentField: CURRENTLY NOT SUPPORTS MAP FIELDS");
-		} else
-		if (isCollection) {
-//			throw new RdfPersistenceException("XXX: PersistentField: CURRENTLY NOT SUPPORTS COLLECTION FIELDS");
 		} else
 		{	// Not an array, Map or Collection
 			

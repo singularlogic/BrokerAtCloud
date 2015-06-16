@@ -82,10 +82,4 @@ function selectedTreeNode(tree) {
 function deselectTreeNode(tree) {
 	if (!tree) tree = "#profileList";
 	$(tree).jstree('deselect_all', true);
-	/*var sel1 = tree.get_selected(true);
-	if (sel1.length>0) {
-		for (i=0; i<sel1.length; i++) {
-			tree.deselect_node(sel1[i]);
-		}
-	}*/
 }

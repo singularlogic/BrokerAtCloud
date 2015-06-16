@@ -1,0 +1,22 @@
+Mimimum response time
+Fuzzy (lower is better)
+
+Address 1 - (0.06, 0.1, 0.2)
+Address 2 - (0.02, 0.04, 0.1)
+Address 3 - (0.005, 0.01, 0.02)
+
+Calendar 1 - (0.08, 0.12, 0.25)
+Calendar 2 - (0.04, 0.08, 0.12)
+Calendar 3 - (0.008, 0.02, 0.08)
+ 
+
+Scalability
+fuzzy number (higher is better)
+
+Address 1 - (4000, 4200, 4900)
+Address 2 - (5000, 5500, 6000)
+Address 3 - (8000, 8500, 9200)
+
+Calendar 1 - (2500, 2800, 3000)
+Calendar 2 - (3000, 3200, 3900)
+Calendar 3 - (6000, 6200, 6900)

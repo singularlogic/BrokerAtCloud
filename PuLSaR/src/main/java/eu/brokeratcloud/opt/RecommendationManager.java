@@ -5,9 +5,11 @@ import eu.brokeratcloud.common.ClassificationDimension;
 import eu.brokeratcloud.common.ServiceDescription;
 import eu.brokeratcloud.common.SLMEvent;
 import eu.brokeratcloud.opt.ahp.AhpHelper;
+import eu.brokeratcloud.opt.engine.EventManager;
 import eu.brokeratcloud.opt.policy.*;
 import eu.brokeratcloud.rest.opt.ProfileManagementService;
 import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW;
+import eu.brokeratcloud.util.*;
 
 import eu.brokeratcloud.persistence.RdfPersistenceManager;
 import eu.brokeratcloud.persistence.RdfPersistenceManagerFactory;
@@ -45,6 +47,7 @@ public class RecommendationManager extends RootObject {
 	
 	protected static Properties defaultSettings;
 	protected Properties settings;
+	protected int threadPoolSize = -1;
 	
 	/* Factory paradigm methods (public) */
 	public static RecommendationManager getInstance() {
@@ -62,19 +65,35 @@ public class RecommendationManager extends RootObject {
 		if (defaultSettings==null) {
 			logger.debug("RecommendationManager.<init> : initializing default settings");
 			defaultSettings = _createDefaultSettings();
-			_initFromFile("/recommendations-manager.properties");
+			_initFromFile("/recommendations-manager.properties", defaultSettings);
+			settings = new Properties(defaultSettings);
 		}
 	}
 	
 	protected RecommendationManager(String propertiesFile) {
+		this();
 		logger.debug("RecommendationManager.<init> : when = {}", new java.util.Date());
-		_initFromFile(propertiesFile);
+		settings = new Properties(defaultSettings);
+		_initFromFile(propertiesFile, settings);
 	}
 	
 	protected RecommendationManager(Properties props) {
+		this();
 		logger.debug("RecommendationManager.<init> : when = {}", new java.util.Date());
 		settings = new Properties(defaultSettings);
 		settings.putAll(props);
+	}
+	
+	// ================================================================================================================
+	// Thread Pool methods
+	public int getThreadPoolSize() {
+		return threadPoolSize<1 ? 1 : threadPoolSize;
+	}
+	
+	public void setThreadPoolSize(int n) {
+		if (n<=0) throw new IllegalArgumentException("setThreadPoolSize: Invalid 'thread pool size': "+n);
+		threadPoolSize = n; 
+		logger.debug("Thread Pool size set to: {}", n);
 	}
 	
 	// ================================================================================================================
@@ -89,6 +108,7 @@ public class RecommendationManager extends RootObject {
 		p.setProperty("updateConsumerPreferenceProfile", "false");
 		p.setProperty("alwaysGenerateRecommendation", "false");		// don't generate a new recommendation if there are no items/services to suggest
 		p.setProperty("dontStoreRecommendation", "true");
+		p.setProperty("recommendationsTopic", "");
 		// filtering settings
 		p.setProperty("periodSinceLastRecom", "0");
 		p.setProperty("relevanceThreshold", "0");
@@ -99,8 +119,7 @@ public class RecommendationManager extends RootObject {
 		return p;
 	}
 	
-	protected void _initFromFile(String file) {
-		settings = new Properties(defaultSettings);
+	protected void _initFromFile(String file, Properties settings) {
 		Properties p = _loadSettings(file);
 		if (p!=null) settings.putAll(p);
 	}
@@ -224,16 +243,18 @@ public class RecommendationManager extends RootObject {
 	protected ProfileManagementService profileMgntWs;
 	
 	public HashMap<String,Recommendation> requestRecommendations(SLMEvent evt) {
+	  int mtm;
+	  Stats.get().startSplit( mtm = Stats.get().getOrCreateSplitByName("RM.requestRecom: OVERALL-TIMER") );
+	  try{
+		
 		String sdId = evt.getProperty("service-description");
 		if (sdId==null || (sdId=sdId.trim()).isEmpty()) {
 			logger.error("SLM Event does not contain a valid service description identifier");
 			return null;
 		}
-//XXX: Replace with actual SGQC code when given
 		eu.brokeratcloud.rest.opt.AuxiliaryService sgqcWs = new eu.brokeratcloud.rest.opt.AuxiliaryService();
 		logger.debug("Retrieving service description: {}", sdId);
-//XXX: Replace with actual SGQC code when given
-		ServiceDescription sd = sgqcWs.getServiceDescription(null, sdId);		//XXX: 2014-11-22: BUGGY implementation of 'getServiceDescription'
+		ServiceDescription sd = sgqcWs.getServiceDescription(null, sdId);
 		if (sd==null) {
 			logger.error("Service description not found: {}", sdId);
 			return null;
@@ -248,11 +269,14 @@ public class RecommendationManager extends RootObject {
 		
 		if (profileMgntWs==null) profileMgntWs = new ProfileManagementService();
 		List<ConsumerPreferenceProfile> vect = new Vector<ConsumerPreferenceProfile>();
+		int spl1 = Stats.get().getOrCreateSplitByName("RM.requestRecom: profiles In CATEGORIES");
 		for (String catId : categoryId.split("[,]")) {
 			catId = catId.trim();
 			if (catId.isEmpty()) continue;
 			logger.debug("Retrieving profiles in category: {}", catId);
+			Stats.get().startSplit(spl1);
 			ConsumerPreferenceProfile[] list = profileMgntWs.getProfilesInCategory(catId);
+			Stats.get().endSplit(spl1);
 			logger.debug("Profiles in category:\n{}", Arrays.deepToString(list));
 			
 			// merging into overall profiles list
@@ -268,6 +292,21 @@ public class RecommendationManager extends RootObject {
 		if (profilesList!=null) {
 			Properties p = new Properties();
 			p.setProperty("dontStoreRecommendation", "false");	// force recommendation save
+			int nWorkers = -1;
+			if (getThreadPoolSize()<=0) {
+				try {
+					String s = settings.getProperty("thread-pool-size", null);
+					logger.info("Thread pool size setting: {}", s);
+					if (s!=null && !s.trim().isEmpty()) nWorkers = Integer.parseInt( s ); 
+				} catch (Exception e) {
+					logger.error("Invalid 'thread-pool-size' setting: {}. Exception: {}", p.getProperty("thread-pool-size"), e);
+				}
+			} else {
+				nWorkers = getThreadPoolSize();
+				logger.info("Thread pool size has been set using 'setThreadPoolSize': {}", nWorkers);
+			}
+			if (nWorkers<=0) nWorkers = 1;
+			_initThreadPool( nWorkers );
 			for (int i=0; i<profilesList.length; i++) {
 				ConsumerPreferenceProfile profile = profilesList[i];
 				if (profile==null || profile.getId()==null || profile.getId().trim().isEmpty()
@@ -280,17 +319,171 @@ public class RecommendationManager extends RootObject {
 				String ownerId = profile.getOwner();
 				logger.debug("Generating recommendation for profile: id={}, owner={}", profileId, ownerId);
 				try {
-					Recommendation recom = _createNewRecommendation(ownerId, profileId, p, false);		// false: don't force recom. creation
-					logger.debug("New recommendation for profile: id={}, owner={}\nrecommendation={}", profileId, ownerId, recom);
-					newRecoms.put(profileId, recom);
+					_startWorkerThread(ownerId, profileId, p, false, newRecoms);
 				} catch (Exception e) {
 					logger.error("requestRecommendations: Input: consumer={}, profile={}. Exception caught:\n{}", ownerId, profileId, e);
 					return null;
 				}
 			}
+			_waitWorkerThreadsToComplete(profilesList.length);
 		}
 		return newRecoms;
+		
+	  } finally {
+			Stats.get().endSplit( mtm );
+			Stats.get().printAll(System.out);
+	  }
 	}
+	
+	protected java.util.concurrent.ExecutorService executor;
+	
+	protected static long totalThreadDuration;
+	protected static long minThreadDuration;
+	protected static long maxThreadDuration;
+	protected static long threadsStarted;
+	protected static long threadsCompleted;
+	protected static long threadsFailed;
+	protected static long threadsActive;
+	
+	public static synchronized void initWorkerThreadStats() {
+		totalThreadDuration = 0;
+		minThreadDuration = Long.MAX_VALUE;
+		maxThreadDuration = 0;
+		threadsStarted = 0;
+		threadsCompleted = 0;
+		threadsFailed = 0;
+		threadsActive = 0;
+	}
+	
+	static {
+		initWorkerThreadStats();
+	}
+	
+	public static synchronized long[] getWorkerThreadStats() {
+		long[] stat = new long[8];
+		stat[0] = totalThreadDuration;
+		stat[1] = minThreadDuration;
+		stat[2] = maxThreadDuration;
+		stat[3] = threadsStarted;
+		stat[4] = threadsCompleted;
+		stat[5] = threadsFailed;
+		stat[6] = threadsActive;
+		stat[7] = (threadsCompleted>0) ? totalThreadDuration/threadsCompleted : -1;
+		return stat;
+	}
+	
+	public static String getWorkerThreadStatsToString() {
+		long[] stat = getWorkerThreadStats();
+		return String.format( "Thread-Stats: total-dur=%d, min-dur=%d, max-dur=%d, avg-dur=%f, started=%d, completed=%d, fails=%d, active=%d",
+					stat[0], stat[1], stat[2], stat[7], stat[3], stat[4], stat[5], stat[6] );
+					
+	}
+	
+	protected static class WorkerThread implements Runnable {
+		private RecommendationManager manager;
+		private String consumerId;
+		private String profileId;
+		private Properties settings;
+		private boolean forceCreation;
+		private HashMap<String,Recommendation> newRecoms;
+		
+		public WorkerThread(RecommendationManager manager, String consumerId, String profileId, Properties settings, boolean forceCreation, HashMap<String,Recommendation> newRecoms){
+			this.manager = manager;
+			this.consumerId = consumerId;
+			this.profileId = profileId;
+			this.settings = settings;
+			this.forceCreation = forceCreation;
+			this.newRecoms = newRecoms;
+		}
+		
+		@Override
+		public void run() {
+			RecommendationManager.logger.debug("RecommendationManager.WorkerThread: START: thread={}, consumer={}, profile={}, settings={}, force-create={}, new-recoms={}", Thread.currentThread().getName(), consumerId, profileId, settings, forceCreation, newRecoms);
+			long startTm = 0;
+			long duration = 0;
+			boolean failed = false;
+			int spl = Stats.get().getOrCreateSplitByName("RM: WORKER.run()");
+			try {
+				synchronized (manager) { threadsStarted++; threadsActive++; }
+				startTm = System.nanoTime();
+				Stats.get().startSplit(spl);
+				Recommendation recom = manager._createNewRecommendation(consumerId, profileId, settings, forceCreation);		// false: don't force recom. creation
+				Stats.get().endSplit(spl);
+				synchronized (newRecoms) {
+					newRecoms.put(profileId, recom);
+				}
+				duration = System.nanoTime() - startTm;
+				RecommendationManager.logger.debug("RecommendationManager.WorkerThread: COMPLETED: thread={}, consumer={}, profile={}, recom={}", Thread.currentThread().getName(), consumerId, profileId, recom);
+			} catch (Exception e) {
+				duration = System.nanoTime() - startTm;
+				failed = true;
+				logger.error("RecommendationManager.WorkerThread: EXCEPTION: thread={}, consumer={}, profile={}, exception={}", Thread.currentThread().getName(), consumerId, profileId, e);
+				e.printStackTrace(System.err);
+			} finally {
+				synchronized (manager) {
+					totalThreadDuration += duration;
+					if (duration<minThreadDuration) minThreadDuration = duration;
+					if (duration>maxThreadDuration) maxThreadDuration = duration;
+					threadsCompleted++;
+					if (failed) threadsFailed++;
+					threadsActive--; 
+				}
+			}
+		}
+	}
+	
+	protected void _initThreadPool(int threadPoolSize) {
+		logger.debug("_initThreadPool: BEGIN: thread-pool-size: {}", threadPoolSize);
+		if (executor==null) {
+			if (threadPoolSize>1) {
+				executor = java.util.concurrent.Executors.newFixedThreadPool(threadPoolSize);
+				logger.debug("_initThreadPool: Executor service initialized");
+			} else {
+				logger.debug("_initThreadPool: Single-thread execution: Executor service NOT initialized");
+			}
+		} else {
+			logger.error("_initThreadPool: Executor Service is already initialized");
+		}
+		logger.debug("_initThreadPool: END");
+	}
+	
+	protected void _startWorkerThread(String consumerId, String profileId, Properties settings, boolean forceCreation, HashMap<String,Recommendation> newRecoms) {
+		logger.debug("_startWorkerThread: BEGIN: consumer={}, profile={}, settings={}, force-create={}, new-recoms={}", consumerId, profileId, settings, forceCreation, newRecoms);
+		Runnable worker = new WorkerThread(this, consumerId, profileId, settings, forceCreation, newRecoms);
+		if (executor!=null) {
+			logger.debug("_startWorkerThread: Executor Service initialized. Using it to assign recommendation creation to a worker thread");
+			executor.execute(worker);
+		} else {
+			logger.debug("_startWorkerThread: Executor Service NOT found. Assuming single threaded execution");
+			worker.run();
+		}
+		logger.debug("_startWorkerThread: END: Task assigned to worker thread");
+	}
+	
+	protected void _waitWorkerThreadsToComplete(int howmany) {
+		logger.debug("_waitWorkerThreadsToComplete: BEGIN: Waiting worker threads to complete");
+		boolean keepChecking = true;
+		while (keepChecking) {
+			try { Thread.sleep(500); } catch (InterruptedException e) {}
+			synchronized (this) {
+				//if (threadsCompleted < howmany) keepChecking = false;
+				if (threadsActive==0) keepChecking = false;
+			}
+		}
+		// Shutdown executor
+		if (executor!=null) {
+			executor.shutdown();
+			while (!executor.isTerminated()) {
+				try { Thread.sleep(500); } catch (InterruptedException e) {}
+			}
+		}
+		logger.debug("_waitWorkerThreadsToComplete: END: Worker threads completed");
+	}
+	
+	protected EventManager eventManager;
+	//
+	public EventManager getEventManager() { return eventManager; }
+	public void setEventManager(EventManager em) { eventManager = em; }
 	
 	public Recommendation createNewRecommendation(String consumerId, String profileId) {
 		return createNewRecommendation(consumerId, profileId, false);
@@ -308,7 +501,7 @@ public class RecommendationManager extends RootObject {
 	}
 	
 	protected Recommendation _createNewRecommendation(String consumerId, String profileId, Properties settings, boolean forceCreation) throws java.io.IOException, IllegalAccessException, NoSuchMethodException, java.lang.reflect.InvocationTargetException {
-		Properties prop = new Properties(defaultSettings);
+		Properties prop = new Properties(defaultSettings);		// or this.settings
 		if (settings!=null) prop.putAll(settings);
 		// General settings
 		String sdWsUrlTemplate = prop.getProperty("serviceDescriptionRetrievalUrl");
@@ -317,6 +510,7 @@ public class RecommendationManager extends RootObject {
 		boolean updateProfile = Boolean.valueOf( prop.getProperty("updateConsumerPreferenceProfile") );
 		boolean alwaysGenerateRecom = Boolean.valueOf( prop.getProperty("alwaysGenerateRecommendation", "false") );		// don't generate a new recommendation if there are no items/services to suggest
 		boolean dontStoreRecom = Boolean.valueOf( prop.getProperty("dontStoreRecommendation") );
+		String recommendationsTopic = prop.getProperty("recommendationsTopic", "").trim();
 		// Filtering settings
 		long periodOfLastRecom = Long.parseLong( prop.getProperty("periodSinceLastRecom", "0") );
 		double relevanceThreshold = Long.parseLong( prop.getProperty("relevanceThreshold", "0") );
@@ -335,6 +529,7 @@ public class RecommendationManager extends RootObject {
 			logger.debug("updateConsumerPreferenceProfile: {}", prop.getProperty("updateConsumerPreferenceProfile"));
 			logger.debug("alwaysGenerateRecommendation: {}", prop.getProperty("alwaysGenerateRecommendation"));
 			logger.debug("dontStoreRecommendation: {}", prop.getProperty("dontStoreRecommendation"));
+			logger.debug("recommendationsTopic: {}", prop.getProperty("recommendationsTopic"));
 			// filtering settings
 			logger.debug("FILTERING SETTINGS:");
 			logger.debug("periodSinceLastRecom: {}", prop.getProperty("periodSinceLastRecom"));
@@ -374,11 +569,11 @@ public class RecommendationManager extends RootObject {
 		boolean hasErrors = false;
 		for (int i=0, size=preferences.length; i<size; i++) {
 			ConsumerPreference pref = preferences[i];
-			if (pref==null) { logger.error("Profile {} contains 'null' preference(s)", profileId); hasErrors = true; continue; }
+			if (pref==null) { logger.error("Profile {} contains 'null' preference(s): pref #{}", profileId, i); hasErrors = true; continue; }
 			String prefId = pref.getId();
 			String prefAttrId = _getServiceAttributeId(pref);
-			if (prefId==null || prefId.trim().isEmpty()) { logger.error("Profile {} contains preference(s) with no Id", profileId); preferences[i] = null; hasErrors = true; continue; }
-			if (prefAttrId==null || prefAttrId.trim().isEmpty()) { logger.error("Profile {} contains preference(s) with no attribute id", profileId); preferences[i] = null; hasErrors = true; continue; }
+			if (prefId==null || prefId.trim().isEmpty()) { logger.error("Profile {} contains preference(s) with no Id: ConsumerPreference #{}\n{}", profileId, i, pref); preferences[i] = null; hasErrors = true; continue; }
+			if (prefAttrId==null || prefAttrId.trim().isEmpty()) { logger.error("Profile {} contains preference(s) with no attribute id: ConsumerPreference #{}\n{}", profileId, i, pref); preferences[i] = null; hasErrors = true; continue; }
 			logger.debug("\tPreference: {}", prefAttrId);
 		}
 		if (hasErrors) {
@@ -398,9 +593,11 @@ public class RecommendationManager extends RootObject {
 			// If PuLSaR is collocated with SGQC component, it is possible to programmatically call the relevant method
 			// Thus code becomes simpler and faster
 			logger.info("Retrieving service descriptions for category {}", categoryId);
-//XXX: These statements MUST BE REPLACED with the correct, as soon as Service Gov. & Qualtiy Control component details becomes available
 			eu.brokeratcloud.rest.opt.AuxiliaryService sgqcWS = new eu.brokeratcloud.rest.opt.AuxiliaryService();
+			int spl3 = Stats.get().getOrCreateSplitByName("RM._createNewRecom: getServiceDescriptionsForCategories");
+			Stats.get().startSplit(spl3);
 			SDs = sgqcWS.getServiceDescriptionsForCategories( categoryId );
+			Stats.get().endSplit(spl3);
 		}
 		
 		// print-debug service descriptions
@@ -422,6 +619,8 @@ public class RecommendationManager extends RootObject {
 		
 		// filter out services by checking preference constraints
 		logger.info("Checking service descriptions against preference constraints...");
+		int spl4 = Stats.get().getOrCreateSplitByName("RM._createNewRecom: FOR-LOOP... preferences");
+		Stats.get().startSplit(spl4);
 		for (ConsumerPreference pref : preferences) {
 			if (pref==null) continue;
 			ConsumerPreferenceExpression expression = pref.getExpression();
@@ -453,6 +652,7 @@ public class RecommendationManager extends RootObject {
 				}
 			}
 		}
+		Stats.get().endSplit(spl4);
 		logger.debug("Service descriptions remaining after preference constraints checking...");
 		int cntRemainingSDs = 0;
 		for (int i=0; i<SDs.length; i++) {
@@ -490,7 +690,9 @@ public class RecommendationManager extends RootObject {
 				_updatePreferenceWeights(profile, topLevelGoal);
 				logger.debug("Consumer Preference Profile updated with preference weights:\n{}", profile);
 				// for better performance updated profile can also be updated (merged) to persistence store
+				Stats.get().startSplit("RM._createNewRecom: updateProfile");
 				int status = profileMgntWs.updateProfile(consumerId, profileId, profile).getStatus();
+				Stats.get().endSplit();
 				logger.info("Consumer Preference Profile state updated in peristent store: id={}: result={}", profileId, status );
 			}
 		} else
@@ -515,7 +717,10 @@ public class RecommendationManager extends RootObject {
 		// call ranking engine
 		logger.info("Ranking service descriptions...");
 		AhpHelper helper = new AhpHelper();
+		int spl6 = Stats.get().getOrCreateSplitByName("RM._createNewRecom: helper.rank");
+		Stats.get().startSplit(spl6);
 		List<AhpHelper.RankedItem> rankedSDs = helper.rank(this /*2014-11-21: Addition*/, topLevelGoal, criteria, SDs);
+		Stats.get().endSplit(spl6);
 		logger.debug("Ranked list of service descriptions:\n{}", rankedSDs);
 		
 		// generate recom-id base and timestamp
@@ -527,6 +732,8 @@ public class RecommendationManager extends RootObject {
 		List<RecommendationItem> recomItems = new ArrayList<RecommendationItem>();
 		double sumRel = 0;
 		int cntItems = 0;
+		int spl7 = Stats.get().getOrCreateSplitByName("RM._createNewRecom: FILTER-OUT-rankedSDs");
+		Stats.get().startSplit(spl7);
 		for (AhpHelper.RankedItem item : rankedSDs) {
 			boolean rv1 = false;
 			boolean rv2 = false;
@@ -565,12 +772,15 @@ public class RecommendationManager extends RootObject {
 				sumRel += item.relevance;
 			}
 		}
+		Stats.get().endSplit(spl7);
 		// Re-calculate relevances
 		for (RecommendationItem item : recomItems) {
 			item.setWeight( item.getWeight() / sumRel );
 		}
 		
 		// Apply selection policy
+		int spl8 = Stats.get().getOrCreateSplitByName("RM._createNewRecom: APPLY-SEL-POLICY");
+		Stats.get().startSplit(spl8);
 		if (recomItems.size()>0) {
 			if (selectionPolicy==null || selectionPolicy.trim().isEmpty()) {
 				logger.warn("No selection policy specified");
@@ -653,6 +863,7 @@ public class RecommendationManager extends RootObject {
 		} else {
 			logger.debug("No recommendation items generated. No need to apply selection policy.");
 		}
+		Stats.get().endSplit(spl8);
 		
 		// prepare a new recommendation object
 		Recommendation newRecom = null;
@@ -673,12 +884,43 @@ public class RecommendationManager extends RootObject {
 		if (!dontStoreRecom && newRecom!=null) {
 			// clear previous recommendations' active flags (ie mark them as inactive)
 			eu.brokeratcloud.rest.opt.RecommendationManagementService recomMgntWS = new eu.brokeratcloud.rest.opt.RecommendationManagementService();
+			Stats.get().startSplit("RM._createNewRecom: clearProfileRecommendations");
 			recomMgntWS.clearProfileRecommendations(owner, profileId);
+			Stats.get().endSplit();
 			
 			// save new recommendation
 			newRecom.setActive(true);
+			int spl9 = Stats.get().getOrCreateSplitByName("RM._createNewRecom: createRecommendation");
+			Stats.get().startSplit(spl9);
 			int status = recomMgntWS.createRecommendation(newRecom).getStatus();
-			logger.info("New recommendation for profile '{}' stored in persistent store: status = {}", profileId, status );
+			Stats.get().endSplit(spl9);
+			logger.info("New recommendation for profile '{}' stored in persistent store: status = {}", profileId, status);
+			
+			// publish new recommendation (if an event topic has been specified)
+			if (eventManager!=null && recommendationsTopic!=null && !recommendationsTopic.isEmpty()) {
+				try {
+					// get new recommendation URI
+					if (pm==null) pm = RdfPersistenceManagerFactory.createRdfPersistenceManager();
+					Stats.get().startSplit("RM._createNewRecom: getObjectUri");
+					String recomUri = pm.getObjectUri(newRecom.getId(), Recommendation.class);
+					Stats.get().endSplit();
+					logger.trace("New recommendation URI: {}", recomUri);
+					
+					// prepare recom. event
+					Properties p = new Properties();
+					p.setProperty(".EVENT-CONTENT", String.format("{ \"recommendationId\" : \"%s\" }", recomUri));
+					SLMEvent recomEvent = new SLMEvent(UUID.randomUUID().toString(), new Date(), recommendationsTopic, "-", p);
+					logger.debug("Recom. event to publish: {}", recomEvent);
+					
+					// publish recommendation event
+					Stats.get().startSplit("RM._createNewRecom: publish");
+					boolean pubStatus = eventManager.publish(recomEvent);
+					Stats.get().endSplit();
+					logger.info("New recommendation for profile '{}' published in topic '{}': status = {}", profileId, recommendationsTopic, pubStatus?"SUCCESS":"FAIL");
+				} catch (Exception e) {
+					logger.error("Event publishing... CAUSED EXCEPTION: {}", e);
+				}
+			}
 		}
 		
 		return newRecom;
@@ -1087,7 +1329,6 @@ public class RecommendationManager extends RootObject {
 	// ================================================================================================================
 	// Recommendation filtering methods
 	
-	//2014-11-23: Addtion
 	protected RdfPersistenceManager pm;
 	protected SparqlServiceClient client;
 	
@@ -1175,14 +1416,12 @@ public class RecommendationManager extends RootObject {
 	protected boolean _checkIfAlreadyRecommendedByFailurePreventionAndRecoveryComponent(AhpHelper.RankedItem item, long period, double relevanceDiffThreshold) {
 		// period: 0=only active/most recent recommendation should be considered
 		// relevanceDiffThreshold: used in order to recommend item even if already recommended but with lower relevance
-//XXX: TODO: during integration phase
 		return false;
 	}
 	
 	protected boolean _checkIfIgnored(String owner, String profile, AhpHelper.RankedItem item, long period, int ignoresThreshold) {
 		// period: time window in which ignores count. A value of '0' will effectively accept all items
 		// ignoresThreshold: if ignores count (in period window) is over this threshold, item must not be recommended
-//XXX: TODO: to-be defined
 		return false;
 	}
 }

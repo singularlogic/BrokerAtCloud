@@ -59,6 +59,7 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 	public String getUpdateEndpoint() { return updateService; }
 	
 	public void execute(String sparqlUpdate) {
+		long startTm = System.nanoTime();
 		debug("execute: Query=\n"+sparqlUpdate);
 		UpdateRequest updReq = new UpdateRequest();
 		updReq.add(sparqlUpdate);
@@ -66,9 +67,11 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 		
 		// Perform the SPARQL Update operation
 		upInsertData.execute();
+		sumElapsedTime( System.nanoTime()-startTm );
 	}
 	
 	public Map<String,String> queryBySubject(String subjectUri) {
+		long startTm = System.nanoTime();
 		debug("queryBySubject: ...");
 		String qry = String.format("SELECT ?p ?o WHERE { <%s> ?p ?o }", subjectUri);
 		debug("queryBySubject: Query="+qry);
@@ -80,7 +83,6 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 			Map<String,String> results = new HashMap<String,String>();
 			while (resultSet.hasNext()) {
 				QuerySolution soln = resultSet.nextSolution();
-				//System.out.println(soln.toString());
 				String p = soln.get("?p").asResource().getURI();
 				RDFNode oNd = soln.get("?o");
 				String o;
@@ -106,10 +108,12 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 			return results;
 		} finally {
 			qeSelect.close();
+			sumElapsedTime( System.nanoTime()-startTm );
 		}
 	} // end method
 	
 	public List<Map<String,RDFNode>> queryAndProcess(String selectQuery) {
+		long startTm = System.nanoTime();
 		debug("queryAndProcess: ...");
 		QueryExecution qeSelect = query(selectQuery);
 		try {
@@ -133,10 +137,12 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 			return resultsList;
 		} finally {
 			qeSelect.close();
+			sumElapsedTime( System.nanoTime()-startTm );
 		}
 	} // end method
 	
 	public List<String> queryForIds(String selectQuery, String idCol) {
+		long startTm = System.nanoTime();
 		debug("queryForIds: ...");
 		QueryExecution qeSelect = query(selectQuery);
 		try {
@@ -150,7 +156,6 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 					Iterator<String> it = soln.varNames();
 					while (idCol==null && it.hasNext()) idCol = it.next();
 				}
-				//System.out.println(soln.toString());
 				RDFNode node = soln.get(idCol);
 				String id;
 				if (node.isLiteral()) id = node.asLiteral().getLexicalForm();
@@ -161,17 +166,22 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 			return resultsList;
 		} finally {
 			qeSelect.close();
+			sumElapsedTime( System.nanoTime()-startTm );
 		}
 	} // end method
 	
 	public QueryExecution query(String selectQuery) {
-		debug("query: Query=\n"+selectQuery);
-		return QueryExecutionFactory.sparqlService(queryService, selectQuery);
+		return _query(selectQuery, true);
+	}
+	
+	protected QueryExecution _query(String selectQuery, boolean updateStats) {
+			return QueryExecutionFactory.sparqlService(queryService, selectQuery);
 	} // end method
 	
 	public Object queryValue(String selectQuery) {
+		long startTm = System.nanoTime();
 		debug("queryValue: ...");
-		QueryExecution qeSelect = query(selectQuery);
+		QueryExecution qeSelect = _query(selectQuery, false);
 		try {
 			ResultSet rs = qeSelect.execSelect();
 			if (rs.hasNext()) {
@@ -188,19 +198,48 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 			return null;
 		} finally {
 			qeSelect.close();
+			sumElapsedTime( System.nanoTime()-startTm );
 		}
 	} // end method
 
 	public boolean ask(String askQuery) {
-		debug("queryValue: ...");
+		long startTm = System.nanoTime();
+		debug("ask: ...");
 		QueryExecution qeAsk = query(askQuery);
 		try {
 			return qeAsk.execAsk();
 		} finally {
 			qeAsk.close();
+			sumElapsedTime( System.nanoTime()-startTm );
 		}
 	} // end method
-
+	
+	// Time measurement methods and variables
+	protected static long cntSplits = 0;
+	protected static long sumElapsedTime = 0;
+	protected static long minElapsedTime = Long.MAX_VALUE;
+	protected static long maxElapsedTime = 0;
+	private static Object statsLock = new Object();
+	
+	protected static void sumElapsedTime( long elapsedTime ) {
+		synchronized (statsLock) {
+			cntSplits++;
+			sumElapsedTime += elapsedTime;
+			if (minElapsedTime>elapsedTime) minElapsedTime = elapsedTime;
+			if (maxElapsedTime<=elapsedTime) maxElapsedTime = elapsedTime;
+		}
+	}
+	
+	public static long getSplitCount() { return cntSplits; }
+	public static long getTotalElapsedTime() { return sumElapsedTime; }
+	public static long getMinElapsedTime() { return minElapsedTime; }
+	public static long getMaxElapsedTime() { return maxElapsedTime; }
+	public static void resetTimers() {
+		synchronized(statsLock) {
+			cntSplits = 0; sumElapsedTime = 0; minElapsedTime = Long.MAX_VALUE; maxElapsedTime = 0;
+		}
+	}
+	
 	public static void main(String[] args) throws Exception {
 		FusekiClient client = new FusekiClient();
 		long dur = 0;

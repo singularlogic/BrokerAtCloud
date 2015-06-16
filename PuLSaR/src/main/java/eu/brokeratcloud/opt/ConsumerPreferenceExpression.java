@@ -28,8 +28,7 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 	@XmlAttribute
 	@RdfPredicate
 	protected String expression;
-//XXX: SOS:  @XmlAttribute  MUST NOT BE SET FOR THIS FIELD IN ORDER TO AVOID INFINITE RECURSION DURING "JSON SERIALIZATION"
-//	@XmlAttribute
+//	@XmlAttribute	//SOS:  @XmlAttribute  MUST NOT BE SET FOR THIS FIELD IN ORDER TO AVOID INFINITE RECURSION DURING "JSON SERIALIZATION"
 	@RdfPredicate
 	protected ConsumerPreference consumerPreference;
 	
@@ -49,7 +48,6 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 	public static enum OPERATOR { EQ, NEQ, LT, LE, GT, GE, IN, NOT_IN, COMMENT, UNKNOWN, ERROR };
 	
 	// transient variables - not stored in peristent store or serialized/unserialized
-	//protected ConsumerPreference consumerPreference;
 	protected OPERATOR operator;
 	protected double limit, lowerBound, upperBound;
 	protected TFN fLimit, fLowerBound, fUpperBound;
@@ -101,9 +99,6 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 		termLimit = null;
 		
 		try{
-				/*if (consumerPreference==null || consumerPreference.getCriterion()==null) {
-					return;
-				}*/
 				logger.trace("_parseExpression: preference={}", consumerPreference);
 				if (consumerPreference==null) return;
 				logger.trace("_parseExpression: preference variable={}", consumerPreference.getPrefVariable());
@@ -391,8 +386,7 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 			if (mandatory) {
 				errMsg = "No attribute value provided for mandatory attribute: "+pv.getRefToServiceAttribute();
 			} else {
-				return missingValueResult;		// XXX: What if expression is also empty??  DISCUSS with Vergi
-												// XXX: e.g.  return (expression==null);	i.e. 'true' if expr. is empty and 'false' if not
+				return missingValueResult;
 			}
 		} else
 		if (isNumeric && isRange==false) {
@@ -507,8 +501,7 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 				if (mandatory) {
 					errMsg = "No attribute value provided for mandatory attribute: "+pv.getRefToServiceAttribute();
 				} else {
-					return missingValueResult;		// XXX: What if expression is also empty??  DISCUSS with Vergi
-													// XXX: e.g.  return (expression==null);	i.e. 'true' if expr. is empty and 'false' if not
+					return missingValueResult;
 				}
 			} else
 			if (foundAll) {	// cntValid > 0

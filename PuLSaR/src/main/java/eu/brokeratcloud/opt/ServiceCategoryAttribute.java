@@ -26,36 +26,36 @@ public class ServiceCategoryAttribute extends BrokerObject {
 	@RdfPredicate(uri="http://www.linked-usdl.org/ns/usdl-pref#hasOptimisationAttribute")
 	protected String attribute;
 	@XmlAttribute
-	@RdfPredicate //(uri="http://www.linked-usdl.org/ns/usdl-pref#hasDataType")
+	@RdfPredicate
 	protected String type;
 	@XmlAttribute
-	@RdfPredicate //(uri="http://www.linked-usdl.org/ns/usdl-pref#isMandatory")
+	@RdfPredicate
 	protected boolean mandatory;
 	@XmlAttribute
-	@RdfPredicate //(uri="http://www.linked-usdl.org/ns/usdl-pref#hasUnitOfMeasurement")
-	protected String unit;	// unit of measurement (if any)
+	@RdfPredicate
+	protected String unit;
 	@XmlAttribute
-	@RdfPredicate //(uri="http://www.linked-usdl.org/ns/usdl-pref#hasUnitOfMeasurement")
-	protected String measuredBy;	// unit of measurement (if any)
+	@RdfPredicate
+	protected String measuredBy;
 	
 	//Allowed Value Range constraints
 	@XmlAttribute
-	@RdfPredicate //(uri="http://www.linked-usdl.org/ns/usdl-pref#hasMax")
+	@RdfPredicate
 	protected double max;
 	@XmlAttribute
-	@RdfPredicate //(uri="http://www.linked-usdl.org/ns/usdl-pref#hasMin")
+	@RdfPredicate
 	protected double min;
 	@XmlAttribute
-	@RdfPredicate(delete="cascade" /*, uri="http://www.linked-usdl.org/ns/usdl-pref#hasFuzzyMax"*/ )
+	@RdfPredicate(delete="cascade")
 	protected TFN fmin;
 	@XmlAttribute
-	@RdfPredicate(delete="cascade" /*, uri="http://www.linked-usdl.org/ns/usdl-pref#hasFuzzyMin"*/ )
+	@RdfPredicate(delete="cascade")
 	protected TFN fmax;
 	@XmlAttribute
-	@RdfPredicate(delete="cascade" /*, uri="http://www.linked-usdl.org/ns/usdl-pref#hasMembers"*/ )
+	@RdfPredicate(delete="cascade")
 	protected String[] members;
 	@XmlAttribute
-	@RdfPredicate(delete="cascade" /*, uri="http://www.linked-usdl.org/ns/usdl-pref#hasLinguisticTerms"*/ )
+	@RdfPredicate(delete="cascade")
 	protected String[] terms;
 	//
 	protected boolean higherIsBetter;

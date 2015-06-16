@@ -7,7 +7,6 @@ import javax.xml.bind.annotation.XmlAttribute;
 import org.codehaus.jackson.annotate.JsonIgnore;
 
 @RdfSubject(
-//	uri = "http://www.linked-usdl.org/ns/usdl-pref#",
 	appendName=false,
 	suppressRdfType=true
 )

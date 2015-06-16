@@ -60,9 +60,6 @@ public class TFuzzyInterval {
 		double M = Math.min(maxCoreValue, i.getMaxCoreValue());
 		double l = Math.min(lowerBound, i.getLowerBound());
 		double u = Math.max(upperBound, i.getUpperBound());
-//System.err.println("TFuzzyRange: JOIN: arg1 = "+this);
-//System.err.println("TFuzzyRange: JOIN: arg2 = "+i);
-//System.err.println(String.format("TFuzzyRange: JOIN: %f, %f, %f, %f", l, m, M, u));
 		if (l>m || l>M || l>u || m>M ||m>u || M>u) return null;
 		return new TFuzzyInterval(l, m, M, u);
 	}
