@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <title>Broker@Cloud Cloud Service Brokerage Ecosystem and End User Guide</title>
+
+        <!-- Bootstrap -->
+        <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <!-- Bootstrap theme -->
+        <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+        <link href="bower_components/ekko-lightbox/dist/ekko-lightbox.min.css" rel="stylesheet">
+        <!-- Custom styles for this template -->
+        <link href="template.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+    </head>
+    <body data-spy="scroll" data-target=".scrollspy">
+        <div class="jumbotron"> 
+            <div class="container">
+                <div class="col-md-3">
+                    <a href="http://www.broker-cloud.eu/">
+                        <img src="images/BrokerAtCloud_medium.png" alt="Broker@Cloud Logo" style="width:100%">
+                    </a>
+                </div>
+                <div class="col-md-9">
+                    <h1>Broker@Cloud Cloud Service Brokerage Ecosystem and End User Guide</h1>
+                    <p>The User's Guide to Broker@Cloud-enabled Cloud Service Brokerage Platform Ecosystem</p>
+                </div>
+            </div>
+        </div>
+        <div class="container" role="main">
+            <div>
+                <h1>Scope of the guide</h1>
+                <p> Broker@Cloud is offering a framework, services, mechanisms and tools for different quality assurance and optimization tasks on cloud service brokerage platforms along the service lifecycle. </p><p>
+                    The actors (service providers, hosting platforms, customers and consumers) of a Broker@Cloud-enabled Cloud Service Brokerage Platform Ecosystem are performing the following main tasks:
+                <ul>
+                    <li>Service Providers/Hosting Platforms: Service Description and Lifecycle Management </li>
+                    <li>Service Customers/Consumers: Service Consumption and Consumer Preferences Management  </li>
+                </ul>
+                </p>
+                
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <section id="policies">
+                        <h1>The role of broker policies in the service lifecycle management</h1>
+                        <p><em>Learn about the role of broker policies in the service lifecycle management</em></p>
+                        <p> From the perspective of a service provider a broker policy is a "semantic and syntactic template" for a service description that enables the service provider to describe its service offering in terms understandable by the broker. For more details see the section <a href="csbexpertguide.html#policyWhat"> What is a Broker Policy?</a> in the Cloud Service Brokerage Expert and Developer Guide.</p>
+
+                        <section id="policiesMgmt">
+                            <h2>Creation and Management of Broker Policies</h2>
+                            <p>The Cloud Service Brokerage Platform Expert and Developer Guide is dealing in detail with all aspects around creation and management of broker policies in the <a href="csbexpertguide.html#policyDev">Broker Policy Development</a>. You need a file with a valid broker policy. The broker policy should also be <a href="csbexpertguide.html#policyDep">deployed</a> in your test system before you proceed with the next section.</p>
+                        </section>
+                    </section>
+                    <section id="descriptions">
+                        <h1>Creation and management of service descriptions</h1>
+                        <p><em>Learn how to create and publish a service description</em></p>
+                        <p>Similarly to a broker policy, a service description is described in Linked USDL with some specific extensions and conventions introduced in the <a href="https://sites.google.com/site/brokeratcloud/documents/deliverables/d30-2-methods-and-tools-for-brokerage-enabling-description-of-enterprise-cloud-services"> Broker@Cloud methodology</a>. Linked USDL is specified in RDF Schema on top of a number of RDF Schema ontologies like <a href="http://www.heppnetz.de/projects/goodrelations/">Good Relations</a>. Hence, a text editor is the most flexible way to specify a service description that can potentially use the full modelling power offered through the ontologies linked into the Linked USDL. In this case, the broker can also take into consideration and specify in the broker policy aspects that might be relevant for the cloud service brokerage platform but are not covered by the minimal requirements on a broker policy and service description specified by the Broker@Cloud framework. Using a text-based RDF-editor, like the rdfEditor contained in the <a href="http://www.dotnetrdf.org/">dotNetRDF</a> Toolkit improves not only readability but also provides some usefull syntactic checks.</p>
+                        <p>The modelling power and flexibility of Linked USDL has also a downside. Depending on the type and complexity of a broker policy, creation of a valid service description using a text-based editor might prove to be a time consuming and an error-prone procedure. We are offering two kinds of support tools: graphical service description editors for both types of broker policy and REST APIs for service description validity checking offered by the SC<sup>3</sup> mechanism. A graphical service description editor significantly simplifies the creation of a service description. However, only creation of a minimal service description is supported, i.e., only creation of parts absolutelly necessary to satisfy the Broker@Cloud requirements on a Service Description specification is supported. The validity checking REST APIs offered by the SC<sup>3</sup> mechanism check any service description specified in Linked USDL if it is compliant with respect to the Broker@Cloud requirements on a Service Description specification and with respect to the broker policy the service description refers to.</p>
+                        <section id="descriptionEditors">
+                            <h2>Graphical Service Description Editors</h2>
+                            <p>There are Graphical Service Description Editors for Type1 and for Type2 Broker Policies available.</p>
+                            <ul>
+                                <li>Service Description Editor (Broker Policy Type1)</li>
+                                <li><a href="sd_editor_uc1.html">Service Description Editor</a>(Broker Policy Type2)</li>
+                            </ul>
+                        </section>
+                        <section id="descriptionValidation">
+                            <h2>Service Description Validation</h2>
+                            <p>Broker@Cloud project is operating an instance of a Broker@Cloud framework that can be used for different testing and validation tasks. This instance can be used also for validation of your service descriptions. Of course, you can use also your own Broker@Cloud instance if you already installed one.</p>
+                            
+                            <h3>SD validation using Broker@Cloud framework test instance (operated by Broker@Cloud)</h3>
+                            <p>First of all, you have to deploy the broker policy you used for the creation of your service description to the Broker@Cloud test instance if not already done. See <a href="csbexpertguide.html#policyDep">Broker Policy Deployment</a> section for further instructions.</p>
+                            <p> Second, POST your service description to the following URL:<code>http://213.249.38.66:3335/org.seerc.brokeratcloud.webservice/rest/serviceDescription/validate</code>
+                            </p>
+                            <p>For testing purposes, you can use e.g., <a href="http://thomas-bayer.com/restgate/index.do">RESTGate</a> - a web-based client for REST services to test online or download a REST client for your browser like this <a href="https://github.com/jeremys/Simple-Rest-Client-Chrome-Extension">Simple Rest Client for Google Chrome</a>.</p>
+                            <p>The following two screenshots show the validation request and response of a <a href="docs/myservicedescription.ttl">valid service description</a> based on a <a href="docs/SAP-broker-policy-template-including-classification-taxonomy.ttl">valid commented broker policy of Type2</a> in the <a href="http://thomas-bayer.com/restgate/index.do">RESTGate</a> client. </p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <a href="images/SD_validation_req.jpg" data-toggle="lightbox" class="thumbnail" data-title="Service Description Validation Request">
+                                        <img src="images/SD_validation_req.jpg" alt="Service description validation request" class="img-responsive">
+                                        <p>Service description validation request</p>
+                                    </a>
+                                </div>
+                                <div class="col-sm-6">
+                                    <a href="images/SD_validation_resp.jpg" class="thumbnail" data-toggle="lightbox" data-title="Service Description Validation Response">
+                                        <img src="images/SD_validation_resp.jpg" alt="Service description validation response" class="img-responsive">
+                                        <p>Service description validation response</p>
+                                    </a>
+                                </div>
+                            </div>
+                            <h3>SD validation using your own Broker@Cloud framework instance</h3>
+                            <p>Use the instructions from the previous section by inserting the IP and port number of your Broker@Cloud framework instance in the following URL:<br>
+                                <code>http://&lt;your IP&gt;:&lt;your port number&gt;/org.seerc.brokeratcloud.webservice/rest/serviceDescription/validate</code>
+                            </p>
+                        </section>
+                        
+                    </section>
+                    <section id="preferences">
+                        <h1>Consumer Preference Specification and Management</h1>
+                        <!-- PULSAR GUIDE START -->
+                        <p>A short video as well as additional material for PuLSaR are available at <a target="_blank" href="http://imu.ntua.gr/software/pulsar">IMU web site.</p>
+                        <div class="embed-responsive embed-responsive-4by3">
+                            <iframe src="https://www.youtube.com/embed/nLjXyhC8nzE" allowfullscreen="" frameborder="0" class="embed-responsive-item"></iframe> 
+                        </div>
+                        
+                        
+                        <section id="mozTocId657084">
+                        <h2><a id="pref_admin">Setting
+                            up Consumer Preference policy</a></h2>
+                        <p>Administrator must perform a series of tasks in order to setup Consumer Preferences policy (just as he must do for the Broker policy).</p>
+                        <section id="mozTocId51018">
+                        <h3>Defining optimisation attributes hierarchy</h3>
+                        <p>The purpose of this step is to prepare the
+                            hierarchy of optimisation attributes for use in consumer preference
+                            profiles. This hierarchy must conform to the business model of cloud
+                            broker and include meaningful attributes that can be monitored and
+                            exploited for service selection. A default optimisation attribute
+                            hierarchy based on SMICloud work is provided, however it is up to cloud
+                            broker to use it (actually load it into pulsar), create a new hierarchy
+                            from scratch or use the provided hierarchy with modifications.</p>
+                        <p>To load the default optimisation attribute
+                            hierarchy you need to log in with administrator account and then select <code>Import</code> menu item. Then click somewhere in the white box to open file selection dialog box. Find and select the optimisation attribute hierarchy file (typically named as <code>service-attributes-hierarchy-FINAL.ttl</code>). Finally click <code>Open</code> button and wait until file is uploaded into RDF repository.</p>
+                        
+                        <a href="images/pulsar-Picture0.jpg" class="thumbnail" data-toggle="lightbox"><img src="images/pulsar-Picture0.jpg" alt="PuLSaR Recommendations" class="img-responsive"></a>
+                        <p>To browse and/or modify optimisation attribute hierarchy you need to log in with an administrator account and then select <code>Serv. Attr. Mgnt</code> menu item.</p>
+                        
+                        <a href="images/pulsar-Picture1.jpg" class="thumbnail" data-toggle="lightbox"><img src="images/pulsar-Picture1.jpg" alt="PuLSaR Recommendations" class="img-responsive"></a>
+                        <p>To modify an attribute just select it in
+                            the left-hand-side list and wait for its data to load in the edit pane in the central area of the page. Then edit any field that can be changed and click <code>Save Changes</code> to store them in RDF repository. To create a new attribute select its parent attribute or a sibling attribute in the left-hand-side list and click <code>Create sibling</code> or <code>Create child</code> button. Don't forget to set the <code>Id</code> field to a unique value.</p>
+                    </section>
+                        <section id="mozTocId211971">
+                        <h3>Mapping optimisation attributes to classification dimensions</h3>
+                        <p>The purpose of this step is to associate the optimisation attributes with the classification dimensions (or functional categories) of the Broker Policy. It is possible to associate different attributes to each classification dimension, in order to enable pulsar present to consumers only the attributes relevant to the selected classification dimensions (see Consumer preference management for more information). If this feature is not desired or meaningful in your case then map all attributes onto the root classification dimension.</p>
+                        
+                            <p>To create the attribute-to-dimension association you need to log in with administrator account and then select <code>Attr. Mapping</code> menu item. Then on a classification dimension in the left-hand-side list and wait until all relevant associations are loaded in the edit grid in the central area of the page.</p>
+                            
+                            <a href="images/pulsar-Picture2.jpg" class="thumbnail" data-toggle="lightbox"><img src="images/pulsar-Picture2.jpg" alt="PuLSaR Recommendations" class="img-responsive"></a>
+                            
+                            <p>Right click somewhere in the grid or list. When popup menu appears select <code>New attribute</code> item. Then page will be dimmed and the "Optimisation Attribute Selection" dialog box will appear. This dialog box contains the optimisation attribute hierarchy. You can expand it and select the attributes you want to associate with the (previously) selected classification dimension. When ready click <code>Insert</code> (it is above the list).</p>
+                            <a href="images/pulsar-Picture3.jpg" class="thumbnail" data-toggle="lightbox"><img src="images/pulsar-Picture3.jpg" alt="PuLSaR Recommendations" class="img-responsive"></a>
+                            <p>After clicking "Insert" the dialog box disappears, the main page is undimmed and new associations are added in the grid for the selected attributes. Subsequently it is possible to edit association information such as Unit, Type, Allowed values, descriptive labels (in English and German) etc. Please note that as you move from field to field any changes are automatically saved.</p>
+                            </section>
+                        </section>
+                        <section id="mozTocId382099">
+                        <h2><a id="pref_mgmt">Consumer preference management</a></h2>
+                        
+                        <section id="mozTocId745358">
+                            <h3>Profile Management</h3>
+                            <p>Service consumers can use PuLSaR web interface in order to create consumer preference profiles. The profiles are "containers" of service selection criteria used by PuLSaR in order to provide service recommendation to consumers. A consumer can create as many profiles as he wishes.</p>
+                            <p>To create, edit or delete a profile you need to log in with a consumer account and then click on "Pref. Profile" menu item. The consumer preference profiles management page will be loaded. In the left-hand-side list all profiles associated to the consumer account are listed. By selecting one of them its details will be loaded in the edit pane in the central area of the page. When a profile is loaded it is possible modify its name, description, selection policy and classification dimensions. Remember to click <code>Save Changes</code> button in order to store any modifications. It is also possible to delete an existing profile or create a new (empty) one.</p>
+                            <a href="images/pulsar-Picture5.jpg" class="thumbnail" data-toggle="lightbox"><img src="images/pulsar-Picture5.jpg" alt="PuLSaR Recommendations" class="img-responsive"></a>
+                        </section>
+                            <section id="mozTocId733642">
+                            <h3><a class="mozTocH4" ></a>Selection criteria</h3>
+                            <p>After setting profile's main data it is possible to edit its selection criteria. Selection criteria are the optimisation attributes associated to the classification dimensions selected in the profile management page. Furthermore, the parent attributes of the associated attributes are also available as selection criteria.</p>
+                                <p>To edit selection criteria, click on <code>2 Criteria</code> tab and wait until page is loaded. Then you will be able to select those attributes that will act as selection criteria for this profile. You can select an attribute by clicking in the empty space after the row number of an attribute. A green tick must appear. When ready click "Save selections" button above the grid.</p>
+                            <a href="images/pulsar-Picture6.png" class="thumbnail" data-toggle="lightbox" data-title="PuLSaR Recommendations"><img src="images/pulsar-Picture6.png" alt="PuLSaR Recommendations" class="img-responsive"></a>
+                            
+                            
+                        </section>
+                            <section id="mozTocId649369">
+                            <h3>Setting criteria weights - The AHP method</h3>
+                            <p>Selection criteria can have weights (i.e. not all of them are of equal importance) in order to affect the service selection process according to their relative importance. PuLSaR can help simplifying the weight assignment task using a decision making method called Analytic Hierarchy Process (AHP). AHP transforms the criteria weights calculation problem into a series of pairwise comparisons.</p>
+                                <p>To have PuLSaR help you decide criteria weights (through pairwise comparisons of attributes) click on <code>3 Weights calc.</code> tab and wait until page is loaded. Then indicate your preference for every pairwise comparison by sliding the corresponding slider. When ready click <code>Save and Calculate weights</code>.</p>
+                            
+                            <a href="images/pulsar-Picture7.jpg" class="thumbnail" data-toggle="lightbox"><img src="images/pulsar-Picture7.jpg" alt="PuLSaR Recommendations" class="img-responsive"></a>
+                            
+                        </section>
+                            <section id="mozTocId808662">
+                            <h3>Fine tuning criteria - Defining criteria constraints</h3>
+                                <p>Next, you can go to Constraints page where you can fine tune criteria weights or set them if you have skipped the pairwise comparisons step, and also define constraints on the allowed values of each criterion.</p>
+                                <p>To modify fine tune criteria weights and define constraints you should click on <code>4 Constraints</code> tab and wait until page is loaded. Criteria weights can be modified by clicking on the weight value (an edit field will appear). Please be careful to provide valid values (either as decimals in 0..1 range or as numbers in 0%..100% range). Constraints can be defined by clicking on any criterion cell in Constraints column. A popup editor will appear where you can write the constraint. Please take care to provide constraints relevant to each criterion type. If you wish to remove a constraint then type a dash <kbd>-</kbd>. When ready click <code>Save changes</code> button. When modifying weights it is a good practice to click the <code>Normalize weights</code> button in order to ensure the sum of all weights is always 100%.</p>
+                            <a href="images/pulsar-Picture8.jpg" class="thumbnail" data-toggle="lightbox"><img src="images/pulsar-Picture8.jpg" alt="PuLSaR Recommendations" class="img-responsive"></a>
+                            </section> 
+                        </section>
+                        <section id="mozTocId576848">
+                        <h2><a id="pref_recom">Consumer recommendations</a></h2>
+                            
+                            <section id="mozTocId986799">
+                        <h3>On-demand recommendations</h3>
+                                <p>Service consumers can ask PuLSaR to provide a service recommendation for a profile. On demand recommendations are provided through the profile management page.</p>
+                                <p>To request a recommendation you need to log in with a consumer account and then click on "Pref. Profile" menu item. The consumer preference profiles management page will be loaded. In the left-hand-side list all profiles associated to the consumer account are listed. Select a profile and click "Get recommendation" link in "PuLSaR recommendation" area at the right-hand side. If the profile is correct (and complete) and services that meet your profile's requirements exist, they should be listed in "PuLSaR recommendations" area. If you wish you can save recommendation for future reference from Recommendation page (see next). Note: if you don't save recommendation it will be lost when you change page.</p>
+                                <p>When you save recommendation it will be possible to mark any suggested service as "Accepted".</p>
+                                
+                                <a href="images/pulsar-Picture9.png" class="thumbnail" data-toggle="lightbox" data-title="PuLSaR Recommendations"><img src="images/pulsar-Picture9.png" alt="PuLSaR Recommendations" class="img-responsive"></a>
+                                
+                            
+                            </section>
+                        <section id="mozTocId390428">
+                        <h3>Automatic recommendation</h3>
+                        <p>PuLSaR periodically (or when a relevant service changes) checks consumer profiles and generates new recommendations automatically (based on new cloud services, existing ones being deprecated etc.). These recommendations are saved for review from consumers.</p>
+                        <p>To view automatically generated or saved, on-demand recommendations you need to log in with a consumer account and then click on "Recommendations" menu item. In the left-hand-side list there is a list of your profiles. Selecting one of them will load the most recent recommendation in the right-hand-side pane.You can mark/unmark any suggested service as "Accepted". </p>
+                            
+                            <a href="images/pulsar-recoms-2.png" class="thumbnail" data-toggle="lightbox" data-title="PuLSaR Recommendations">
+                            <img src="images/pulsar-recoms-2.png" alt="PuLSaR Recommendations" class="img-responsive">
+                            <p>PuLSaR Recommendations</p>
+                                    </a>
+                        </section>
+                    </section>
+                        <section id="mozTocId10404">
+                        <h2><a></a><a id="pref_provider">Provider
+                            feedback</a></h2>
+                        <p>Service providers can use PuLSaR web
+                            interface in order to check how their services have been ranked with regards to
+                            consumer profiles. These information are called Notifications in PuLSaR.
+                            For each consumer profile a separate notification will be displayed.</p>
+                            <p>To view notifications you need to log in
+                            using a service provider account and then click on "Notifications" menu
+                            item. In the left-hand-side list you can see all services and service
+                            offers provided by the provider. Selecting a service will cause any
+                            relevant notifications to be loaded in the notifications pane in the
+                                central area of the page.</p>
+                            <a href="images/pulsar-notif.jpg" class="thumbnail" data-toggle="lightbox" data-title="PuLSaR Notifications">
+                                <img src="images/pulsar-notif.jpg" alt="PuLSaR Notifications" class="img-responsive">
+                                <p>PuLSaR Notifications</p>
+                            </a>
+                        </section>
+                        <!-- PULSAR GUIDE END -->
+                        
+                    </section>
+                </div> <!-- end of main panel -->
+                <div class="col-md-3 scrollspy">
+                    <ul id="nav" class="nav affix-top" data-spy="affix">
+                        <li><a href="#policies">Broker Policies</a>
+                            <ul class="nav">
+                                <li><a href="#policiesMgmt">Creation and Management of Broker Policies</a></li>
+                            </ul>
+                        </li> 
+                        <li><a href="#descriptions">Service Descriptions</a>
+                            <ul class="nav">
+                                <li><a href="#descriptionEditors">Graphical Service Description Editors</a></li>
+                                <li><a href="#descriptionValidation">Service Description Validation</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#preferences">Consumer Preference Management</a>
+                            <!--ul class="nav">
+                                <li><a href="#preferenceMgmt">Consumer Preference Management</a>
+                                
+                                </li>
+                            </ul-->
+                            <ul class="nav">
+                                <!--mozToc h3 1 h4 2-->
+                                <li><a href="#mozTocId657084">Setting up Consumer Preference policy</a>
+                                    <ul class="nav">
+                                        <li><a href="#mozTocId51018">Defining optimisation attributes
+                                            hierarchy</a></li>
+                                        <li><a href="#mozTocId211971">Mapping optimisation attributes to
+                                            classification dimensions</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#mozTocId382099">Consumer preference management</a>
+                                    <ul class="nav">
+                                        <li><a href="#mozTocId745358">Profile Management</a></li>
+                                        <li><a href="#mozTocId733642">Selection criteria</a></li>
+                                        <li><a href="#mozTocId649369">Setting criteria weights - The AHP
+                                            method</a></li>
+                                        <li><a href="#mozTocId808662">Fine tuning criteria - Defining criteria
+                                            constraints</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#mozTocId576848">Consumer recommendations</a>
+                                    <ul class="nav">
+                                        <li><a href="#mozTocId986799">On-demand recommendations</a></li>
+                                        <li><a href="#mozTocId390428">Automatic recommendation</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="#mozTocId10404">Provider feedback</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div> <!-- end of side panel -->
+            </div> <!-- end of row -->
+        </div><!-- /.container -->
+        
+        <section></section>
+        <footer class="text-center"><p><a href="index.html">Broker@Cloud User Guides</a> &copy; 2015 <a href="http://www.broker-cloud.eu/">EU Project Broker@Cloud</a></p></footer>
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="bower_components/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+        <script src="js/index.js"></script>
+    </body>
+    
+</html>
