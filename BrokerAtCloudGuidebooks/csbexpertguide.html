@@ -528,6 +528,20 @@
                             </ol>
                             </p>
                         </section>
+                        <section id="integrationPulsar">
+                            <h2>Integration with the PuLSaR mechanism</h2>
+                            <p>The Broker@Cloud framework provides two methods for integrating with PuLSaR mechanism for specifying preference profiles, requesting 
+                                recommendations and managing preference policy:
+                            <ol>
+                                <li>
+                                    The first method follows the request-response paradigm for retrieving and managing preference profiles, requesting recommendations, managing preference policy specifications and importing/exporting preference policy. Requests must be directed to the PuLSaR public API and they must also conform to the corresponding message formats. The Public API encompasses RESTfull webservice endpoints, whereas messages exchanged are in JSON format. The only exception is when importing/exporting preference policy, in which case "<code>multipart/form-data</code>" and "<code>text/turtle</code>" formats are used.
+                                </li>
+                                <li>
+                                    The second method regards programmatic integration using the PuLSaR framework classes (packages <code>eu.brokeratcloud.common</code>, <code>.fuseki</code>, <code>.opt</code>, <code>.persistence</code>, <code>.rest.opt</code> and <code>.util</code> and their sub-packages). The Java programming language or any language capable to use Java bytecode can be used. The core classes are those in the <code>eu.brokeratcloud.rest.opt</code> package as well as the class <code>eu.brokeratcloud.opt.RecommendationManager</code>. An alternative integration approach could leverage the interactive command-line tool of PuLSaR (class <code>eu.brokeratcloud.opt.engine.CLI</code>).
+                                </li>
+                            </ol>
+                            </p>
+                        </section>
                         <section id="testingguide">
                             <h2>Guide to Verification and Testing</h2>
                             
@@ -927,6 +941,7 @@
                         <li><a href="#integration">Integration Guidelines</a>
                             <ul class="nav">
                                 <li><a href="#integrationSC3">Integration with the SC<sup>3</sup> mechanism</a></li>
+                                <li><a href="#integrationPulsar">Integration with the PuLSaR mechanism</a></li>
                                 <li><a href="#testingguide">Integration of the VTTS mechanism</a>
                                     <ul class="nav">
                                         <li><a href="#vttsOverview">Overview</a></li>
