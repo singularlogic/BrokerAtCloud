@@ -60,6 +60,9 @@ public class ServiceDependencyLocal extends ServiceDependency {
 				));
 		
 		fakeRepo.put("sp:CASCalenderApp1",Arrays.asList("sp:CASAdressApp1"));
+		fakeRepo.put("sp:CASCalenderApp2",Arrays.asList("sp:CASAdressApp2"));
+		fakeRepo.put("sp:CASCalenderApp3",Arrays.asList("sp:CASAdressApp3"));
+		
 		fakeRepo.put("a", Arrays.asList("b","c"));
 		fakeRepo.put("b", Arrays.asList("e","c"));
 	}
