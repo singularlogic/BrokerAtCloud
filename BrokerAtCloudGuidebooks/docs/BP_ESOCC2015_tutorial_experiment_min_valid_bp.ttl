@@ -1,0 +1,197 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . 
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> . 
+@prefix dcterms: <http://purl.org/dc/terms/> . 
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> . 
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> . 
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> . 
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> . 
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> . 
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> . 
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> . 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+@prefix ctag: <http://commontag.org/ns#> . 
+@prefix org: <http://www.w3.org/ns/org#> . 
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> . 
+@prefix time: <http://www.w3.org/2006/time#> . 
+@prefix gr: <http://purl.org/goodrelations/v1#> . 
+@prefix doap: <http://usefulinc.com/ns/doap#> . 
+@prefix fc: <http://www.broker-cloud.eu/service-descriptions/CAS/categories#> . 
+
+<http://yourbrokernamespace.com/YourBrokerCompanyAcronym> 
+  a gr:BusinessEntity ; 
+  gr:legalName "Your BrokerCompany Legal Name"^^xsd:string . 
+
+<http://yourbrokernamespace.com/YourBrokerCompanyAcronymEntityInvolvement> 
+  a usdl-core:EntityInvolvement ; 
+  usdl-core:withBusinessRole usdl-business-roles:intermediary ; 
+  usdl-core:ofBusinessEntity <http://yourbrokernamespace.com/YourBrokerCompanyAcronym> . 
+
+<http://yourbrokernamespace.com/YourBrokerPolicyTitle> 
+  a <http://yourbrokernamespace.com/YourBrokerPolicyModelName> ; 
+  dcterms:creator <http://yourbrokernamespace.com/YourBrokerCompanyAcronym> ; 
+  usdl-core:hasEntityInvolvement <http://yourbrokernamespace.com/YourBrokerCompanyAcronymEntityInvolvement> ; 
+  usdl-core-cb:hasClassificationDimension fc:rootConcept . 
+
+<http://yourbrokernamespace.com/YourBrokerPolicyModelName> 
+  rdfs:subClassOf usdl-core:ServiceModel . 
+
+<http://yourbrokernamespace.com/SomeServiceLevelProfile> 
+  rdfs:subClassOf usdl-sla:ServiceLevelProfile . 
+
+<http://yourbrokernamespace.com/hasSomeServiceLevelProfile> 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile ; 
+  rdfs:domain <http://yourbrokernamespace.com/YourBrokerPolicyModelName> ; 
+  rdfs:range <http://yourbrokernamespace.com/SomeServiceLevelProfile> . 
+
+<http://yourbrokernamespace.com/SLSecurity> 
+  rdfs:subClassOf usdl-sla:ServiceLevel . 
+
+<http://yourbrokernamespace.com/hasSLSecurity> 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
+  rdfs:domain <http://yourbrokernamespace.com/SomeServiceLevelProfile> ; 
+  rdfs:range <http://yourbrokernamespace.com/SLSecurity> . 
+
+<http://yourbrokernamespace.com/SLESecurity> 
+  rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+<http://yourbrokernamespace.com/hasSLESecurity> 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
+  rdfs:domain <http://yourbrokernamespace.com/SLSecurity> ; 
+  rdfs:range <http://yourbrokernamespace.com/SLESecurity> . 
+
+<http://yourbrokernamespace.com/VarSecurity> 
+  rdfs:subClassOf usdl-sla:Variable . 
+
+<http://yourbrokernamespace.com/hasVarSecurity> 
+  rdfs:subPropertyOf usdl-sla:hasVariable ; 
+  rdfs:domain <http://yourbrokernamespace.com/SLESecurity> ; 
+  rdfs:range <http://yourbrokernamespace.com/VarSecurity> . 
+
+<http://yourbrokernamespace.com/AllowedSecurityValue> 
+  rdfs:subClassOf gr:QualitativeValue ; 
+  rdfs:label "sdf"^^xsd:string . 
+
+<http://yourbrokernamespace.com/hasDefaultSecurity> 
+  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
+  rdfs:domain <http://yourbrokernamespace.com/VarSecurity> ; 
+  rdfs:range <http://yourbrokernamespace.com/AllowedSecurityValue> . 
+
+<http://yourbrokernamespace.com/hasSecurity> 
+  rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty ; 
+  rdfs:domain <http://yourbrokernamespace.com/YourBrokerPolicyModelName> ; 
+  rdfs:range <http://yourbrokernamespace.com/AllowedSecurityValue> . 
+
+<http://yourbrokernamespace.com/SLAvailability> 
+  rdfs:subClassOf usdl-sla:ServiceLevel . 
+
+<http://yourbrokernamespace.com/hasSLAvailability> 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
+  rdfs:domain <http://yourbrokernamespace.com/SomeServiceLevelProfile> ; 
+  rdfs:range <http://yourbrokernamespace.com/SLAvailability> . 
+
+<http://yourbrokernamespace.com/SLEAvailability> 
+  rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+<http://yourbrokernamespace.com/hasSLEAvailability> 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
+  rdfs:domain <http://yourbrokernamespace.com/SLAvailability> ; 
+  rdfs:range <http://yourbrokernamespace.com/SLEAvailability> . 
+
+<http://yourbrokernamespace.com/VarAvailability> 
+  rdfs:subClassOf usdl-sla:Variable . 
+
+<http://yourbrokernamespace.com/hasVarAvailability> 
+  rdfs:subPropertyOf usdl-sla:hasVariable ; 
+  rdfs:domain <http://yourbrokernamespace.com/SLEAvailability> ; 
+  rdfs:range <http://yourbrokernamespace.com/VarAvailability> . 
+
+<http://yourbrokernamespace.com/AllowedAvailabilityValue> 
+  rdfs:subClassOf gr:QuantitativeValueInteger ; 
+  rdfs:label "sdf"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "%"^^xsd:string ; 
+  gr:hasMinValueInteger "90"^^xsd:integer ; 
+  gr:hasMaxValueInteger "100"^^xsd:integer ; 
+  usdl-core-cb:isRange "false"^^xsd:boolean ; 
+  usdl-core-cb:higherIsBetter "true"^^xsd:boolean . 
+
+<http://yourbrokernamespace.com/hasDefaultAvailability> 
+  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue ; 
+  rdfs:domain <http://yourbrokernamespace.com/VarAvailability> ; 
+  rdfs:range <http://yourbrokernamespace.com/AllowedAvailabilityValue> . 
+
+<http://yourbrokernamespace.com/hasAvailability> 
+  rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ; 
+  rdfs:domain <http://yourbrokernamespace.com/YourBrokerPolicyModelName> ; 
+  rdfs:range <http://yourbrokernamespace.com/AllowedAvailabilityValue> . 
+
+<http://yourbrokernamespace.com/High_Security> 
+  a <http://yourbrokernamespace.com/AllowedSecurityValue> . 
+
+<http://yourbrokernamespace.com/Low_Security> 
+  a <http://yourbrokernamespace.com/AllowedSecurityValue> . 
+  
+  ### Classification of apps (extensions) ##########
+
+fc:BrokerAtCloudESOCC2015TutorialConceptScheme a skos:ConceptScheme ;
+	dcterms:title "Root for all classification dimensions." ;
+	skos:prefLabel "Root Concept Scheme"@en ;
+	skos:hasTopConcept fc:rootConcept.
+
+
+fc:rootConcept a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Root Concept"@en ;
+	skos:topConceptOf fc:BrokerAtCloudESOCC2015TutorialScheme ;				
+	skos:narrower fc:BankAndCashManagement, fc:Shipment, fc:PointOfSales ;
+	skos:inScheme fc:BrokerAtCloudESOCC2015TutorialScheme .
+
+### Bank & Cash management ### 
+fc:BankAndCashManagement a usdl-core-cb:ClassificationDimension ;
+dcterms:title "Bank and Cash Management extention.";
+skos:prefLabel "Bank&Cash"@en ;
+	skos:broader fc:rootConcept ;
+	skos:inScheme fc:BrokerAtCloudESOCC2015TutorialScheme .
+	
+### Shipment ###
+fc:Shipment a usdl-core-cb:ClassificationDimension ;  
+	dcterms:title "Shipment extention.";
+	skos:prefLabel "Shipment"@en ;
+	skos:broader fc:rootConcept ;
+	skos:inScheme fc:BrokerAtCloudESOCC2015TutorialScheme .
+
+### Point of Sales ###
+fc:PointOfSales a usdl-core-cb:ClassificationDimension ;  
+	dcterms:title "Point of Sales extention.";
+	skos:prefLabel "Point of Sales"@en ;
+	skos:broader fc:rootConcept ;
+	skos:inScheme fc:BrokerAtCloudESOCC2015TutorialScheme .
+
+## Manually added declarations ###
+
+<http://yourbrokernamespace.com/MySLP> a <http://yourbrokernamespace.com/SomeServiceLevelProfile> .
+
+<http://yourbrokernamespace.com/MySec> a <http://yourbrokernamespace.com/VarSecurity> .
+<http://yourbrokernamespace.com/MySec> <http://yourbrokernamespace.com/hasDefaultSecurity> <http://yourbrokernamespace.com/Low_Security> .
+<http://yourbrokernamespace.com/MySLESec> a <http://yourbrokernamespace.com/SLESecurity> .
+<http://yourbrokernamespace.com/MySLESec> <http://yourbrokernamespace.com/hasVarSecurity> <http://yourbrokernamespace.com/MySec> .
+<http://yourbrokernamespace.com/MySLSec> a <http://yourbrokernamespace.com/SLSecurity> .
+<http://yourbrokernamespace.com/MySLSec> <http://yourbrokernamespace.com/hasSLESecurity> <http://yourbrokernamespace.com/MySLESec> .
+
+<http://yourbrokernamespace.com/MySLP> <http://yourbrokernamespace.com/hasSLSecurity> <http://yourbrokernamespace.com/MySLSec> .
+
+
+<http://yourbrokernamespace.com/High_Availability> a <http://yourbrokernamespace.com/AllowedAvailabilityValue>;
+  gr:hasMinValueInteger "91"^^xsd:integer ; 
+  gr:hasMaxValueInteger "99"^^xsd:integer .
+
+<http://yourbrokernamespace.com/MyAvail> a <http://yourbrokernamespace.com/VarAvailability> .
+<http://yourbrokernamespace.com/MyAvail> <http://yourbrokernamespace.com/hasDefaultAvailability> <http://yourbrokernamespace.com/High_Availability> .
+<http://yourbrokernamespace.com/MySLEAvail> a <http://yourbrokernamespace.com/SLEAvailability> .
+<http://yourbrokernamespace.com/MySLEAvail> <http://yourbrokernamespace.com/hasVarAvailability> <http://yourbrokernamespace.com/MyAvail> .
+<http://yourbrokernamespace.com/MySLAvail> a <http://yourbrokernamespace.com/SLAvailability> .
+<http://yourbrokernamespace.com/MySLAvail> <http://yourbrokernamespace.com/hasSLEAvailability> <http://yourbrokernamespace.com/MySLEAvail> .
+
+<http://yourbrokernamespace.com/MySLP> <http://yourbrokernamespace.com/hasSLAvailability> <http://yourbrokernamespace.com/MySLAvail> .
+
+<http://yourbrokernamespace.com/YourBrokerPolicyTitle> <http://yourbrokernamespace.com/hasSomeServiceLevelProfile> <http://yourbrokernamespace.com/MySLP> . 
