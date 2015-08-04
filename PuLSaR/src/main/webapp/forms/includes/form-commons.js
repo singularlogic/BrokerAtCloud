@@ -187,7 +187,6 @@ function retrieveData(methodStr, urlStr, values, mesg) {
 	if (values) valStr = JSON.stringify(values);
 	if (_hasParent) values['parent'] = attrParent.id;
 	statusContacting(methodStr+' '+urlStr, valStr);
-	//alert('METHOD: '+methodStr+'\nURL: '+urlStr+'\nSENDING: ' + JSON.stringify(values)+'\n\n');
 	//clearForm();
 	setStatus('<p>Waiting for reply... <img src="../ajax-loader.gif" /></p>');
 	if (mesg) showIndicator(mesg); else showIndicator("Contacting server...");
@@ -233,10 +232,8 @@ function renderDate(tm) {
 	return tm;
 }
 function prepareValuesForSubmit(data) {
-//XXX: TODO: Convert date/times from 'd/m/Y H:i:s' format to W3C standard format 'YYYY-mm-dd'T'HH:mi:ss.000+TZ'
 }
 function prepareValuesForRender(data) {
-//XXX: TODO: Convert date/times from W3C standard format 'YYYY-mm-dd'T'HH:mi:ss.000+TZ'  to  'd/m/Y H:i:s'
 	data.lastUpdateTimestamp = renderDate(data.lastUpdateTimestamp);
 	data.createTimestamp = renderDate(data.createTimestamp);
 }

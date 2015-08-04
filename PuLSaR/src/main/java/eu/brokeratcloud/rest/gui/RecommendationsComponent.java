@@ -210,16 +210,12 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 			boolean first2=true;
 			int j=0;
 			if (items!=null) {
-				// An alternative way to set relevance precision (num of decimal digits)
-				//int precision = 3;
-				//double multiplier = Math.pow(10, precision);
 				for (RecommendationItem rit : items) {
 					if (first2) first2=false; else sb.append(",");
 					
 					String iid = rit.getId();
 					String suggestion = rit.getSuggestion();
 					double relevance = 100*rit.getWeight();
-					//relevance = Math.round(relevance*multiplier)/multiplier;
 					String response = rit.getResponse().trim();
 					String extra = extra2str( rit.getExtra() );
 					sb.append( String.format(Locale.US, recomItemFmt, iid, suggestion, relevance, j++, response, extra) );

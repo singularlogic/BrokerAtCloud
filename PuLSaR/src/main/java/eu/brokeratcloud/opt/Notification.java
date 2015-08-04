@@ -20,6 +20,8 @@ public class Notification extends BrokerObject {
 	@XmlAttribute
 	@RdfPredicate
 	protected String message;
+	@XmlAttribute
+	protected String type;
 	
 	public Notification() {
 		setId( createId("NOTIFICATION") );
@@ -29,9 +31,11 @@ public class Notification extends BrokerObject {
 	public void setService(String s) { service = s; }
 	public String getMessage() { return message; }
 	public void setMessage(String s) { message = s; }
+	public String getType() { return type; }
+	public void setType(String s) { type = s; }
 	
 	public String toString() {
 		return 	"Notification: {\n"+super.toString()+
-				"\tservice = "+service+"\n\tmessage = "+message+"}\n";
+				"\tservice = "+service+"\n\ttype = "+type+"\n\tmessage = "+message+"}\n";
 	}
 }

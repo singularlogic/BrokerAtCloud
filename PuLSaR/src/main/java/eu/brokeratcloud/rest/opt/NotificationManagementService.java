@@ -25,7 +25,10 @@ import com.hp.hpl.jena.rdf.model.RDFNode;
 
 @Path("/opt/notification")
 public class NotificationManagementService extends AbstractManagementService {
-
+	
+	public static final String NOTIFICATION_RECOMMENDATION = "RECOMMENDATION_NOTIFICATION";
+	public static final String NOTIFICATION_FEEDBACK = "FEEDBACK_NOTIFICATION";
+	
 	// GET /opt/notification/sd/{sdId}/period/{period-spec}/list
 	// Description: Get a list of notifications for the specified service description in the specified period
 	@GET
@@ -58,6 +61,27 @@ public class NotificationManagementService extends AbstractManagementService {
 	@Path("/sd/{sdId}")
 	@Produces("application/json")
 	public Notification[] getServiceNotifications(@PathParam("sdId") String sdId) {
+		// Get notifications from RDF and local datastores
+		List<Notification> recomNotifList = getServiceRecommendationNotifications(sdId);
+		List<Notification> feedbackNotifList = getServiceFeedbackNotifications(sdId);
+		
+		// Merge the above lists, sort the resulting list according to timestamp and return it
+		List<Notification> notifList = new ArrayList<Notification>();
+		notifList.addAll( recomNotifList );
+		notifList.addAll( feedbackNotifList );
+		Collections.sort(notifList, 
+						new Comparator<Notification>() {
+							public int compare(Notification n1, Notification n2) {
+								long lng = n1.getCreateTimestamp().getTime() - n2.getCreateTimestamp().getTime();
+								return (int)Math.signum(lng);
+							}
+							public boolean equals(Object o) { return o==this; }
+						});
+		Collections.reverse(notifList);
+		return notifList.toArray(new Notification[0]);
+	}
+	
+	protected List<Notification> getServiceRecommendationNotifications(String sdId) {
 		try {
 			// Prepare query
 			String sdIdDec = java.net.URLDecoder.decode(sdId);
@@ -85,9 +109,9 @@ public class NotificationManagementService extends AbstractManagementService {
 				"ORDER BY ?tm\n";
 			
 			// Query repository
-			logger.debug("getServiceNotifications: Retrieving Notifications for service description = {}", sdIdDec);
+			logger.debug("getServiceRecommendationNotifications: Retrieving Notifications for service description = {}", sdIdDec);
 			String query = String.format(queryStr, sdIdDec);
-			logger.trace("getServiceNotifications: Query = \n{}", query);
+			logger.trace("getServiceRecommendationNotifications: Query = \n{}", query);
 			
 			SparqlServiceClient client = SparqlServiceClientFactory.getClientInstance();
 			List<Map<String,RDFNode>> results = client.queryAndProcess( query );
@@ -95,7 +119,7 @@ public class NotificationManagementService extends AbstractManagementService {
 			// Extract needed data from query results and prepare notifications
 			List<Notification> notifList = new ArrayList<Notification>();
 			if (results!=null && results.size()>0) {
-				logger.debug("getServiceNotifications: {} notifications found", results.size());
+				logger.debug("getServiceRecommendationNotifications: {} notifications found", results.size());
 				for (Map<String,RDFNode> soln : results) {
 					// Extract data
 					String tmStr = soln.get("tm").asLiteral().getString();
@@ -116,11 +140,11 @@ public class NotificationManagementService extends AbstractManagementService {
 							rank = Integer.parseInt( itId.substring(p+1) );
 							rank++;
 						} catch (NumberFormatException e) {
-							logger.error("getServiceNotifications: EXCEPTION while extracting recom. item's rank from id: recom-item-id={}", itId);
+							logger.error("getServiceRecommendationNotifications: EXCEPTION while extracting recom. item's rank from id: recom-item-id={}", itId);
 						}
 					}
 					
-					logger.trace("getServiceNotifications:\t\tNotification: tm={}, service={}, profile-id={}, profile-name={}, owner={}, item-id={}, response={}, suggestion={}, weight={}",  tm, srvName, profileId, profileName, owner, itId, itResponse, itWeight);
+					logger.trace("getServiceRecommendationNotifications:\t\tNotification: tm={}, service={}, profile-id={}, profile-name={}, owner={}, item-id={}, response={}, suggestion={}, weight={}",  tm, srvName, profileId, profileName, owner, itId, itResponse, itWeight);
 					
 					// Prepare notification message
 					String mesg = String.format("Service <i>'%s'</i> has been ranked <b>#%d</b> (score: %3.2f%%) for consumer <i>%s</i>'s preference profile <i>'%s'</i>", srvName, rank, 100*itWeight, owner, profileName);
@@ -131,19 +155,20 @@ public class NotificationManagementService extends AbstractManagementService {
 					notif.setCreateTimestamp( tm );
 					notif.setService( sdId );
 					notif.setMessage( mesg );
+					notif.setType( NOTIFICATION_RECOMMENDATION );
 					
 					notifList.add(notif);
 				}
 			} else {
-				logger.debug("getServiceNotifications: No notifications found");
+				logger.debug("getServiceRecommendationNotifications: No notifications found");
 			}
 			
 			Collections.reverse(notifList);
-			return notifList.toArray(new Notification[0]);
+			return notifList;
 		} catch (Exception e) {
-			logger.error("getServiceNotifications: EXCEPTION THROWN: {}", e);
-			logger.debug("getServiceNotifications: Returning an empty array of {}", Notification.class);
-			return new Notification[0];
+			logger.error("getServiceRecommendationNotifications: EXCEPTION THROWN: {}", e);
+			logger.debug("getServiceRecommendationNotifications: Returning an empty list of {}", Notification.class);
+			return new ArrayList<Notification>();
 		}
 	}
     
@@ -164,5 +189,27 @@ public class NotificationManagementService extends AbstractManagementService {
 
 		java.text.DateFormat df = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
 		return df.parse(tmStr);
+	}
+	
+	protected List<Notification> getServiceFeedbackNotifications(String sdId) {
+		logger.trace("getServiceFeedbackNotifications: BEGIN: service-id={}", sdId);
+		
+		FeedbackManagementService fbMgntWs = new FeedbackManagementService();
+		
+		try {
+			// Get feedback notifications for service from local datastore
+			logger.trace("getServiceFeedbackNotifications: Calling {} to get feedback notifications for service {}", FeedbackManagementService.class, sdId);
+			List<Notification> notifList = fbMgntWs.getNotificationsForService(sdId);
+			
+			// Mark Notifications as Feedback notifications
+			for (Notification notif : notifList) notif.setType( NOTIFICATION_FEEDBACK );
+			
+			logger.trace("getServiceFeedbackNotifications: END: results={}", notifList);
+			return notifList;
+		} catch (Exception e) {
+			logger.error("getServiceFeedbackNotifications: EXCEPTION THROWN: {}", e);
+			logger.debug("getServiceFeedbackNotifications: Returning an empty list of {}", Notification.class);
+			return new ArrayList<Notification>();
+		}
 	}
 }

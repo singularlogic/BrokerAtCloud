@@ -30,6 +30,11 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import javax.ws.rs.client.Entity;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
+import javax.ws.rs.core.MultivaluedMap;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+import org.apache.commons.io.IOUtils;
+
 import eu.brokeratcloud.opt.OptimisationAttribute;
 import eu.brokeratcloud.opt.ServiceCategoryAttribute;
 import eu.brokeratcloud.opt.type.TFN;
@@ -75,6 +80,120 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 		logger.debug("exportBrokerPolicy: END: \n{}", str);
 		return str;
 	}
+	
+	//-- Begin of Form Upload handling ----------------------------------------------------------------
+	//private final String UPLOADED_FILE_PATH = "/uploaded_files/";
+	
+	@POST
+	@Path("/importBrokerPolicy")
+	@Consumes("multipart/form-data")
+	public Response importBrokerPolicy(MultipartFormDataInput input) {
+		String fileName = "";
+		
+		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+		List<InputPart> inputParts_0 = uploadForm.get("import_mode");
+		List<InputPart> inputParts_1 = uploadForm.get("file");
+		
+		// Get import mode
+		String importMode = null;
+		String method = null;
+		for (InputPart inputPart : inputParts_0) {
+			try {
+				//get value
+				importMode = inputPart.getBodyAsString();
+				logger.debug("importBrokerPolicy: import mode={}", importMode);
+			} catch (IOException e) {
+				logger.error("importBrokerPolicy: Error while retrieving import mode: {}", e);
+			}
+		}
+		if (importMode!=null) {
+			importMode = importMode.trim();
+			if (importMode.equalsIgnoreCase("append")) { importMode = "append"; method = "POST"; }
+			else if (importMode.equalsIgnoreCase("replace")) { importMode = "replace"; method = "PUT"; }
+			else { importMode = null;
+				logger.error("importBrokerPolicy: Invalid import mode={}", importMode);
+			}
+		}
+		logger.debug("importBrokerPolicy: import mode={}", importMode);
+		
+		// Get file contents
+		String contents = null;
+		for (InputPart inputPart : inputParts_1) {
+			try {
+				MultivaluedMap<String, String> header = inputPart.getHeaders();
+				fileName = getFileName(header);
+				
+				//convert the uploaded file to inputstream
+				InputStream inputStream = inputPart.getBody(InputStream.class,null);
+				char [] bytes = IOUtils.toCharArray(inputStream, "UTF-8");
+				contents = new String(bytes);
+				logger.debug("importBrokerPolicy: file-contents=\n{}", contents);
+				//writeFile(UPLOADED_FILE_PATH+"/"+fileName, contents);
+				
+			} catch (IOException e) {
+				logger.error("importBrokerPolicy: Error while retrieving upload file contents: {}", e);
+			}
+		}
+		
+		// if all parameters are ok upload file to RDF repository
+		int status = 400;
+		if (importMode!=null && contents!=null) {
+			String rdfReposUrl = this.configProperties.getProperty("triplestore-upload-uri");
+			logger.info("importBrokerPolicy: Upload to RDF repository: STARTS: filename=\"{}\", action=\"{} {}\"...", fileName, method, rdfReposUrl);
+			ResteasyClient client = new ResteasyClientBuilder().build();
+			ResteasyWebTarget target = client.target(rdfReposUrl);
+			long callStartTm = System.currentTimeMillis();
+			javax.ws.rs.client.Entity entity = Entity.entity( contents, new javax.ws.rs.core.MediaType("text", "turtle") );
+			Response response = importMode.equals("append") ? target.request().post( entity ) : target.request().put( entity );
+			long callEndTm = System.currentTimeMillis();
+			status = response.getStatus();
+			logger.debug("Response: {}", status);
+			logger.info("importBrokerPolicy: Upload to RDF repository: DONE: SPARQL server status={}", status);
+			
+			if (status>=200 && status<300) {
+				return Response.status(200).header("Connection", "Keep-Alive").header("Keep-Alive", "timeout=600, max=99").entity( String.format("{ \"message\": \"File upload completed: status=%d\" }", status) ).build();
+			}
+			
+		} else {
+			logger.debug("importBrokerPolicy: Missing parameter: import-mode={}, file-contents={}", importMode, contents);
+		}
+		
+		return Response.status(status).header("Connection", "Keep-Alive").header("Keep-Alive", "timeout=600, max=99").entity( String.format("{ \"message\": \"File upload failed: See logs for details: status=%d\" }", status) ).build();
+	}
+	public static boolean writeFile(String fileName, String content) throws java.io.IOException {
+		PrintWriter pw = new PrintWriter(new java.io.FileWriter(fileName, false));	// No append
+		try {
+			pw.print(content);
+			if (pw.checkError()) { logger.error("An error occured while openning or writing output file: "+fileName); return false; }
+		} finally {
+			pw.close();
+			if (pw.checkError()) { logger.error("An error occured while closing output file: "+fileName); return false; }
+		}
+		return true;
+	}
+	/**
+	 * header sample
+	 * {
+	 * 	Content-Type=[image/png], 
+	 * 	Content-Disposition=[form-data; name="file"; filename="filename.extension"]
+	 * }
+	 **/
+	//get uploaded filename, is there a easy way in RESTEasy?
+	private String getFileName(MultivaluedMap<String, String> header) {
+		String[] contentDisposition = header.getFirst("Content-Disposition").split(";");
+ 
+		for (String filename : contentDisposition) {
+			if ((filename.trim().startsWith("filename"))) {
+ 
+				String[] name = filename.split("=");
+ 
+				String finalFileName = name[1].trim().replaceAll("\"", "");
+				return finalFileName;
+			}
+		}
+		return "unknown";
+	}
+	//-- End of Form Upload handling ----------------------------------------------------------------
 	
 	@GET
 	@POST
@@ -550,7 +669,7 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 		@XmlAttribute
 		String measuredBy;		// measurement by (if any)
 		@XmlAttribute
-		boolean mandatory;	// Is mandatory? (Admin setting overrides users' setting. If true attribute must always be included in consumer preferences, when pref. profile regards the same service category)
+		boolean mandatory;
 		@XmlAttribute
 		String from;
 		@XmlAttribute

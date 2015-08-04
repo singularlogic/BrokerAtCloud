@@ -36,8 +36,6 @@ function initProfileList() {
 					"separator_after": false,
 					"label": "Create Profile",
 					"action": function (obj) { 
-						//$node = tree.create_node($node);
-						//tree.edit($node);
 						createNode();
 					}
 				},
@@ -46,7 +44,6 @@ function initProfileList() {
 					"separator_after": false,
 					"label": "Delete",
 					"action": function (obj) { 
-						//tree.delete_node($node);
 						deleteNode();
 					}
 				},
@@ -117,16 +114,6 @@ function initProfileList() {
 				loadingIndicator.fadeOut();
 				console.log('Retrieving profile: '+status);
 				if(d) {
-/*					renderData(d, 'obviously OK');
-					var catId = getField('serviceCategory');
-					categoryList.jstree('deselect_all');
-					categoryList.jstree('select_node', catId);
-					
-					// initialize global wizard data
-					var prId = getField('id');
-					var catId = getField('serviceCategory');
-					wizardGlobalData = { 'profile': prId, 'category': catId };
-*/
 					renderData(d, 'obviously OK');
 					var clsfArr = getField('serviceClassifications').split(",");
 					categoryList.jstree('deselect_all');
@@ -146,20 +133,6 @@ function initProfileList() {
 			$('#data .default').html('xxx').show();
 		}
 	})
-/*			.on('move_node.jstree', function (e, data) {
-		var id = data.node.id;
-		alert('move_node '+id);
-//var m='';
-//var o=data.node.id;
-//for (i in o) m+=i+": "+o[i]+" \n ";
-//alert(m);
-		var pNew = data.parent;
-		var pOld = data.old_parent;
-		if (pNew!==pOld) {
-			alert('moving node from : '+pOld+' to '+pNew);
-			$('#parent').value
-		}
-	})*/
 	;
 };
 
@@ -203,22 +176,9 @@ function initWizard() {
 							var step = context.fromStep+'';
 							var success = true;
 							
-							/*if (step && step==='2') {
-								// save selected attributes to profile (as preferences)
-								if (!wizardGlobalData['profile']) return false;
-								if (isPage2saved===false && confirm('Do you want to save changes?')) {
-									success = savePage2Grid();
-								}
-							}*/
-							
 							if (step) {
 								// check if changes have been saved
 								if (!wizardGlobalData['profile']) return false;
-/*								if (step==='1' && isPage1saved===false && confirm('Do you want to save changes?')) success = savePage1Grid();
-								if (step==='2' && isPage2saved===false && confirm('Do you want to save changes?')) success = savePage2Grid();
-								if (step==='3' && isPage3saved===false && confirm('Do you want to save changes?')) success = savePage3Grid();
-								if (step==='4' && isPage4saved===false && confirm('Do you want to save changes?')) success = savePage4Grid();
-*/
 								//if (step==='1') success = savePage1Grid();
 								if (step==='2') success = savePage2Grid();
 								if (step==='3') success = savePage3Grid();
@@ -438,10 +398,6 @@ function initCategoryList() {
 	.on('changed.jstree', function (e, data) {
 		if(data && data.selected && data.selected.length && e && data.node && data.node.text) {
 			setField('serviceClassifications', data.selected);
-/*			var catId = data.selected[0];
-			var catText = data.node.text;
-			setField('serviceCategory',catId);
-			setField('serviceCategoryText',catText);*/
 		}
 	});
 };
@@ -634,8 +590,8 @@ var page4grid_options = {
 	editable: true,
 	enableAddRow: false,
 	enableCellNavigation: true,
-	showHeaderRow: true,				//2014-12-15: addition of weights sum
-	explicitInitialization: true,		//2014-12-15: addition of weights sum
+	showHeaderRow: true,
+	explicitInitialization: true,
 	asyncEditorLoading: false,
 	autoEdit: true
 };
@@ -724,7 +680,7 @@ function initPage4Grid(data) {
 		}
 	});
 	
-	//2014-12-15: addition of weights sum
+	//weights sum
 	page4grid.onHeaderRowCellRendered.subscribe(function(e, args) {
 		$(args.node).empty();
 		if (args.column.id==="weight") {
@@ -753,7 +709,7 @@ function initPage4Grid(data) {
 	});
 	page4grid_dataView.endUpdate();
 	
-	//2014-12-12: normalize weights (fix of weight rounding error while converting from json to javascript)
+	//normalize weights
 	normalizeWeights(); normalizeWeights(); normalizeWeights();
 	refreshGrandTotals();
 }

@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 @Path("/auth")
 public class Auth {
 	protected static final Logger logger = LoggerFactory.getLogger("eu.brokeratcloud.rest.Auth");
-	protected static String redirectUrl = "/logon.html";
 	protected static String menuTemplateUrl = "/menu-template.html";
 	protected static String menuTemplate = null;
 	protected static Pattern menuTemplatePattern = null;

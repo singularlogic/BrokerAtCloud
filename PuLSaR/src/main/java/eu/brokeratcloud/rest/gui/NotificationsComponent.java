@@ -34,6 +34,7 @@ import javax.ws.rs.client.Entity;
 import eu.brokeratcloud.common.ServiceDescription;
 import eu.brokeratcloud.opt.Notification;
 import eu.brokeratcloud.persistence.annotations.RdfSubject;
+import eu.brokeratcloud.rest.opt.NotificationManagementService;
 import eu.brokeratcloud.rest.opt.ProfileManagementService;
 
 
@@ -102,7 +103,7 @@ public class NotificationsComponent extends AbstractFacingComponent {
 		long startTm = System.currentTimeMillis();
 		logger.info("-------------- getNotificationsForService: INPUT: service-id: "+java.net.URLDecoder.decode(sdId));
 		
-		// Call REST service in order to get services list
+		// Call REST service in order to get service notifications
 		long callStartTm = System.currentTimeMillis();
 		Notification[] notifList = (Notification[])_callBrokerRestWS(baseUrl+"/opt/notification/sd/"+java.net.URLEncoder.encode(sdId), "GET", java.lang.reflect.Array.newInstance(Notification.class, 0).getClass(), null);
 		long callEndTm = System.currentTimeMillis();
@@ -110,7 +111,7 @@ public class NotificationsComponent extends AbstractFacingComponent {
 		
 		// Prepare JSON to retrurn to page
 		StringBuilder sb = new StringBuilder("[");
-		String rowHead = "{ \"id\":\"%s\", \"createTimestamp\":%d, \"service\":\"%s\", \"message\":\"%s\"}";
+		String rowHead = "{ \"id\":\"%s\", \"createTimestamp\":%d, \"service\":\"%s\", \"message\":\"%s\", \"type\":\"%s\"}";
 		boolean first = true;
 		for (int i=0; i<notifList.length; i++) {
 			Notification notif = notifList[i];
@@ -120,11 +121,12 @@ public class NotificationsComponent extends AbstractFacingComponent {
 			String serviceId = notif.getService();
 			String message = notif.getMessage();
 			String consumer = notif.getOwner();  //or  (notif.getOwner!=null && !notif.getOwner().isEmpty()) ? notif.getOwner() : getUsername();
+			String type = notif.getType();
 			
 			// append recommendation info to string buffer
 			if (first) first=false; else sb.append(",\n");
 			long tm = notif.getCreateTimestamp()!=null ? notif.getCreateTimestamp().getTime() : new Date().getTime();
-			sb.append( String.format(Locale.US, rowHead, notif.getId(), tm, serviceId, message) );
+			sb.append( String.format(Locale.US, rowHead, notif.getId(), tm, serviceId, message, type) );
 		}
 		sb.append(" ]");
 		String str = sb.toString();

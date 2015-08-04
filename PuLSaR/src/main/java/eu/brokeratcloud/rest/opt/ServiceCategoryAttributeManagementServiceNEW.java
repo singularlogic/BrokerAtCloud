@@ -271,7 +271,82 @@ public class ServiceCategoryAttributeManagementServiceNEW extends AbstractManage
 		}
 	} // End of PolicyObjects
 	
-	protected static ServiceCategoryAttribute _getServiceCategoryAttribute(String id) throws Exception {
+	public static String _getPrefVarFromAV(String avUri) {
+		logger.trace("_getPrefVarFromAV: BEGIN: av-uri={}", avUri);		// attribute allowed value uri
+		String queryStr = 
+				"select ?pv \n" +
+				"where { \n" +
+				"	?hasDef <http://www.w3.org/2000/01/rdf-schema#range> <%s> . \n" +
+				"	?hasDef <http://www.w3.org/2000/01/rdf-schema#domain> ?pv . \n" +
+				"	?pv <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-pref#PreferenceVariable> . \n" +
+				"} \n";
+		if (client==null) client = SparqlServiceClientFactory.getClientInstance();
+		String qry = String.format(queryStr, avUri);
+		logger.trace("_getPrefVarFromAV: Query=\n{}", qry);
+		Object val = client.queryValue(qry);
+		logger.trace("_getPrefVarFromAV: result: {}", val);
+		if (val==null) {
+			logger.trace("_getPrefVarFromAV: END: pv-uri=NULL");
+			return null;
+		}
+		String pvUri = val.toString();									// attribute preference variable uri
+		logger.trace("_getPrefVarFromAV: END: pv-uri={}", pvUri);
+		
+		return pvUri;
+	}
+	
+	public static String _getAllowedValueFromPV(String pvUri) {
+		logger.trace("_getAllowedValueFromPV: BEGIN: pv-uri={}", pvUri);		// attribute preference variable uri
+		String queryStr = 
+				"select ?av \n" +
+				"where { \n" +
+				"	?hasDef <http://www.w3.org/2000/01/rdf-schema#range> ?av . \n" +
+				"	?hasDef <http://www.w3.org/2000/01/rdf-schema#domain> <%s> . \n" +
+				"	?hasDef <http://www.w3.org/2000/01/rdf-schema#domain> ?pv . \n" +
+				"	?pv <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-pref#PreferenceVariable> . \n" +
+				"} \n";
+		if (client==null) client = SparqlServiceClientFactory.getClientInstance();
+		String qry = String.format(queryStr, pvUri);
+		logger.trace("_getAllowedValueFromPV: Query=\n{}", qry);
+		Object val = client.queryValue(qry);
+		logger.trace("_getAllowedValueFromPV: result: {}", val);
+		if (val==null) {
+			logger.trace("_getAllowedValueFromPV: END: av-uri=NULL");
+			return null;
+		}
+		String avUri = val.toString();									// attribute allowed values uri
+		logger.trace("_getAllowedValueFromPV: END: av-uri={}", avUri);
+		
+		return avUri;
+	}
+	
+	public static String _getAttributeNameFromPV(String pvUri) {
+		logger.trace("_getAttributeNameFromPV: BEGIN: pv-uri={}", pvUri);		// attribute preference variable uri
+		String queryStr = 
+				"select ?attrName \n" +
+				"where { \n" +
+				"	BIND ( <%s> as ?pv ) . \n" +
+				"	?pv <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-pref#PreferenceVariable> . \n" +
+				"	?pv <http://www.linked-usdl.org/ns/usdl-pref#refToServiceAttribute> ?attr . \n" +
+				"	?attr <http://purl.org/dc/terms/title> ?name . \n" +
+				"	BIND ( str(?name) as ?attrName ) . \n" +
+				"} \n";
+		if (client==null) client = SparqlServiceClientFactory.getClientInstance();
+		String qry = String.format(queryStr, pvUri);
+		logger.trace("_getAttributeNameFromPV: Query=\n{}", qry);
+		Object val = client.queryValue(qry);
+		logger.trace("_getAttributeNameFromPV: result: {}", val);
+		if (val==null) {
+			logger.trace("_getAttributeNameFromPV: END: attr-name=NULL");
+			return null;
+		}
+		String attrName = val.toString();									// attribute allowed values uri
+		logger.trace("_getAttributeNameFromPV: END: attr-name={}", attrName);
+		
+		return attrName;
+	}
+	
+	public static ServiceCategoryAttribute _getServiceCategoryAttribute(String id) throws Exception {
 		logger.trace("getServiceCategoryAttribute: BEGIN: id={}", id);
 		eu.brokeratcloud.persistence.RdfPersistenceManager pm = eu.brokeratcloud.persistence.RdfPersistenceManagerFactory.createRdfPersistenceManager();
 		
@@ -294,7 +369,7 @@ public class ServiceCategoryAttributeManagementServiceNEW extends AbstractManage
 			logger.trace("getBrokerPolicyObjects: END: po={}", po);
 			return po;
 		} catch (Exception e) {
-			logger.debug("getBrokerPolicyObjects: EXCEPTION THROWN: {}", e);
+			logger.error("getBrokerPolicyObjects: EXCEPTION THROWN: {}", e);
 			return null;
 		}
 	}
@@ -304,19 +379,18 @@ public class ServiceCategoryAttributeManagementServiceNEW extends AbstractManage
 		String pvUri = pref.getPrefVariable();
 		ServiceCategoryAttributeManagementServiceNEW.PolicyObjects po = ServiceCategoryAttributeManagementServiceNEW.getBrokerPolicyObjects(pvUri, false);
 		logger.trace("getServiceCategoryAttributeFromPreference: policy objects={}", po);
-		if (po==null) return null;
+		if (po==null) { logger.error("getServiceCategoryAttributeFromPreference: END: po is null : pvUri={}", pvUri); return null; }
 		PreferenceVariable pv = po.pv;
 		
-		if (pv==null) { logger.trace("getServiceCategoryAttributeFromPreference: END: pv is null"); return null; }
+		if (pv==null) { logger.error("getServiceCategoryAttributeFromPreference: END: pv is null : po={}", po); return null; }
 		eu.brokeratcloud.common.policy.BrokerPolicyProperty bpp = po.bpp;
-		if (bpp==null) { logger.trace("getServiceCategoryAttributeFromPreference: END: bpp is null"); return null; }
+		if (bpp==null) { logger.error("getServiceCategoryAttributeFromPreference: END: bpp is null : po={}", po); return null; }
 		eu.brokeratcloud.common.policy.AllowedPropertyValue apv = po.apv;
-		if (apv==null) { logger.trace("getServiceCategoryAttributeFromPreference: END: apv is null"); return null; }
+		if (apv==null) { logger.error("getServiceCategoryAttributeFromPreference: END: apv is null : po={}", po); return null; }
 		// get individuals
 		List<eu.brokeratcloud.common.policy.QualitativePropertyValue> individuals = null;
 		eu.brokeratcloud.common.policy.QualitativePropertyValue topIndividual = null;
 		if (bpp instanceof eu.brokeratcloud.common.policy.BrokerPolicyQualitativeProperty) {
-			//XXX: ASSERT: 'apv' allowed values have already been initialized
 			individuals = Arrays.asList( ((eu.brokeratcloud.common.policy.AllowedQualitativePropertyValue)apv).getAllowedValues() );
 			logger.trace("getServiceCategoryAttributeFromPreference: Individuals: {}", individuals);
 			if (individuals!=null && individuals.size()>0) topIndividual = individuals.get(individuals.size()-1);
@@ -327,8 +401,22 @@ public class ServiceCategoryAttributeManagementServiceNEW extends AbstractManage
 		return sca;
 	}
 	
+	protected static HashMap<String,PolicyObjects> poCache = new HashMap<String,PolicyObjects>();
+	protected static Object poCacheLock = new Object();
+	
 	protected static PolicyObjects _retrieveBrokerPolicyObjects(eu.brokeratcloud.persistence.RdfPersistenceManager pm, String pvUri, boolean includePrefDefault) throws Exception {
 		logger.trace("_retrieveBrokerPolicyObjects: BEGIN: Retrieving broker policy object URIs related to pref. var.: {}", pvUri);
+		
+		// Check if requested 'po' is already cached
+		synchronized (poCacheLock) {
+			if (pvUri!=null) {
+				PolicyObjects po = poCache.get(pvUri);
+				if (po!=null) {
+					logger.trace("_retrieveBrokerPolicyObjects: END: Retrieved from PO-CACHE");
+					return po;
+				}
+			}
+		}
 		
 		if (client==null) client = SparqlServiceClientFactory.getClientInstance();
 		
@@ -380,8 +468,18 @@ public class ServiceCategoryAttributeManagementServiceNEW extends AbstractManage
 		logger.trace("_retrieveBrokerPolicyObjects: PreferenceVariable:\n{}", pv);
 		logger.trace("_retrieveBrokerPolicyObjects: DefaultPreferenceVariableValue:\n{}", dpvv);
 		
+		// Create and populate a new 'po' instance
+		PolicyObjects po = new PolicyObjects(bppUri, bpp, apvUri, apv, pvUri, pv, dpvvUri, dpvv, individuals, topIndividual, datatype);
+		
+		// Cache 'po' for future reference
+		synchronized (poCacheLock) {
+			if (po!=null) {
+				poCache.put(pvUri, po);
+			}
+		}
+		
 		logger.trace("_retrieveBrokerPolicyObjects: END: results = ** see above **");
-		return new PolicyObjects(bppUri, bpp, apvUri, apv, pvUri, pv, dpvvUri, dpvv, individuals, topIndividual, datatype);
+		return po;
 	}
 	
 	public static List<QualitativePropertyValue> getIndividuals(eu.brokeratcloud.persistence.RdfPersistenceManager pm, String aqpvUri, AllowedQualitativePropertyValue aqpv) throws Exception {

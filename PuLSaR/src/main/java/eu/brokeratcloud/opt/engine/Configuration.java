@@ -14,6 +14,6 @@ public class Configuration {
 	}
 	
 	public String toString() {
-		return "Configuration: ++++++++++ TODO ++++++++++";
+		return "Configuration: ";
 	}
 }

@@ -10,6 +10,7 @@ import eu.brokeratcloud.opt.RecommendationManager;
 import eu.brokeratcloud.opt.type.TFN;
 import eu.brokeratcloud.opt.type.TFuzzyInterval;
 import eu.brokeratcloud.opt.type.NumericInterval;
+import eu.brokeratcloud.util.*;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -55,11 +56,19 @@ public class AhpHelper extends RootObject {
 		}
 	}
 	
+	protected static int spl1 = Stats.get().nextSplit("AhpHelper.rank(): getLeafNodes");
+	protected static int spl2 = Stats.get().nextSplit("AhpHelper.rank(): Leafs FOR-LOOP: total");
+	protected static int spl2a = Stats.get().nextSplit("AhpHelper.rank(): Leafs FOR-LOOP: getServiceCategoryAttributeFromPreference");
+	protected static int spl2b = Stats.get().nextSplit("AhpHelper.rank(): Leafs FOR-LOOP: _calculateItemWeightsForAttribute");
+	protected static int spl4 = Stats.get().nextSplit("AhpHelper.rank(): Matrix multiplication");
+	
 	public List<AhpHelper.RankedItem> rank(RecommendationManager rm, RecommendationManager.HierarchyNode<OptimisationAttribute> topLevelGoal, HashMap<String,ConsumerPreference> criteria, ServiceDescription[] items) 
 	throws IllegalAccessException, java.lang.reflect.InvocationTargetException
 	{
 		logger.debug("Input: model={}, criteria={}, items={}", topLevelGoal, criteria, items);
+		Stats.get().startSplit(spl1);
 		List<RecommendationManager.HierarchyNode<OptimisationAttribute>> leafNodes = topLevelGoal.getLeafNodes();
+		Stats.get().endSplit(spl1);
 		int nAttrs = leafNodes.size();
 		int nItems = items.length;
 		logger.debug("Attr. #: {},  Item #: {}", nAttrs, nItems);
@@ -67,6 +76,7 @@ public class AhpHelper extends RootObject {
 		TFN[][] comparisonMatrix = new TFN[nItems][nItems];		// this is reused between iterations
 		// for every lowest-level attribute...  (each one of them corresponds to a consumer preference/criterion)
 		int iter = 0;
+		Stats.get().startSplit(spl2);
 		for (RecommendationManager.HierarchyNode<OptimisationAttribute> leaf : leafNodes) {
 			logger.trace("ITER-{}: LOOP BEGIN", iter);
 			// get a corresponding preference and extract TYPE, allowed values, mandatory flag etc
@@ -74,7 +84,9 @@ public class AhpHelper extends RootObject {
 			logger.trace("ITER: attribute={}", attrId);
 			ConsumerPreference pref = criteria.get(attrId);
 			// get ServiceCategoryAttribute
+			Stats.get().startSplit(spl2a);
 			ServiceCategoryAttribute sca = eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW.getServiceCategoryAttributeFromPreference(pref);
+			Stats.get().endSplit(spl2a);
 
 			double weight = pref.getWeight();
 			boolean mandatory = pref.getMandatory();
@@ -83,10 +95,13 @@ public class AhpHelper extends RootObject {
 			logger.trace("ITER: weight={}, mandatory={}, sca={}", weight, mandatory, sca);
 			
 			// calculate item weights for attribute
+			Stats.get().startSplit(spl2b);
 			double[] w = _calculateItemWeightsForAttribute(sca, weight, mandatory, expr, items, comparisonMatrix);
+			Stats.get().endSplit(spl2b);
 			weightsPerAttr.put(attrId, w);
 			logger.trace("ITER-{}: LOOP END", iter++);
 		}
+		Stats.get().endSplit(spl2);
 		
 		// aggregate per attribute item weights into an overall item weight vector
 		logger.debug("Aggregating item weights per attribute into an overall item weights vector");
@@ -105,6 +120,7 @@ public class AhpHelper extends RootObject {
 			logger.debug("Attribute Weights Vector:\n{}", Arrays.toString(wght));
 		}
 		// matrix multiplication
+		Stats.get().startSplit(spl4);
 		double[] overall = new double[nItems];
 		double total = 0;
 		for (int i=0; i<nItems; i++) {
@@ -121,6 +137,7 @@ public class AhpHelper extends RootObject {
 			for (int i=0; i<nItems; i++) overall[i] /= total;
 		}
 		logger.debug("Normalized Overall Weights Vector:\n{}", Arrays.toString(overall));
+		Stats.get().endSplit(spl4);
 		
 		// sort items using their overall weights and rank them
 		logger.debug("Sorting and ranking items...");
@@ -136,6 +153,9 @@ public class AhpHelper extends RootObject {
 		return list;
 	}
 	
+	protected static int splC1 = Stats.get().nextSplit("AhpHelper._calculateItemWeightsForAttribute(): IF-ELSE's");
+	protected static int splC2 = Stats.get().nextSplit("AhpHelper._calculateItemWeightsForAttribute(): Extend Analysis");
+	
 	protected double[] _calculateItemWeightsForAttribute(ServiceCategoryAttribute sca, double weight, boolean mandatory, ConsumerPreferenceExpression expr, ServiceDescription[] items, TFN[][] comparisonMatrix) 
 	throws IllegalAccessException, java.lang.reflect.InvocationTargetException
 	{
@@ -149,6 +169,7 @@ public class AhpHelper extends RootObject {
 		Object allowed = null;
 		Object vr = null;
 		
+		Stats.get().startSplit(splC1);
 		// call the appropriate method for type, in order to create comparison matrix
 		if (ServiceCategoryAttribute.isNumericInc(type)) {
 			allowed = null;	// not used for this type
@@ -214,7 +235,6 @@ public class AhpHelper extends RootObject {
 			if (expr!=null) elems = expr.getElements();
 			if (elems!=null) for (int i=0, n=elems.length; i<n; i++) elems[i] = elems[i].trim();
 			allowed = sca.getMembers();		// not used for this type
-						//XXX: OPTIONAL: NOT IMPLEMENTED: it can be used to check if an item's attribute value is in the set of allowed elements
 			logger.debug("Unordered Set: elements={}", elems);
 			_forEveryElement(_UNORDERED_SET_RI_CALC_METHOD, attrId, allowed, elems, weight, mandatory, items, comparisonMatrix, higherIsBetter);
 		} else
@@ -252,6 +272,7 @@ public class AhpHelper extends RootObject {
 		} else {
 			throw new IllegalArgumentException("Invalid Service Category Attribute type: "+sca.getType());
 		}
+		Stats.get().endSplit(splC1);
 		// debug print
 		if (logger.isDebugEnabled()) {
 			logger.debug("Comparison Matrix:\n{}", Arrays.deepToString(comparisonMatrix));
@@ -259,11 +280,18 @@ public class AhpHelper extends RootObject {
 		
 		// calculate eigenvector using extend analysis technique
 		logger.trace("Extend Analysis: starting...");
+		Stats.get().startSplit(splC2);
 		double[] eigenvector = _extendAnalysis2(comparisonMatrix);
+		Stats.get().endSplit(splC2);
 		logger.debug("Extend Analysis: eigenvector: {}", Arrays.toString(eigenvector));
 		
 		return eigenvector;
 	}
+	
+	protected static int splFEE1 = Stats.get().nextSplit("AhpHelper._forEveryElement(): Inner FOR-LOOP");
+	protected static int splFEE2a = Stats.get().nextSplit("AhpHelper._forEveryElement(): getServiceAttributeValue");
+	protected static int splFEE2 = Stats.get().nextSplit("AhpHelper._forEveryElement(): INVOCATION");
+	protected static int splFEE3 = Stats.get().nextSplit("AhpHelper._forEveryElement(): invert CM");
 	
 	protected void _forEveryElement(Method m, String attrId, Object allowed, Object vr, double weight, boolean mandatory, ServiceDescription[] items, TFN[][] comparisonMatrix, boolean higherIsBetter) 
 	throws IllegalAccessException, java.lang.reflect.InvocationTargetException
@@ -275,21 +303,27 @@ public class AhpHelper extends RootObject {
 		for (int i=0, N=nItems-1; i<N; i++) {
 			ServiceDescription item1 = items[i];
 			Object v1 = item1.getServiceAttributeValue(attrId);
+			Stats.get().startSplit(splFEE1);
 			for (int j=i+1; j<nItems; j++) {
+				Stats.get().startSplit(splFEE2a);
 				ServiceDescription item2 = items[j];
 				Object v2 = item2.getServiceAttributeValue(attrId);
 				if (logger.isTraceEnabled()) logger.trace("_forEveryElement:\t elem[{}][{}]: item1={}, value1={}, item2={}, value2={}, method={}", i, j, item1.getName(), v1, item2.getName(), v2, m.getName());
-//XXX: 2015-01-18:				comparisonMatrix[i][j] = (TFN)m.invoke(this, v1, v2, vr, weight, mandatory, allowed);
-//XXX: 2015-01-18: addition
+				Stats.get().endSplit(splFEE2a);
+				Stats.get().startSplit(splFEE2);
 				if (m!=_NUMERIC_RANGE_RI_CALC_METHOD && m!=_FUZZY_RANGE_RI_CALC_METHOD) {
 					comparisonMatrix[i][j] = (TFN)m.invoke(this, v1, v2, vr, weight, mandatory, allowed);
 				} else {
 					comparisonMatrix[i][j] = (TFN)m.invoke(this, v1, v2, vr, weight, mandatory, allowed, higherIsBetter);
 				}
+				Stats.get().endSplit(splFEE2);
+				Stats.get().startSplit(splFEE3);
 				logger.debug("_forEveryElement: comparison-matrix[{}][{}] = {}", i, j, comparisonMatrix[i][j]);
 				comparisonMatrix[j][i] = comparisonMatrix[i][j].inv();
 				logger.debug("_forEveryElement: comparison-matrix[{}][{}] = {}", j, i, comparisonMatrix[j][i]);
+				Stats.get().endSplit(splFEE3);
 			}
+			Stats.get().endSplit(splFEE1);
 		}
 	}
 	
@@ -327,16 +361,15 @@ public class AhpHelper extends RootObject {
 		else if (i1==null && i2==null) result = TFN.one();
 		
 		if (result!=null) {
-logger.trace("$$$$$$$$$$$$$$$$$   MISSING SERVICE ATTR. VALUE: i1={}, i2={}, rate={}", i1, i2, result);
 			return result;
 		}
 		
 		double[] vals = (double[])allowed;
 		double min = vals[0];
 		double max = vals[1];
-		double lb1 = i1!=null ? i1.getLowerBound() : Double.NEGATIVE_INFINITY;
-		double lb2 = i2!=null ? i2.getLowerBound() : Double.NEGATIVE_INFINITY;
-		result = new TFN( (max-lb2)/(max-lb1) );
+			double lb1 = i1!=null ? i1.getLowerBound() : Double.NEGATIVE_INFINITY;
+			double lb2 = i2!=null ? i2.getLowerBound() : Double.NEGATIVE_INFINITY;
+			result = new TFN( (max-lb2)/(max-lb1) );
 		return result;
 	}
 	// Fuzzy Types (inc/dec/range)
@@ -373,16 +406,15 @@ logger.trace("$$$$$$$$$$$$$$$$$   MISSING SERVICE ATTR. VALUE: i1={}, i2={}, rat
 		else if (i1==null && i2==null) result = TFN.one();
 		
 		if (result!=null) {
-logger.trace("%%%%%%%%%%%%%%%%   MISSING SERVICE ATTR. VALUE: i1={}, i2={}, rate={}", i1, i2, result);
 			return result;
 		}
 		
 		TFN[] vals = (TFN[])allowed;
 		double min = vals[0].getLowerBound();
 		double max = vals[1].getUpperBound();
-		double lb1 = i1!=null ? i1.getLowerBound() : Double.NEGATIVE_INFINITY;
-		double lb2 = i2!=null ? i2.getLowerBound() : Double.NEGATIVE_INFINITY;
-		result = new TFN( (max-lb2)/(max-lb1) );
+			double lb1 = i1!=null ? i1.getLowerBound() : Double.NEGATIVE_INFINITY;
+			double lb2 = i2!=null ? i2.getLowerBound() : Double.NEGATIVE_INFINITY;
+			result = new TFN( (max-lb2)/(max-lb1) );
 		return result;
 	}
 	// Boolean Type
@@ -455,6 +487,7 @@ logger.trace("%%%%%%%%%%%%%%%%   MISSING SERVICE ATTR. VALUE: i1={}, i2={}, rate
 		else return TFN.one();
 	}
 	
+	// Implementation of extend analysis
 	protected static double[] _extendAnalysis2(TFN[][] matrix) {
 		// defussify comparison matrix
 		int N = matrix.length;
@@ -498,7 +531,7 @@ logger.trace("%%%%%%%%%%%%%%%%   MISSING SERVICE ATTR. VALUE: i1={}, i2={}, rate
 		}
 		// normalize row sums
 		for (int i=0; i<N; i++) rowsum[i] /= total;
-		System.out.println(Arrays.toString(rowsum));
+		logger.trace(Arrays.toString(rowsum));
 		return rowsum;
 	}
 	protected static double[][] _squareCrispMatrix(double[][] src) {

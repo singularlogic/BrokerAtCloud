@@ -1,0 +1,110 @@
+body {
+    padding-top: 0px;
+    padding-bottom: 40px;
+    position: relative;
+    
+    /* from devguides */
+    background-color: #F9F9F9;
+}
+
+/* affix when in top position*/
+.affix-top {
+    position: relative;
+    top: 30px;
+}
+
+/* place affix when not in top position*/
+.affix {
+    /* give it a little space */
+    top: 20px;
+}
+
+.affix, .affix-top,  
+.affix-bottom {
+    width: 213px;
+    position: absolute;
+}
+
+/* style for the nav */
+.nav a {
+    color: black;
+}
+
+.nav li a:hover,
+.nav li a:focus {
+    background: lightBlue
+}
+
+.nav .active {
+    font-weight: bold;
+}
+
+.nav .nav {
+    display: none;
+}
+
+.nav .active .nav {
+    display: block;
+}
+
+.nav .nav a {
+    font-weight: normal;
+    font-size: .85em;
+    padding-left: 30px;
+}
+
+.nav .nav .active a,
+.nav .nav .active:hover a,
+.nav .nav .active:focus a {
+    font-weight: bold;
+    padding-left: 30px;
+}
+
+.nav .nav .active span,
+.nav .nav .active:hover span,
+.nav .nav .active:focus span {
+    display: none;
+}
+
+/* style for footer */
+/*footer {
+    border-top: 1px solid #c1e1ec;
+    height: 50px;
+}
+
+footer p {
+    line-height: 50px;
+    margin-bottom: 0;
+}*/
+
+/* styles from original
+p, li    { background-color: #F5F5F5; padding:5px; margin:10px; font-family:verdana; font-size:90%;  }
+
+h1   {color:#70B8FF; background-color: #F5F5F5; padding:5px; margin:10px; font-family:verdana; font-size:120%;}
+h2   {color:#70B8FF; background-color: #F5F5F5; border:1px solid silver; padding:5px; margin:10px; font-family:verdana; font-size:110%;}
+h3   {color:#70B8FF; background-color: #F5F5F5; border:1px solid silver; padding:5px; margin:10px; font-family:verdana; font-size:100%;}
+
+table, td {
+    background-color: #F5F5F5; border:1px solid #E9E9E9; padding:5px; margin:10px; font-family:verdana; font-size:100%;
+    border-collapse: collapse;
+}
+th {
+    background-color: #E1E1E1; border:1px solid #E9E9E9; padding:5px; margin:10px; font-family:verdana; font-size:100%;
+    border-collapse: collapse;
+}
+select {
+    background-color: #F5F5F5; border:1px solid #E9E9E9; padding:5px; margin:10px; font-family:verdana; font-size:100%;
+}
+
+p#bp {color:darkblue; background-color:transparent; border: none}
+
+input {
+    width: 100%;
+}
+
+/* original styles adapted to bootstrap elements */
+.jumbotron h1 {color:#70B8FF;  padding:5px; margin:10px; font-family:verdana; font-size:140%; font-weight: bold; background-color: #eee;}  
+
+.jumbotron p {font-size:120%; background-color: #eee;}
+
+.jumbotron {}

@@ -28,10 +28,17 @@ import eu.brokeratcloud.persistence.RdfPersistenceManager;
 import eu.brokeratcloud.persistence.RdfPersistenceManagerFactory;
 import eu.brokeratcloud.persistence.SparqlServiceClient;
 import eu.brokeratcloud.persistence.SparqlServiceClientFactory;
+import eu.brokeratcloud.util.*;
 
 @Path("/opt/aux")
 public class AuxiliaryService extends AbstractManagementService {
 	protected static final Logger logger = LoggerFactory.getLogger("eu.brokeratcloud.rest.opt.AuxiliaryService");
+	
+	protected static int spl10 = -1;
+	protected static int spl11 = -1;
+	protected static int spl12 = -1;
+	protected static int cnt13 = -1;
+	protected static int cnt14 = -1;
 	
 	// Retrieves service descriptions belonging to given category/ies
 	// NOTE: 'cat_id' can be a comma-separated list of classification dimension IDs (e.g. maps,energy,developer)
@@ -194,6 +201,19 @@ public class AuxiliaryService extends AbstractManagementService {
 		try {
 			logger.debug("getServiceDescription: Retrieving Service Description: {}", srvUri);
 			
+			// Check if SD is already cached
+			synchronized (sdCacheLock) {
+				//logger.trace("SD-CACHE: size={}", sdCache.size());
+				ServiceDescription sd_ = sdCache.get(srvUri);
+				//logger.trace("SD-CACHE: lookup for srvUri: {}", srvUri);
+				if (sd_!=null) {
+					//logger.trace("SD-CACHE: hit: {}", srvUri);
+					logger.debug("getServiceDescription(URI): END: Retrieved from SD-CACHE: uri={}:\nOUTPUT:\n{}", srvUri, sd_);
+					return sd_;
+				}
+				//logger.trace("SD-CACHE: missed: {}", srvUri);
+			}
+			
 			// Retrieve service description based on uri given
 			String queryStr = 
 				"SELECT DISTINCT ?bpi ?bpsmClass ?srv ?sm ?slp \n"+
@@ -243,18 +263,10 @@ public class AuxiliaryService extends AbstractManagementService {
 	
 	// =============================================================================================================================
 	
-	// INTERNAL USAGE ONLY!!!
-	// Retrieves service description for given URI
-	protected ServiceDescription _getServiceDescription(String srvUri, String smUri, String slpUri, String bpi, String bpsmc, SparqlServiceClient client) {
-		try {
-			logger.debug("_getServiceDescription(URI): BEGIN: service-uri={}", srvUri);
-			logger.debug("_getServiceDescription(URI): Retrieving Service Description: uri={}", srvUri);
-			
-			// Query for basic service information
-			String queryStr1 = 
+	protected static String serviceBasicInfoQueryTemplate =
 				"SELECT ?title ?creatorName ?creatorLogo ?creatorWeb (group_concat(?cd ; separator = \", \") as ?categories) \n"+
 				"WHERE { \n"+
-				"	FILTER (?srv = <"+srvUri+">) . \n"+
+				"	FILTER (?srv = <%s>) . \n"+										// 'srvUri' goes here !!
 				"	?srv <http://purl.org/dc/terms/title> ?title . \n"+
 				"	?srv <http://purl.org/dc/terms/creator> ?creator . \n"+
 				"	OPTIONAL { ?creator <http://purl.org/goodrelations/v1#legalName> ?creatorName } . \n"+
@@ -265,227 +277,117 @@ public class AuxiliaryService extends AbstractManagementService {
 				"		?sm <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasClassificationDimension> ?cd . \n"+
 				"	} \n"+
 				"} \n"+
-				"GROUP BY ?title ?creatorName ?creatorLogo ?creatorWeb \n";
-			logger.trace("_getServiceDescription(URI): Query-1: \n{}", queryStr1);
-			queryStr1 = String.format(queryStr1, srvUri);
-			List<Map<String,RDFNode>> results = client.queryAndProcess(queryStr1);
-			if (results==null || results.size()==0) throw new Exception("_getServiceDescription(URI): Service description not found");
-			if (results.size()>1) throw new Exception("_getServiceDescription(URI): More than one service descriptions returned");
-			
-			// create service description object
-			Map<String,RDFNode> soln = results.get(0);
-			String title = val2str( soln.get("title") ).trim();
-			String creatorName = val2str( soln.get("creatorName") ).trim();
-			String creatorLogo = node2url( soln.get("creatorLogo") ).trim();
-			String creatorWeb  = node2url( soln.get("creatorHomepage") ).trim();
-			String categories  = node2url( soln.get("categories") ).trim();
-			
-			String dscr = (creatorLogo.isEmpty()) ? creatorName : String.format("<img src=\"%s\" /> %s", creatorLogo, creatorName).trim();
-			if (!dscr.isEmpty() && !creatorWeb.isEmpty()) dscr = String.format("<a href=\"%s\">%s</a>", creatorWeb, dscr);
-			
-			int p1 = smUri.lastIndexOf("#"), p2 = smUri.lastIndexOf("/"); p1 = (p1>p2) ? p1 : p2; 
-			String smName = (p1>-1) ? smUri.substring(p1) : smUri;
-			
-			ServiceDescription sd = new ServiceDescription();
-			sd.setId( srvUri );			// service id is not really used anywhere else but internally in RecommendationManager. No need to assign a new service id
-			//sd.setId( smUri );			// service id is not really used anywhere else but internally in RecommendationManager. No need to assign a new service id
-			sd.setName( title + " / " + smName );
-			sd.setServiceName( title + " / " + smName );
-			sd.setOwner( creatorName );
-			sd.setDescription( dscr );
-			sd.setServiceCategory( categories );
-			
-			logger.trace("_getServiceDescription(URI): Service description object created: \n{}", sd);
-			
-			// Query for SERVICE LEVEL PROFILE attribute values
-			String queryStrSLP = 
-				"SELECT DISTINCT ?typ ?allowedValues ?defVal ?defValLabel ?uom ?oneVal ?minVal ?maxVal ?minSupVal ?maxSupVal ?minKernVal ?maxKernVal ?meanVal \n"+
-				"WHERE { \n"+
-				"	# BROKER POLICY \n"+
-				"	BIND ( <" + slpUri + "> as ?slp ). \n"+
-				"	?bpi ?hasSLP ?slp . \n"+
-				"	?hasSLP <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-sla#hasServiceLevelProfile> . \n"+
-				"	?bpsmClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.linked-usdl.org/ns/usdl-core#ServiceModel> . \n"+
-				"	?bpi a ?bpsmClass . \n"+
-				"	# SLP \n"+
-				"	?slp a ?slpClass . \n"+
-				"	?slpClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-sla#ServiceLevelProfile> . \n"+
-				"	?slp ?hasSL ?sl . \n"+
-				"	?hasSL <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-sla#hasServiceLevel> . \n"+
-				"	# SL \n"+
-				"	?sl a ?slClass . \n"+
-				"	?slClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-sla#ServiceLevel> . \n"+
-				"	?sl ?hasSLE ?sle . \n"+
-				"	?hasSLE <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-sla#hasServiceLevelExpression> . \n"+
-				"	# SLE \n"+
-				"	?sle a ?sleClass . \n"+
-				"	?sleClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-sla#ServiceLevelExpression> . \n"+
-				"	?sle ?hasVar ?var . \n"+
-				"	?hasVar <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-sla#hasVariable> . \n"+
-				"	# VAR \n"+
-				"	?var a ?varClass . \n"+
-				"	?varClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-sla#Variable> . \n"+
-				"	?hasDef <http://www.w3.org/2000/01/rdf-schema#range> ?allowedValues . \n"+
-				"	{ \n"+
-				"		?hasDef <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasDefaultQuantitativeValue> . \n"+
-				"		{ \n"+
-				"			?allowedValues <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#isRange> 'true'^^<http://www.w3.org/2001/XMLSchema#boolean> \n"+
-				"				BIND ( 'NUMERIC_RANGE' as ?typ ) \n"+
-				"		} \n"+
-				"		UNION \n"+
-				"		{ \n"+
-				"			?allowedValues <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#isRange> 'false'^^<http://www.w3.org/2001/XMLSchema#boolean> . \n"+
-				"			{ \n"+
-				"				?allowedValues <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#higherIsBetter> 'true'^^<http://www.w3.org/2001/XMLSchema#boolean> \n"+
-				"					BIND ( 'NUMERIC_INC' as ?typ ) } \n"+
-				"			UNION \n"+
-				"			{ \n"+
-				"				?allowedValues <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#higherIsBetter> 'false'^^<http://www.w3.org/2001/XMLSchema#boolean> \n"+
-				"					BIND ( 'NUMERIC_DEC' as ?typ ) } \n"+
-				"		} . \n"+
-				"	} \n"+
-				"	UNION \n"+
-				"	{ \n"+
-				"		?hasDef <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasDefaultQualitativeValue> . \n"+
-				"		?ind a ?allowedValues . \n"+
-				"		OPTIONAL { \n"+
-				"			{ \n"+
-				"				?dpvv <http://www.w3.org/2000/01/rdf-schema#domain> ?pv . \n"+
-				"				?dpvv <http://www.w3.org/2000/01/rdf-schema#range> ?allowedValues . \n"+
-				"				?pv <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.linked-usdl.org/ns/usdl-pref#QualitativeVariable> . \n"+
-				"				{ ?ind <http://purl.org/goodrelations/v1#greater> ?ind1 . BIND ( 'LINGUISTIC' as ?typ ) } \n"+
-				"				UNION \n"+
-				"				{ ?ind <http://purl.org/goodrelations/v1#lesser> ?ind1 . BIND ( 'LINGUISTIC' as ?typ ) } . \n"+
-				"			} \n"+
-				"			UNION \n"+
-				"			{ \n"+
-				"				?dpvv <http://www.w3.org/2000/01/rdf-schema#domain> ?pv . \n"+
-				"				?dpvv <http://www.w3.org/2000/01/rdf-schema#range> ?allowedValues . \n"+
-				"				?pv <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.linked-usdl.org/ns/usdl-pref#BooleanVariable> . \n"+
-				"				BIND ( 'BOOLEAN' as ?typ ) . \n"+
-				"			} \n"+
-				"		} \n"+
-				"	} . \n"+
-				"	?var ?hasDef ?defVal . \n"+
-				"	# DEFAULT VALUES \n"+
-				"	OPTIONAL { ?defVal <http://www.w3.org/2000/01/rdf-schema#label> ?defValLabel } . \n"+
-				"	OPTIONAL { ?defVal <http://purl.org/goodrelations/v1#hasUnitOfMeasurement> ?uom } . \n"+
-				"	OPTIONAL { \n"+
-				"		?rel1 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasValue> . \n"+
-				"		?defVal ?rel1 ?oneVal \n"+
-				"	} . \n"+
-				"	OPTIONAL { \n"+
-				"		?rel2 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasMinValue> . \n"+
-				"		?defVal ?rel2 ?minVal \n"+
-				"	} . \n"+
-				"	OPTIONAL { \n"+
-				"		?rel3 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasMaxValue> . \n"+
-				"		?defVal ?rel3 ?maxVal \n"+
-				"	} . \n"+
-				"	OPTIONAL { \n"+
-				"		?rel4 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMinSupport> . \n"+
-				"		?defVal ?rel4 ?minSupVal \n"+
-				"	} . \n"+
-				"	OPTIONAL { \n"+
-				"		?rel5 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMaxSupport> . \n"+
-				"		?defVal ?rel5 ?maxSupVal \n"+
-				"	} . \n"+
-				"	OPTIONAL { \n"+
-				"		?rel6 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMinKernel> . \n"+
-				"		?defVal ?rel6 ?minKernVal \n"+
-				"	} . \n"+
-				"	OPTIONAL { \n"+
-				"		?rel7 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMaxKernel> . \n"+
-				"		?defVal ?rel7 ?maxKernVal \n"+
-				"	} . \n"+
-				"	OPTIONAL { \n"+
-				"		?rel8 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMaxMembershipValue> . \n"+
-				"		?defVal ?rel8 ?meanVal \n"+
-				"	} . \n"+
-				"} \n"+
-				"ORDER BY ?allowedValues \n";
-
-			results = null;
-			if (slpUri!=null && !slpUri.trim().isEmpty()) {
-				logger.trace("_getServiceDescription(URI): Query-SLP: \n{}", queryStrSLP);
-				results = client.queryAndProcess(queryStrSLP);
-			} else {
-				logger.debug("_getServiceDescription(URI): No Service-Level-Profile specified for Service-Model: {}", smUri);
-			}
-			HashMap<String,String> attrs = new HashMap<String,String>();
-			if (results!=null && results.size()>0) {
-				for (Map<String,RDFNode> slpData : results) {
-					if (slpData==null || slpData.size()==0) continue;
-					// for each attribute...
-					String typ = val2str( slpData.get("typ") );
-					String apvUri = node2url( slpData.get("allowedValues") );
-					String valUri = node2url( slpData.get("defVal") );
-					String label  = val2str( slpData.get("defValLabel") );
-					String uom    = val2str( slpData.get("uom") );
-					String oneVal = val2str( slpData.get("oneVal") );
-					String minVal = val2str( slpData.get("minVal") );
-					String maxVal = val2str( slpData.get("maxVal") );
-					String minSupVal = val2str( slpData.get("minSupVal") );
-					String maxSupVal = val2str( slpData.get("maxSupVal") );
-					String minKernVal = val2str( slpData.get("minKernVal") );
-					String maxKernVal = val2str( slpData.get("maxKernVal") );
-					String meanVal = val2str( slpData.get("meanVal") );
-					
-					typ = typ.trim().toUpperCase();
-					if (typ.isEmpty()) typ = "UNORDERED_SET";
-					if (typ.isEmpty()) {
-						throw new RuntimeException("AuxiliaryService: _getServiceDescription: Encountered EMPTY TYPE while retrieving data for SLP: "+slpUri);
-					} else
-					if (typ.equals("NUMERIC_INC") || typ.equals("NUMERIC_DEC")) {
-						attrs.put(apvUri, oneVal);	// +" "+uom);
-					} else
-					if (typ.equals("NUMERIC_RANGE")) {
-						attrs.put(apvUri, "["+minVal+"-"+maxVal+"]");	// +" "+uom);
-					} else
-					if (typ.equals("FUZZY_INC") || typ.equals("FUZZY_DEC")) {
-						if (!minSupVal.isEmpty() && !meanVal.isEmpty() && !maxSupVal.isEmpty()) {
-							attrs.put(apvUri, "("+minSupVal+";"+meanVal+";"+maxSupVal+")");	// +" "+uom);
-						} else if (!minVal.isEmpty() && !maxVal.isEmpty()) {
-							double m = Double.parseDouble(minVal);
-							double M = Double.parseDouble(maxVal);
-							double mean = (m+M)/2;
-							attrs.put(apvUri, "("+minVal+";"+mean+";"+maxVal+")");	// +" "+uom);
-						} else if (!oneVal.isEmpty()) {
-							attrs.put(apvUri, "("+oneVal+";"+oneVal+";"+oneVal+")");	// +" "+uom);
-						}
-					} else
-					if (typ.equals("FUZZY_RANGE")) {
-						if (!minSupVal.isEmpty() && !minKernVal.isEmpty() && !maxKernVal.isEmpty() && !maxSupVal.isEmpty()) {
-							attrs.put(apvUri, "["+minSupVal+";"+minKernVal+";"+maxKernVal+";"+maxSupVal+"]");	// +" "+uom);
-						} else if (!minVal.isEmpty() && !maxVal.isEmpty()) {
-							attrs.put(apvUri, "["+minVal+";"+minVal+";"+maxVal+";"+maxVal+"]");	// +" "+uom);
-						}
-					} else
-					if (typ.equals("BOOLEAN") || typ.equals("UNORDERED_SET") || typ.equals("LINGUISTIC")) {
-						attrs.put(apvUri, label.isEmpty() ? valUri : label);
-					} else
-					{
-						throw new RuntimeException("AuxiliaryService: _getServiceDescription: Encountered UNKNOWN TYPE '"+typ+"' while retrieving data for SLP: "+slpUri);
-					}
-				}
-			}
-			logger.trace("_getServiceDescription(URI): SLP values: \n{}", attrs);
-			
-			// Store SLP in service attributes too
-			if (slpUri!=null && !slpUri.trim().isEmpty()) {
-				attrs.put(".SERVICE-LEVEL-PROFILE-URI", slpUri);
-				int p11 = slpUri.lastIndexOf("#"), p22 = slpUri.lastIndexOf("/");
-				p11 = p11>p22 ? p11 : p22;
-				String slpId = (p11>-1) ? slpUri.substring(p11) : slpUri;
-				attrs.put(".SERVICE-LEVEL-PROFILE-ID", slpId);
-			}
-			
-			// Query for SERVICE MODEL attribute values
-			
-			String queryStrSM = 
+				"GROUP BY ?title ?creatorName ?creatorLogo ?creatorWeb \n".intern();
+	protected static String serviceLevelProfileQueryTemplate =
+					"SELECT DISTINCT ?typ ?allowedValues ?defVal ?defValLabel ?uom ?oneVal ?minVal ?maxVal ?minSupVal ?maxSupVal ?minKernVal ?maxKernVal ?meanVal \n"+
+					"WHERE { \n"+
+					"	# BROKER POLICY \n"+
+					"	BIND ( <%s> as ?slp ). \n"+									// 'slpUri' goes here !!
+					"	?bpi ?hasSLP ?slp . \n"+
+					"	?hasSLP <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-sla#hasServiceLevelProfile> . \n"+
+					"	?bpsmClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.linked-usdl.org/ns/usdl-core#ServiceModel> . \n"+
+					"	?bpi a ?bpsmClass . \n"+
+					"	# SLP \n"+
+					"	?slp a ?slpClass . \n"+
+					"	?slpClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-sla#ServiceLevelProfile> . \n"+
+					"	?slp ?hasSL ?sl . \n"+
+					"	?hasSL <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-sla#hasServiceLevel> . \n"+
+					"	# SL \n"+
+					"	?sl a ?slClass . \n"+
+					"	?slClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-sla#ServiceLevel> . \n"+
+					"	?sl ?hasSLE ?sle . \n"+
+					"	?hasSLE <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-sla#hasServiceLevelExpression> . \n"+
+					"	# SLE \n"+
+					"	?sle a ?sleClass . \n"+
+					"	?sleClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-sla#ServiceLevelExpression> . \n"+
+					"	?sle ?hasVar ?var . \n"+
+					"	?hasVar <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-sla#hasVariable> . \n"+
+					"	# VAR \n"+
+					"	?var a ?varClass . \n"+
+					"	?varClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-sla#Variable> . \n"+
+					"	?hasDef <http://www.w3.org/2000/01/rdf-schema#range> ?allowedValues . \n"+
+					"	{ \n"+
+					"		?hasDef <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasDefaultQuantitativeValue> . \n"+
+					"		{ \n"+
+					"			?allowedValues <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#isRange> 'true'^^<http://www.w3.org/2001/XMLSchema#boolean> \n"+
+					"				BIND ( 'NUMERIC_RANGE' as ?typ ) \n"+
+					"		} \n"+
+					"		UNION \n"+
+					"		{ \n"+
+					"			?allowedValues <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#isRange> 'false'^^<http://www.w3.org/2001/XMLSchema#boolean> . \n"+
+					"			{ \n"+
+					"				?allowedValues <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#higherIsBetter> 'true'^^<http://www.w3.org/2001/XMLSchema#boolean> \n"+
+					"					BIND ( 'NUMERIC_INC' as ?typ ) } \n"+
+					"			UNION \n"+
+					"			{ \n"+
+					"				?allowedValues <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#higherIsBetter> 'false'^^<http://www.w3.org/2001/XMLSchema#boolean> \n"+
+					"					BIND ( 'NUMERIC_DEC' as ?typ ) } \n"+
+					"		} . \n"+
+					"	} \n"+
+					"	UNION \n"+
+					"	{ \n"+
+					"		?hasDef <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasDefaultQualitativeValue> . \n"+
+					"		?ind a ?allowedValues . \n"+
+					"		OPTIONAL { \n"+
+					"			{ \n"+
+					"				?dpvv <http://www.w3.org/2000/01/rdf-schema#domain> ?pv . \n"+
+					"				?dpvv <http://www.w3.org/2000/01/rdf-schema#range> ?allowedValues . \n"+
+					"				?pv <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.linked-usdl.org/ns/usdl-pref#QualitativeVariable> . \n"+
+					"				{ ?ind <http://purl.org/goodrelations/v1#greater> ?ind1 . BIND ( 'LINGUISTIC' as ?typ ) } \n"+
+					"				UNION \n"+
+					"				{ ?ind <http://purl.org/goodrelations/v1#lesser> ?ind1 . BIND ( 'LINGUISTIC' as ?typ ) } . \n"+
+					"			} \n"+
+					"			UNION \n"+
+					"			{ \n"+
+					"				?dpvv <http://www.w3.org/2000/01/rdf-schema#domain> ?pv . \n"+
+					"				?dpvv <http://www.w3.org/2000/01/rdf-schema#range> ?allowedValues . \n"+
+					"				?pv <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.linked-usdl.org/ns/usdl-pref#BooleanVariable> . \n"+
+					"				BIND ( 'BOOLEAN' as ?typ ) . \n"+
+					"			} \n"+
+					"		} \n"+
+					"	} . \n"+
+					"	?var ?hasDef ?defVal . \n"+
+					"	# DEFAULT VALUES \n"+
+					"	OPTIONAL { ?defVal <http://www.w3.org/2000/01/rdf-schema#label> ?defValLabel } . \n"+
+					"	OPTIONAL { ?defVal <http://purl.org/goodrelations/v1#hasUnitOfMeasurement> ?uom } . \n"+
+					"	OPTIONAL { \n"+
+					"		?rel1 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasValue> . \n"+
+					"		?defVal ?rel1 ?oneVal \n"+
+					"	} . \n"+
+					"	OPTIONAL { \n"+
+					"		?rel2 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasMinValue> . \n"+
+					"		?defVal ?rel2 ?minVal \n"+
+					"	} . \n"+
+					"	OPTIONAL { \n"+
+					"		?rel3 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasMaxValue> . \n"+
+					"		?defVal ?rel3 ?maxVal \n"+
+					"	} . \n"+
+					"	OPTIONAL { \n"+
+					"		?rel4 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMinSupport> . \n"+
+					"		?defVal ?rel4 ?minSupVal \n"+
+					"	} . \n"+
+					"	OPTIONAL { \n"+
+					"		?rel5 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMaxSupport> . \n"+
+					"		?defVal ?rel5 ?maxSupVal \n"+
+					"	} . \n"+
+					"	OPTIONAL { \n"+
+					"		?rel6 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMinKernel> . \n"+
+					"		?defVal ?rel6 ?minKernVal \n"+
+					"	} . \n"+
+					"	OPTIONAL { \n"+
+					"		?rel7 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMaxKernel> . \n"+
+					"		?defVal ?rel7 ?maxKernVal \n"+
+					"	} . \n"+
+					"	OPTIONAL { \n"+
+					"		?rel8 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMaxMembershipValue> . \n"+
+					"		?defVal ?rel8 ?meanVal \n"+
+					"	} . \n"+
+					"} \n"+
+					"ORDER BY ?allowedValues \n".intern();
+	protected static String serviceModelQueryTemplate =
 					"SELECT DISTINCT ?typ ?allowedValues ?hasVal ?val ?valLabel ?uom ?oneVal ?minVal ?maxVal ?minSupVal ?maxSupVal ?minKernVal ?maxKernVal ?meanVal \n"+
 					"WHERE { \n"+
-					"	BIND ( <" + smUri + "> as ?sm ) . \n"+
+					"	BIND ( <%s> as ?sm ) . \n"+									// 'smUri' goes here !!
 					"	?sm ?hasVal ?val . \n"+
 					"	?hasVal <http://www.w3.org/2000/01/rdf-schema#range> ?allowedValues . \n"+
 					"	{ ?hasVal <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#quantitativeProductOrServiceProperty> .\n"+
@@ -575,10 +477,176 @@ public class AuxiliaryService extends AbstractManagementService {
 					"		?val ?rel8 ?meanVal \n"+
 					"	} . \n"+
 					"} \n"+
-					"ORDER BY ?allowedValues \n";
+					"ORDER BY ?allowedValues \n".intern();
+	
+	protected static HashMap<String,ServiceDescription> sdCache = new HashMap<String,ServiceDescription>();
+	protected static Object sdCacheLock = new Object();
+	protected static HashMap<String,HashMap<String,String>> slpCache = new HashMap<String,HashMap<String,String>>();
+	protected static Object slpCacheLock = new Object();
+	
+	// INTERNAL USAGE ONLY!!!
+	// Retrieves service description for given URI
+	protected ServiceDescription _getServiceDescription(String srvUri, String smUri, String slpUri, String bpi, String bpsmc, SparqlServiceClient client) {
+		if (spl10==-1) spl10 = Stats.get().getOrCreateSplitByName("SOS: AUX._getServiceDescription: QUERY-1");
+		if (spl11==-1) spl11 = Stats.get().getOrCreateSplitByName("SOS: AUX._getServiceDescription: QUERY-2");
+		if (spl12==-1) spl12 = Stats.get().getOrCreateSplitByName("SOS: AUX._getServiceDescription: QUERY-3");
+		if (cnt13==-1) cnt13 = Stats.get().getOrCreateCounterByName("SOS: AUX._getServiceDescription: SD-CACHE hit");
+		if (cnt14==-1) cnt14 = Stats.get().getOrCreateCounterByName("SOS: AUX._getServiceDescription: SD-CACHE missed");
+		try {
+			logger.debug("_getServiceDescription(URI): BEGIN: service-uri={}", srvUri);
+			logger.debug("_getServiceDescription(URI): Retrieving Service Description: uri={}", srvUri);
 			
+			// Check if SD is already cached
+			synchronized (sdCacheLock) {
+				if (sdCache==null) sdCache = new HashMap<String,ServiceDescription>();
+				//logger.trace("SD-CACHE: size={}", sdCache.size());
+				ServiceDescription sd_ = sdCache.get(srvUri);
+				//logger.trace("SD-CACHE: lookup for srvUri: {}", srvUri);
+				if (sd_!=null) {
+					//logger.trace("SD-CACHE: hit: {}", srvUri);
+					Stats.get().increase(cnt13);
+					logger.debug("_getServiceDescription: END: Retrieved from SD-CACHE: uri={}:\nOUTPUT:\n{}", srvUri, sd_);
+					return sd_;
+				}
+				//logger.trace("SD-CACHE: missed: {}", srvUri);
+				Stats.get().increase(cnt14);
+			}
+			
+			// Query for basic service information
+			String queryStr1 = String.format( serviceBasicInfoQueryTemplate, srvUri );
+			logger.trace("_getServiceDescription(URI): Query-1: \n{}", queryStr1);
+			queryStr1 = String.format(queryStr1, srvUri);
+			Stats.get().startSplit(spl10);
+			List<Map<String,RDFNode>> results = client.queryAndProcess(queryStr1);
+			Stats.get().endSplit(spl10);
+			if (results==null || results.size()==0) throw new Exception("_getServiceDescription(URI): Service description not found");
+			if (results.size()>1) throw new Exception("_getServiceDescription(URI): More than one service descriptions returned");
+			
+			// create service description object
+			Map<String,RDFNode> soln = results.get(0);
+			String title = val2str( soln.get("title") ).trim();
+			String creatorName = val2str( soln.get("creatorName") ).trim();
+			String creatorLogo = node2url( soln.get("creatorLogo") ).trim();
+			String creatorWeb  = node2url( soln.get("creatorHomepage") ).trim();
+			String categories  = node2url( soln.get("categories") ).trim();
+			
+			String dscr = (creatorLogo.isEmpty()) ? creatorName : String.format("<img src=\"%s\" /> %s", creatorLogo, creatorName).trim();
+			if (!dscr.isEmpty() && !creatorWeb.isEmpty()) dscr = String.format("<a href=\"%s\">%s</a>", creatorWeb, dscr);
+			
+			int p1 = smUri.lastIndexOf("#"), p2 = smUri.lastIndexOf("/"); p1 = (p1>p2) ? p1 : p2; 
+			String smName = (p1>-1) ? smUri.substring(p1) : smUri;
+			
+			ServiceDescription sd = new ServiceDescription();
+			sd.setId( srvUri );
+			sd.setName( title + " / " + smName );
+			sd.setServiceName( title + " / " + smName );
+			sd.setOwner( creatorName );
+			sd.setDescription( dscr );
+			sd.setServiceCategory( categories );
+			
+			logger.trace("_getServiceDescription(URI): Service description object created: \n{}", sd);
+			
+			// Check SLP is already in cache
+			HashMap<String,String> attrs = null;
+			synchronized (slpCacheLock) {
+				attrs = slpCache.get(slpUri);
+			}
+			
+			if (attrs==null) {
+				// Query for SERVICE LEVEL PROFILE attribute values
+				String queryStrSLP = String.format( serviceLevelProfileQueryTemplate, slpUri );
+				
+				results = null;
+				if (slpUri!=null && !slpUri.trim().isEmpty()) {
+					logger.trace("_getServiceDescription(URI): Query-SLP: \n{}", queryStrSLP);
+					Stats.get().startSplit(spl11);
+					results = client.queryAndProcess(queryStrSLP);
+					Stats.get().endSplit(spl11);
+				} else {
+					logger.debug("_getServiceDescription(URI): No Service-Level-Profile specified for Service-Model: {}", smUri);
+				}
+				attrs = new HashMap<String,String>();
+				if (results!=null && results.size()>0) {
+					for (Map<String,RDFNode> slpData : results) {
+						if (slpData==null || slpData.size()==0) continue;
+						// for each attribute...
+						String typ = val2str( slpData.get("typ") );
+						String apvUri = node2url( slpData.get("allowedValues") );
+						String valUri = node2url( slpData.get("defVal") );
+						String label  = val2str( slpData.get("defValLabel") );
+						String uom    = val2str( slpData.get("uom") );
+						String oneVal = val2str( slpData.get("oneVal") );
+						String minVal = val2str( slpData.get("minVal") );
+						String maxVal = val2str( slpData.get("maxVal") );
+						String minSupVal = val2str( slpData.get("minSupVal") );
+						String maxSupVal = val2str( slpData.get("maxSupVal") );
+						String minKernVal = val2str( slpData.get("minKernVal") );
+						String maxKernVal = val2str( slpData.get("maxKernVal") );
+						String meanVal = val2str( slpData.get("meanVal") );
+						
+						typ = typ.trim().toUpperCase();
+						if (typ.isEmpty()) typ = "UNORDERED_SET";
+						if (typ.isEmpty()) {
+							throw new RuntimeException("AuxiliaryService: _getServiceDescription: Encountered EMPTY TYPE while retrieving data for SLP: "+slpUri);
+						} else
+						if (typ.equals("NUMERIC_INC") || typ.equals("NUMERIC_DEC")) {
+							attrs.put(apvUri, oneVal);	// +" "+uom);
+						} else
+						if (typ.equals("NUMERIC_RANGE")) {
+							attrs.put(apvUri, "["+minVal+"-"+maxVal+"]");	// +" "+uom);
+						} else
+						if (typ.equals("FUZZY_INC") || typ.equals("FUZZY_DEC")) {
+							if (!minSupVal.isEmpty() && !meanVal.isEmpty() && !maxSupVal.isEmpty()) {
+								attrs.put(apvUri, "("+minSupVal+";"+meanVal+";"+maxSupVal+")");	// +" "+uom);
+							} else if (!minVal.isEmpty() && !maxVal.isEmpty()) {
+								double m = Double.parseDouble(minVal);
+								double M = Double.parseDouble(maxVal);
+								double mean = (m+M)/2;
+								attrs.put(apvUri, "("+minVal+";"+mean+";"+maxVal+")");	// +" "+uom);
+							} else if (!oneVal.isEmpty()) {
+								attrs.put(apvUri, "("+oneVal+";"+oneVal+";"+oneVal+")");	// +" "+uom);
+							}
+						} else
+						if (typ.equals("FUZZY_RANGE")) {
+							if (!minSupVal.isEmpty() && !minKernVal.isEmpty() && !maxKernVal.isEmpty() && !maxSupVal.isEmpty()) {
+								attrs.put(apvUri, "["+minSupVal+";"+minKernVal+";"+maxKernVal+";"+maxSupVal+"]");	// +" "+uom);
+							} else if (!minVal.isEmpty() && !maxVal.isEmpty()) {
+								attrs.put(apvUri, "["+minVal+";"+minVal+";"+maxVal+";"+maxVal+"]");	// +" "+uom);
+							}
+						} else
+						if (typ.equals("BOOLEAN") || typ.equals("UNORDERED_SET") || typ.equals("LINGUISTIC")) {
+							attrs.put(apvUri, label.isEmpty() ? valUri : label);
+						} else
+						{
+							throw new RuntimeException("AuxiliaryService: _getServiceDescription: Encountered UNKNOWN TYPE '"+typ+"' while retrieving data for SLP: "+slpUri);
+						}
+					}
+				}
+				
+				// Store SLP object is cache
+				synchronized (slpCacheLock) {
+					if (attrs!=null) slpCache.put(slpUri, attrs);
+				}
+			}
+			// END if (attrs==null)
+			attrs = (HashMap<String,String>)attrs.clone();
+			logger.trace("_getServiceDescription(URI): SLP values: \n{}", attrs);
+			
+			// Store SLP in service attributes too
+			if (slpUri!=null && !slpUri.trim().isEmpty()) {
+				attrs.put(".SERVICE-LEVEL-PROFILE-URI", slpUri);
+				int p11 = slpUri.lastIndexOf("#"), p22 = slpUri.lastIndexOf("/");
+				p11 = p11>p22 ? p11 : p22;
+				String slpId = (p11>-1) ? slpUri.substring(p11) : slpUri;
+				attrs.put(".SERVICE-LEVEL-PROFILE-ID", slpId);
+			}
+			
+			// Query for SERVICE MODEL attribute values
+			String queryStrSM = String.format( serviceModelQueryTemplate, smUri );
 			logger.trace("getServiceDescription(URI): Query-SM: \n{}", queryStrSM);
+			Stats.get().startSplit(spl12);
 			results = client.queryAndProcess(queryStrSM);
+			Stats.get().endSplit(spl12);
 			if (results!=null && results.size()>0) {
 				for (Map<String,RDFNode> smData : results) {
 					if (smData==null || smData.size()==0) continue;
@@ -642,6 +710,15 @@ public class AuxiliaryService extends AbstractManagementService {
 				sd.setServiceAttributeValue(at, attrs.get(at));
 			}
 			
+			// Cache SD for future reference
+			if (sd!=null) {
+				synchronized (sdCacheLock) {
+					//logger.trace("SD-CACHE: caching srvUri: {}", srvUri);
+					sdCache.put(srvUri, sd);
+					//logger.trace("SD-CACHE: size={}", sdCache.size());
+				}
+			}
+			
 			logger.debug("_getServiceDescription: END: uri={}:\nOUTPUT:\n{}", srvUri, sd);
 			return sd;
 		} catch (Exception e) {
@@ -688,5 +765,4 @@ public class AuxiliaryService extends AbstractManagementService {
 		if (s.startsWith("<")  && s.endsWith(">"))  s  = s.substring(1, s.length()-1);
 		return s;
 	}
-	
 }

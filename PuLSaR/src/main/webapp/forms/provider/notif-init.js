@@ -19,6 +19,7 @@ function updateNotification(service) {
 				{ name: 'createTimestamp' },
 				{ name: 'service-name' },
 				{ name: 'message' },
+				{ name: 'type' },
 			],
 			id: 'id',
 			url: url
@@ -35,12 +36,19 @@ function updateNotification(service) {
 		
 		// Create a jqxListBox
 		showIndicator("Retrieving notifications...");
-		//$('#listbox_2').html('');
 		$('#listbox_2').jqxListBox({ selectedIndex: 0,  source: dataAdapter, displayMember: "createTimestamp", valueMember: "message", /*itemHeight: 70,*/ width: '100%', height: '100%',
 			renderer: function (index, label, value) {
+				var row = dataAdapter.records[index];
+				var type = row.type;
 				var dt = (new Date(new Number(label))).toUTCString();
-				var table = '<table style="min-width: 130px;"><tr><td><b>' + (index+1) + '.</b> ' + dt + '</td></tr><tr><td><i>' + value + '</i></td></tr></table>';
-				return table;
+				
+				var typeStr = '';
+				if (type==='RECOMMENDATION_NOTIFICATION') typeStr = '<span style="background:red; color:yellow; font-weight:bold;">&nbsp;RECOM&nbsp;</span>';
+				else if (type==='FEEDBACK_NOTIFICATION') typeStr = '<span style="background:darkgreen; color:yellow; font-weight:bold;">&nbsp;FEEDBACK&nbsp;</span>';
+				var bgcolor = index%2==0 ? 'rgb(230,230,230)' : 'rgb(255,255,255)';
+				
+				var itemHtml = '<div style="padding: 2px; min-width: 130px; background:'+bgcolor+';"><b>' + (index+1) + '.</b> ' + typeStr + ' ' + dt + '<br/><i>' + value + '</i></div>';
+				return itemHtml;
 			}
 		});
 		

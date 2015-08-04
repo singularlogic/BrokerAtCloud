@@ -307,6 +307,30 @@ public class Recommendation {
 		}
 		
 	}
+	
+	@Path("query")
+	@GET
+	public Object getRecommendationQuery(
+				@QueryParam("consumer") String consumer,
+				@QueryParam("service") List<String> services
+			){
+		Map<String, Object> result = new TreeMap<String, Object>();
+		result.put("consumer", consumer);
+		List<String> add = new ArrayList<String>();
+		List<String> remove = new ArrayList<String>();
+		for(String s : services){
+			if(s.endsWith("1")){
+				String newservice = s.substring(0, s.length()-1)+"2";
+				if(!services.contains(newservice))
+					add.add(newservice);
+				remove.add(s);
+			}
+		}
+		result.put("add", add);
+		result.put("remove", remove);
+		
+		return result;
+	}
 
 	private ConfigurationsPool getConfigPool(String recommId){
 		String prefix = getUserProfileId(recommId);

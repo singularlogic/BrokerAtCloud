@@ -46,7 +46,8 @@ public abstract class AbstractFacingComponent extends RootObject {
 	@SuppressWarnings("unchecked")
 	protected Object _callBrokerRestWS(String url, String method, Class clss, Object entity) {
 		ResteasyClient client = new ResteasyClientBuilder().build();
-		if (!url.toLowerCase().startsWith("http:")) url = baseUrl+url;
+		if (!url.toLowerCase().startsWith("http:") && baseUrl!=null) url = baseUrl+url;
+		logger.trace("_callBrokerRestWS: url={}", url);
 		ResteasyWebTarget target = client.target(url);
 		
 		Response response = null;
@@ -62,6 +63,8 @@ public abstract class AbstractFacingComponent extends RootObject {
 		Object obj = null;
 		if (clss!=null) {
 			obj = response.readEntity( clss );
+		} else {
+			obj = response.getEntity();
 		}
 		response.close();
 		return obj;

@@ -23,23 +23,13 @@ function showIndicator(mesg, elem) {
 	loadingIndicator.show();
 }
 
-// ** Not used any more **
 var statusSelector = '#res';
 
 // Status functions
 function setStatus(mesg) {
-/*	if (statusSelector && statusSelector!=null && statusSelector.trim()!=='') {
-		var sts = $(statusSelector);
-		if (sts) { 
-			sts.html(mesg);
-		}
-	}*/
 }
 
 function statusContacting(url, valStr) {
-/*	setStatus('<p>Contacting server... <img src="../ajax-loader.gif" /></p>'+
-					'<p>URL: '+url+'</p>'+
-					'<p>Data submitted: '+valStr+'</p>');*/
 }
 
 //EOF

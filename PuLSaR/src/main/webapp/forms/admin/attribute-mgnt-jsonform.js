@@ -12,10 +12,6 @@ function initAttributeEditForm() {
 		title: 'Parent',
 		readonly: true
 	};
-/*	options['schema']['source'] = {
-		type: 'string',
-		title: 'Source',
-	};*/
 	options['form'].splice(1, 0,
 		{	"key": "parent",
 			"notitle": true,
@@ -24,24 +20,9 @@ function initAttributeEditForm() {
 			"fieldHtmlClass": "input-xxlarge",
 		}
 	);
-/*	options['form'].push(
-		{	"key": "source",
-			"notitle": true,
-			"prepend": "Source: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-			"description": "A resource URI specifying which is the actual data source",
-			"fieldHtmlClass": "input-xxlarge",
-		} );*/
 	options['onSubmitValid'] = function (values) {
 								doSaveNode();
 							};
-/*		options['onSubmit'] = function (errors, values) {
-							if (errors) {
-								$('#res').html('<p>I beg your pardon?</p>');
-							}
-							else {
-								onSubmitValid(values);
-							}
-						};*/
 	$('#formEdit').jsonForm(options);
 }
 

@@ -1,10 +1,10 @@
 @echo off
 
 rem set JVM="%JAVA_HOME%\bin\java.exe"
+rem set JVM="C:\Program Files (x86)\Java\jdk1.7.0_07\bin\java.exe"
+set JVM=java
 set curdir=%~dp0
 set BASEDIR="%curdir:~0,-1%\.."
-
-rem set clpath="%BASEDIR%\target\classes;%BASEDIR%\target\dependency\*"
 set clpath="%BASEDIR%\target\classes;%BASEDIR%\target\dependency\*;%BASEDIR%\target\OptWebapp\WEB-INF\lib\*"
 
 set _argcActual=0
@@ -16,8 +16,8 @@ goto :B
 
 :A
   shift
-  @start cmd /c "java -DVERBOSE -classpath %clpath% eu.brokeratcloud.opt.engine.CLI %* && pause"
+  @start cmd /c "%JVM% -DVERBOSE -Xmx1000M -classpath %clpath% eu.brokeratcloud.opt.engine.CLI %* && pause"
   goto :end
 :B
-  java -DVERBOSE -classpath %clpath% eu.brokeratcloud.opt.engine.CLI %*
+  %JVM% -DVERBOSE -Xmx1000M -classpath %clpath% eu.brokeratcloud.opt.engine.CLI %*
 :end

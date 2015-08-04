@@ -54,8 +54,6 @@
 							"separator_after": false,
 							"label": "Create Sibling",
 							"action": function (obj) { 
-								//$node = tree.create_node($node);
-								//tree.edit($node);
 								createSibling();
 							}
 						},
@@ -64,44 +62,23 @@
 							"separator_after": true,
 							"label": "Create Child",
 							"action": function (obj) { 
-								//$node = tree.create_node($node);
-								//tree.edit($node);
 								createChild();
 							}
 						},
-/*						"rename": {
-							"separator_before": false,
-							"separator_after": false,
-							"label": "Rename",
-							"action": function (obj) { 
-								tree.edit($node);
-							}
-						},*/
 						"remove": {
 							"separator_before": false,
 							"separator_after": false,
 							"label": "Delete",
 							"action": function (obj) { 
-								//tree.delete_node($node);
 								deleteNode();
 							}
 						},
-/*						"remove_cascade": {
-							"separator_before": true,
-							"separator_after": false,
-							"label": "Delete Cascade",
-							"action": function (obj) { 
-								//tree.delete_node($node);
-								deleteNodeCascade();
-							}
-						}*/
 					};
 				}
 			  },
 			  "types" : {
 				"#" : {
 				  "max_children" : 1, 
-				  //"max_depth" : 4, 
 				  "valid_children" : ["root"]
 				},
 				"root" : {
@@ -126,13 +103,11 @@
 				if(data && data.selected && data.selected.length) {
 					startTm = new Date().getTime();
 					var url = baseUrl+'/gui/admin/get-attribute/'+data.selected;
-//console.log('Calling service at: '+url);
 					statusContacting(url, 'n/a');
 					clearForm();
 					callStartTm = new Date().getTime();
 					$.get(url, function (d) {
 						if(d) {
-//console.log('Data received: '+JSON.stringify(d));
 							renderData(d, 'obviously OK');
 						}
 					});
@@ -142,20 +117,6 @@
 					$('#data .default').html('xxx').show();
 				}
 			})
-/*			.on('move_node.jstree', function (e, data) {
-				var id = data.node.id;
-				alert('move_node '+id);
-//var m='';
-//var o=data.node.id;
-//for (i in o) m+=i+": "+o[i]+" \n ";
-//alert(m);
-				var pNew = data.parent;
-				var pOld = data.old_parent;
-				if (pNew!==pOld) {
-					alert('moving node from : '+pOld+' to '+pNew);
-					$('#parent').value
-				}
-			})*/
 			;
 			
 			initTreeHotkeys();
@@ -166,14 +127,7 @@
 		 */
 		function initTreeHotkeys() {
 			var tree = $("#attrList");	//jQuery(document);
-/*			tree.bind('keydown', 'esc',function (evt){clearForm(); return false; });
-			tree.bind('keydown', 'tab',function (evt){ return false; });
-			tree.bind('keydown', 'space',function (evt){ return false; });
-			tree.bind('keydown', 'return',function (evt){ return false; });
-			tree.bind('keydown', 'backspace',function (evt){ return false; });*/
 			tree.bind('keydown', 'insert',function (evt){ createSibling(); return false; });
 			tree.bind('keydown', 'Shift+insert',function (evt){ createChild(); return false; });
 			tree.bind('keydown', 'del',function (evt){ deleteNode(); return false; });
-/*			tree.bind('keydown', 'home',function (evt){ return false; });
-			tree.bind('keydown', 'end',function (evt){ return false; });*/
 		}

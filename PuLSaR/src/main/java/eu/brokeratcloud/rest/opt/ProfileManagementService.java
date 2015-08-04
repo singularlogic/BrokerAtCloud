@@ -183,6 +183,9 @@ public class ProfileManagementService extends AbstractManagementService {
 		}
 	}
 	
+	protected static int spl1 = eu.brokeratcloud.util.Stats.get().nextSplit("ProfileMWS.updateProfile: attach");
+	protected static int spl2 = eu.brokeratcloud.util.Stats.get().nextSplit("ProfileMWS.updateProfile: merge");
+	
 	// POST /opt/profile/sc/{sc_id}/profile/{profile_id}
 	// Description: Update a consumer preference profile data
 	@POST
@@ -203,9 +206,13 @@ public class ProfileManagementService extends AbstractManagementService {
 			}
 			profile.setLastUpdateTimestamp(new Date());
 			logger.debug("updateProfile: Profile new values:\n{}", profile);
+			eu.brokeratcloud.util.Stats.get().startSplit(spl1);
 			pm.attach(profile);
+			eu.brokeratcloud.util.Stats.get().endSplit(spl1);
 			logger.debug("updateProfile: Object attached to RDF persistent store manager");
+			eu.brokeratcloud.util.Stats.get().startSplit(spl2);
 			pm.merge(profile);
+			eu.brokeratcloud.util.Stats.get().endSplit(spl2);
 			logger.debug("updateProfile: Persistent store state updated");
 			return createResponse(HTTP_STATUS_OK, "Result=Updated");
 		} catch (Exception e) {

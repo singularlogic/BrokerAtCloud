@@ -1,3 +1,10 @@
 	<!-- SSI HEADER - BEGIN -->
-	<div id="pulsar-menu">...</div>
-	<!-- SSI HEADER - END -->
+<% 
+String standalone = request.getParameter("standalone");
+boolean isStandalone = (standalone==null || !standalone.trim().equalsIgnoreCase("no"));
+if (isStandalone) { 
+%>	<div id="pulsar-menu">...</div>
+    <h1 align="center"><%=titlePrefix + pageTitle + titleSuffix%></h1>
+	
+<% } 
+%>	<!-- SSI HEADER - END -->

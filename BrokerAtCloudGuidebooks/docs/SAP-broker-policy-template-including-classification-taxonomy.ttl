@@ -1,0 +1,593 @@
+@base <http://www.broker-cloud.eu/service-descriptions/SOME-COMPANY/broker#> .
+@prefix some: <http://www.broker-cloud.eu/service-descriptions/SOME-COMPANY/broker#>.
+@prefix some-pref-att: <http://www.broker-cloud.eu/service-descriptions/SOME-COMPANY/broker#>.
+@prefix sp: <http://www.broker-cloud.eu/service-descriptions/SOME-COMPANY/service-provider#> . 
+@prefix fc: <http://www.broker-cloud.eu/service-descriptions/CAS/categories#>.
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> .
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#>.
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> .
+@prefix usdl-pref: <http://www.linked-usdl.org/ns/usdl-pref#> .
+@prefix pref-att:  <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#>  .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>  .
+@prefix xml: <http://www.w3.org/XML/1998/namespace#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#>.
+
+#################################################################################
+# This document describes a (minimal) broker policy.                           
+# It provides a guidance to cloud service brokers about the usage of the Linked 
+# USDL and Broker@Cloud extensions for the creation of broker policies.         
+#################################################################################
+
+<>
+  a owl:Ontology;
+	rdfs:label "SOME Cloud Broker Policy" ;
+	dcterms:title "SOME Cloud Broker Policy" ;
+	dcterms:description "Description of SOME Cloud Broker Policy" ;
+	dcterms:created "2014-11-17"^^xsd:date ;
+	dcterms:modified "2014-11-17"^^xsd:date ;
+	owl:versionInfo "01" .
+
+
+#################################################################################
+# A broker policy in Broker@Cloud is a specialized model expressed in terms of  
+# usdl-core, usdl-sla and Broker@Cloud extensions usdl-core-cb, usdl-sla-cb,    
+# and usdl-pref specifications that serves as a template for service            
+# descriptions adhering to this broker policy.                                  
+#
+# The following sections provide description of the relevant parts of a broker
+# policy by using an abstract example. 
+#################################################################################
+
+############
+# Section 1:
+#
+# Specification of a specialized service model, and its instantiation as a
+# broker policy to make it referencable by service descriptions.
+#################################################################################
+
+# 1. Create a subclass of usdl-core:ServiceModel
+
+some:SomeServiceModel rdfs:subClassOf usdl-core:ServiceModel . 
+
+# 2. Create a 'gr:BusinessEntity' instance describing the organization of the broker,
+# e.g., SOME_COMPANY
+# This is only necessary, if this instance has not been already specified by the broker before.
+
+some:SOME_COMPANY a gr:BusinessEntity ;
+	foaf:homepage <http://www.some_company.com> ;
+	foaf:logo <http://www.some_company.com/pics/some_company.gif> ;
+	gr:legalName "SOME COMPANY"^^xsd:string ;
+	gr:taxID "XXNNNNNNN"^^xsd:string .
+
+# 3. Create a 'usdl-core:EntityInvolvement' instance with 'usdl-core:withBusinessRole'
+# property set to 'usdl-business-roles:intermediary' and bind this instance to the
+# business entity specified in step 2 through 'usdl-core:ofBusinessEntity'.
+
+# Note: This is the Broker@Cloud convention about how to express that a business entity
+# is involved in the broker role!
+
+some:SomeEntityInvolvement a usdl-core:EntityInvolvement;
+	usdl-core:withBusinessRole  usdl-business-roles:intermediary;
+	usdl-core:ofBusinessEntity some:SOME_COMPANY. 
+
+
+# 4. Create a broker policy by instantiating the subclass created in step 1.
+# Bind this instance through 'usdl-core:hasEntityInvolvement' to the entity 
+# involvement instance created in step 3.
+# Bind this instance through 'usdl-core-cb:hasClassificationDimension' property
+# to the applicable top concept of a (broker-specific) SKOS classification 
+# taxonomy that can be used by service providers to classify their services under
+# this broker policy.
+
+# Note 1: In this example, we assumend that the classification taxonony has been 
+# specified in an external namespace with the prefix 'fc' and that the applicable
+# top concept in that taxonomy is 'fc:rootConcept' 
+
+# Note 2: This is formally already a valid (minimal) broker policy. However, exept that it 
+# provides a broker-specific classification taxonomy to classify services it does not
+# impose any further restrictions on service descriptions, i.e., this broker policy
+# is empty!
+
+some:SomeBrokerPolicy a some:SomeServiceModel;
+	usdl-core:hasEntityInvolvement some:SomeEntityInvolvement;
+	usdl-core-cb:hasClassificationDimension fc:rootConcept .
+	
+############
+# Section 2:
+#
+# Specification of specialized quantitative/qualitative value classes, available values 
+# and their bindung to broker policy.
+#
+# In this template we provide a specification of a quantitative value class 
+# (on example of Availability) and a specification of a qualitative value class
+# (on example of Auditability).
+# 
+#
+# Note: This part of specification is compatible to Good Relations approach to
+# describe product or service properties, as Linked USDL inherits from it.
+# 
+# Hence, we provide also a qualitative value class specification that is bound to the
+# broker policy but not used in the SLA specification. Such value classes can be used
+# in the service descriptions to optionally provide further/additional information 
+# about the service that broker can understand.
+################################################################################# 
+
+#####################################################################################
+### Quantitative Values   on example of Availability Value Class 
+#####################################################################################
+
+# Availability Value class definition
+# The hasMin.../hasMax... properties might specify the validity range for the values considered 
+# by the broker to be valid.
+# The higherIsBetter property indicates if numerically higher value is considered a better
+# value for this value class.
+# The isRange property indicates if the broker expects value ranges or single values.
+
+some:AllowedAvailabilityValue rdfs:subClassOf gr:QuantitativeValueFloat;
+rdfs:label "Allowed Availability for apps is between 99 and 100%";
+gr:hasUnitOfMeasurement "P1"^^xsd:string; #Percent
+gr:hasMinValueFloat "99"^^xsd:float;
+gr:hasMaxValueFloat "100"^^xsd:float;
+usdl-core-cb:higherIsBetter "true"^^xsd:boolean;
+usdl-core-cb:isRange "true"^^xsd:boolean .
+
+# Alternatively/additionally, an instance specifying the global validity range might be defined.
+
+some:AllowedAvailabilityValueRange a some:AllowedAvailabilityValue;
+rdfs:label "Allowed Availability for apps is between 99 and 100%";
+gr:hasUnitOfMeasurement "P1"^^xsd:string; #Percent
+gr:hasMinValueFloat "99"^^xsd:float;
+gr:hasMaxValueFloat "100"^^xsd:float .
+
+######################################################################################
+# A broker might want to offer to service providers (within the global validity range) 
+# a fixed set of instances of a value class to be selected from. 
+######################################################################################
+
+some:AvailabilityHigh a some:AllowedAvailabilityValue;
+	rdfs:label "High Availability for apps is between 99,98 and 100%";
+	gr:hasUnitOfMeasurement "P1"^^xsd:string; #Percent
+	gr:hasMinValueFloat "99.98"^^xsd:float;
+	gr:hasMaxValueFloat "100"^^xsd:float;
+	gr:valueReference some:AllowedAvailabilityValueRange. 
+
+some:AvailabilityMedium a some:AllowedAvailabilityValue;
+	rdfs:label "Medium Availability for apps is between 99,5 and 100%";
+	gr:hasUnitOfMeasurement "P1"^^xsd:string; #Percent
+	gr:hasMinValueFloat "99.5"^^xsd:float;
+	gr:hasMaxValueFloat "100"^^xsd:float;
+	gr:valueReference some:AllowedAvailabilityValueRange.	
+
+some:AvailabilityLow a some:AllowedAvailabilityValue;
+	rdfs:label "Low Availability for apps is between 99 and 100%";
+	gr:hasUnitOfMeasurement "P1"^^xsd:string; #Percent
+	gr:hasMinValueFloat "99"^^xsd:float;
+	gr:hasMaxValueFloat "100"^^xsd:float;
+	gr:valueReference some:AllowedAvailabilityValueRange.	
+
+# Bind the availability value class to the service model class at the schema level.
+some:hasAvailability rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty; 
+	rdfs:domain some:SomeServiceModel;
+	rdfs:range some:AllowedAvailabilityValue; 
+	rdfs:label "Verfügbarkeit"@de;
+	rdfs:label "Availability"@en;
+	rdfs:comment "Hochverfügbarkeitsnachweis vor allem bei externer Schnittstelle" .
+
+# If the global validity range has been defined, bind the global range restriction to the broker policy instance. 
+
+#some:SomeBrokerPolicy some:hasAvailability some:AllowedAvailabilityValueRange .
+
+
+#########################################################################################
+### Qualitative Values on example of Auditability  
+#########################################################################################
+
+# Auditability Value class definition
+
+some:AllowedAuditabilityValue rdfs:subClassOf gr:QualitativeValue;
+rdfs:label "Allowed values for Auditability: high, medium, low." .
+
+# Auditability instances definition. These instances define values for this value class
+# accepted by the broker.
+
+some:AAVhigh a some:AllowedAuditabilityValue;
+rdfs:label "High Auditability"@en.
+
+some:AAVmedium a some:AllowedAuditabilityValue;
+gr:lesser some:AAVhigh;
+rdfs:label "Medium Auditability"@en.
+
+some:AAVlow a some:AllowedAuditabilityValue;
+gr:lesser some:AAVmedium;
+rdfs:label "Low Auditability"@en.
+
+# Bind the auditability value class to the service model class at the schema level.
+some:hasAuditability rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty; 
+	rdfs:domain some:SomeServiceModel;
+	rdfs:range some:AllowedAuditabilityValue; 
+	rdfs:label "Auditierbarkeit"@de;
+	rdfs:label "Auditability"@en;
+	rdfs:comment "Nachvollziehbarkeit von Geschäftsvorfällen. Muss explizit geprüft werden" .
+
+#########################################################################################
+### Qualitative Values on example of Provider Certifications - not used in the SLAs later on!  
+#########################################################################################
+# Provider Certification Value class definition 
+
+some:AllowedProviderCertificationValue rdfs:subClassOf gr:QualitativeValue;
+	rdfs:label "Allowed values for Provider Certification: silver, gold, platinum ." .
+
+# Provider Certification instances
+some:APCVsilver a some:AllowedProviderCertificationValue.
+some:APCVgold a some:AllowedProviderCertificationValue.
+some:APCVplatinum a some:AllowedProviderCertificationValue.
+
+some:hasProviderCertifications rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty; 
+	rdfs:domain some:SomeServiceModel;
+	rdfs:range some:AllowedProviderCertificationValue; 
+	rdfs:label "Provider Certifications"@en;
+	rdfs:comment "Provider certifications issued by the broker." .
+######################################################################################
+# Section 3 
+# Specification of a specialized SLA schema according to the deliverable D30.2 
+######################################################################################
+
+
+
+## Specification of SLA schema sub-properties 
+## for service level profiles
+
+some:hasServiceLevelProfileSome rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile ; 
+	rdfs:domain some:SomeServiceModel ;
+	rdfs:range some:SomeServiceLevelProfile .
+
+## for service levels  
+
+some:hasServiceLevelAvailability rdfs:subPropertyOf usdl-sla:hasServiceLevel ;
+	rdfs:domain some:SomeServiceLevelProfile ;
+	rdfs:range some:ServiceLevelAvailability .
+
+some:hasServiceLevelAuditability rdfs:subPropertyOf usdl-sla:hasServiceLevel ;
+	rdfs:domain some:SomeServiceLevelProfile ;
+	rdfs:range some:ServiceLevelAuditability .
+
+## for service level expressions 
+
+some:hasSLE-Availability rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression;
+	rdfs:domain some:ServiceLevelAvailability;
+	rdfs:range some:SLE-Availability.
+
+some:hasSLE-Auditability rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression;
+	rdfs:domain some:ServiceLevelAuditability;
+	rdfs:range some:SLE-Auditability.
+
+
+## for SLA variables 
+
+some:hasVariableAvailability rdfs:subPropertyOf usdl-sla:hasVariable; 
+	rdfs:domain some:SLE-Availability;
+	rdfs:range some:VarAvailability .
+
+some:hasVariableAuditability rdfs:subPropertyOf usdl-sla:hasVariable; 
+	rdfs:domain some:SLE-Auditability;
+	rdfs:range some:VarAuditability.
+
+## for values 
+
+some:hasDefaultAvailability  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue;
+	rdfs:domain some:VarAvailability ;
+	rdfs:range some:AllowedAvailabilityValue.
+
+some:hasDefaultAuditability  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue;
+	rdfs:domain some:VarAuditability ;
+	rdfs:range some:AllowedAuditabilityValue.
+
+#################################################################################
+# Specification of SLA schema subclasses 
+#####################################################################################
+
+# Service Level Profiles 
+
+some:SomeServiceLevelProfile rdfs:subClassOf usdl-sla:ServiceLevelProfile.
+
+
+### Service Levels 
+some:ServiceLevelAvailability rdfs:subClassOf usdl-sla:ServiceLevel .
+
+some:ServiceLevelAuditability rdfs:subClassOf usdl-sla:ServiceLevel .
+ 
+### Service Level Expressions 
+
+some:SLE-Availability rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+some:SLE-Auditability rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+### Variables 
+
+some:VarAvailability rdfs:subClassOf usdl-sla:Variable .
+
+some:VarAuditability rdfs:subClassOf usdl-sla:Variable .
+
+##################################################################################
+# Preference Variables Schema Definition
+#
+# This is an optinal part
+# 
+#This part belongs to the configuration of the PuLSaR optimization mechanism
+# It specifies binding of value classes to preference variables according to usdl-pref.ttl. 
+#
+#################################################################################
+
+some-pref-att:Auditability rdfs:subClassOf usdl-pref:QualitativeVariable;
+	usdl-pref:refToServiceAttribute pref-att:attr-accountability-auditability;
+	usdl-core-cb:belongsTo fc:rootConcept.
+
+some-pref-att:hasDefaultCASAuditability rdfs:subPropertyOf usdl-pref:hasDefaultQualitativeValue;
+rdfs:domain some-pref-att:Auditability;
+rdfs:range some:AllowedAuditabilityValue.
+
+some-pref-att:Availability rdfs:subClassOf usdl-pref:QuantitativeVariable;
+	usdl-pref:refToServiceAttribute pref-att:attr-performance-availability;
+	usdl-core-cb:belongsTo fc:rootConcept.
+
+some-pref-att:hasDefaultCASAvailability rdfs:subPropertyOf usdl-pref:hasDefaultQuantitativeValue;
+	rdfs:domain some-pref-att:Availability;
+	rdfs:range some:AllowedAvailabilityValue.
+
+#################################################################################
+# ONLY TO BE SPECIFIED IF THE BROKER FOLLOWS THE USE CASE 1 (described in D30.2)
+#
+# Specification of SLA Schema instances
+# This part of broker policy is applicable only to 
+# cloud service brokers that want to specify
+# a fixed set of service levels for their service 
+# provider ecosystem (according to use case 1 in D30.2).
+#
+#################################################################################
+
+# In the following we specify three profiles (instances) describing High, Medium and Low service levels.
+
+# Instances of quantitative variables
+
+some:VarAvailabilityLow a some:VarAvailability;
+some:hasDefaultAvailability some:AvailabilityLow.
+
+some:VarAvailabilityMedium a some:VarAvailability;
+some:hasDefaultAvailability some:AvailabilityMedium.
+
+some:VarAvailabilityHigh a some:VarAvailability;
+some:hasDefaultAvailability some:AvailabilityHigh.
+
+# Instances of qualitative variables
+
+some:VarAuditabilityLow a some:VarAuditability;
+some:hasDefaultAuditability some:AAVlow.
+
+some:VarAuditabilityMedium a some:VarAuditability;
+some:hasDefaultAuditability some:AAVmedium.
+
+
+some:VarAuditabilityHigh a some:VarAuditability;
+some:hasDefaultAuditability some:AAVhigh.
+
+#Instances of service level expressions
+
+some:SLE-AvailabilityLow a some:SLE-Availability;
+some:hasVariableAvailability some:VarAvailabilityLow.
+
+some:SLE-AvailabilityMedium a some:SLE-Availability;
+some:hasVariableAvailability some:VarAvailabilityMedium.
+
+some:SLE-AvailabilityHigh a some:SLE-Availability;
+some:hasVariableAvailability some:VarAvailabilityHigh.
+
+some:SLE-AuditabilityLow a some:SLE-Auditability;
+some:hasVariableAuditability some:VarAuditabilityLow.
+
+some:SLE-AuditabilityMedium a some:SLE-Auditability;
+some:hasVariableAuditability some:VarAuditabilityMedium.
+
+some:SLE-AuditabilityHigh a some:SLE-Auditability;
+some:hasVariableAuditability some:VarAuditabilityHigh.
+
+# Instances of service levels
+
+some:ServiceLevelAvailabilityLow a some:ServiceLevelAvailability;
+some:hasSLE-Availability some:SLE-AvailabilityLow.
+
+some:ServiceLevelAvailabilityMedium a some:ServiceLevelAvailability;
+some:hasSLE-Availability some:SLE-AvailabilityMedium.
+
+some:ServiceLevelAvailabilityHigh a some:ServiceLevelAvailability;
+some:hasSLE-Availability some:SLE-AvailabilityHigh.
+
+some:ServiceLevelAuditabilityLow a some:ServiceLevelAuditability;
+some:hasSLE-Auditability some:SLE-AuditabilityLow.
+
+some:ServiceLevelAuditabilityMedium a some:ServiceLevelAuditability;
+some:hasSLE-Auditability some:SLE-AuditabilityMedium.
+
+some:ServiceLevelAuditabilityHigh a some:ServiceLevelAuditability;
+some:hasSLE-Auditability some:SLE-AuditabilityHigh.
+
+# Instances of service level profiles
+
+some:ServiceLevelProfileHigh a some:SomeServiceLevelProfile;
+some:hasServiceLevelAuditability some:ServiceLevelAuditabilityHigh; 
+some:hasServiceLevelAvailability some:ServiceLevelAvailabilityHigh .
+
+some:ServiceLevelProfileMedium a some:SomeServiceLevelProfile ;
+some:hasServiceLevelAvailability some:ServiceLevelAvailabilityMedium ;
+some:hasServiceLevelAuditability some:ServiceLevelAuditabilityMedium .
+
+some:ServiceLevelProfileLow a some:SomeServiceLevelProfile ;
+some:hasServiceLevelAvailability some:ServiceLevelAvailabilityLow ;
+some:hasServiceLevelAuditability some:ServiceLevelAuditabilityLow .
+
+# Finally, bind the profiles to the instance of the broker policy
+
+some:SomeBrokerPolicy  some:hasServiceLevelProfileSome some:ServiceLevelProfileHigh, 
+some:ServiceLevelProfileMedium, some:ServiceLevelProfileLow.
+
+################################################################################
+# CLASSIFICATION TAXONOMY
+# Linked USDL offers usdl-core:hasClassification property for general classification of services using
+# SKOS taxonomies. Broker@Cloud does not impose any restrictions on this general classification
+# approach but the Broker@Cloud mechanisms also do not make direct use of it because it turned out
+# to be underspecified for some specific requirements like multi-dimensional classification and
+# filtering as offered by the PuLSaR mechanism.
+#
+# Instead, Broker@Cloud introduced a tiny extension that supports a multi-dimensional classification
+# of services according to multiple service categories. The extension consists of  
+# usdl-core-cb:ClassificationDimension class (subclass of skos:Concept) and
+# usdl-core-cb:hasClassificationDimension property (subproperty of usdl-core:hasClassification). 
+#
+# Thereby, usdl-core-cb:ClassificationDimension serves as a root class for platform-specific taxonomies 
+# providing vocabularies for classification of services according to different aspects (dimensions) 
+# available for classification on a cloud service brokerage platform according to Broker@Cloud methodology.
+# 
+# usdl-core-cb:hasClassificationDimension as a subproperty of usdl-core:hasClassification property just 
+# restricts the range to usdl-core-cb:ClassificationDimension.The following section provides an example
+# for such multi-dimensional classification taxonomy 
+
+#################################################################################################
+# This ontology describes functional categories for apps offered on CAS Software AG´s platform. 
+# Criteria used for the preference bases selection and that are valid for all kinds of categories 
+# are defined on the top level concept. Every SmartDesign App to be deployed on CAS Open platform falls 
+# under at least one of these categories defined below. 
+#################################################################################################
+
+<http://www.broker-cloud.eu/service-descriptions/CAS/categories>
+	a owl:Ontology;
+	rdfs:label "CAS Cloud xRM App categories" ;
+	dcterms:title "CAS Cloud xRM App categories" ;
+	dcterms:description "Description of CAS Cloud xRM App categories" ;
+	dcterms:created "2014-07-08"^^xsd:date ;
+	dcterms:modified "2014-11-11"^^xsd:date ;
+	dcterms:creator sp:CAS_Software_AG;
+    dcterms:publisher "Antonia Schwichtenberg";
+	owl:versionInfo "003" .
+
+
+### Classification of apps ######################################################################
+
+fc:CASConceptScheme a skos:ConceptScheme;
+	dcterms:title "Root for all classification dimensions.";
+	skos:prefLabel "Root Concept Scheme"@en ;
+	skos:altLabel "Root Begriffsschema"@de ;
+	skos:hasTopConcept fc:rootConcept.
+
+
+fc:rootConcept a usdl-core-cb:ClassificationDimension;
+	skos:prefLabel "Root Concept"@en ;
+	skos:altLabel "Wurzel Begriff, der alle Klassifikationsdimensionen umfasst."@de ;
+	skos:topConceptOf fc:CASConceptScheme ;				
+	skos:narrower fc:roles, fc:branches, fc:types ;
+	skos:inScheme fc:CASConceptScheme .
+
+### roles ### 
+fc:roles a usdl-core-cb:ClassificationDimension;
+dcterms:title "Roles for which an app can be useful.";
+skos:prefLabel "Role"@en ;
+	skos:altLabel "Rolle"@de ;
+	skos:broader fc:rootConcept ;
+	skos:narrower fc:projectmanager, fc:developer, fc:marketing, fc:sales;
+	skos:inScheme fc:CASConceptScheme .
+	
+fc:projectmanager a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Project management"@en ;
+	skos:altLabel "Projektmanagement"@de ;
+	skos:broader fc:roles ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:developer a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Developer"@en ;
+	skos:altLabel "Entwickler"@de ;
+	skos:broader fc:roles ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:marketing a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Marketing"@en ;
+	skos:altLabel "Marketing"@de ;
+	skos:broader fc:roles ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:sales a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Sales"@en ;
+	skos:altLabel "Vertrieb"@de ;
+	skos:broader fc:roles ;
+	skos:inScheme fc:CASConceptScheme .
+
+### branches ###
+fc:branches a usdl-core-cb:ClassificationDimension;  
+	dcterms:title "Branches whithin which an app can be used.";
+	skos:prefLabel "Business sector"@en ;
+	skos:altLabel "Branche"@de ;
+	skos:broader fc:rootConcept ;
+	skos:narrower fc:automobile, fc:insurance, fc:energy, fc:trade, fc:aviation ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:automobile a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Automobile industry"@en ; 	
+	skos:altLabel "Automobile Industrie"@de ;
+	skos:broader fc:branches ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:insurance a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Insurance"@en ;
+	skos:altLabel "Versicherungsbranche"@de ;
+	skos:broader fc:branches ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:energy a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Energy"@en ;
+	skos:altLabel "Energie und Versorgung"@de ;
+	skos:broader fc:branches ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:trade a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Trade"@en ;
+	skos:altLabel "Handel"@de ;
+	skos:broader fc:branches ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:aviation a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Aviation"@en ;
+	skos:altLabel "Flugfahrt"@de ;
+	skos:broader fc:branches ;
+	skos:inScheme fc:CASConceptScheme .
+
+### types ###
+fc:types a usdl-core-cb:ClassificationDimension ;  
+	dcterms:title "Types of apps (apps that have the same type can be replaced by each other).";
+	skos:prefLabel "Types of apps and services"@en ;
+	skos:altLabel "Arten von Apps"@de ;
+	skos:broader fc:rootConcept ;
+	skos:narrower fc:calendar, fc:contacs, fc:map ;
+	skos:inScheme fc:CASConceptScheme .	
+
+fc:calendar a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Calendar Apps"@en ;
+	skos:altLabel "Kalender Apps"@de ;
+	skos:broader fc:types ;
+	skos:inScheme fc:CASConceptScheme .
+
+fc:contacts a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Contact Apps"@en ;
+	skos:altLabel "Address Apps"@de ;
+	skos:broader fc:types ; 
+	skos:inScheme fc:CASConceptScheme .
+
+fc:map a usdl-core-cb:ClassificationDimension ;
+	skos:prefLabel "Map Apps"@en ;
+	skos:altLabel "Karten Apps"@de ;
+	skos:broader fc:types ; 
+	skos:inScheme fc:CASConceptScheme .
