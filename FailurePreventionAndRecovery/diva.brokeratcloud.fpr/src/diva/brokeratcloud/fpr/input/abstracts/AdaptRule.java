@@ -1,6 +1,8 @@
 package diva.brokeratcloud.fpr.input.abstracts;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import diva.brokeratcloud.fpr.input.json.AdaptRuleJson;
 import diva.brokeratcloud.fpr.input.local.AdaptRuleLocal;
@@ -19,5 +21,9 @@ public abstract class AdaptRule {
 	public abstract String getRule(String name);
 
 	public abstract Collection<String> allRuleNames();
+	
+	public List<String> involvedContext(){
+		return Collections.EMPTY_LIST;
+	}
 
 }

@@ -1,16 +1,21 @@
 package diva.brokeratcloud.fpr.input.sparql;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import diva.brokeratcloud.fpr.input.local.ServiceDependencyLocal;
 
 public class ServiceDependencySparql extends ServiceDependencyLocal {
 	
-	Map<String, List<String>> depRecord = new HashMap<String, List<String>>();
+	Map<String, List<String>> depRecord = null;
+	
+	Set<String> funCats = new HashSet<String>();
 	
 	@Override
 	public List<String> getDependency(String srv){
@@ -41,7 +46,8 @@ public class ServiceDependencySparql extends ServiceDependencyLocal {
 				String fcName = (fc.get("value")).toString();
 				fcName = ServiceCategorySparql.resolveFc(fcName);
 				
-				addDep(serviceName, fcName);
+				addDep(fcName, serviceName);
+				funCats.add(fcName);
 			}
 			
 		}
@@ -54,7 +60,7 @@ public class ServiceDependencySparql extends ServiceDependencyLocal {
 				"SELECT ?service ?dep \n" +
 				"WHERE\n" +
 				"  {\n" +
-				"     ?service cb:dependsOn ?dep . \n" +
+				"     ?service usdl-core-cb:dependsOn ?dep . \n" +
 				"  }";
 		
 		try{
@@ -67,7 +73,7 @@ public class ServiceDependencySparql extends ServiceDependencyLocal {
 				
 				Map dep = (Map)m.get("dep");
 				String depName = (dep.get("value")).toString();
-				depName = ServiceCategorySparql.resolveFc(depName);
+				depName = ServiceCategorySparql.resolveService(depName);
 				
 				addDep(serviceName, depName);
 			}
@@ -81,6 +87,11 @@ public class ServiceDependencySparql extends ServiceDependencyLocal {
 		
 	}
 	
+	@Override
+	public boolean isAlternative(String srv){
+		return funCats.contains(srv);
+	}
+	
 	void addDep(String service, String dep){
 		if(depRecord.get(service)==null){
 			depRecord.put(service, new ArrayList<String>());
@@ -88,5 +99,13 @@ public class ServiceDependencySparql extends ServiceDependencyLocal {
 		}
 		
 		depRecord.get(service).add(dep);
+	}
+	
+	@Override
+	public List<String> getRequirement(String srv){
+		if(funCats.contains(srv))
+			return Arrays.asList("R"+srv);
+		else
+			return super.getRequirement(srv);
 	}
 }

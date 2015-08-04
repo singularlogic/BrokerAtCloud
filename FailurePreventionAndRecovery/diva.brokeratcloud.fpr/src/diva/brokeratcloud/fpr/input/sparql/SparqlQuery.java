@@ -41,7 +41,7 @@ public class SparqlQuery {
 	
 	public String defaultOutput = "Text";
 	
-	public String server = "http://127.0.0.1:3030/bac-cas/query";
+	public String server = "http://127.0.0.1:3030/bac-cas2/query";
 	//public String server = "http://netserv.seerc.org:3030/BrokerAtCloud/query"
 	
 	public String getServer() {

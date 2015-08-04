@@ -12,7 +12,18 @@ import diva.brokeratcloud.fpr.input.local.ServiceAttributeLocal;
 public class ServiceAttributeSparql extends ServiceAttributeLocal {
 	
 	static final String attrPrefix = "cas";
-	static List<String> attrNames = Arrays.asList("hasExtensibility", "hasAdaptability", "hasEaseOfDoingBusiness");
+	static List<String> attrNames = Arrays.asList(
+			"hasExtensibility", 
+			"hasAdaptability", 
+			"hasEaseOfDoingBusiness",
+			"hasSuitability",
+			"hasPortability",
+			"hasRecoverability",
+			"hasLearnability",
+			"hasAccessibility",
+			"hasOperability",
+			"hasInteroperability"
+			);
 	static Map<String, Integer> attrRec = null; 
 	
 	private static Map<String, List<String>> alias = new HashMap<String, List<String>>();
@@ -75,13 +86,13 @@ public class ServiceAttributeSparql extends ServiceAttributeLocal {
 		if(literal==null){
 			return 0;
 		}
-		if(literal.endsWith("LOW")){
+		if(literal.endsWith("LOW") || literal.endsWith("EASY") || literal.endsWith("GOOD")){
 			return 1;
 		}
 		else if(literal.endsWith("MEDIUM")){
 			return 2;
 		}
-		else if(literal.endsWith("HIGH")){
+		else if(literal.endsWith("HIGH") || literal.endsWith("DIFFICULT") || literal.endsWith("BAD")){
 			return 4;
 		}
 		else
