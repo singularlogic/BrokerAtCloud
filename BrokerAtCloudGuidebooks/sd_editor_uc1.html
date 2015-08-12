@@ -35,9 +35,9 @@
         <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
         <link rel="shortcut icon" href="images/usdl-solo.ico" />
         <link rel="apple-touch-icon" href="images/splash_about.png"/>
-        <link rel="stylesheet" href="jquery/css/smoothness/jquery-ui-1.8.6.custom.css" />
+        <!--link rel="stylesheet" href="jquery/css/smoothness/jquery-ui-1.8.6.custom.css" /-->
         <!--link rel="stylesheet" href="css/jquery-ui-timepicker-addon.css" /-->
-        <link rel="stylesheet" href="css/jquery.jgrowl.css" type="text/css"/>
+        <!--link rel="stylesheet" href="css/jquery.jgrowl.css" type="text/css"/-->
         <!--link rel="stylesheet" href="css/ui.sa.css" /-->
         <!--link rel="stylesheet" href="css/sapUiUx3.css" />
         <link rel="stylesheet" href="css/infovis.css" /-->
@@ -51,9 +51,12 @@
         <link href="template.css" rel="stylesheet">
 
     
-        <script type="text/javascript" src="jquery/js/jquery-1.6.2.min.js" ></script>
-        <script type="text/javascript" src="jquery/js/jquery-ui-1.8.16.custom.min.js"></script>
-        <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+        <!--script type="text/javascript" src="jquery/js/jquery-1.6.2.min.js" ></script-->
+        <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!--script type="text/javascript" src="jquery/js/jquery-ui-1.8.16.custom.min.js"></script-->
+        
+        <!--script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script-->
         <script type="text/javascript" src="js/jquery.editable-1.3.3.js"></script>
         <script type="text/javascript" src="js/jquery.livequery.js"></script>
         <script type="text/javascript" src="js/jquery.clicknscroll.v1.0.js"></script>
@@ -61,7 +64,7 @@
         <script type="text/javascript" src="js/jquery.cookie.js"></script>
         <script type="text/javascript" src="js/mime.js"></script>
         <script type="text/javascript" src="js/slidedeck.js"></script>
-        <script type="text/javascript" src="js/jquery.jgrowl_minimized.js"></script>
+        <!--script type="text/javascript" src="js/jquery.jgrowl_minimized.js"></script-->
         <script type="text/javascript" src="js/Math.uuid.js"></script>
         <script type="text/javascript" src="js/base64.js"></script>
         <!--script type="text/javascript" src="js/jit-yc.js"></script-->
@@ -327,75 +330,98 @@ function loadBP(event) {
         }
       )
       //window.alert(kb.base());
+      
       document.kb = kb;
       loadServiceLevels();
+        
+        
     }
     reader.readAsText(files[0]);
     document.getElementById("bp").innerHTML = "Broker policy loaded!";
+      $("#serviceEditArea").collapse('toggle');
+      $("#serviceLoadArea").collapse('toggle');
+      
   }
 }
 </script>
 </head>
 <body style = "background-color: lightsilver">
+    <div class="jumbotron"> 
+        <div class="container">
+            <div class="col-md-3">
+                <a href="http://www.broker-cloud.eu/">
+                    <img src="images/BrokerAtCloud_medium.png" alt="Broker@Cloud Logo" style="width:100%">
+                </a>
+            </div>
+            <div class="col-md-9">
+                <h1> Welcome to the Broker@Cloud Service Description Type 1 Editor</h1>
+                <p>More description will be entered here.</p>
+            </div>
+        </div>
+    </div>
+    <div class="container" role="main">
+        <div id="serviceLoadArea" class="collapse in">
     <p>Note: The service description editor has to be configured with a valid broker policy before using.</p>
     <h1> Use drag and drop functionality to load the file containing the broker policy!</h1>
 
     <div class="droptarget" ondrop="loadBP(event)" ondragover="allowDrop(event)">
         <p id="bp"> Drop your broker policy here! </p>
     </div>
+        </div>
 
+        <div id="serviceEditArea" class="collapse">
+        <h1> Specify your namespace </h1>
+        <p> Namespace: <input type="text" id="sd_namespace" value="http://yournamespace.com"> </p>
+        <h1> Describe your legal business entity </h1>
 
-    <h1> Specify your namespace </h1>
-    <p> Namespace: <input type="text" id="sd_namespace" value="http://yournamespace.com"> </p>
-    <h1> Describe your legal business entity </h1>
+        <table style="width: 80%">
+            <tr>
+                <td style="width: 20%"> Provider acronym :</td>
+                <td> <input style = "" type="text" id="sp_business_entity" value="YourCompanyAcronym"></td>
+            </tr>
+            <tr>
+                <td> Provider legal name: </td>
+                <td> <input style = "" type="text" id="sp_legal_name" value="Your Company Legal Name"></td>
+            </tr>
+        </table>
 
+    <h1> Describe your service </h1>
     <table style="width: 80%">
         <tr>
-            <td style="width: 20%"> Provider acronym :</td>
-            <td> <input style = "" type="text" id="sp_business_entity" value="YourCompanyAcronym"></td>
+            <td style="width: 20%"> Title: </td>
+            <td> <input type="text" id="sd" value="YourServiceDescriptionTitle"></td>
+            <td><input type="text" id="servicemodel_class" value="Broker Policy Class" disabled="disabled" hidden="hidden"> </td>
         </tr>
         <tr>
-            <td> Provider legal name: </td>
-            <td> <input style = "" type="text" id="sp_legal_name" value="Your Company Legal Name"></td>
+            <td> Service model name: </td>
+            <td><input type="text" id="sd_model" value="YourServiceModelName"> </td>
+            <td><input type="text" id="servicemodel" value="Broker Policy Instance" disabled="disabled" hidden="hidden" > </td>
         </tr>
     </table>
 
-<h1> Describe your service </h1>
-<table style="width: 80%">
-    <tr>
-        <td style="width: 20%"> Title: </td>
-        <td> <input type="text" id="sd" value="YourServiceDescriptionTitle"></td>
-        <td><input type="text" id="servicemodel_class" value="Broker Policy Class" disabled="disabled" hidden="hidden"> </td>
-    </tr>
-    <tr>
-        <td> Service model name: </td>
-        <td><input type="text" id="sd_model" value="YourServiceModelName"> </td>
-        <td><input type="text" id="servicemodel" value="Broker Policy Instance" disabled="disabled" hidden="hidden" > </td>
-    </tr>
-</table>
 
 
+    <h1> Classify your service</h1>
+    <p>Available service classification concepts: <select name="classifications" id="classtaxonomy" > </select>
+        <button class="btn btn-default" onclick="addConcept()"> Add </button>
+        <button class="btn btn-default" onclick="deleteConcept()"> Delete </button>
+        <table id="class_table">
+        </table>
+    </p>
+    <h1>Select a Service Level Profile applicable to your service </h1>
+    <p>
+        <input type="text" id="slp_class" value="SomeServiceLevelProfile" disabled="disabled" hidden="hidden" >
+        <select name="servicelevelprofiles" id="slp" onchange="loadServiceLevels()"> </select>
+    </p>
 
-<h1> Classify your service</h1>
-<p>Available service classification concepts: <select name="classifications" id="classtaxonomy" > </select>
-    <button onclick="addConcept()"> Add </button>
-    <button onclick="deleteConcept()"> Delete </button>
-    <table id="class_table">
+    <table style="width: 80%" id = "serviceleveldetails">
+     <tr><th>Service Level</th> <th>Value</th> <th>Value Label</th></tr>
     </table>
-</p>
-<h1>Select a Service Level Profile applicable to your service </h1>
-<p>
-    <input type="text" id="slp_class" value="SomeServiceLevelProfile" disabled="disabled" hidden="hidden" >
-    <select name="servicelevelprofiles" id="slp" onchange="loadServiceLevels()"> </select>
-</p>
-
-<table style="width: 80%" id = "serviceleveldetails">
- <tr><th>Service Level</th> <th>Value</th> <th>Value Label</th></tr>
-</table>
 
 
- <p> <button onclick="storeSD()">Show the service description specification. </button> </p>
-
+        <p> <button class="btn btn-default" onclick="storeSD()">Show the service description specification. </button> </p>
+        </div>
+    </div>
 </body>
 
 

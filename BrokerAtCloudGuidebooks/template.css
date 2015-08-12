@@ -166,6 +166,7 @@ h1   {
     padding:5px; margin:10px; 
     font-family:verdana; 
     font-size:130%;
+    width: 95%;
 }
 
 h2   {
@@ -175,6 +176,7 @@ h2   {
     padding:5px; margin:10px; 
     font-family:verdana; 
     font-size:110%;
+    width: 95%;
 }
 
 h3   {
@@ -228,4 +230,22 @@ code {
 
 input {
 width: 100%;
+}
+
+.bc-buttongroup {
+    padding-left: 10px;
+}
+
+.bc-button4table {
+    background-color: #E1E1E1; 
+    border:1px solid #E9E9E9; 
+    border-top: 2px solid #999999;
+    padding:5px; 
+    margin:10px; 
+    font-family:verdana; 
+    font-size:100%;
+    border-collapse: collapse;
+    margin-top: -20px;
+    width: 100%;
+    margin-bottom: 30px;
 }
