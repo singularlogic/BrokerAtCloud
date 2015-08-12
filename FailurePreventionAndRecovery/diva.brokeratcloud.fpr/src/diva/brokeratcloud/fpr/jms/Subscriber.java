@@ -27,7 +27,7 @@ public class Subscriber implements MessageListener {
 				"org.wso2.andes.jndi.PropertiesFileInitialContextFactory");
 		String address = PropertiesUtil.INSTANCE.get("pubsubServer");
 		pubsubServer = address;
-		//System.out.println(">>>>>>>"+address);
+		System.out.println(">>>>>>>"+address);
 		System.setProperty("connectionfactory.ConnectionFactory", 
 				address);
 		

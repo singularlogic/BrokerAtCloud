@@ -36,11 +36,13 @@ public class SparqlQuery {
     		"prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#>\n" +
     		"prefix s: <http://schema.org/>\n" +
     		"prefix gr: <http://purl.org/goodrelations/v1>\n" +
+    		"prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#>\n" +
     		"prefix skos:  <http://www.w3.org/2004/02/skos/core#>";
 	
 	public String defaultOutput = "Text";
 	
-	public String server = "http://netserv.seerc.org:3030/BrokerAtCloud/query";
+	public String server = "http://127.0.0.1:3030/bac-cas2/query";
+	//public String server = "http://netserv.seerc.org:3030/BrokerAtCloud/query"
 	
 	public String getServer() {
 		return server;
@@ -58,8 +60,7 @@ public class SparqlQuery {
 		}
 		
 		try{
-			URI uri = new URIBuilder(
-					"http://netserv.seerc.org:3030/BrokerAtCloud/query")
+			URI uri = new URIBuilder(server)
 					.addParameter("query", q).addParameter("output", output)
 					.build();
 

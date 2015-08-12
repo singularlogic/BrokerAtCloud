@@ -11,6 +11,21 @@ import diva.brokeratcloud.fpr.input.local.ServiceAttributeLocal;
 
 public class ServiceAttributeSparql extends ServiceAttributeLocal {
 	
+	static final String attrPrefix = "cas";
+	static List<String> attrNames = Arrays.asList(
+			"hasExtensibility", 
+			"hasAdaptability", 
+			"hasEaseOfDoingBusiness",
+			"hasSuitability",
+			"hasPortability",
+			"hasRecoverability",
+			"hasLearnability",
+			"hasAccessibility",
+			"hasOperability",
+			"hasInteroperability"
+			);
+	static Map<String, Integer> attrRec = null; 
+	
 	private static Map<String, List<String>> alias = new HashMap<String, List<String>>();
 	private static Map<String, String> literals = new HashMap<String, String>();
 	static{
@@ -24,40 +39,64 @@ public class ServiceAttributeSparql extends ServiceAttributeLocal {
 	
 	@Override
 	public List<String> listCommonAttributes(){
-		ArrayList<String> result = new ArrayList<String>();
-		result.addAll(literals.keySet());
-		return result;
+		return attrNames;
+		
 	}
 	
 	public Object get(String service, String attribute){
-		String attr = attribute;
-		for(Map.Entry<String,List<String>> entry : alias.entrySet()){
-			if(entry.getValue().contains(attribute))
-				attr = entry.getKey();
+		if(attrRec == null){
+			init();
 		}
-		
-		String s = ServiceCategorySparql.resolveService(service);
-		
-		String q = 
-				"SELECT ?value \n" +
-				"FROM NAMED <http://www.broker-cloud.eu/service-descriptions/CAS>\n" +
-				"\n" +
-				"WHERE\n" +
-				"  {\n" +
-				"    GRAPH ?src\n" +
-				"    { "+ s +" " + attr + " ?v\n" +
-				"      optional {?v " + literals.get(attr) + " ?value} ." +
-				"    }\n" +
-				"  }";
-		try{ 
-			Collection r = SparqlQuery.INSTANCE.queryToJsonResults(q);
-			return ((Map)((Map)r.iterator().next()).get("value")).get("value");
-		}
-		catch(Exception e){
-			throw new RuntimeException("Query or result not valid", e);
-		}
+		Object obj =  attrRec.get(service+"-"+attribute);
+		if(obj == null)
+			return 0;
+		else
+			return obj;
 		
 	}
 	
+	void init(){
+		attrRec = new HashMap<String, Integer>(); 
+		for(String attrName : attrNames){
+			String q = 
+					"SELECT ?service ?attr ?value" +
+					"\n" +
+					"WHERE\n" +
+					"  {\n" +
+					"    ?service usdl-core-cb:hasServiceModel ?model. \n" +
+					"	 ?model " + attrPrefix + ":" + attrName + " ?value \n" +
+					"  }";
+			try{
+				Collection mBindings = SparqlQuery.INSTANCE.queryToJsonResults(q);
+				for(Object x : mBindings){
+					Map m = (Map) x;
+					String service = ((Map)m.get("service")).get("value").toString();
+					String value = ((Map)m.get("value")).get("value").toString();
+					service = ServiceCategorySparql.resolveService(service);
+					attrRec.put(service+"-"+attrName, resolveValue(value));
+				}
+			}
+			catch(Exception e){
+				throw new RuntimeException("Wrong query or results", e);
+			}
+		}
+	}
+	
+	int resolveValue(String literal){
+		if(literal==null){
+			return 0;
+		}
+		if(literal.endsWith("LOW") || literal.endsWith("EASY") || literal.endsWith("GOOD")){
+			return 1;
+		}
+		else if(literal.endsWith("MEDIUM")){
+			return 2;
+		}
+		else if(literal.endsWith("HIGH") || literal.endsWith("DIFFICULT") || literal.endsWith("BAD")){
+			return 4;
+		}
+		else
+			return 0;
+	}
 
 }

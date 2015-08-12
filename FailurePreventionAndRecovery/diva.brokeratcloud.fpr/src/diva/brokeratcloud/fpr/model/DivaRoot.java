@@ -22,9 +22,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -448,24 +450,94 @@ public class DivaRoot {
 				}
 			}
 			
-			this.generateRule();
+			//this.generateRule();
+		}
+	}
+	
+	private void updateRequirement(){
+		
+		
+		
+		for(Dimension dim : root.getDimension()){
+			for(Variant var : dim.getVariant()){
+				ServiceDependency servDep = ServiceDependency.INSTANCE;
+				List<String> req = servDep.getRequirement(var.getId());
+				
+				for(String r : req){
+					Variable found = null;
+					for(Variable v : root.getContext()){
+						if(v.getId().equals(r)){
+							found = v;
+							break;
+						}
+					}
+					if(found == null){
+						Variable v = DivaFactory.eINSTANCE.createBooleanVariable();
+						v.setId(r);
+						v.setName(r);
+						root.getContext().add(v);
+					}
+				}
+				
+				if(req == null || req.isEmpty())
+					continue;
+				if(var.getRequired() == null){
+					ContextExpression expr = factory.createContextExpression();
+					var.setRequired(expr);
+				}
+				String operator = " and ";
+				
+				Iterator<String> it = req.iterator();
+				String s = it.next();
+				while(it.hasNext()){ 
+					String aDep = it.next();
+					s = s + operator + aDep;
+				}
+				var.getRequired().setText(s);
+				try {
+					Term term =  DivaExpressionParser.parse(root, s.trim());
+					var.getRequired().setTerm(term);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
 	private void updateDependency(){
 		for(Dimension dim : root.getDimension()){
 			for(Variant var : dim.getVariant()){
-				List<String> dep = ServiceDependency.INSTANCE.getDependency(var.getId());
+				ServiceDependency servDep = ServiceDependency.INSTANCE;
+				List<String> dep = servDep.getDependency(var.getId());
 				if(dep == null || dep.isEmpty())
 					continue;
 				if(var.getDependency() == null){
 					VariantExpression expr = factory.createVariantExpression();
 					var.setDependency(expr);
 				}
+				String operator = " and ";
+				if(servDep.isAlternative(var.getId()))
+					operator = " or ";
+				
 				Iterator<String> it = dep.iterator();
 				String s = it.next();
-				while(it.hasNext()){
-					s = s + " and " + it.next();
+				while(it.hasNext()){ 
+					String aDep = it.next();
+//					Could allow user to define dependency on categories, but not finished yet!
+//					if(aDep.equals("CASCalenderApp"))
+//						System.out.println("something");
+//					for(Dimension d : this.root.getDimension()){
+//						if(d.getId().equals(aDep)){
+//							Iterator<Variant> itv = dim.getVariant().iterator();
+//							String result = itv.next().getId();
+//							while(itv.hasNext()){
+//								result = result + " or " + itv.next().getId();
+//							}
+//							aDep ="(" + result + ")";
+//						}
+//					}
+					s = s + operator + aDep;
 				}
 				var.getDependency().setText(s);
 				try {
@@ -488,9 +560,11 @@ public class DivaRoot {
 		updatePropertyDef();
 		updateCategoryAndService();
 		updateDependency();
+		updateRequirement();
 		updateProperty();
 		updateAutoFullAvailability();
 		updateFixed();
+		generateRule();
 	}
 	
 	public String updateFailureLikelihood(String service, String likelihood){
@@ -581,6 +655,23 @@ public class DivaRoot {
 		
 		Map<String, Integer> priorities = new HashMap<String, Integer>();
 		AdaptRule adaptRule = AdaptRule.INSTANCE;
+		
+		for(String r : adaptRule.involvedContext()){
+			Variable found = null;
+			for(Variable v : root.getContext()){
+				if(v.getId().equals(r)){
+					found = v;
+					break;
+				}
+			}
+			if(found == null){
+				Variable v = DivaFactory.eINSTANCE.createBooleanVariable();
+				v.setId(r);
+				v.setName(r);
+				root.getContext().add(v);
+			}
+		}
+		
 		List<String> propertyNames = ServiceAttribute.INSTANCE.listCommonAttributes();
 		for(String name : adaptRule.allRuleNames()){
 			priorities.clear();
