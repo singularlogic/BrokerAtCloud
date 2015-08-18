@@ -3,25 +3,31 @@ body {
     padding-bottom: 40px;
     position: relative;
 }
+
 .starter-template {
     padding: 40px 15px;
     text-align: left;
-    overflow: auto; 
+    overflow: auto;
     top: 50px;
 }
 
+
 /* affix when in top position*/
+
 .affix-top {
     position: relative;
 }
 
+
 /* place affix when not in top position*/
+
 .affix {
     /* give it a little space */
     top: 30px;
 }
 
-.affix, .affix-top,
+.affix,
+.affix-top,
 .affix-bottom {
     width: 213px;
 }
@@ -30,15 +36,18 @@ body {
     position: absolute;
 }
 
+
 /* style for the nav */
+
 .nav a {
     color: black;
     background-color: #F5F5F5;
 }
 
-.nav li, .nav .nav .li {
-    padding:0px; 
-    margin:0px; 
+.nav li,
+.nav .nav .li {
+    padding: 0px;
+    margin: 0px;
 }
 
 .nav li a:hover,
@@ -57,7 +66,7 @@ body {
     display: none;
 }
 
-.nav .nav .nav{
+.nav .nav .nav {
     display: none;
 }
 
@@ -65,11 +74,11 @@ body {
     display: block;
 }
 
-.nav .active .nav .nav{
+.nav .active .nav .nav {
     display: none;
 }
 
-.nav .active .nav .active .nav{
+.nav .active .nav .active .nav {
     display: block;
 }
 
@@ -78,7 +87,6 @@ body {
     font-size: .90em;
     padding: 3px;
     padding-left: 20px;
-    
 }
 
 .nav .nav .active a,
@@ -94,13 +102,12 @@ body {
     display: none;
 }
 
-.nav .nav .nav a, 
-.nav .nav .active .nav a{
+.nav .nav .nav a,
+.nav .nav .active .nav a {
     font-weight: lighter;
     font-size: .95em;
     padding: 2px;
     padding-left: 30px;
-
 }
 
 .nav .nav .nav .active a,
@@ -128,99 +135,107 @@ footer p {
     margin-bottom: 0;
 }
 
+
 /* original styles adapted to bootstrap elements */
+
 .jumbotron h1 {
-    color:#70B8FF;  
-    border:0px solid silver; 
-    padding:5px; 
-    margin:10px; 
-    font-family:verdana; 
-    font-size:140%; 
-    font-weight: bold; 
+    color: #70B8FF;
+    border: 0px solid silver;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 140%;
+    font-weight: bold;
     background-color: #eee;
-}  
+}
 
 .jumbotron p {
-    font-size:150%; 
+    font-size: 150%;
     background-color: #eee;
-    color:#A23333;  
+    color: #A23333;
     font-family: Gabriola;
     font-weight: bold;
 }
 
 .jumbotron {}
 
+
 /* styles from original */
-p, li    { 
+
+p,
+li {
     /*background-color: #F5F5F5; */
-    padding:5px; 
-    margin:10px; 
-    font-family:verdana; 
-    font-size:100%;  
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 100%;
 }
 
-h1   {
-    color:#70B8FF; 
-    background-color: #F5F5F5; 
-    border:1px solid silver; 
-    padding:5px; margin:10px; 
-    font-family:verdana; 
-    font-size:130%;
+h1 {
+    color: #70B8FF;
+    background-color: #F5F5F5;
+    border: 1px solid silver;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 130%;
     width: 95%;
 }
 
-h2   {
-    color:#70B8FF; 
-    background-color: #F5F5F5; 
-    border:1px solid silver; 
-    padding:5px; margin:10px; 
-    font-family:verdana; 
-    font-size:110%;
+h2 {
+    color: #70B8FF;
+    background-color: #F5F5F5;
+    border: 1px solid silver;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 110%;
     width: 95%;
 }
 
-h3   {
-    color:#70B8FF; 
-    background-color: #F5F5F5; 
-    border:1px solid silver; 
-    padding:5px; 
-    margin:10px; 
-    font-family:verdana; 
-    font-size:100%;
+h3 {
+    color: #70B8FF;
+    background-color: #F5F5F5;
+    border: 1px solid silver;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 100%;
 }
 
-table, td {
-    background-color: #F5F5F5; 
-    border:1px solid #E9E9E9; 
-    padding:5px;
-    margin:10px; 
-    font-family:verdana; 
-    font-size:100%;
+table,
+td {
+    background-color: #F5F5F5;
+    border: 1px solid #E9E9E9;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 100%;
     border-collapse: collapse;
 }
 
 th {
-    background-color: #E1E1E1; 
-    border:1px solid #E9E9E9; 
-    padding:5px; 
-    margin:10px; 
-    font-family:verdana; 
-    font-size:100%;
+    background-color: #E1E1E1;
+    border: 1px solid #E9E9E9;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 100%;
     border-collapse: collapse;
 }
 
 select {
-    background-color: #F5F5F5; 
-    border:1px solid #E9E9E9; 
-    padding:5px; 
-    margin:10px; 
-    font-family:verdana; 
-    font-size:100%;
+    background-color: #F5F5F5;
+    border: 1px solid #E9E9E9;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 100%;
 }
 
 p#bp {
-    color:darkblue; 
-    background-color:transparent; 
+    color: darkblue;
+    background-color: transparent;
     border: none
 }
 
@@ -229,7 +244,7 @@ code {
 }
 
 input {
-width: 100%;
+    width: 100%;
 }
 
 .bc-buttongroup {
@@ -237,13 +252,13 @@ width: 100%;
 }
 
 .bc-button4table {
-    background-color: #E1E1E1; 
-    border:1px solid #E9E9E9; 
+    background-color: #E1E1E1;
+    border: 1px solid #E9E9E9;
     border-top: 2px solid #999999;
-    padding:5px; 
-    margin:10px; 
-    font-family:verdana; 
-    font-size:100%;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 100%;
     border-collapse: collapse;
     margin-top: -20px;
     width: 100%;

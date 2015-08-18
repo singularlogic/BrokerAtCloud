@@ -1,24 +1,81 @@
+body {
+    background-color: #F9F9F9
+}
 
-  body {background-color: #F9F9F9}
-  p, li    { background-color: #F5F5F5; padding:5px; margin:10px; font-family:verdana; font-size:90%;  }
+p,
+li {
+    background-color: #F5F5F5;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 90%;
+}
 
-  h1   {color:#70B8FF; background-color: #F5F5F5; padding:5px; margin:10px; font-family:verdana; font-size:120%;}
-  h2   {color:#70B8FF; background-color: #F5F5F5; border:1px solid silver; padding:5px; margin:10px; font-family:verdana; font-size:110%;}
-  h3   {color:#70B8FF; background-color: #F5F5F5; border:1px solid silver; padding:5px; margin:10px; font-family:verdana; font-size:100%;}
+h1 {
+    color: #70B8FF;
+    background-color: #F5F5F5;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 120%;
+}
 
-  table, td {
-     background-color: #F5F5F5; border:1px solid #E9E9E9; padding:5px; margin:10px; font-family:verdana; font-size:100%;
-     border-collapse: collapse;
- }
-  th {
-     background-color: #E1E1E1; border:1px solid #E9E9E9; padding:5px; margin:10px; font-family:verdana; font-size:100%;
-     border-collapse: collapse;
- }
- select {
-     background-color: #F5F5F5; border:1px solid #E9E9E9; padding:5px; margin:10px; font-family:verdana; font-size:100%;
- }
+h2 {
+    color: #70B8FF;
+    background-color: #F5F5F5;
+    border: 1px solid silver;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 110%;
+}
 
-  p#bp {color:darkblue; background-color:transparent; border: none}
-  input {
+h3 {
+    color: #70B8FF;
+    background-color: #F5F5F5;
+    border: 1px solid silver;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 100%;
+}
+
+table,
+td {
+    background-color: #F5F5F5;
+    border: 1px solid #E9E9E9;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #E1E1E1;
+    border: 1px solid #E9E9E9;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 100%;
+    border-collapse: collapse;
+}
+
+select {
+    background-color: #F5F5F5;
+    border: 1px solid #E9E9E9;
+    padding: 5px;
+    margin: 10px;
+    font-family: verdana;
+    font-size: 100%;
+}
+
+p#bp {
+    color: darkblue;
+    background-color: transparent;
+    border: none
+}
+
+input {
     width: 100%;
-  }
+}
