@@ -1,133 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-        <title>Broker@Cloud User Guides</title>
 
-        <!-- Bootstrap -->
-        <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Broker@Cloud User Guides</title>
 
-        <!-- Bootstrap theme -->
-        <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
-        <link href="bower_components/ekko-lightbox/dist/ekko-lightbox.min.css" rel="stylesheet">
-        <!-- Custom styles for this template -->
-        <link href="template.css" rel="stylesheet">
+    <!-- Bootstrap -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
+    <!-- Bootstrap theme -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="bower_components/ekko-lightbox/dist/ekko-lightbox.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="template.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
-    </head>
-    <body data-spy="scroll" data-target=".scrollspy">
-        <div class="jumbotron"> 
-            <div class="container">
-                <div class="col-md-3">
-                    <a href="http://www.broker-cloud.eu/">
-                        <img src="images/BrokerAtCloud_medium.png" alt="Broker@Cloud Logo" style="width:100%">
-                    </a>
-                </div>
-                <div class="col-md-9">
-                    <h1> Welcome to the Broker@Cloud Framework Developer Guide</h1>
-                    <p>The Developer's Guide to Broker@Cloud-based Quality Assurance and Optimization Solutions</p>
-                </div>
+</head>
+
+<body data-spy="scroll" data-target=".scrollspy">
+    <div class="jumbotron">
+        <div class="container">
+            <div class="col-md-3">
+                <a href="http://www.broker-cloud.eu/">
+                    <img src="images/BrokerAtCloud_medium.png" alt="Broker@Cloud Logo" style="width:100%">
+                </a>
+            </div>
+            <div class="col-md-9">
+                <h1> Welcome to the Broker@Cloud Framework Developer Guide</h1>
+                <p>The Developer's Guide to Broker@Cloud-based Quality Assurance and Optimization Solutions</p>
             </div>
         </div>
-        <div class="container" role="main">
-            <div>
-                <h1>Scope of the guide</h1>
-                <p> This guide is about the Broker@Cloud framework itself. The purpose of this guide is to help a potential Broker@Cloud framework developer striving to extend or change the framework or the mechanisms.</p>
-                
-            </div>
-            <div class="row">
-                <div class="col-md-9">
-                    <section id="intro">
-                        <h1>Introduction</h1>
-                        <p> The aim of the Broker@Cloud project is not the development of a fully-fledged Cloud Service Brokerage platform; it is rather the design and implementation of a framework which should be adoptable by existing and future cloud service intermediaries in order to equip their platforms with advanced means for continuous quality assurance and optimisation of software-based Cloud Services.</p>
-                        <p>The Cloud Service Brokerage Expert and Developer Guide and the Cloud Service Brokerage Ecosystem and End User Guide provide support for installation, configuration, integration and usage of Broker@Cloud framework, services and mechanisms as they have been implemented within the frame of the project.</p>
-                        <p>However, the conceptual architecture as well as the technical design of the Broker@Cloud framework foresees implementation, extension and adaption strategies of the framework and quality assurance and optimization mechanisms at different levels of abstraction. This opens to the potential adopter almost unlimited possibilities to go beyond current Broker@Cloud offering on the way to develop services and mechanisms supporting and fitting best the requirements on the lifecycle management of his cloud service brokerage platform be it governance, quality assurance, optimization, failure prevention or any other aspect of the service lifecycle.</p>
+    </div>
+    <div class="container" role="main">
+        <div>
+            <h1>Scope of the guide</h1>
+            <p> This guide is about the Broker@Cloud framework itself. The purpose of this guide is to help a potential Broker@Cloud framework developer striving to extend or change the framework or the mechanisms.</p>
 
-                        <p>We named this guide "Broker@Cloud Framework Developer Guide" because the aim of this guide is basically to help the reader interested in extending or adopting the current implementation of the Broker@Cloud framework to his needs or even considering an implementation of the framework on a different technological foundation to the most relevant documentation released within the lifetime of the Broker@Cloud project.
-                        </p>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                <section id="intro">
+                    <h1>Introduction</h1>
+                    <p> The aim of the Broker@Cloud project is not the development of a fully-fledged Cloud Service Brokerage platform; it is rather the design and implementation of a framework which should be adoptable by existing and future cloud service intermediaries in order to equip their platforms with advanced means for continuous quality assurance and optimisation of software-based Cloud Services.</p>
+                    <p>The Cloud Service Brokerage Expert and Developer Guide and the Cloud Service Brokerage Ecosystem and End User Guide provide support for installation, configuration, integration and usage of Broker@Cloud framework, services and mechanisms as they have been implemented within the frame of the project.</p>
+                    <p>However, the conceptual architecture as well as the technical design of the Broker@Cloud framework foresees implementation, extension and adaption strategies of the framework and quality assurance and optimization mechanisms at different levels of abstraction. This opens to the potential adopter almost unlimited possibilities to go beyond current Broker@Cloud offering on the way to develop services and mechanisms supporting and fitting best the requirements on the lifecycle management of his cloud service brokerage platform be it governance, quality assurance, optimization, failure prevention or any other aspect of the service lifecycle.</p>
+
+                    <p>We named this guide "Broker@Cloud Framework Developer Guide" because the aim of this guide is basically to help the reader interested in extending or adopting the current implementation of the Broker@Cloud framework to his needs or even considering an implementation of the framework on a different technological foundation to the most relevant documentation released within the lifetime of the Broker@Cloud project.
+                    </p>
+                </section>
+                <section id="framework">
+                    <h1>Framework Concepts and Architecture</h1>
+                    <p>The conceptual architecture of the Broker@Cloud framework has been kept generic and minimal in order to avoid, to the greatest possible extent, the formulation of unnecessary and restrictive assumptions about the mapping of the reference architecture to existing or future cloud service brokerage platforms. Such assumptions can potentially reduce the adoptability of the framework.</p>
+                    <section id="frameworkModel">
+                        <h2>Minimal Cloud Service Brokerage Model</h2>
+                        <p>Broker@Cloud Cloud Service Brokerage Model knows only four roles: Service Consumer, Service Provider, Broker, and Hosting Platform</p>
+                        <p>The proposed model is minimal in the sense that it only identifies the relevant roles, without making any specific assumptions about potential interrelationships between the underlying entities that assume these roles.</p>
                     </section>
-                    <section id="framework">
-                        <h1>Framework Concepts and Architecture</h1>
-                        <p>The conceptual architecture of the Broker@Cloud framework has been kept generic and minimal in order to avoid, to the greatest possible extent, the formulation of unnecessary and restrictive assumptions about the mapping of the reference architecture to existing or future cloud service brokerage platforms. Such assumptions can potentially reduce the adoptability of the framework.</p>
-                        <section id="frameworkModel">
-                            <h2>Minimal Cloud Service Brokerage Model</h2>
-                            <p>Broker@Cloud Cloud Service Brokerage Model knows only four roles: Service Consumer, Service Provider, Broker, and Hosting Platform</p>
-                            <p>The proposed model is minimal in the sense that it only identifies the relevant roles, without making any specific assumptions about potential interrelationships between the underlying entities that assume these roles.</p>
-                        </section>
-                        
-                        <section id="frameworkProcesses">
-                            <h2>Reference Processes</h2>
-                            <p>The architecture of the Broker@Cloud Framework is described by a set of reference processes adaptable, through refinement, to the level of abstract capabilities (functional tasks); each reference process may offer variants that rely on subsets of distinguishable capabilities which address, at the black-box level, different aspects of continuous quality assurance and optimization</p>
-                            <p>
-                                Extensibility:
+
+                    <section id="frameworkProcesses">
+                        <h2>Reference Processes</h2>
+                        <p>The architecture of the Broker@Cloud Framework is described by a set of reference processes adaptable, through refinement, to the level of abstract capabilities (functional tasks); each reference process may offer variants that rely on subsets of distinguishable capabilities which address, at the black-box level, different aspects of continuous quality assurance and optimization</p>
+                        <p>
+                            Extensibility:
 
                             <ul>
                                 <li>Specification of new capabilities</li>
                                 <li>Specification of new processes or process variants</li>
-                            </ul></p>
-                            <p>Adaptability: The adopter of the framework should be able to make use of selected individual capabilities, or defined collections of capabilities, as long as they are consumable independently. Hence, the extensibility and adaptability of the Broker@Cloud framework architecture is based on the notion of process refinement, i.e., adapt, extend, and/or modify existing reference processes or even specify new processes providing that:
+                            </ul>
+                        </p>
+                        <p>Adaptability: The adopter of the framework should be able to make use of selected individual capabilities, or defined collections of capabilities, as long as they are consumable independently. Hence, the extensibility and adaptability of the Broker@Cloud framework architecture is based on the notion of process refinement, i.e., adapt, extend, and/or modify existing reference processes or even specify new processes providing that:
                             <ul>
                                 <li>the entailed capabilities are treated as black boxes</li>
                                 <li>any potential interdependencies possessed by these capabilities are dealt with by the adopting platform.</li>
-                        </ul></p><p>
+                            </ul>
+                        </p>
+                        <p>
                             It is up to the adopter to decide if a capability – or, for that matter, if a defined collection of capabilities – is obligatory, optional, or dispensed with altogether, in the refinements of the reference processes.
-                            </p>
-                        </section>
-                        <section id="frameworkSLM">
-                            <h2>Service Lifecycle Management Events</h2>
-                            <p>The reference processes are triggered by Service Lifecycle Management events. By the term Service Lifecycle Management (SLM) events we refer to those high-level events the occurrence of which triggers activities on the cloud service brokerage platform that are deemed relevant to the Broker@Cloud framework.
-                            </p>
-                            <p>We distinguish between three primary subsequent phases of a service lifecycle: service engineering, service onboarding, and service operation. They are accompanied by the service evoluation phase which spreads across the entire service lifecycle. Broker@Cloud-relevant SLM events are located in the service onboarding, service operation and service evoluation phases.</p>
+                        </p>
+                    </section>
+                    <section id="frameworkSLM">
+                        <h2>Service Lifecycle Management Events</h2>
+                        <p>The reference processes are triggered by Service Lifecycle Management events. By the term Service Lifecycle Management (SLM) events we refer to those high-level events the occurrence of which triggers activities on the cloud service brokerage platform that are deemed relevant to the Broker@Cloud framework.
+                        </p>
+                        <p>We distinguish between three primary subsequent phases of a service lifecycle: service engineering, service onboarding, and service operation. They are accompanied by the service evoluation phase which spreads across the entire service lifecycle. Broker@Cloud-relevant SLM events are located in the service onboarding, service operation and service evoluation phases.</p>
 
-                            <p>We distinguish between the following primary actors (or agents) of a cloud service brokerage ecosystem: service consumer, service provider, service broker and hosting platform. SLM events materialize as interactions between the service broker and other agents. Once materialized, such events may subsequently trigger a multitude of additional interactions between the service broker and other agents. We refer to the interactions through which SLM events materialise as primary interactions, and to the corresponding interacting agents as primary interacting agents.</p>
+                        <p>We distinguish between the following primary actors (or agents) of a cloud service brokerage ecosystem: service consumer, service provider, service broker and hosting platform. SLM events materialize as interactions between the service broker and other agents. Once materialized, such events may subsequently trigger a multitude of additional interactions between the service broker and other agents. We refer to the interactions through which SLM events materialise as primary interactions, and to the corresponding interacting agents as primary interacting agents.</p>
 
-                            <p>The following table summarizes the SLM events considered in Broker@Cloud, the relevant lifecycle phase and the involved primary agent.</p>
+                        <p>The following table summarizes the SLM events considered in Broker@Cloud, the relevant lifecycle phase and the involved primary agent.</p>
 
-                            <table class="table table-striped">
-                                <tr>
-                                    <th>Lifecycle Phase</th>
-                                    <th>SLM Event</th>
-                                    <th>Primary Agent</th>
-                                </tr>
-                                <tr>
-                                    <td rowspan="2">Service Onboarding</td>
-                                    <td>Service Onboarded</td><td>Service Provider</td>
-                                </tr>
-                                <tr>
-                                    <td>Service Contracted</td><td>Service Consumer</td>
-                                </tr>
-                                <tr>
-                                    <td rowspan ="5">Service Evolution</td>
-                                    <td>Service Upgraded</td>
-                                    <td rowspan="2">Service Provider</td>
-                                </tr>
-                                <tr><td>Service Deprecated</td></tr>
-                                <tr>
-                                    <td>Service Contract Changed</td>
-                                    <td rowspan="3">Service Consumer</td>
-                                </tr>
-                                <tr><td>Service Contract Terminated</td></tr>
-                                <tr><td>Consumer Preference Changed</td></tr>
-                                <tr>
-                                    <td rowspan="2">Service Operation</td>
-                                    <td>SLA Violated</td><td rowspan="2">Hosting Platform</td>
-                                </tr>
-                                <tr>
-                                    <td>SLA Violation Anticipated</td>
-                                </tr>
-                            </table>
+                        <table class="table table-striped">
+                            <tr>
+                                <th>Lifecycle Phase</th>
+                                <th>SLM Event</th>
+                                <th>Primary Agent</th>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">Service Onboarding</td>
+                                <td>Service Onboarded</td>
+                                <td>Service Provider</td>
+                            </tr>
+                            <tr>
+                                <td>Service Contracted</td>
+                                <td>Service Consumer</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="5">Service Evolution</td>
+                                <td>Service Upgraded</td>
+                                <td rowspan="2">Service Provider</td>
+                            </tr>
+                            <tr>
+                                <td>Service Deprecated</td>
+                            </tr>
+                            <tr>
+                                <td>Service Contract Changed</td>
+                                <td rowspan="3">Service Consumer</td>
+                            </tr>
+                            <tr>
+                                <td>Service Contract Terminated</td>
+                            </tr>
+                            <tr>
+                                <td>Consumer Preference Changed</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">Service Operation</td>
+                                <td>SLA Violated</td>
+                                <td rowspan="2">Hosting Platform</td>
+                            </tr>
+                            <tr>
+                                <td>SLA Violation Anticipated</td>
+                            </tr>
+                        </table>
 
-                            <p>The following table summarizes the reference processes offered by Broker@Cloud and the SLM events triggering them.</p>
+                        <p>The following table summarizes the reference processes offered by Broker@Cloud and the SLM events triggering them.</p>
 
-                            <p><table class="table">
+                        <p>
+                            <table class="table">
                                 <tr>
                                     <th>Triggering SLM event</th>
                                     <th>Broker@Cloud Reference Process</th>
@@ -184,56 +199,63 @@
                                     <td>Service Technical Management (Monitoring & Analysis)</td>
                                 </tr>
 
-                            </table></p>
-                        </section>
+                            </table>
+                        </p>
                     </section>
-                    <section id="extensibility">
-                        <h1>Extensibility Use Cases</h1>
-                        <section id="extNew">
-                            <h2>Adding new capabilities to the Broker@Cloud</h2>
-                            <p>The above sections shortly summarize the main concepts behind the architecture of the Broker@Cloud framework. The reference processes illustrate the main capabilities offered by the Broker@Cloud solution at the black-box level.</p>
-                            <p>Study the architecture deliverable to figure out if the capabilities offered by the framework at least partially serve your needs. Add new capabilities to existing reference processes, introduce new reference processes or process variants to achive the full coverage of your requirements.</p>
-                            <p>Study deliverables about technical specifications of interfaces and data models. Add interfaces and if necessary extend data models to take into account your extensions.</p>
-                            <p>Add mechanisms implementing the new capabilities.</p>
-                        </section>
-                        <section id="extMechanism">
-                            <h2>Replacing the mechanisms implementing the capabilities</h2>
-                            <p>Under construction</p>
-                        </section>
-                        <section id="extSpec">
-                            <h2>Replacing the technical specifications of interfaces and/or data models</h2>
-                            <p>This use case does not support any reuse of the technical artifacts developed in the Broker@Cloud project, i.e., you mainly reuse or get inspired from the concepts introduced in the Broker@Cloud architecture and best practices in implementing it. Nevertheless, rapid technology innovation, preferences with respect to relevant standards or other specific requirements might make this use case relevant.</p>
-                        </section>
+                </section>
+                <section id="extensibility">
+                    <h1>Extensibility Use Cases</h1>
+                    <section id="extNew">
+                        <h2>Adding new capabilities to the Broker@Cloud</h2>
+                        <p>The above sections shortly summarize the main concepts behind the architecture of the Broker@Cloud framework. The reference processes illustrate the main capabilities offered by the Broker@Cloud solution at the black-box level.</p>
+                        <p>Study the architecture deliverable to figure out if the capabilities offered by the framework at least partially serve your needs. Add new capabilities to existing reference processes, introduce new reference processes or process variants to achive the full coverage of your requirements.</p>
+                        <p>Study deliverables about technical specifications of interfaces and data models. Add interfaces and if necessary extend data models to take into account your extensions.</p>
+                        <p>Add mechanisms implementing the new capabilities.</p>
                     </section>
-                </div> <!-- end of main panel -->
-                <div class="col-md-3 scrollspy">
-                    <ul id="nav" class="nav affix-top" data-spy="affix">
-                        <li><a href="#intro">Introduction</a></li> 
-                        <li><a href="#framework">Framework Concepts and Architecture</a>
-                            <ul class="nav">
-                                <li><a href="#frameworkModel">Minimal Cloud Service Brokerage Model</a></li>
-                                <li><a href="#frameworkProcesses">Reference Processes</a></li>
-                                <li><a href="#frameworkSLM">Service Lifecycle Management Events</a></li>
-                            </ul>
-                        </li>
-                        <li><a href="#extensibility">Extensibility Use Cases</a>
-                            <ul class="nav">
-                                <li><a href="#extNew">Adding new capabilities to the Broker@Cloud</a></li>
-                                <li><a href="#extMechanism">Replacing the mechanisms implementing the capabilities</a></li>
-                                <li><a href="#extSpec">Replacing the technical specifications of interfaces and/or data models</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div> <!-- end of side panel -->
-            </div> <!-- end of row -->
-        </div><!-- /.container -->
-        
-        <section></section>
-        <footer class="text-center"><p><a href="index.html">Broker@Cloud User Guides</a> &copy; 2015 <a href="http://www.broker-cloud.eu/">EU Project Broker@Cloud</a></p></footer>
-        <script src="bower_components/jquery/dist/jquery.min.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <script src="bower_components/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
-        <script src="js/index.js"></script>
-    </body>
-    
+                    <section id="extMechanism">
+                        <h2>Replacing the mechanisms implementing the capabilities</h2>
+                        <p>Under construction</p>
+                    </section>
+                    <section id="extSpec">
+                        <h2>Replacing the technical specifications of interfaces and/or data models</h2>
+                        <p>This use case does not support any reuse of the technical artifacts developed in the Broker@Cloud project, i.e., you mainly reuse or get inspired from the concepts introduced in the Broker@Cloud architecture and best practices in implementing it. Nevertheless, rapid technology innovation, preferences with respect to relevant standards or other specific requirements might make this use case relevant.</p>
+                    </section>
+                </section>
+            </div>
+            <!-- end of main panel -->
+            <div class="col-md-3 scrollspy">
+                <ul id="nav" class="nav affix-top" data-spy="affix">
+                    <li><a href="#intro">Introduction</a></li>
+                    <li><a href="#framework">Framework Concepts and Architecture</a>
+                        <ul class="nav">
+                            <li><a href="#frameworkModel">Minimal Cloud Service Brokerage Model</a></li>
+                            <li><a href="#frameworkProcesses">Reference Processes</a></li>
+                            <li><a href="#frameworkSLM">Service Lifecycle Management Events</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#extensibility">Extensibility Use Cases</a>
+                        <ul class="nav">
+                            <li><a href="#extNew">Adding new capabilities to the Broker@Cloud</a></li>
+                            <li><a href="#extMechanism">Replacing the mechanisms implementing the capabilities</a></li>
+                            <li><a href="#extSpec">Replacing the technical specifications of interfaces and/or data models</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- end of side panel -->
+        </div>
+        <!-- end of row -->
+    </div>
+    <!-- /.container -->
+
+    <section></section>
+    <footer class="text-center">
+        <p><a href="index.html">Broker@Cloud User Guides</a> &copy; 2015 <a href="http://www.broker-cloud.eu/">EU Project Broker@Cloud</a></p>
+    </footer>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
 </html>
