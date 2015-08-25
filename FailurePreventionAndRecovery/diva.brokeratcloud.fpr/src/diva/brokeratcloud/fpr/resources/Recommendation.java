@@ -314,21 +314,48 @@ public class Recommendation {
 				@QueryParam("consumer") String consumer,
 				@QueryParam("service") List<String> services
 			){
+		
 		Map<String, Object> result = new TreeMap<String, Object>();
 		result.put("consumer", consumer);
 		List<String> add = new ArrayList<String>();
 		List<String> remove = new ArrayList<String>();
-		for(String s : services){
-			if(s.endsWith("1")){
-				String newservice = s.substring(0, s.length()-1)+"2";
-				if(!services.contains(newservice))
-					add.add(newservice);
-				remove.add(s);
+		
+		List<String> cleanServices = new ArrayList<String>();
+		for(String srv : services){
+			if(srv.contains(":")){
+				cleanServices.add(srv.split(":")[1]);
 			}
 		}
+		DivaRoot root = Repository.mainRoot.fork();
+		List<String> res = root.getRecommQuery(consumer, cleanServices);
+		//return res.toString();
+		try{
+			//This is odd: without this sleep, curl gets a "empty result", even if res is not null
+			Thread.sleep(10);
+		}catch(Exception e){
+			//This sleep seems to be interrupted every time (by whom I don't know).
+		}
+
+		for(String s : cleanServices){
+			if(!res.contains(s))
+				remove.add("sp:"+s);
+		}
+		
+		for(String s : res)
+			if(!cleanServices.contains(s))
+				add.add("sp:"+s);
+		
+//		for(String s : services){
+//			if(s.endsWith("1")){
+//				String newservice = s.substring(0, s.length()-1)+"2";
+//				if(!services.contains(newservice))
+//					add.add(newservice);
+//				remove.add(s);
+//			}
+//		}
 		result.put("add", add);
 		result.put("remove", remove);
-		
+//		
 		return result;
 	}
 

@@ -24,7 +24,7 @@ public class AdaptRuleSparql extends AdaptRule {
 		ms.put("hasLearnability", "5");
 		ms.put("hasAccessibility", "2");
 		ms.put("hasOperability", "1");
-		ms.put("hasInteroperability", "0");
+		ms.put("Failure", "1");
 		fakedRepo.put("RuleForCustomer", ms);
 		
 		ms = new HashMap<String, String>();
@@ -38,7 +38,7 @@ public class AdaptRuleSparql extends AdaptRule {
 		ms.put("hasLearnability", "2");
 		ms.put("hasAccessibility", "2");
 		ms.put("hasOperability", "5");
-		ms.put("hasInteroperability", "5");
+		ms.put("Failure", "1");
 		fakedRepo.put("RuleForDeveloper", ms);
 		
 		ms = new HashMap<String, String>();
@@ -52,7 +52,7 @@ public class AdaptRuleSparql extends AdaptRule {
 		ms.put("hasLearnability", "4");
 		ms.put("hasAccessibility", "0");
 		ms.put("hasOperability", "1");
-		ms.put("hasInteroperability", "4");
+		ms.put("Failure", "1");
 		fakedRepo.put("ForAdministrator", ms);
 		
 		ms = new HashMap<String, String>();
@@ -66,7 +66,7 @@ public class AdaptRuleSparql extends AdaptRule {
 		ms.put("hasLearnability", "0");
 		ms.put("hasAccessibility", "1");
 		ms.put("hasOperability", "1");
-		ms.put("hasInteroperability", "1");
+		ms.put("Failure", "1");
 		fakedRepo.put("ForPotenial", ms);
 	}
 	@Override

@@ -21,8 +21,7 @@ public class ServiceAttributeSparql extends ServiceAttributeLocal {
 			"hasRecoverability",
 			"hasLearnability",
 			"hasAccessibility",
-			"hasOperability",
-			"hasInteroperability"
+			"hasOperability"
 			);
 	static Map<String, Integer> attrRec = null; 
 	

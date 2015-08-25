@@ -56,6 +56,9 @@ public class AlloyWrapper implements Callable<Entry<Context, List<Configuration>
 	static {
 		// Chooses the Alloy4 options
 		opt.solver = A4Options.SatSolver.SAT4J;
+		//opt.symmetry = 0;
+		//opt.solver = A4Options.SatSolver.MiniSatJNI;
+		//opt.solver.options()
 	}
 
 	boolean done = false;
@@ -84,6 +87,7 @@ public class AlloyWrapper implements Callable<Entry<Context, List<Configuration>
 			// TODO Auto-generated method stub
 			try {
 				Module world = CompUtil.parseEverything_fromFile(null, null, input.getAbsolutePath());
+				//solution = TranslateAlloyToKodkod.execute_command(NOP, world.getAllReachableSigs(), world.getAllCommands().get(0), opt);
 				solution = TranslateAlloyToKodkod.execute_command(NOP, world.getAllReachableSigs(), world.getAllCommands().get(0), opt);
 			} catch (Err e) {
 				System.err.println("Alloy ERROR:\n" + e.msg);
