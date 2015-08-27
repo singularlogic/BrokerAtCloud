@@ -530,37 +530,88 @@
 
         function loadQualValuesNG(kb, serviceLevel, description) {
             //create table
-            var table_string = document.getElementById("qualvalues").innerHTML;
-            var selectbox_string = '<select style="" id="ddlb_' + serviceLevel + '"' + '>';
+            var qvTable = document.createElement('table');
+            qvTable.setAttribute('id', 'table_' + serviceLevel);
+            qvTable.setAttribute('style', 'width: 90%');
+            var qvHeader = qvTable.insertRow();
+            [{}, {
+                content: '#'
+            }, {
+                content: 'Value'
+            }, {
+                content: 'Description',
+                style: 'width: 80%'
+            }].forEach(function (descriptor) {
+                var headerCell = document.createElement('th');
+                if (descriptor.content) headerCell.appendChild(document.createTextNode(descriptor.content));
+                if (descriptor.style) headerCell.setAttribute('style', descriptor.style);
+                qvHeader.appendChild(headerCell);
+            });
+
+
+            var selectbox = document.createElement("SELECT");
+            selectbox.setAttribute('id', 'ddlb_' + serviceLevel);
+
+            //var selectbox_string = '<select style="" id="ddlb_' + serviceLevel + '"' + '>';
             //var table = document.getElementById("table_" + serviceLevel);
-            table_string = table_string + '<div><H2>Value set of ' + serviceLevel + '</H2>';
-            table_string = table_string + '<p>' + description + '</p>';
-            table_string = table_string + '<table style="width: 90%" id="table_' + serviceLevel + '"' + '>' + '<tr><th></th><th></th><th>Value</th><th style="width: 80%">Description</th></tr>';
+            //table_string = table_string + '<div><H2>Value set of ' + serviceLevel + '</H2>';
+            //table_string = table_string + '<p>' + description + '</p>';
+            //table_string = table_string + '<table style="width: 90%" id="table_' + serviceLevel + '"' + '>' + '<tr><th></th><th></th><th>Value</th><th style="width: 80%">Description</th></tr>';
 
             // fill table with data
 
             var query = kb.where("?valinst a bp:" + serviceLevel + "");
             var rowcounter = 0;
             query.each(function () {
-                var selection = this["valinst"];
-                var qv_url = selection.value._string;
-                table_string = table_string + "<tr><td><input type='checkbox'></td>";
-                rowcounter++;
-                table_string = table_string + "<td>" + rowcounter + "</td>";
-                table_string = table_string + "<td><input type='text' disabled value='" + qv_url.split("#")[1] + "'></input></td>";
-                var cell4Value = '';
-                var label = kb.where("<" + qv_url + ">" + " rdfs:label ?label");
-                label.each(function () {
-                    cell4Value = this["label"].value;
-                });
-                table_string = table_string + "<td><input type='text' disabled value='" + cell4Value + "'></input></td></tr>";
-                selectbox_string = selectbox_string + '<option value="' + qv_url + '">' + qv_url.split("#")[1] + '</option>';
-            })
-            table_string = table_string + '</table>';
-            selectbox_string = selectbox_string + '</select>';
-            table_string = table_string + selectbox_string + '</div>';
+                    var qvRow = qvTable.insertRow();
+                    var selection = this["valinst"];
+                    var qv_url = selection.value._string;
+                    var checkbox = document.createElement('input');
+                    checkbox.setAttribute('type', 'checkbox');
+                    qvRow.insertCell().appendChild(checkbox);
+                    //table_string = table_string + "<tr><td><input type='checkbox'></td>";
+                    rowcounter++;
+                    qvRow.insertCell().appendChild(document.createTextNode(rowcounter));
+                    //table_string = table_string + "<td>" + rowcounter + "</td>";
+                    var sl = document.createElement('input');
+                    sl.setAttribute('type', 'text');
+                    sl.setAttribute('value', qv_url.split("#")[1]);
+                    sl.setAttribute('disabled', 'true');
+                    qvRow.insertCell().appendChild(sl);
+                    //table_string = table_string + "<td><input type='text' disabled value='" + qv_url.split("#")[1] + "'></input></td>";
+                    var cell4Value = '';
+                    var label = kb.where("<" + qv_url + ">" + " rdfs:label ?label");
+                    label.each(function () {
+                        cell4Value = this["label"].value;
+                    });
+                    var slDesc = document.createElement('input');
+                    slDesc.setAttribute('type', 'text');
+                    slDesc.setAttribute('value', cell4Value);
+                    slDesc.setAttribute('disabled', 'true');
+                    qvRow.insertCell().appendChild(slDesc);
+                    //table_string = table_string + "<td><input type='text' disabled value='" + cell4Value + "'></input></td></tr>";
+                    //selectbox_string = selectbox_string + '<option value="' + qv_url + '">' + qv_url.split("#")[1] + '</option>';
+                    var selectOption = document.createElement('option');
+                    selectOption.setAttribute('value', qv_url);
+                    selectOption.appendChild(document.createTextNode(qv_url.split("#")[1]));
+                    selectbox.appendChild(selectOption);
+                })
+                //table_string = table_string + '</table>';
+                //selectbox_string = selectbox_string + '</select>';
+                //table_string = table_string + selectbox_string + '</div>';
 
-            document.getElementById("qualvalues").innerHTML = table_string;
+            var qvDiv = document.createElement("div");
+            var header = document.createElement('H2');
+            header.appendChild(document.createTextNode('Value set of ' + serviceLevel));
+            qvDiv.appendChild(header);
+            var descriptionNode = document.createElement('p');
+            descriptionNode.appendChild(document.createTextNode(description));
+            qvDiv.appendChild(descriptionNode);
+
+            qvDiv.appendChild(qvTable);
+            qvDiv.appendChild(selectbox);
+            var table = document.getElementById("qualvalues").appendChild(qvDiv);
+
         }
 
         function loadQualitativeSLSchemasNG(kb) {
@@ -581,16 +632,24 @@
                 var rowCount = table.rows.length;
                 var row = table.insertRow(rowCount);
                 var cell1 = row.insertCell(0);
-                cell1.innerHTML = "<input type='checkbox'>";
+                var cell1content = document.createElement("INPUT");
+                cell1content.setAttribute('type', 'checkbox');
+                cell1.appendChild(cell1content);
+                //cell1.innerHTML = "<input type='checkbox'>";
                 var cell2 = row.insertCell(1);
-                cell2.innerHTML = rowCount + 1;
+                cell2.appendChild(document.createTextNode(rowCount + 1));
                 var cell3 = row.insertCell(2);
-                cell3.innerHTML = "<input type='text'>";
-                cell3.childNodes[0].value = serviceLevel;
+                var serviceLevelInput = document.createElement("INPUT");
+                serviceLevelInput.setAttribute('type', 'text');
+                serviceLevelInput.setAttribute('value', serviceLevel);
+                cell3.appendChild(serviceLevelInput);
+                //cell3.innerHTML = "<input type='text'>";
+                //cell3.childNodes[0].value = serviceLevel;
                 var cell4 = row.insertCell(3);
-                cell4.innerHTML = "<input type='text'>";
-                //Label
-                cell4.childNodes[0].value = serviceLevelDescription;
+                var serviceLevelDescriptionInput = document.createElement("INPUT");
+                serviceLevelDescriptionInput.setAttribute('type', 'text');
+                serviceLevelDescriptionInput.setAttribute('value', serviceLevelDescription);
+                cell4.appendChild(serviceLevelDescriptionInput);
                 loadQualValuesNG(kb, serviceLevel, serviceLevelDescription);
             });
             //TODO: after each ServiceLevel load the matching ValueSets immideately
