@@ -615,61 +615,74 @@
         function addQuantSLSchemas(kb) {
             var quant_sl_table = document.getElementById("quantserviceleveldetails");
             for (i = 1; i < quant_sl_table.rows.length; i++) {
-
+                var quant_type = quant_sl_table.rows[i].cells[2].childNodes[0].value;
                 // SL subclass
-                kb.add("bp:" + "SL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf usdl-sla:ServiceLevel .")
+                kb.add("bp:" + "SL" + quant_type + " rdfs:subClassOf usdl-sla:ServiceLevel .")
                     // SL subproperty
-                    .add("bp:" + "hasSL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf usdl-sla:hasServiceLevel .")
-                    .add("bp:" + "hasSL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + document.getElementById("slp_class").value + " .")
-                    .add("bp:" + "hasSL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + "SL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                    .add("bp:" + "hasSL" + quant_type + " rdfs:subPropertyOf usdl-sla:hasServiceLevel .")
+                    .add("bp:" + "hasSL" + quant_type + " rdfs:domain " + "bp:" + document.getElementById("slp_class").value + " .")
+                    .add("bp:" + "hasSL" + quant_type + " rdfs:range " + "bp:" + "SL" + quant_type + " .")
 
                 // SLE subclass
-                kb.add("bp:" + "SLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf usdl-sla:ServiceLevelExpression .")
+                kb.add("bp:" + "SLE" + quant_type + " rdfs:subClassOf usdl-sla:ServiceLevelExpression .")
                     // SLE subproperty
-                    .add("bp:" + "hasSLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression .")
-                    .add("bp:" + "hasSLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + "SL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
-                    .add("bp:" + "hasSLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + "SLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                    .add("bp:" + "hasSLE" + quant_type + " rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression .")
+                    .add("bp:" + "hasSLE" + quant_type + " rdfs:domain " + "bp:" + "SL" + quant_type + " .")
+                    .add("bp:" + "hasSLE" + quant_type + " rdfs:range " + "bp:" + "SLE" + quant_type + " .")
 
                 // Var subclass
-                kb.add("bp:" + "Var" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf usdl-sla:Variable .")
+                kb.add("bp:" + "Var" + quant_type + " rdfs:subClassOf usdl-sla:Variable .")
                     // Var subproperty
-                    .add("bp:" + "hasVar" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf usdl-sla:hasVariable .")
-                    .add("bp:" + "hasVar" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + "SLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
-                    .add("bp:" + "hasVar" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + "Var" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                    .add("bp:" + "hasVar" + quant_type + " rdfs:subPropertyOf usdl-sla:hasVariable .")
+                    .add("bp:" + "hasVar" + quant_type + " rdfs:domain " + "bp:" + "SLE" + quant_type + " .")
+                    .add("bp:" + "hasVar" + quant_type + " rdfs:range " + "bp:" + "Var" + quant_type + " .")
                     // int or float value subclass
                 if (quant_sl_table.rows[i].cells[5].childNodes[0].value == "integer") {
                     // Int value subclass
-                    kb.add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf gr:QuantitativeValueInteger .")
-                        .add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
-                        .add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
-                        .add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' gr:hasMinValueInteger "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
-                        .add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' gr:hasMaxValueInteger "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                    kb.add("bp:" + quant_type + " rdfs:subClassOf gr:QuantitativeValueInteger .")
+                        .add("bp:" + quant_type + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + ' gr:hasMinValueInteger "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                        .add("bp:" + quant_type + ' gr:hasMaxValueInteger "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                        // Int value range instance
+                    kb.add("bp:" + quant_type + "ValueRange" + " a " + "bp:" + quant_type + " .")
+                        .add("bp:" + quant_type + "ValueRange" + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + "ValueRange" + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + "ValueRange" + ' gr:hasMinValueInteger "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                        .add("bp:" + quant_type + "ValueRange" + ' gr:hasMaxValueInteger "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+
                 } else {
                     // Float value subclass
-                    kb.add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf gr:QuantitativeValueFloat .")
-                        .add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
-                        .add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
-                        .add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' gr:hasMinValueFloat "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^xsd:float .')
-                        .add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' gr:hasMaxValueFloat "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^xsd:float .')
+                    kb.add("bp:" + quant_type + " rdfs:subClassOf gr:QuantitativeValueFloat .")
+                        .add("bp:" + quant_type + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + ' gr:hasMinValueFloat "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^xsd:float .')
+                        .add("bp:" + quant_type + ' gr:hasMaxValueFloat "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^xsd:float .')
+                        // Float value range instance
+                    kb.add("bp:" + quant_type + "ValueRange" + " a " + "bp:" + quant_type + " .")
+                        .add("bp:" + quant_type + "ValueRange" + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + "ValueRange" + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + "ValueRange" + ' gr:hasMinValueFloat "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#float> .')
+                        .add("bp:" + quant_type + "ValueRange" + ' gr:hasMaxValueFloat "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#float> .')
 
                 }
                 if (quant_sl_table.rows[i].cells[8].childNodes[0].checked == true) {
-                    kb.add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' usdl-core-cb:isRange "true"^^xsd:boolean .')
+                    kb.add("bp:" + quant_type + ' usdl-core-cb:isRange "true"^^xsd:boolean .')
                 } else {
-                    kb.add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' usdl-core-cb:isRange "false"^^xsd:boolean .')
+                    kb.add("bp:" + quant_type + ' usdl-core-cb:isRange "false"^^xsd:boolean .')
                 }
                 if (quant_sl_table.rows[i].cells[9].childNodes[0].checked == true) {
-                    kb.add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' usdl-core-cb:higherIsBetter "true"^^xsd:boolean .')
+                    kb.add("bp:" + quant_type + ' usdl-core-cb:higherIsBetter "true"^^xsd:boolean .')
                 } else {
-                    kb.add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' usdl-core-cb:higherIsBetter "false"^^xsd:boolean .')
+                    kb.add("bp:" + quant_type + ' usdl-core-cb:higherIsBetter "false"^^xsd:boolean .')
                 }
                 // Value subproperty
-                kb.add("bp:" + "hasDefault" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue .")
-                    .add("bp:" + "hasDefault" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + "Var" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
-                    .add("bp:" + "hasDefault" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
-                kb.add("bp:" + "has" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .")
-                    .add("bp:" + "has" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + document.getElementById("bp_model").value + " .")
-                    .add("bp:" + "has" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                kb.add("bp:" + "hasDefault" + quant_type + " rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue .")
+                    .add("bp:" + "hasDefault" + quant_type + " rdfs:domain " + "bp:" + "Var" + quant_type + " .")
+                    .add("bp:" + "hasDefault" + quant_type + " rdfs:range " + "bp:" + quant_type + " .")
+                kb.add("bp:" + "has" + quant_type + " rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .")
+                    .add("bp:" + "has" + quant_type + " rdfs:domain " + "bp:" + document.getElementById("bp_model").value + " .")
+                    .add("bp:" + "has" + quant_type + " rdfs:range " + "bp:" + quant_type + " .")
 
             }
             return kb;

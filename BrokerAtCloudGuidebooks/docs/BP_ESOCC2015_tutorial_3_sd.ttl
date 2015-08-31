@@ -1,0 +1,101 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . 
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> . 
+@prefix dcterms: <http://purl.org/dc/terms/> . 
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> . 
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> . 
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> . 
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> . 
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> . 
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> . 
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> . 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+@prefix ctag: <http://commontag.org/ns#> . 
+@prefix org: <http://www.w3.org/ns/org#> . 
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> . 
+@prefix time: <http://www.w3.org/2006/time#> . 
+@prefix gr: <http://purl.org/goodrelations/v1#> . 
+@prefix doap: <http://usefulinc.com/ns/doap#> . 
+@prefix bp: <http://yourbrokernamespace.com#> . 
+
+<http://yournamespace.com/YourCompanyAcronym> 
+  a gr:BusinessEntity ; 
+  gr:legalName "Your Company Legal Name" . 
+
+<http://yournamespace.com/YourCompanyAcronymEntityInvolvement> 
+  a usdl-core:EntityInvolvement ; 
+  usdl-core:withBusinessRole usdl-business-roles:provider ; 
+  usdl-core:ofBusinessEntity <http://yournamespace.com/YourCompanyAcronym> . 
+
+<http://yournamespace.com/YourServiceDescriptionTitle> 
+  a usdl-core:Service ; 
+  dcterms:creator <http://yournamespace.com/YourCompanyAcronym> ; 
+  usdl-core:hasEntityInvolvement <http://yournamespace.com/YourCompanyAcronymEntityInvolvement> ; 
+  usdl-core-cb:hasServiceModel <http://yournamespace.com/YourServiceModelName> . 
+
+<http://yournamespace.com/YourServiceModelName> 
+  a bp:YourBrokerPolicyModelName ; 
+  gr:isVariantOf bp:YourBrokerPolicyTitle ; 
+  bp:hasSomeServiceLevelProfile <http://yournamespace.com/YourServiceLevelProfileTitle> ; 
+  usdl-core-cb:hasClassificationDimension <http://www.broker-cloud.eu/service-descriptions/CAS/categories#hier> , 
+    <http://www.broker-cloud.eu/service-descriptions/CAS/categories#da> . 
+
+<http://yournamespace.com/YourServiceLevelProfileTitle> 
+  a bp:SomeServiceLevelProfile ; 
+  bp:hasSLSec <http://yournamespace.com/SLSecInstance> ; 
+  bp:hasSLAvail <http://yournamespace.com/SLAvailInstance> ; 
+  bp:hasSLLearn <http://yournamespace.com/SLLearnInstance> . 
+
+<http://yournamespace.com/SLSecInstance> 
+  a bp:SLSec ; 
+  bp:hasSLESec <http://yournamespace.com/SLESecInstance> . 
+
+<http://yournamespace.com/SLESecInstance> 
+  a bp:SLESec ; 
+  bp:hasVarSec <http://yournamespace.com/VarSecInstance> . 
+
+<http://yournamespace.com/VarSecInstance> 
+  a bp:VarSec ; 
+  bp:hasDefaultSec bp:HighSec . 
+
+<http://yournamespace.com/SLAvailInstance> 
+  a bp:SLAvail ; 
+  bp:hasSLEAvail <http://yournamespace.com/SLEAvailInstance> . 
+
+<http://yournamespace.com/SLEAvailInstance> 
+  a bp:SLEAvail ; 
+  bp:hasVarAvail <http://yournamespace.com/VarAvailInstance> . 
+
+<http://yournamespace.com/VarAvailInstance> 
+  a bp:VarAvail ; 
+  bp:hasDefaultAvail <http://yournamespace.com/HighA> . 
+
+<http://yournamespace.com/HighA> 
+  a bp:Avail ; 
+  rdfs:label "cdfdfrdf"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "unit"^^xsd:string ; 
+  gr:valueReference bp:AvailValueRange ; 
+  gr:hasValueInteger "9"^^xsd:integer ; 
+  gr:hasMinValueInteger "9"^^xsd:integer ; 
+  gr:hasMaxValueInteger "9"^^xsd:integer . 
+
+<http://yournamespace.com/SLLearnInstance> 
+  a bp:SLLearn ; 
+  bp:hasSLELearn <http://yournamespace.com/SLELearnInstance> . 
+
+<http://yournamespace.com/SLELearnInstance> 
+  a bp:SLELearn ; 
+  bp:hasVarLearn <http://yournamespace.com/VarLearnInstance> . 
+
+<http://yournamespace.com/VarLearnInstance> 
+  a bp:VarLearn ; 
+  bp:hasDefaultLearn <http://yournamespace.com/HighL> . 
+
+<http://yournamespace.com/HighL> 
+  a bp:Learn ; 
+  rdfs:label "dfdffdfvdvd"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "%"^^xsd:string ; 
+  gr:valueReference bp:LearnValueRange ; 
+  gr:hasMinValueFloat "99.5"^^xsd:float ; 
+  gr:hasMaxValueFloat "99.99"^^xsd:float . 

@@ -187,93 +187,6 @@
             return base
         }
 
-        function addQuantSLConcept() {
-            var table = document.getElementById("quantserviceleveldetails");
-            var rowCount = table.rows.length;
-            var row = table.insertRow(rowCount);
-            var cell1 = row.insertCell(0);
-            //var element1 = document.createElement("input");
-            //element1.type = "checkbox";
-            //element1.type = "chkbox[]";
-            //cell1.appendChild(element1);
-            cell1.innerHTML = "<div class='checkbox'><label><input type='checkbox' value=''></label></div>";
-            var cell2 = row.insertCell(1);
-            cell2.innerHTML = rowCount + 1;
-            var cell3 = row.insertCell(2);
-            cell3.innerHTML = "<input type='text'>";
-            var cell4 = row.insertCell(3);
-            cell4.innerHTML = "<input type='text'>";
-            var cell5 = row.insertCell(4);
-            cell5.innerHTML = "<input type='text'>";
-            var cell6 = row.insertCell(5);
-            cell6.innerHTML = "<select name='valuetype' id='value_type' > <option>integer</option> <option>float</option> </select>";
-            var cell7 = row.insertCell(6);
-            cell7.innerHTML = "<input type='text'>";
-            var cell8 = row.insertCell(7);
-            cell8.innerHTML = "<input type='text'>";
-            var cell9 = row.insertCell(8);
-            cell9.innerHTML = "<input type='checkbox'>";
-            var cell10 = row.insertCell(9);
-            cell10.innerHTML = "<input type='checkbox'>";
-        }
-
-        function deleteQuantSLConcept() {
-            try {
-                var table = document.getElementById("quantserviceleveldetails");
-                var rowCount = table.rows.length;
-                for (var i = 1; i < rowCount; i++) {
-                    var row = table.rows[i];
-                    var chkbox = row.cells[0].childNodes[0].childNodes[0].childNodes[0];
-                    if (null != chkbox && true == chkbox.checked) {
-                        table.deleteRow(i);
-                        rowCount--;
-                        i--;
-                    }
-                }
-            } catch (e) {
-                alert(e);
-            }
-        }
-
-        function addClassificationConcept() {
-            var table = document.getElementById("classtaxconcepts");
-            var rowCount = table.rows.length;
-            var row = table.insertRow(rowCount);
-            var cell1 = row.insertCell(0);
-
-            cell1.innerHTML = "<div class='checkbox'><label><input type='checkbox' value=''></label></div>";
-            var cell2 = row.insertCell(1);
-            cell2.innerHTML = rowCount + 1;
-            var cell3 = row.insertCell(2);
-            cell3.innerHTML = "<input type='text'>";
-            var cell4 = row.insertCell(3);
-            cell4.innerHTML = "<input type='text'>";
-            var cell5 = row.insertCell(4);
-            cell5.innerHTML = "<input type='text'>";
-
-        }
-
-
-
-        function deleteClassificationConcept() {
-            try {
-                var table = document.getElementById("classtaxconcepts");
-                var rowCount = table.rows.length;
-                for (var i = 1; i < rowCount; i++) {
-                    var row = table.rows[i];
-                    var chkbox = row.cells[0].childNodes[0].childNodes[0].childNodes[0];
-                    if (null != chkbox && true == chkbox.checked) {
-                        table.deleteRow(i);
-                        rowCount--;
-                        i--;
-                    }
-                }
-            } catch (e) {
-                alert(e);
-            }
-        }
-
-
         function addConcept() {
             var table = document.getElementById("class_table");
             var rowCount = table.rows.length;
@@ -309,6 +222,7 @@
             }
         }
 
+        //output
         function addClassificationConceptsToSD(kb) {
             var class_table = document.getElementById("class_table");
             for (i = 0; i < class_table.rows.length; i++) {
@@ -365,6 +279,7 @@
                 kb.add("<" + quant_value_inst + "> a bp:" + quant_value_type + " .")
                 kb.add("<" + quant_value_inst + "> " + ' rdfs:label "' + quant_sl_table.rows[i].cells[5].childNodes[0].value + '"^^xsd:string .')
                 kb.add("<" + quant_value_inst + "> " + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^xsd:string .')
+                kb.add("<" + quant_value_inst + "> " + "gr:valueReference " + "bp:" + quant_value_type + "ValueRange .")
                 kb.add("<Var" + quant_value_type + "Instance>  " + "bp:hasDefault" + quant_value_type + " <" + quant_value_inst + "> .");
 
                 // specify quant value instance  Here the parsing code has to be adapted!!!
@@ -388,23 +303,21 @@
                         // Int value subclass
 
                         kb.add("<" + quant_value_inst + "> " + ' gr:hasValueInteger "' + quant_sl_table.rows[i].cells[9].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                            .add("<" + quant_value_inst + "> " + ' gr:hasMinValueInteger "' + quant_sl_table.rows[i].cells[9].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                            .add("<" + quant_value_inst + "> " + ' gr:hasMaxValueInteger "' + quant_sl_table.rows[i].cells[9].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+
 
                     } else {
                         // Float value subclass
 
                         kb.add("<" + quant_value_inst + "> " + ' gr:hasValueFloat "' + quant_sl_table.rows[i].cells[9].childNodes[0].value + '"^^xsd:float .')
-
-
+                            .add("<" + quant_value_inst + "> " + ' gr:hasMinValueFloat "' + quant_sl_table.rows[i].cells[9].childNodes[0].value + '"^^xsd:float .')
+                            .add("<" + quant_value_inst + "> " + ' gr:hasMaxValueFloat "' + quant_sl_table.rows[i].cells[9].childNodes[0].value + '"^^xsd:float .')
                     }
                 }
             }
             return kb;
         }
-
-
-
-
-
 
         function setServiceLevels(url, prop) {
             //Empty SL table
@@ -1290,10 +1203,7 @@
                                     <th>Label</th>
                                 </tr>
                             </table>
-                            <!--    <div class="bc-button4table" style="width: 95%">
-                    <button class="btn btn-default" id= "classtax_table_add" onclick="addClassificationConcept()"> Add </button>
-                    <button class="btn btn-default" id ="classtax_table_delete" onclick="deleteClassificationConcept()"> Delete </button>
-</div>   --></div>
+                        </div>
 
 
                         <div class="panel panel-default innerPanel">
@@ -1337,11 +1247,7 @@
                                     </tr>
                                 </table>
                             </div>
-                            <!-- <div
-               <class="bc-button4table" style="width: 95%">
-                    <button class="btn btn-default" id= "quant_sl_table_add" onclick="addQuantSLConcept()"> Add </button>
-                    <button class="btn btn-default" id ="quant_sl_table_delete" onclick="deleteQuantSLConcept()"> Delete </button>
-                </div>        -->
+
                             <h2>Set quantitative values</h2>
                             <table class="table" style="width: 95%" id="slvaluequant">
                                 <tr>
