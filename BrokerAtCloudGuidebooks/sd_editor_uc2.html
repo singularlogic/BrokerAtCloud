@@ -97,7 +97,7 @@
             document.getElementById("classtaxroot").disabled = true;
             document.getElementById("classtaxURI").disabled = true;
 
-            deactivateQuantSLSchemaTable();
+            //deactivateQuantSLSchemaTable();
             //document.getElementById("quant_sl_table_add").disabled = true;
             //document.getElementById("quant_sl_table_delete").disabled = true;
             deactivateQualSLSchemaTable();
@@ -111,7 +111,7 @@
             //document.getElementById("edit_schemas").disabled = false;
         }
 
-        function deactivateQuantSLSchemaTable() {
+        /*function deactivateQuantSLSchemaTable() {
             var quant_sl_table = document.getElementById("quantserviceleveldetails");
             for (i = 1; i < quant_sl_table.rows.length; i++) {
 
@@ -124,7 +124,7 @@
                 quant_sl_table.rows[i].cells[8].childNodes[0].disabled = true;
                 quant_sl_table.rows[i].cells[9].childNodes[0].disabled = true;
             }
-        }
+        }*/
 
         function deactivateQualSLSchemaTable() {
             var qual_sl_table = document.getElementById("qualserviceleveldetails");
@@ -258,121 +258,94 @@
 
         //output
         function addQuantServiceLevelsToSD(kb) {
+            var prefix = 'quantitativeValues_';
             var quant_sl_table = document.getElementById("slvaluequant");
-            for (i = 1; i < quant_sl_table.rows.length; i++) {
-                var quant_value_type = quant_sl_table.rows[i].cells[2].childNodes[0].value;
-                var quant_value_inst = quant_sl_table.rows[i].cells[4].childNodes[0].value;
+            var quant_sl_size = document.getElementById("slQuantitative").children.length;
+            //for (i = 1; i < quant_sl_table.rows.length; i++) {
+            for (i = 1; i < quant_sl_size; i++) {
+                var idType = prefix + i + '_type';
+                var idInstance = prefix + i + '_instance';
+                var idInstanceDesc = prefix + i + '_instanceDesc';
+                var idUom = prefix + i + '_uom';
+                var idIsRange = prefix + i + '_isRange';
+                var idValueType = prefix + i + '_valueType';
+                var idMinValue = prefix + i + '_minValue';
+                var idMaxValue = prefix + i + '_maxValue';
+                var idValue = prefix + i + '_value';
+
+                var quant_value_typeNG = document.getElementById(idType).value;
+                var quant_value_instNG = document.getElementById(idInstance).value;
+                var uomNG = document.getElementById(idUom).value;
+                var isRangeNG = document.getElementById(idIsRange).checked;
+                var minValueNG = document.getElementById(idMinValue).value;
+                var maxValueNG = document.getElementById(idMaxValue).value;
+                var valueNG = undefined;
+                if (!isRangeNG) {
+                    valueNG = document.getElementById(idValue).value;
+                }
+                var valueTypeNG = document.getElementById(idValueType).value;
+                var instanceDescriptionNG = document.getElementById(idInstanceDesc).value;
+
                 // SL instance
-                kb.add("<SL" + quant_value_type + "Instance> a " + "bp:SL" + quant_value_type + " .")
-                    .add("<" + document.getElementById("slp").value + "> bp:hasSL" + quant_value_type + " <SL" + quant_value_type + "Instance> .")
+                kb.add("<SL" + quant_value_typeNG + "Instance> a " + "bp:SL" + quant_value_typeNG + " .");
+                kb.add("<" + document.getElementById("slp").value + "> bp:hasSL" + quant_value_typeNG + " <SL" + quant_value_typeNG + "Instance> .");
 
                 // SLE instance
-                kb.add("<SLE" + quant_value_type + "Instance> a " + "bp:SLE" + quant_value_type + " .")
-                    .add("<SL" + quant_value_type + "Instance> bp:hasSLE" + quant_value_type + " <SLE" + quant_value_type + "Instance> .")
+                kb.add("<SLE" + quant_value_typeNG + "Instance> a " + "bp:SLE" + quant_value_typeNG + " .");
+                kb.add("<SL" + quant_value_typeNG + "Instance> bp:hasSLE" + quant_value_typeNG + " <SLE" + quant_value_typeNG + "Instance> .");
 
                 // Var instance
-                kb.add("<Var" + quant_value_type + "Instance> a " + "bp:Var" + quant_value_type + " .")
-                    .add("<SLE" + quant_value_type + "Instance> bp:hasVar" + quant_value_type + " <Var" + quant_value_type + "Instance> .")
+                kb.add("<Var" + quant_value_typeNG + "Instance> a " + "bp:Var" + quant_value_typeNG + " .");
+                kb.add("<SLE" + quant_value_typeNG + "Instance> bp:hasVar" + quant_value_typeNG + " <Var" + quant_value_typeNG + "Instance> .");
 
 
                 // bind var instance to the quant value instance
-                kb.add("<" + quant_value_inst + "> a bp:" + quant_value_type + " .")
-                kb.add("<" + quant_value_inst + "> " + ' rdfs:label "' + quant_sl_table.rows[i].cells[5].childNodes[0].value + '"^^xsd:string .')
-                kb.add("<" + quant_value_inst + "> " + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^xsd:string .')
-                kb.add("<" + quant_value_inst + "> " + "gr:valueReference " + "bp:" + quant_value_type + "ValueRange .")
-                kb.add("<Var" + quant_value_type + "Instance>  " + "bp:hasDefault" + quant_value_type + " <" + quant_value_inst + "> .");
+                kb.add("<" + quant_value_instNG + "> a bp:" + quant_value_typeNG + " .");
+                // id = prefix + _i_ + instanceDescription
+                kb.add("<" + quant_value_instNG + "> " + ' rdfs:label "' + instanceDescriptionNG + '"^^xsd:string .');
+                // id = prefix + _i_ + uom
+                kb.add("<" + quant_value_instNG + "> " + ' gr:hasUnitOfMeasurement "' + uomNG + '"^^xsd:string .')
+                kb.add("<" + quant_value_instNG + "> " + "gr:valueReference " + "bp:" + quant_value_typeNG + "ValueRange .")
+                kb.add("<Var" + quant_value_typeNG + "Instance>  " + "bp:hasDefault" + quant_value_typeNG + " <" + quant_value_instNG + "> .");
 
                 // specify quant value instance  Here the parsing code has to be adapted!!!
-                if (quant_sl_table.rows[i].cells[11].childNodes[0].checked == true) {
-                    // int or float value subclass
-                    if (quant_sl_table.rows[i].cells[7].childNodes[0].value == "integer") {
-                        // Int value subclass
 
-                        kb.add("<" + quant_value_inst + "> " + ' gr:hasMinValueInteger "' + quant_sl_table.rows[i].cells[8].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
-                            .add("<" + quant_value_inst + "> " + ' gr:hasMaxValueInteger "' + quant_sl_table.rows[i].cells[10].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                if (isRangeNG == true) {
+                    // int or float value subclass
+                    // id = prefix + _i_ + valueType
+                    if (valueTypeNG == "integer") {
+                        // Int value subclass
+                        // id = prefix + _i_ + 
+                        kb.add("<" + quant_value_instNG + "> " + ' gr:hasMinValueInteger "' + minValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                            .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueInteger "' + maxValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
                     } else {
                         // Float value subclass
 
-                        kb.add("<" + quant_value_inst + "> " + ' gr:hasMinValueFloat "' + quant_sl_table.rows[i].cells[8].childNodes[0].value + '"^^xsd:float .')
-                            .add("<" + quant_value_inst + "> " + ' gr:hasMaxValueFloat "' + quant_sl_table.rows[i].cells[10].childNodes[0].value + '"^^xsd:float .')
+                        kb.add("<" + quant_value_instNG + "> " + ' gr:hasMinValueFloat "' + minValueNG + '"^^xsd:float .')
+                            .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueFloat "' + maxValueNG + '"^^xsd:float .')
 
                     }
                 } else {
                     // int or float value subclass
-                    if (quant_sl_table.rows[i].cells[7].childNodes[0].value == "integer") {
+                    if (valueTypeNG == "integer") {
                         // Int value subclass
 
-                        kb.add("<" + quant_value_inst + "> " + ' gr:hasValueInteger "' + quant_sl_table.rows[i].cells[9].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
-                            .add("<" + quant_value_inst + "> " + ' gr:hasMinValueInteger "' + quant_sl_table.rows[i].cells[9].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
-                            .add("<" + quant_value_inst + "> " + ' gr:hasMaxValueInteger "' + quant_sl_table.rows[i].cells[9].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                        kb.add("<" + quant_value_instNG + "> " + ' gr:hasValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                            .add("<" + quant_value_instNG + "> " + ' gr:hasMinValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                            .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
 
 
                     } else {
                         // Float value subclass
 
-                        kb.add("<" + quant_value_inst + "> " + ' gr:hasValueFloat "' + quant_sl_table.rows[i].cells[9].childNodes[0].value + '"^^xsd:float .')
-                            .add("<" + quant_value_inst + "> " + ' gr:hasMinValueFloat "' + quant_sl_table.rows[i].cells[9].childNodes[0].value + '"^^xsd:float .')
-                            .add("<" + quant_value_inst + "> " + ' gr:hasMaxValueFloat "' + quant_sl_table.rows[i].cells[9].childNodes[0].value + '"^^xsd:float .')
+                        kb.add("<" + quant_value_instNG + "> " + ' gr:hasValueFloat "' + valueNG + '"^^xsd:float .')
+                            .add("<" + quant_value_instNG + "> " + ' gr:hasMinValueFloat "' + valueNG + '"^^xsd:float .')
+                            .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueFloat "' + valueNG + '"^^xsd:float .')
                     }
                 }
             }
             return kb;
         }
-
-        function setServiceLevels(url, prop) {
-            //Empty SL table
-            var sl_table = document.getElementById("serviceleveldetails");
-            while (sl_table.rows.length > 1) {
-                sl_table.deleteRow(-1);
-            }
-            //Insert service levels into SL table
-            for (i = 0; i < prop.length; i++) {
-                var sl_prop = prop[i];
-                //   window.alert (sl_prop);
-                var sl = document.kb.where("<" + url + ">" + " <" + prop[i] + "> " + "?sl");
-                sl.each(function () {
-
-                    var sel = this["sl"];
-                    var sl_url = sel.value._string;
-                    var value_instance_url = "";
-                    var value_instance_label = "";
-                    //var unit_of_measurement="";
-                    // Find label of the value instance
-                    var value_instance = document.kb.where("<" + sl_url + ">" + " ?sle_prop " + " ?sle")
-                        .where("?sle_prop rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression")
-                        .where("?sle ?var_prop ?var")
-                        .where("?var_prop rdfs:subPropertyOf usdl-sla:hasVariable")
-                        .where("?var ?value_prop ?value")
-                        .where("?value rdfs:label ?text");
-                    //.where("?value gr:valueReference ?unit");
-                    //.optional("?value_prop rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue");
-                    value_instance.each(function () {
-                            var sel_value_instance = this["value"];
-                            value_instance_url = sel_value_instance.value._string;
-                            var sel_label = this["text"];
-                            value_instance_label = sel_label.value;
-                            //var sel_unit = this["unit"];
-                            //if (sel_unit === undefined) {window.alert("undefined!")} else
-                            //{unit_of_measurement = sel_unit.value._string;}
-
-                            //window.alert(var_url);
-                        })
-                        // Insert data into the table
-                    var sl_table = document.getElementById("serviceleveldetails");
-                    var new_row = sl_table.insertRow(-1);
-                    var cell1 = new_row.insertCell(0);
-                    var cell2 = new_row.insertCell(1);
-                    var cell3 = new_row.insertCell(2);
-                    //var cell4 = new_row.insertCell(3);
-                    cell1.innerHTML = sl_url.split('#')[1];
-                    cell2.innerHTML = value_instance_url.split('#')[1];
-                    cell3.innerHTML = value_instance_label;
-                    //cell4.innerHTML = "Unit of Measurement: " + unit_of_measurement;
-                    // window.alert("event fired!");
-                })
-            }
-        }
-
 
         function loadBP(event) {
             event.preventDefault();
@@ -420,8 +393,11 @@
                         var sel = this["slps"];
                         var url_slps = sel.value._string;
                         document.getElementById("slp_class").value = url_slps.split('#')[1];
-                    })
-                    loadQuantitativeSLSchemas(kb);
+                    });
+
+                    //this is obsolete...
+                    //loadQuantitativeSLSchemas(kb);
+
                     loadQualitativeSLSchemasNG(kb);
                     deactivateInputFields();
                     //Create quant values table
@@ -568,345 +544,450 @@
             //TODO: after each ServiceLevel load the matching ValueSets immideately
         }
 
-        function loadQuantitativeSLSchemas(kb) {
-            var quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueInteger");
-            quant_sls.each(function () {
-                var selection = this["qvc"];
-                var sls_url = selection.value._string;
-                var table = document.getElementById("quantserviceleveldetails");
-                var rowCount = table.rows.length;
-                var row = table.insertRow(rowCount);
-                var cell1 = row.insertCell(0);
-                cell1.innerHTML = "<input type='checkbox'>";
-                var cell2 = row.insertCell(1);
-                cell2.innerHTML = rowCount + 1;
-                var cell3 = row.insertCell(2);
-                cell3.innerHTML = "<input type='text'>";
-                cell3.childNodes[0].value = sls_url.split("#")[1];
-                var cell4 = row.insertCell(3);
-                cell4.innerHTML = "<input type='text'>";
-                var cell5 = row.insertCell(4);
-                cell5.innerHTML = "<input type='text'>";
-                var cell6 = row.insertCell(5);
-                cell6.innerHTML = "<select name='valuetype' id='value_type' > <option>integer</option> <option>float</option> </select>";
-                var cell7 = row.insertCell(6);
-                cell7.innerHTML = "<input type='text'>";
-                var cell8 = row.insertCell(7);
-                cell8.innerHTML = "<input type='text'>";
-                var cell9 = row.insertCell(8);
-                cell9.innerHTML = "<input type='checkbox'>";
-                var cell10 = row.insertCell(9);
-                cell10.innerHTML = "<input type='checkbox'>";
-                //Label
-                var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
-                label.each(function () {
-                        cell4.childNodes[0].value = this["label"].value;
-                    })
-                    // Unit of Measurement
-                var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
-                uom.each(function () {
-                        cell5.childNodes[0].value = this["uom"].value;
-                    })
-                    // Min value integer
-                var minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueInteger ?minv");
-                minv.each(function () {
-                        cell7.childNodes[0].value = this["minv"].value;
-                    })
-                    // Max value integer
-                var maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueInteger ?maxv");
-                maxv.each(function () {
-                        cell8.childNodes[0].value = this["maxv"].value;
-                    })
-                    // Range
-                var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
-                range.each(function () {
-                        if (this["range"].value.toString() == "true") {
-                            cell9.childNodes[0].checked = true;
-                        } else {
-                            cell9.childNodes[0].checked = false;
-                        }
-                    })
-                    //Higher is better
-                var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
-                hib.each(function () {
 
-                    if (this["hib"].value.toString() == "true") {
-                        cell10.childNodes[0].checked = true;
-                    } else {
-                        cell10.childNodes[0].checked = false;
-                    }
 
-                })
-            })
-            quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueFloat");
-            quant_sls.each(function () {
-                var selection = this["qvc"];
-                var sls_url = selection.value._string;
-                var table = document.getElementById("quantserviceleveldetails");
-                var rowCount = table.rows.length;
-                var row = table.insertRow(rowCount);
-                var cell1 = row.insertCell(0);
-                cell1.innerHTML = "<input type='checkbox'>";
-                var cell2 = row.insertCell(1);
-                cell2.innerHTML = rowCount + 1;
-                var cell3 = row.insertCell(2);
-                cell3.innerHTML = "<input type='text'>";
+        /* function loadQuantitativeSLSchemas(kb) {
+             var quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueInteger");
+             quant_sls.each(function () {
+                 var selection = this["qvc"];
+                 var sls_url = selection.value._string;
+                 var table = document.getElementById("quantserviceleveldetails");
+                 var rowCount = table.rows.length;
+                 var row = table.insertRow(rowCount);
+                 var cell1 = row.insertCell(0);
+                 cell1.innerHTML = "<input type='checkbox'>";
+                 var cell2 = row.insertCell(1);
+                 cell2.innerHTML = rowCount + 1;
+                 var cell3 = row.insertCell(2);
+                 cell3.innerHTML = "<input type='text'>";
+                 cell3.childNodes[0].value = sls_url.split("#")[1];
+                 var cell4 = row.insertCell(3);
+                 cell4.innerHTML = "<input type='text'>";
+                 var cell5 = row.insertCell(4);
+                 cell5.innerHTML = "<input type='text'>";
+                 var cell6 = row.insertCell(5);
+                 cell6.innerHTML = "<select name='valuetype' id='value_type' > <option>integer</option> <option>float</option> </select>";
+                 var cell7 = row.insertCell(6);
+                 cell7.innerHTML = "<input type='text'>";
+                 var cell8 = row.insertCell(7);
+                 cell8.innerHTML = "<input type='text'>";
+                 var cell9 = row.insertCell(8);
+                 cell9.innerHTML = "<input type='checkbox'>";
+                 var cell10 = row.insertCell(9);
+                 cell10.innerHTML = "<input type='checkbox'>";
+                 //Label
+                 var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
+                 label.each(function () {
+                         cell4.childNodes[0].value = this["label"].value;
+                     })
+                     // Unit of Measurement
+                 var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
+                 uom.each(function () {
+                         cell5.childNodes[0].value = this["uom"].value;
+                     })
+                     // Min value integer
+                 var minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueInteger ?minv");
+                 minv.each(function () {
+                         cell7.childNodes[0].value = this["minv"].value;
+                     })
+                     // Max value integer
+                 var maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueInteger ?maxv");
+                 maxv.each(function () {
+                         cell8.childNodes[0].value = this["maxv"].value;
+                     })
+                     // Range
+                 var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
+                 range.each(function () {
+                         if (this["range"].value.toString() == "true") {
+                             cell9.childNodes[0].checked = true;
+                         } else {
+                             cell9.childNodes[0].checked = false;
+                         }
+                     })
+                     //Higher is better
+                 var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
+                 hib.each(function () {
 
-                cell3.childNodes[0].value = sls_url.split("#")[1];
-                var cell4 = row.insertCell(3);
-                cell4.innerHTML = "<input type='text'>";
-                var cell5 = row.insertCell(4);
-                cell5.innerHTML = "<input type='text'>";
-                var cell6 = row.insertCell(5);
-                cell6.innerHTML = "<select name='valuetype' id='value_type' > <option>float</option> <option>integer</option>  </select>";
-                var cell7 = row.insertCell(6);
-                cell7.innerHTML = "<input type='text'>";
-                var cell8 = row.insertCell(7);
-                cell8.innerHTML = "<input type='text'>";
-                var cell9 = row.insertCell(8);
-                cell9.innerHTML = "<input type='checkbox'>";
-                var cell10 = row.insertCell(9);
-                cell10.innerHTML = "<input type='checkbox'>";
-                //Label
-                var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
-                label.each(function () {
-                        cell4.childNodes[0].value = this["label"].value;
-                    })
-                    // Unit of Measurement
-                var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
-                uom.each(function () {
-                        cell5.childNodes[0].value = this["uom"].value;
-                    })
-                    // Min value integer
-                var minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueFloat ?minv");
-                minv.each(function () {
-                        cell7.childNodes[0].value = this["minv"].value;
-                    })
-                    // Max value integer
-                var maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueFloat ?maxv");
-                maxv.each(function () {
-                        cell8.childNodes[0].value = this["maxv"].value;
-                    })
-                    // Range
-                var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
-                range.each(function () {
-                    if (this["range"].value.toString() == "true") {
-                        cell9.childNodes[0].checked = true;
-                    } else {
-                        cell9.childNodes[0].checked = false;
-                    }
-                })
+                     if (this["hib"].value.toString() == "true") {
+                         cell10.childNodes[0].checked = true;
+                     } else {
+                         cell10.childNodes[0].checked = false;
+                     }
 
-                //Higher is better
+                 })
+             });
+             quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueFloat");
+             quant_sls.each(function () {
+                 var selection = this["qvc"];
+                 var sls_url = selection.value._string;
+                 var table = document.getElementById("quantserviceleveldetails");
+                 var rowCount = table.rows.length;
+                 var row = table.insertRow(rowCount);
+                 var cell1 = row.insertCell(0);
+                 cell1.innerHTML = "<input type='checkbox'>";
+                 var cell2 = row.insertCell(1);
+                 cell2.innerHTML = rowCount + 1;
+                 var cell3 = row.insertCell(2);
+                 cell3.innerHTML = "<input type='text'>";
 
-                var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
-                hib.each(function () {
-                    if (this["hib"].value.toString() == "true") {
-                        cell10.childNodes[0].checked = true;
-                    } else {
-                        cell10.childNodes[0].checked = false;
-                    }
-                })
+                 cell3.childNodes[0].value = sls_url.split("#")[1];
+                 var cell4 = row.insertCell(3);
+                 cell4.innerHTML = "<input type='text'>";
+                 var cell5 = row.insertCell(4);
+                 cell5.innerHTML = "<input type='text'>";
+                 var cell6 = row.insertCell(5);
+                 cell6.innerHTML = "<select name='valuetype' id='value_type' > <option>float</option> <option>integer</option>  </select>";
+                 var cell7 = row.insertCell(6);
+                 cell7.innerHTML = "<input type='text'>";
+                 var cell8 = row.insertCell(7);
+                 cell8.innerHTML = "<input type='text'>";
+                 var cell9 = row.insertCell(8);
+                 cell9.innerHTML = "<input type='checkbox'>";
+                 var cell10 = row.insertCell(9);
+                 cell10.innerHTML = "<input type='checkbox'>";
+                 //Label
+                 var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
+                 label.each(function () {
+                         cell4.childNodes[0].value = this["label"].value;
+                     })
+                     // Unit of Measurement
+                 var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
+                 uom.each(function () {
+                         cell5.childNodes[0].value = this["uom"].value;
+                     })
+                     // Min value integer
+                 var minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueFloat ?minv");
+                 minv.each(function () {
+                         cell7.childNodes[0].value = this["minv"].value;
+                     })
+                     // Max value integer
+                 var maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueFloat ?maxv");
+                 maxv.each(function () {
+                         cell8.childNodes[0].value = this["maxv"].value;
+                     })
+                     // Range
+                 var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
+                 range.each(function () {
+                     if (this["range"].value.toString() == "true") {
+                         cell9.childNodes[0].checked = true;
+                     } else {
+                         cell9.childNodes[0].checked = false;
+                     }
+                 });
 
-            })
+                 //Higher is better
 
+                 var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
+                 hib.each(function () {
+                     if (this["hib"].value.toString() == "true") {
+                         cell10.childNodes[0].checked = true;
+                     } else {
+                         cell10.childNodes[0].checked = false;
+                     }
+                 });
+
+             })
+
+         }*/
+
+        function createQuantitativeValueForm(qv, prefix) {
+            var createTextBox = function (title, content, id) {
+                var div = document.createElement('div');
+                div.setAttribute('class', 'form-group');
+                div.appendChild(function () {
+                    var label = document.createElement('label');
+                    label.htmlFor = id;
+                    label.appendChild(document.createTextNode(title));
+                    return label;
+                });
+                div.appendChild(function () {
+                    var input = document.createElement('p');
+                    input.id = id;
+                    input.className('form-control-static');
+                    input.appendChild(document.createTextNode(content));
+                    return input;
+                });
+                return div;
+            };
+
+            var createTextInputBox = function (title, content, id, readonly) {
+                var div = document.createElement('div');
+                div.setAttribute('class', 'form-group');
+                div.appendChild(function () {
+                    var label = document.createElement('label');
+                    label.htmlFor = id;
+                    label.className = 'col-sm-2 control-label';
+                    label.appendChild(document.createTextNode(title));
+                    return label;
+                }());
+                div.appendChild(function () {
+                    var innerDiv = document.createElement('div');
+                    innerDiv.className = 'col-sm-10';
+                    innerDiv.appendChild(function () {
+                        var input = document.createElement('input');
+                        input.type = 'text';
+                        input.id = id;
+                        input.value = content;
+                        input.className = 'form-control';
+                        if (readonly) input.disabled = true;
+                        return input;
+                    }());
+                    return innerDiv;
+                }());
+                return div;
+            };
+            var createTextAreaBox = function (title, content, id, readonly) {
+                var div = document.createElement('div');
+                div.setAttribute('class', 'form-group');
+                div.appendChild(function () {
+                    var label = document.createElement('label');
+                    label.htmlFor = id;
+                    label.className = 'col-sm-2 control-label';
+                    label.appendChild(document.createTextNode(title));
+                    return label;
+                }());
+                div.appendChild(function () {
+                    var innerDiv = document.createElement('div');
+                    innerDiv.className = 'col-sm-10';
+                    innerDiv.appendChild(function () {
+                        var input = document.createElement('textarea');
+                        input.rows = 5;
+                        input.id = id;
+                        input.value = content;
+                        input.className = 'form-control col-sm-10';
+                        if (readonly) input.disabled = true;
+                        return input;
+                    }());
+                    return innerDiv;
+                }());
+                return div;
+            };
+            var createCheckBox = function (title, check, id) {
+                var div = document.createElement('div');
+                div.setAttribute('class', 'checkbox');
+                div.appendChild(function () {
+                    var label = document.createElement('label');
+
+                    var checkbox = document.createElement('input');
+                    checkbox.setAttribute("type", "checkbox");
+                    checkbox.id = id;
+                    checkbox.checked = check;
+                    checkbox.disabled = true;
+                    label.appendChild(checkbox);
+                    label.appendChild(document.createTextNode(title));
+                    return label;
+                }());
+
+                var outerDiv = document.createElement('div');
+                outerDiv.className = 'col-sm-offset-2 col-sm-10';
+                outerDiv.appendChild(div);
+                return outerDiv;
+            };
+
+            var panel = document.createElement('div');
+            panel.className = "panel panel-default panel2col";
+            panel.appendChild(function () {
+                var panelHeading = document.createElement('div');
+                panelHeading.className = 'panel-heading';
+                panelHeading.appendChild(function () {
+                    var header = document.createElement('h3');
+                    header.appendChild(document.createTextNode(qv.type));
+                    header.id = prefix + '_type';
+                    return header;
+                }());
+                return panelHeading;
+            }());
+
+            var form = document.createElement('form');
+            form.setAttribute('class', 'form-horizontal');
+            form.setAttribute('id', prefix + 'form');
+            form.appendChild(function () {
+                var paragraph = document.createElement('p');
+                paragraph.appendChild(document.createTextNode(qv.description));
+                return paragraph;
+            }());
+            form.appendChild(
+                createTextInputBox('Service Level', '', prefix + '_instance', false)
+            );
+            form.appendChild(
+                createTextAreaBox('Service Level Description', '', prefix + '_instanceDesc', false)
+            );
+            form.appendChild(
+                createTextInputBox('Unit of Measurement', qv.uom, prefix + '_uom', true)
+            );
+            form.appendChild(
+                createTextInputBox('Value type', qv.valueType, prefix + '_valueType', true)
+            );
+            if (!qv.isRange) {
+                form.appendChild(
+                    createTextInputBox('Min Value', qv.minValue, prefix + '_minValue', true)
+                );
+                form.appendChild(
+                    createTextInputBox('Value', '', prefix + '_value', false)
+                );
+                form.appendChild(
+                    createTextInputBox('Max Value', qv.maxValue, prefix + '_maxValue', true)
+                );
+            } else {
+                form.appendChild(
+                    createTextInputBox('Min Value', qv.minValue, prefix + '_minValue', false)
+                );
+                form.appendChild(
+                    createTextInputBox('Max Value', qv.maxValue, prefix + '_maxValue', false)
+                );
+            }
+            form.appendChild(createCheckBox('Is Range', qv.isRange, prefix + '_isRange'));
+            form.appendChild(createCheckBox('Higher is Better', qv.higherIsBetter, prefix + '_higherIsBetter'));
+
+
+
+            panel.appendChild(function () {
+                var panelBody = document.createElement('div');
+                panelBody.className = 'panel-body';
+                panelBody.appendChild(form);
+                return panelBody;
+            }());
+            return panel;
+        }
+
+        function createQuantitativeValueEntry(selection, kb, i, prefix, valueType) {
+            var idType = prefix + i + '_type'; // 2
+            var idInstance = prefix + i + '_instance'; // 4
+            var idInstanceDesc = prefix + i + '_instanceDesc'; // 5
+            var idUom = prefix + i + '_uom'; // 6
+            var idIsRange = prefix + i + 'i_sRange'; // 11
+            var idValueType = prefix + i + '_valueType'; // 7
+            var idMinValue = prefix + i + '_minValue'; // 8
+            var idMaxValue = prefix + i + '_maxValue'; // 10
+            var idValue = prefix + i + '_value'; // 9
+
+            var sls_url = selection.value._string;
+            var qv = {};
+            qv.type = sls_url.split("#")[1];
+
+            //Label
+            var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
+            label.each(function () {
+                qv.description = this["label"].value;
+            });
+
+            var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
+            uom.each(function () {
+                qv.uom = this["uom"].value;
+            });
+
+            qv.valueType = valueType;
+
+            var minv;
+            if (valueType === 'integer') {
+                minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueInteger ?minv");
+            } else {
+                minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueFloat ?minv");
+            }
+            minv.each(function () {
+                qv.minValue = this["minv"].value;
+            });
+
+            var maxv;
+            if (valueType === 'integer') {
+                maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueInteger ?maxv");
+            } else {
+                maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueFloat ?maxv");
+            }
+            maxv.each(function () {
+                qv.maxValue = this["maxv"].value;
+            });
+
+            var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
+            range.each(function () {
+                qv.isRange = this["range"].value;
+            });
+
+            var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
+            hib.each(function () {
+                qv.higherIsBetter = this["hib"].value;
+            });
+
+            /*var table = document.getElementById("slvaluequant");
+
+            var row = table.insertRow();
+            var cell1 = row.insertCell(0);
+            cell1.innerHTML = "<input type='checkbox'>";
+            var cell2 = row.insertCell(1);
+            cell2.innerHTML = i;
+            // Service Level type
+            var cell3 = row.insertCell(2);
+            cell3.innerHTML = "<input type='text' id='" + idType + "'>";
+            cell3.childNodes[0].value = qv.type;
+            cell3.childNodes[0].disabled = true;
+            // Service Level type description
+            var cell4 = row.insertCell(3);
+            cell4.innerHTML = "<input type='text'>";
+            cell4.childNodes[0].disabled = true;
+            cell4.childNodes[0].value = qv.description;
+
+            // Service Level value
+            var cell5 = row.insertCell(4);
+            cell5.innerHTML = "<input type='text' id='" + idInstance + "'>";
+            // Service Level description
+            var cell6 = row.insertCell(5);
+            cell6.innerHTML = "<input type='text' id='" + idInstanceDesc + "'>";
+
+            // Unit of measurement
+            var cell7 = row.insertCell(6);
+            cell7.innerHTML = "<input type='text' id='" + idUom + "'>";
+            cell7.childNodes[0].disabled = true;
+            cell7.childNodes[0].value = qv.uom;
+            // Value type integer
+            var cell8 = row.insertCell(7);
+            cell8.innerHTML = "<input type='text' id='" + idValueType + "'>";
+            cell8.childNodes[0].value = qv.valueType;
+            cell8.childNodes[0].disabled = true;
+            // Min value
+            var cell9 = row.insertCell(8);
+            cell9.innerHTML = "<input type='text' id='" + idMinValue + "'>";
+            cell9.childNodes[0].value = qv.minValue;
+            // Value
+            var cell10 = row.insertCell(9);
+            cell10.innerHTML = "<input type='text' id='" + idValue + "'>";
+            // Max value
+            var cell11 = row.insertCell(10);
+            cell11.innerHTML = "<input type='text' id='" + idMaxValue + "'>";
+            cell11.childNodes[0].value = qv.maxValue;
+            // Is range
+            var cell12 = row.insertCell(11);
+            cell12.innerHTML = "<input type='checkbox' id='" + idIsRange + "'>";
+
+            if (qv.isRange) {
+                cell12.childNodes[0].checked = true;
+                cell10.childNodes[0].disabled = true;
+            } else {
+                cell12.childNodes[0].checked = false;
+                cell9.childNodes[0].disabled = true;
+                cell11.childNodes[0].disabled = true;
+            }
+            // Higher is better
+            var cell13 = row.insertCell(12);
+            cell13.innerHTML = "<input type='checkbox'>";
+            cell13.childNodes[0].checked = qv.higherIsBetter;*/
+            document.getElementById("slQuantitative").appendChild(createQuantitativeValueForm(qv, prefix + i));
         }
 
         function createQuantitativeSLValuesTable(kb) {
             // Create integer values
             var quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueInteger");
+            var prefix = 'quantitativeValues_';
+            var i = 0;
             quant_sls.each(function () {
-                    var selection = this["qvc"];
-                    var sls_url = selection.value._string;
-                    var table = document.getElementById("slvaluequant");
-                    var rowCount = table.rows.length;
-                    var row = table.insertRow(rowCount);
-                    var cell1 = row.insertCell(0);
-                    cell1.innerHTML = "<input type='checkbox'>";
-                    var cell2 = row.insertCell(1);
-                    cell2.innerHTML = rowCount + 1;
-                    // Service Level type
-                    var cell3 = row.insertCell(2);
-                    cell3.innerHTML = "<input type='text'>";
-                    cell3.childNodes[0].value = sls_url.split("#")[1];
-                    cell3.childNodes[0].disabled = true;
-                    // Service Level type description
-                    var cell4 = row.insertCell(3);
-                    cell4.innerHTML = "<input type='text'>";
-                    cell4.childNodes[0].disabled = true;
-
-                    // Service Level value
-                    var cell5 = row.insertCell(4);
-                    cell5.innerHTML = "<input type='text'>";
-                    // Service Level description
-                    var cell6 = row.insertCell(5);
-                    cell6.innerHTML = "<input type='text'>";
-
-                    // Unit of measurement
-                    var cell7 = row.insertCell(6);
-                    cell7.innerHTML = "<input type='text'>";
-                    cell7.childNodes[0].disabled = true;
-                    // Value type integer
-                    var cell8 = row.insertCell(7);
-                    cell8.innerHTML = "<input type='text'>";
-                    cell8.childNodes[0].value = "integer";
-                    cell8.childNodes[0].disabled = true;
-                    // Min value
-                    var cell9 = row.insertCell(8);
-                    cell9.innerHTML = "<input type='text'>";
-                    // Value
-                    var cell10 = row.insertCell(9);
-                    cell10.innerHTML = "<input type='text'>";
-                    // Max value
-                    var cell11 = row.insertCell(10);
-                    cell11.innerHTML = "<input type='text'>";
-                    // Is range
-                    var cell12 = row.insertCell(11);
-                    cell12.innerHTML = "<input type='checkbox'>";
-                    // Higher is better
-                    var cell13 = row.insertCell(12);
-                    cell13.innerHTML = "<input type='checkbox'>";
-                    //Label
-                    var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
-                    label.each(function () {
-                            cell4.childNodes[0].value = this["label"].value;
-                        })
-                        // Unit of Measurement
-                    var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
-                    uom.each(function () {
-                            cell7.childNodes[0].value = this["uom"].value;
-                        })
-                        // Min value integer
-                    var minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueInteger ?minv");
-                    minv.each(function () {
-                            cell9.childNodes[0].value = this["minv"].value;
-                        })
-                        // Max value integer
-                    var maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueInteger ?maxv");
-                    maxv.each(function () {
-                            cell11.childNodes[0].value = this["maxv"].value;
-                        })
-                        // Range
-                    var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
-                    range.each(function () {
-                            if (this["range"].value.toString() == "true") {
-                                cell12.childNodes[0].checked = true;
-                                cell10.childNodes[0].disabled = true;
-                            } else {
-                                cell12.childNodes[0].checked = false;
-                                cell9.childNodes[0].disabled = true;
-                                cell11.childNodes[0].disabled = true;
-                            }
-                        })
-                        //Higher is better
-                    var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
-                    hib.each(function () {
-
-                        if (this["hib"].value.toString() == "true") {
-                            cell13.childNodes[0].checked = true;
-                        } else {
-                            cell13.childNodes[0].checked = false;
-                        }
-
-                    })
-                })
-                // Create float values
+                i++;
+                createQuantitativeValueEntry(this["qvc"], kb, i, prefix, "integer");
+            });
+            // Create float values
             quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueFloat");
             quant_sls.each(function () {
-                var selection = this["qvc"];
-                var sls_url = selection.value._string;
-                var table = document.getElementById("slvaluequant");
-                var rowCount = table.rows.length;
-                var row = table.insertRow(rowCount);
-                var cell1 = row.insertCell(0);
-                cell1.innerHTML = "<input type='checkbox'>";
-                var cell2 = row.insertCell(1);
-                cell2.innerHTML = rowCount + 1;
-                // Service Level type
-                var cell3 = row.insertCell(2);
-                cell3.innerHTML = "<input type='text'>";
-                cell3.childNodes[0].value = sls_url.split("#")[1];
-                cell3.childNodes[0].disabled = true;
-                // Service Level type description
-                var cell4 = row.insertCell(3);
-                cell4.innerHTML = "<input type='text'>";
-                cell4.childNodes[0].disabled = true;
-
-                // Service Level value
-                var cell5 = row.insertCell(4);
-                cell5.innerHTML = "<input type='text'>";
-                // Service Level description
-                var cell6 = row.insertCell(5);
-                cell6.innerHTML = "<input type='text'>";
-
-                // Unit of measurement
-                var cell7 = row.insertCell(6);
-                cell7.innerHTML = "<input type='text'>";
-                cell7.childNodes[0].disabled = true;
-                // Value type integer
-                var cell8 = row.insertCell(7);
-                cell8.innerHTML = "<input type='text'>";
-                cell8.childNodes[0].value = "float";
-                cell8.childNodes[0].disabled = true;
-                // Min value
-                var cell9 = row.insertCell(8);
-                cell9.innerHTML = "<input type='text'>";
-                // Value
-                var cell10 = row.insertCell(9);
-                cell10.innerHTML = "<input type='text'>";
-                // Max value
-                var cell11 = row.insertCell(10);
-                cell11.innerHTML = "<input type='text'>";
-                // Is range
-                var cell12 = row.insertCell(11);
-                cell12.innerHTML = "<input type='checkbox'>";
-                // Higher is better
-                var cell13 = row.insertCell(12);
-                cell13.innerHTML = "<input type='checkbox'>";
-                //Label
-                var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
-                label.each(function () {
-                        cell4.childNodes[0].value = this["label"].value;
-                    })
-                    // Unit of Measurement
-                var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
-                uom.each(function () {
-                        cell7.childNodes[0].value = this["uom"].value;
-                    })
-                    // Min value integer
-                var minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueFloat ?minv");
-                minv.each(function () {
-                        cell9.childNodes[0].value = this["minv"].value;
-                    })
-                    // Max value integer
-                var maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueFloat ?maxv");
-                maxv.each(function () {
-                        cell11.childNodes[0].value = this["maxv"].value;
-                    })
-                    // Range
-                var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
-                range.each(function () {
-                        if (this["range"].value.toString() == "true") {
-                            cell12.childNodes[0].checked = true;
-                            cell10.childNodes[0].disabled = true;
-                        } else {
-                            cell12.childNodes[0].checked = false;
-                            cell9.childNodes[0].disabled = true;
-                            cell11.childNodes[0].disabled = true;
-                        }
-                    })
-                    //Higher is better
-                var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
-                hib.each(function () {
-
-                    if (this["hib"].value.toString() == "true") {
-                        cell13.childNodes[0].checked = true;
-                    } else {
-                        cell13.childNodes[0].checked = false;
-                    }
-
-                })
-            })
+                i++;
+                createQuantitativeValueEntry(this["qvc"], kb, i, prefix, "float");
+            });
 
         }
 
@@ -1231,7 +1312,7 @@
 
                             <h2>Quantitative Service Level Schemas </h2>
 
-                            <div style="display:none">
+                            <!--div style="display:none">
                                 <table class="table" style="width: 95%" id="quantserviceleveldetails">
                                     <tr>
                                         <th></th>
@@ -1246,26 +1327,27 @@
                                         <th>Higher is better</th>
                                     </tr>
                                 </table>
+                            </div-->
+                            <div id="slQuantitative">
+                                <h2>Set quantitative values</h2>
+                                <!--table class="table" style="width: 95%" id="slvaluequant">
+                                    <tr>
+                                        <th></th>
+                                        <th>#</th>
+                                        <th>SL Schema</th>
+                                        <th> SL Schema Description</th>
+                                        <th>Service Level</th>
+                                        <th>Service Level Description</th>
+                                        <th>Unit of Measurement</th>
+                                        <th>Value type</th>
+                                        <th>Min Value</th>
+                                        <th>Value</th>
+                                        <th>Max Value</th>
+                                        <th>Is Range</th>
+                                        <th>Higher is better</th>
+                                    </tr>
+                                </table-->
                             </div>
-
-                            <h2>Set quantitative values</h2>
-                            <table class="table" style="width: 95%" id="slvaluequant">
-                                <tr>
-                                    <th></th>
-                                    <th>#</th>
-                                    <th>SL Schema</th>
-                                    <th> SL Schema Description</th>
-                                    <th>Service Level</th>
-                                    <th>Service Level Description</th>
-                                    <th>Unit of Measurement</th>
-                                    <th>Value type</th>
-                                    <th>Min Value</th>
-                                    <th>Value</th>
-                                    <th>Max Value</th>
-                                    <th>Is Range</th>
-                                    <th>Higher is better</th>
-                                </tr>
-                            </table>
                         </div>
                     </div>
 
