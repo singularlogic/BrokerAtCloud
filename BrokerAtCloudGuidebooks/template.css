@@ -243,12 +243,13 @@ code {
     font-size: 105%
 }
 
-input {
+tr input {
     width: 100%;
 }
 
 .bc-buttongroup {
     padding-left: 10px;
+    padding-bottom: 20px;
 }
 
 .bc-button4table {

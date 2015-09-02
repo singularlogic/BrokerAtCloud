@@ -130,8 +130,8 @@
             var qual_sl_table = document.getElementById("qualserviceleveldetails");
             for (i = 1; i < qual_sl_table.rows.length; i++) {
 
-                qual_sl_table.rows[i].cells[2].childNodes[0].disabled = true;
-                qual_sl_table.rows[i].cells[3].childNodes[0].disabled = true;
+                qual_sl_table.rows[i].cells[0].childNodes[0].disabled = true;
+                qual_sl_table.rows[i].cells[1].childNodes[0].disabled = true;
             }
         }
 
@@ -139,9 +139,9 @@
             var qual_sl_table = document.getElementById("classtaxconcepts");
             for (i = 1; i < qual_sl_table.rows.length; i++) {
 
+                qual_sl_table.rows[i].cells[0].childNodes[0].disabled = true;
+                qual_sl_table.rows[i].cells[1].childNodes[0].disabled = true;
                 qual_sl_table.rows[i].cells[2].childNodes[0].disabled = true;
-                qual_sl_table.rows[i].cells[3].childNodes[0].disabled = true;
-                qual_sl_table.rows[i].cells[4].childNodes[0].disabled = true;
             }
         }
 
@@ -235,7 +235,7 @@
         function addQualServiceLevelsToSD(kb) {
             var qual_sl_table = document.getElementById("qualserviceleveldetails");
             for (i = 1; i < qual_sl_table.rows.length; i++) {
-                var qual_value_type = qual_sl_table.rows[i].cells[2].childNodes[0].value;
+                var qual_value_type = qual_sl_table.rows[i].cells[0].childNodes[0].value;
                 // SL instance
                 kb.add("<SL" + qual_value_type + "Instance> a " + "bp:SL" + qual_value_type + " .")
                     .add("<" + document.getElementById("slp").value + "> bp:hasSL" + qual_value_type + " <SL" + qual_value_type + "Instance> .")
@@ -419,87 +419,83 @@
 
         function loadQualValuesNG(kb, serviceLevel, description) {
             //create table
+
+
+
             var qvTable = document.createElement('table');
             qvTable.setAttribute('id', 'table_' + serviceLevel);
             qvTable.setAttribute('style', 'width: 90%');
             var qvHeader = qvTable.insertRow();
-            [{}, {
-                content: '#'
-            }, {
-                content: 'Value'
+            [{
+                content: 'Value',
+                class: 'col-sm-3'
             }, {
                 content: 'Description',
-                style: 'width: 80%'
+                class: 'col-sm-9'
             }].forEach(function (descriptor) {
                 var headerCell = document.createElement('th');
                 if (descriptor.content) headerCell.appendChild(document.createTextNode(descriptor.content));
-                if (descriptor.style) headerCell.setAttribute('style', descriptor.style);
+                if (descriptor.class) headerCell.setAttribute('class', descriptor.class);
                 qvHeader.appendChild(headerCell);
             });
 
 
             var selectbox = document.createElement("SELECT");
             selectbox.setAttribute('id', 'ddlb_' + serviceLevel);
-
-            //var selectbox_string = '<select style="" id="ddlb_' + serviceLevel + '"' + '>';
-            //var table = document.getElementById("table_" + serviceLevel);
-            //table_string = table_string + '<div><H2>Value set of ' + serviceLevel + '</H2>';
-            //table_string = table_string + '<p>' + description + '</p>';
-            //table_string = table_string + '<table style="width: 90%" id="table_' + serviceLevel + '"' + '>' + '<tr><th></th><th></th><th>Value</th><th style="width: 80%">Description</th></tr>';
-
             // fill table with data
 
             var query = kb.where("?valinst a bp:" + serviceLevel + "");
             var rowcounter = 0;
             query.each(function () {
-                    var qvRow = qvTable.insertRow();
-                    var selection = this["valinst"];
-                    var qv_url = selection.value._string;
-                    var checkbox = document.createElement('input');
-                    checkbox.setAttribute('type', 'checkbox');
-                    qvRow.insertCell().appendChild(checkbox);
-                    //table_string = table_string + "<tr><td><input type='checkbox'></td>";
-                    rowcounter++;
-                    qvRow.insertCell().appendChild(document.createTextNode(rowcounter));
-                    //table_string = table_string + "<td>" + rowcounter + "</td>";
-                    var sl = document.createElement('input');
-                    sl.setAttribute('type', 'text');
-                    sl.setAttribute('value', qv_url.split("#")[1]);
-                    sl.setAttribute('disabled', 'true');
-                    qvRow.insertCell().appendChild(sl);
-                    //table_string = table_string + "<td><input type='text' disabled value='" + qv_url.split("#")[1] + "'></input></td>";
-                    var cell4Value = '';
-                    var label = kb.where("<" + qv_url + ">" + " rdfs:label ?label");
-                    label.each(function () {
-                        cell4Value = this["label"].value;
-                    });
-                    var slDesc = document.createElement('input');
-                    slDesc.setAttribute('type', 'text');
-                    slDesc.setAttribute('value', cell4Value);
-                    slDesc.setAttribute('disabled', 'true');
-                    qvRow.insertCell().appendChild(slDesc);
-                    //table_string = table_string + "<td><input type='text' disabled value='" + cell4Value + "'></input></td></tr>";
-                    //selectbox_string = selectbox_string + '<option value="' + qv_url + '">' + qv_url.split("#")[1] + '</option>';
-                    var selectOption = document.createElement('option');
-                    selectOption.setAttribute('value', qv_url);
-                    selectOption.appendChild(document.createTextNode(qv_url.split("#")[1]));
-                    selectbox.appendChild(selectOption);
-                })
-                //table_string = table_string + '</table>';
-                //selectbox_string = selectbox_string + '</select>';
-                //table_string = table_string + selectbox_string + '</div>';
+                var qvRow = qvTable.insertRow();
+                var selection = this["valinst"];
+                var qv_url = selection.value._string;
 
-            var qvDiv = document.createElement("div");
+                var sl = document.createElement('input');
+                sl.setAttribute('type', 'text');
+                sl.setAttribute('value', qv_url.split("#")[1]);
+                sl.setAttribute('disabled', 'true');
+                qvRow.insertCell().appendChild(sl);
+
+                var cell4Value = '';
+                var label = kb.where("<" + qv_url + ">" + " rdfs:label ?label");
+                label.each(function () {
+                    cell4Value = this["label"].value;
+                });
+                var slDesc = document.createElement('input');
+                slDesc.setAttribute('type', 'text');
+                slDesc.setAttribute('value', cell4Value);
+                slDesc.setAttribute('disabled', 'true');
+                qvRow.insertCell().appendChild(slDesc);
+
+                var selectOption = document.createElement('option');
+                selectOption.setAttribute('value', qv_url);
+                selectOption.appendChild(document.createTextNode(qv_url.split("#")[1]));
+                selectbox.appendChild(selectOption);
+            })
+
+            var panel = document.createElement('div');
+            panel.className = 'panel panel-default';
+            var panelHeader = document.createElement('div');
+            panelHeader.className = 'panel-heading';
+
+            //var qvDiv = document.createElement("div");
             var header = document.createElement('H2');
             header.appendChild(document.createTextNode('Value set of ' + serviceLevel));
-            qvDiv.appendChild(header);
+            panelHeader.appendChild(header);
+
+            var panelBody = document.createElement('div');
+            panelBody.classNAme = 'panel-body';
+
             var descriptionNode = document.createElement('p');
             descriptionNode.appendChild(document.createTextNode(description));
-            qvDiv.appendChild(descriptionNode);
+            panelBody.appendChild(descriptionNode);
 
-            qvDiv.appendChild(qvTable);
-            qvDiv.appendChild(selectbox);
-            var table = document.getElementById("qualvalues").appendChild(qvDiv);
+            panelBody.appendChild(qvTable);
+            panelBody.appendChild(selectbox);
+            panel.appendChild(panelHeader);
+            panel.appendChild(panelBody);
+            document.getElementById("qualvalues").appendChild(panel);
 
         }
 
@@ -520,175 +516,21 @@
 
                 var rowCount = table.rows.length;
                 var row = table.insertRow(rowCount);
-                var cell1 = row.insertCell(0);
-                var cell1content = document.createElement("INPUT");
-                cell1content.setAttribute('type', 'checkbox');
-                cell1.appendChild(cell1content);
-                //cell1.innerHTML = "<input type='checkbox'>";
-                var cell2 = row.insertCell(1);
-                cell2.appendChild(document.createTextNode(rowCount + 1));
-                var cell3 = row.insertCell(2);
+                var cell3 = row.insertCell();
                 var serviceLevelInput = document.createElement("INPUT");
                 serviceLevelInput.setAttribute('type', 'text');
                 serviceLevelInput.setAttribute('value', serviceLevel);
                 cell3.appendChild(serviceLevelInput);
-                //cell3.innerHTML = "<input type='text'>";
-                //cell3.childNodes[0].value = serviceLevel;
-                var cell4 = row.insertCell(3);
+                var cell4 = row.insertCell();
                 var serviceLevelDescriptionInput = document.createElement("INPUT");
                 serviceLevelDescriptionInput.setAttribute('type', 'text');
                 serviceLevelDescriptionInput.setAttribute('value', serviceLevelDescription);
                 cell4.appendChild(serviceLevelDescriptionInput);
                 loadQualValuesNG(kb, serviceLevel, serviceLevelDescription);
             });
-            //TODO: after each ServiceLevel load the matching ValueSets immideately
         }
 
 
-
-        /* function loadQuantitativeSLSchemas(kb) {
-             var quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueInteger");
-             quant_sls.each(function () {
-                 var selection = this["qvc"];
-                 var sls_url = selection.value._string;
-                 var table = document.getElementById("quantserviceleveldetails");
-                 var rowCount = table.rows.length;
-                 var row = table.insertRow(rowCount);
-                 var cell1 = row.insertCell(0);
-                 cell1.innerHTML = "<input type='checkbox'>";
-                 var cell2 = row.insertCell(1);
-                 cell2.innerHTML = rowCount + 1;
-                 var cell3 = row.insertCell(2);
-                 cell3.innerHTML = "<input type='text'>";
-                 cell3.childNodes[0].value = sls_url.split("#")[1];
-                 var cell4 = row.insertCell(3);
-                 cell4.innerHTML = "<input type='text'>";
-                 var cell5 = row.insertCell(4);
-                 cell5.innerHTML = "<input type='text'>";
-                 var cell6 = row.insertCell(5);
-                 cell6.innerHTML = "<select name='valuetype' id='value_type' > <option>integer</option> <option>float</option> </select>";
-                 var cell7 = row.insertCell(6);
-                 cell7.innerHTML = "<input type='text'>";
-                 var cell8 = row.insertCell(7);
-                 cell8.innerHTML = "<input type='text'>";
-                 var cell9 = row.insertCell(8);
-                 cell9.innerHTML = "<input type='checkbox'>";
-                 var cell10 = row.insertCell(9);
-                 cell10.innerHTML = "<input type='checkbox'>";
-                 //Label
-                 var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
-                 label.each(function () {
-                         cell4.childNodes[0].value = this["label"].value;
-                     })
-                     // Unit of Measurement
-                 var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
-                 uom.each(function () {
-                         cell5.childNodes[0].value = this["uom"].value;
-                     })
-                     // Min value integer
-                 var minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueInteger ?minv");
-                 minv.each(function () {
-                         cell7.childNodes[0].value = this["minv"].value;
-                     })
-                     // Max value integer
-                 var maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueInteger ?maxv");
-                 maxv.each(function () {
-                         cell8.childNodes[0].value = this["maxv"].value;
-                     })
-                     // Range
-                 var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
-                 range.each(function () {
-                         if (this["range"].value.toString() == "true") {
-                             cell9.childNodes[0].checked = true;
-                         } else {
-                             cell9.childNodes[0].checked = false;
-                         }
-                     })
-                     //Higher is better
-                 var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
-                 hib.each(function () {
-
-                     if (this["hib"].value.toString() == "true") {
-                         cell10.childNodes[0].checked = true;
-                     } else {
-                         cell10.childNodes[0].checked = false;
-                     }
-
-                 })
-             });
-             quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueFloat");
-             quant_sls.each(function () {
-                 var selection = this["qvc"];
-                 var sls_url = selection.value._string;
-                 var table = document.getElementById("quantserviceleveldetails");
-                 var rowCount = table.rows.length;
-                 var row = table.insertRow(rowCount);
-                 var cell1 = row.insertCell(0);
-                 cell1.innerHTML = "<input type='checkbox'>";
-                 var cell2 = row.insertCell(1);
-                 cell2.innerHTML = rowCount + 1;
-                 var cell3 = row.insertCell(2);
-                 cell3.innerHTML = "<input type='text'>";
-
-                 cell3.childNodes[0].value = sls_url.split("#")[1];
-                 var cell4 = row.insertCell(3);
-                 cell4.innerHTML = "<input type='text'>";
-                 var cell5 = row.insertCell(4);
-                 cell5.innerHTML = "<input type='text'>";
-                 var cell6 = row.insertCell(5);
-                 cell6.innerHTML = "<select name='valuetype' id='value_type' > <option>float</option> <option>integer</option>  </select>";
-                 var cell7 = row.insertCell(6);
-                 cell7.innerHTML = "<input type='text'>";
-                 var cell8 = row.insertCell(7);
-                 cell8.innerHTML = "<input type='text'>";
-                 var cell9 = row.insertCell(8);
-                 cell9.innerHTML = "<input type='checkbox'>";
-                 var cell10 = row.insertCell(9);
-                 cell10.innerHTML = "<input type='checkbox'>";
-                 //Label
-                 var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
-                 label.each(function () {
-                         cell4.childNodes[0].value = this["label"].value;
-                     })
-                     // Unit of Measurement
-                 var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
-                 uom.each(function () {
-                         cell5.childNodes[0].value = this["uom"].value;
-                     })
-                     // Min value integer
-                 var minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueFloat ?minv");
-                 minv.each(function () {
-                         cell7.childNodes[0].value = this["minv"].value;
-                     })
-                     // Max value integer
-                 var maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueFloat ?maxv");
-                 maxv.each(function () {
-                         cell8.childNodes[0].value = this["maxv"].value;
-                     })
-                     // Range
-                 var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
-                 range.each(function () {
-                     if (this["range"].value.toString() == "true") {
-                         cell9.childNodes[0].checked = true;
-                     } else {
-                         cell9.childNodes[0].checked = false;
-                     }
-                 });
-
-                 //Higher is better
-
-                 var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
-                 hib.each(function () {
-                     if (this["hib"].value.toString() == "true") {
-                         cell10.childNodes[0].checked = true;
-                     } else {
-                         cell10.childNodes[0].checked = false;
-                     }
-                 });
-
-             })
-
-         }*/
 
         function createQuantitativeValueForm(qv, prefix) {
             var createTextBox = function (title, content, id) {
@@ -710,19 +552,19 @@
                 return div;
             };
 
-            var createTextInputBox = function (title, content, id, readonly) {
+            var createTextInputBox = function (title, content, id, readonly, descriptorSize, contentSize) {
                 var div = document.createElement('div');
                 div.setAttribute('class', 'form-group');
                 div.appendChild(function () {
                     var label = document.createElement('label');
                     label.htmlFor = id;
-                    label.className = 'col-sm-2 control-label';
+                    label.className = 'col-sm-' + descriptorSize + ' control-label';
                     label.appendChild(document.createTextNode(title));
                     return label;
                 }());
                 div.appendChild(function () {
                     var innerDiv = document.createElement('div');
-                    innerDiv.className = 'col-sm-10';
+                    innerDiv.className = 'col-sm-' + contentSize;
                     innerDiv.appendChild(function () {
                         var input = document.createElement('input');
                         input.type = 'text';
@@ -736,13 +578,13 @@
                 }());
                 return div;
             };
-            var createTextAreaBox = function (title, content, id, readonly) {
+            var createTextAreaBox = function (title, content, id, readonly, descriptorSize, contentSize) {
                 var div = document.createElement('div');
                 div.setAttribute('class', 'form-group');
                 div.appendChild(function () {
                     var label = document.createElement('label');
                     label.htmlFor = id;
-                    label.className = 'col-sm-2 control-label';
+                    label.className = 'col-sm-' + descriptorSize + ' control-label';
                     label.appendChild(document.createTextNode(title));
                     return label;
                 }());
@@ -754,7 +596,7 @@
                         input.rows = 5;
                         input.id = id;
                         input.value = content;
-                        input.className = 'form-control col-sm-10';
+                        input.className = 'form-control col-sm-' + contentSize;
                         if (readonly) input.disabled = true;
                         return input;
                     }());
@@ -762,7 +604,7 @@
                 }());
                 return div;
             };
-            var createCheckBox = function (title, check, id) {
+            var createCheckBox = function (title, check, id, descriptorSize, contentSize) {
                 var div = document.createElement('div');
                 div.setAttribute('class', 'checkbox');
                 div.appendChild(function () {
@@ -779,7 +621,7 @@
                 }());
 
                 var outerDiv = document.createElement('div');
-                outerDiv.className = 'col-sm-offset-2 col-sm-10';
+                outerDiv.className = 'col-sm-offset-' + descriptorSize + ' col-sm-' + contentSize;
                 outerDiv.appendChild(div);
                 return outerDiv;
             };
@@ -790,7 +632,7 @@
                 var panelHeading = document.createElement('div');
                 panelHeading.className = 'panel-heading';
                 panelHeading.appendChild(function () {
-                    var header = document.createElement('h3');
+                    var header = document.createElement('h2');
                     header.appendChild(document.createTextNode(qv.type));
                     header.id = prefix + '_type';
                     return header;
@@ -807,37 +649,37 @@
                 return paragraph;
             }());
             form.appendChild(
-                createTextInputBox('Service Level', '', prefix + '_instance', false)
+                createTextInputBox('Service Level', '', prefix + '_instance', false, 2, 10)
             );
             form.appendChild(
-                createTextAreaBox('Service Level Description', '', prefix + '_instanceDesc', false)
+                createTextAreaBox('Service Level Description', '', prefix + '_instanceDesc', false, 2, 10)
             );
             form.appendChild(
-                createTextInputBox('Unit of Measurement', qv.uom, prefix + '_uom', true)
+                createTextInputBox('Unit of Measurement', qv.uom, prefix + '_uom', true, 2, 10)
             );
             form.appendChild(
-                createTextInputBox('Value type', qv.valueType, prefix + '_valueType', true)
+                createTextInputBox('Value type', qv.valueType, prefix + '_valueType', true, 2, 10)
             );
             if (!qv.isRange) {
                 form.appendChild(
-                    createTextInputBox('Min Value', qv.minValue, prefix + '_minValue', true)
+                    createTextInputBox('Min Value', qv.minValue, prefix + '_minValue', true, 2, 10)
                 );
                 form.appendChild(
-                    createTextInputBox('Value', '', prefix + '_value', false)
+                    createTextInputBox('Value', '', prefix + '_value', false, 2, 10)
                 );
                 form.appendChild(
-                    createTextInputBox('Max Value', qv.maxValue, prefix + '_maxValue', true)
+                    createTextInputBox('Max Value', qv.maxValue, prefix + '_maxValue', true, 2, 10)
                 );
             } else {
                 form.appendChild(
-                    createTextInputBox('Min Value', qv.minValue, prefix + '_minValue', false)
+                    createTextInputBox('Min Value', qv.minValue, prefix + '_minValue', false, 2, 10)
                 );
                 form.appendChild(
-                    createTextInputBox('Max Value', qv.maxValue, prefix + '_maxValue', false)
+                    createTextInputBox('Max Value', qv.maxValue, prefix + '_maxValue', false, 2, 10)
                 );
             }
-            form.appendChild(createCheckBox('Is Range', qv.isRange, prefix + '_isRange'));
-            form.appendChild(createCheckBox('Higher is Better', qv.higherIsBetter, prefix + '_higherIsBetter'));
+            form.appendChild(createCheckBox('Is Range', qv.isRange, prefix + '_isRange', 2, 4));
+            form.appendChild(createCheckBox('Higher is Better', qv.higherIsBetter, prefix + '_higherIsBetter', 2, 4));
 
 
 
@@ -908,68 +750,6 @@
                 qv.higherIsBetter = this["hib"].value;
             });
 
-            /*var table = document.getElementById("slvaluequant");
-
-            var row = table.insertRow();
-            var cell1 = row.insertCell(0);
-            cell1.innerHTML = "<input type='checkbox'>";
-            var cell2 = row.insertCell(1);
-            cell2.innerHTML = i;
-            // Service Level type
-            var cell3 = row.insertCell(2);
-            cell3.innerHTML = "<input type='text' id='" + idType + "'>";
-            cell3.childNodes[0].value = qv.type;
-            cell3.childNodes[0].disabled = true;
-            // Service Level type description
-            var cell4 = row.insertCell(3);
-            cell4.innerHTML = "<input type='text'>";
-            cell4.childNodes[0].disabled = true;
-            cell4.childNodes[0].value = qv.description;
-
-            // Service Level value
-            var cell5 = row.insertCell(4);
-            cell5.innerHTML = "<input type='text' id='" + idInstance + "'>";
-            // Service Level description
-            var cell6 = row.insertCell(5);
-            cell6.innerHTML = "<input type='text' id='" + idInstanceDesc + "'>";
-
-            // Unit of measurement
-            var cell7 = row.insertCell(6);
-            cell7.innerHTML = "<input type='text' id='" + idUom + "'>";
-            cell7.childNodes[0].disabled = true;
-            cell7.childNodes[0].value = qv.uom;
-            // Value type integer
-            var cell8 = row.insertCell(7);
-            cell8.innerHTML = "<input type='text' id='" + idValueType + "'>";
-            cell8.childNodes[0].value = qv.valueType;
-            cell8.childNodes[0].disabled = true;
-            // Min value
-            var cell9 = row.insertCell(8);
-            cell9.innerHTML = "<input type='text' id='" + idMinValue + "'>";
-            cell9.childNodes[0].value = qv.minValue;
-            // Value
-            var cell10 = row.insertCell(9);
-            cell10.innerHTML = "<input type='text' id='" + idValue + "'>";
-            // Max value
-            var cell11 = row.insertCell(10);
-            cell11.innerHTML = "<input type='text' id='" + idMaxValue + "'>";
-            cell11.childNodes[0].value = qv.maxValue;
-            // Is range
-            var cell12 = row.insertCell(11);
-            cell12.innerHTML = "<input type='checkbox' id='" + idIsRange + "'>";
-
-            if (qv.isRange) {
-                cell12.childNodes[0].checked = true;
-                cell10.childNodes[0].disabled = true;
-            } else {
-                cell12.childNodes[0].checked = false;
-                cell9.childNodes[0].disabled = true;
-                cell11.childNodes[0].disabled = true;
-            }
-            // Higher is better
-            var cell13 = row.insertCell(12);
-            cell13.innerHTML = "<input type='checkbox'>";
-            cell13.childNodes[0].checked = qv.higherIsBetter;*/
             document.getElementById("slQuantitative").appendChild(createQuantitativeValueForm(qv, prefix + i));
         }
 
@@ -1014,20 +794,17 @@
                 var selection = this["classconcept"];
                 var c_url = selection.value._string;
                 var table = document.getElementById("classtaxconcepts");
-                var rowCount = table.rows.length;
-                var row = table.insertRow(rowCount);
-                var cell1 = row.insertCell(0);
 
-                cell1.innerHTML = "<input type='checkbox'>";
-                var cell2 = row.insertCell(1);
-                cell2.innerHTML = rowCount + 1;
-                var cell3 = row.insertCell(2);
+                var row = table.insertRow();
+
+
+                var cell3 = row.insertCell();
                 cell3.innerHTML = "<input type='text'>";
                 cell3.childNodes[0].value = c_url.split("#")[1];
 
-                var cell4 = row.insertCell(3);
+                var cell4 = row.insertCell();
                 cell4.innerHTML = "<input type='text'>";
-                var cell5 = row.insertCell(4);
+                var cell5 = row.insertCell();
                 cell5.innerHTML = "<input type='text'>";
 
                 var title = kb.where("<" + c_url + ">" + " dcterms:title ?title");
@@ -1277,11 +1054,9 @@
 
                             <table class="table innerTable" id="classtaxconcepts">
                                 <tr>
-                                    <th></th>
-                                    <th>#</th>
-                                    <th>Classification tag</th>
-                                    <th>Description</th>
-                                    <th>Label</th>
+                                    <th class='col-sm-2'>Classification tag</th>
+                                    <th class='col-sm-8'>Description</th>
+                                    <th class='col-sm-2'>Label</th>
                                 </tr>
                             </table>
                         </div>
@@ -1309,45 +1084,7 @@
                             <h1> Specify your quantitative service levels</h1>
                         </div>
                         <div class="panel-body">
-
-                            <h2>Quantitative Service Level Schemas </h2>
-
-                            <!--div style="display:none">
-                                <table class="table" style="width: 95%" id="quantserviceleveldetails">
-                                    <tr>
-                                        <th></th>
-                                        <th>#</th>
-                                        <th>Service Level Schema</th>
-                                        <th>Description</th>
-                                        <th>Unit of Measurement</th>
-                                        <th>Value type</th>
-                                        <th>Min Value</th>
-                                        <th>Max Value</th>
-                                        <th>Is Range</th>
-                                        <th>Higher is better</th>
-                                    </tr>
-                                </table>
-                            </div-->
-                            <div id="slQuantitative">
-                                <h2>Set quantitative values</h2>
-                                <!--table class="table" style="width: 95%" id="slvaluequant">
-                                    <tr>
-                                        <th></th>
-                                        <th>#</th>
-                                        <th>SL Schema</th>
-                                        <th> SL Schema Description</th>
-                                        <th>Service Level</th>
-                                        <th>Service Level Description</th>
-                                        <th>Unit of Measurement</th>
-                                        <th>Value type</th>
-                                        <th>Min Value</th>
-                                        <th>Value</th>
-                                        <th>Max Value</th>
-                                        <th>Is Range</th>
-                                        <th>Higher is better</th>
-                                    </tr>
-                                </table-->
-                            </div>
+                            <div id="slQuantitative"></div>
                         </div>
                     </div>
 
@@ -1358,23 +1095,19 @@
                             <h1>Specify your qualitative service levels </h1>
                         </div>
                         <div class="panel-body">
-                            <h1>Qualitative Service Level Schemas </h1>
+                            <h1>Overview Qualitative Service Level Schemas </h1>
 
                             <table class="table" style="width: 95%" id="qualserviceleveldetails">
                                 <tr>
-                                    <th></th>
-                                    <th>#</th>
-                                    <th>Service Level</th>
-                                    <th>Description</th>
+                                    <th class='col-sm-3'>Service Level</th>
+                                    <th class='col-sm-9'>Description</th>
                                 </tr>
                             </table>
 
-                            <h1>Qualitative value sets </h1>
+                            <h1>Specify Qualitative values</h1>
                             <p id="qualvalues">
 
                             </p>
-                            <h2>Select qualitative values</h2>
-                            <p id="slspecqual"></p>
 
                         </div>
                     </div>

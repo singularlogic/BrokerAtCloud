@@ -166,12 +166,13 @@
             var tables_section = '';
             //tables_section = tables_section + '<div class="bc-buttongroup">';
             for (i = 1; i < qual_sl_table.rows.length; i++) {
-                tables_section = tables_section + '<div><H2>Specify qualitative values for ' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '</H2>';
-                tables_section = tables_section + '<table style="width: 90%" id="table_' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '"' + '>' + '<tr><th></th><th></th><th>Value</th><th style="width: 80%">Description</th></tr> </table>';
+                tables_section = tables_section + '<div class="panel panel-default"><div class="panel-heading"><H2>Specify qualitative values for ' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '</H2></div>';
+                tables_section = tables_section + '<div class="panel-body"><table style="width: 90%" id="table_' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '"' + '>' + '<tr><th></th><th></th><th>Value</th><th style="width: 80%">Description</th></tr> </table>';
                 tables_section = tables_section + "<div style='width: 90%' class='bc-button4table'><button onclick='" + 'addQualValue(qual_table = ' + '"table_' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '"' + ")'> Add </button>" +
-                    "<button onclick='" + 'deleteQualValue(qual_table = ' + '"table_' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '"' + ")'> Delete </button></div></div>";
+                    "<button onclick='" + 'deleteQualValue(qual_table = ' + '"table_' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '"' + ")'> Delete </button></div></div></div>";
             }
             anchor.innerHTML = tables_section;
+            $("#qualValuePanel").collapse('show');
             //window.alert(anchor.innerHTML);
         }
 
@@ -305,6 +306,7 @@
             document.getElementById("safe_schemas").disabled = false;
             document.getElementById("edit_schemas").disabled = true;
             deleteQualitativeTables();
+            $('#qualValuePanel').collapse('hide');
         }
 
         function allowDrop(event) {
@@ -1093,146 +1095,174 @@
                 </div>
 
                 <div id="serviceEditArea" class="collapse in">
-                    <div>
-                        <h1> Specify your broker namespace </h1>
-                        <p style="margin-bottom: 30px; width: 95%"> Namespace:
-                            <input type="text" id="bp_namespace" value="http://yourbrokernamespace.com"> </p>
-                    </div>
-                    <div>
-                        <h1> Describe your legal business entity </h1>
-
-                        <table class="table" style="width: 80%">
-                            <tr>
-                                <td style="width: 20%"> Broker acronym :</td>
-                                <td>
-                                    <input style="" type="text" id="bp_business_entity" value="YourBrokerCompanyAcronym">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td> Broker legal name: </td>
-                                <td>
-                                    <input style="" type="text" id="bp_legal_name" value="Your BrokerCompany Legal Name">
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
-
-                    <div>
-                        <h1> Describe your broker policy </h1>
-                        <table class="table" style="width: 80%">
-                            <tr>
-                                <td style="width: 20%"> Title: </td>
-                                <td>
-                                    <input type="text" id="bp_instance" value="YourBrokerPolicyTitle"> </td>
-                            </tr>
-                            <tr>
-                                <td> Broker policy model name: </td>
-                                <td>
-                                    <input type="text" id="bp_model" value="YourBrokerPolicyModelName"> </td>
-
-                            </tr>
-                        </table>
-
-                    </div>
-                    <div>
-                        <h1> Provide classification taxonomy</h1>
-
-                        <table class="table" style="width: 80%">
-                            <tr>
-                                <td style="width: 20%"> Prefix: </td>
-                                <td>
-                                    <input type="text" id="classtaxpref" value="fc"> </td>
-                            </tr>
-                            <tr>
-                                <td> URI: </td>
-                                <td>
-                                    <input type="text" id="classtaxURI" value="http://www.broker-cloud.eu/service-descriptions/CAS/categories"> </td>
-
-                            </tr>
-                            <tr>
-                                <td> Root concept: </td>
-                                <td>
-                                    <input type="text" id="classtaxroot" value="rootConcept"> </td>
-
-                            </tr>
-                        </table>
-
-                        <table class="table" style="width: 95%" id="classtaxconcepts">
-                            <tr>
-                                <th></th>
-                                <th>#</th>
-                                <th>Classification tag</th>
-                                <th>Description</th>
-                                <th>Label</th>
-                            </tr>
-                        </table>
-                        <div class="bc-button4table" style="width: 95%">
-                            <button class="btn btn-default" id="classtax_table_add" onclick="addClassificationConcept()"> Add </button>
-                            <button class="btn btn-default" id="classtax_table_delete" onclick="deleteClassificationConcept()"> Delete </button>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1>Specify your Broker Namespace </h1></div>
+                        <div class="panel-body">
+                            <!--p> Specify your broker namespace </p-->
+                            <form>
+                                <div class="form-group">
+                                    <label>Broker Namespace</label>
+                                    <input type="text" class="form-control" id="bp_namespace" value="http://yourbrokernamespace.com">
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    <div>
-                        <h1> Specify your service level profile type </h1>
-                        <p style="margin-bottom: 30px; width: 95%"> Title:
-                            <input type="text" id="slp_class" value="SomeServiceLevelProfile"> </p>
-                    </div>
-                    <div>
-                        <h1>Specify Quantitative Service Level Schemas </h1>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1> Describe your legal business entity </h1>
+                        </div>
+                        <div class='panel-body'>
+                            <form>
+                                <div class="form-group">
+                                    <label>Broker acronym</label>
+                                    <input class="form-control" type="text" id="bp_business_entity" value="YourBrokerCompanyAcronym">
+                                </div>
+                                <div class="form-group">
+                                    <label>Broker legal name</label>
+                                    <input class="form-control" type="text" id="bp_legal_name" value="Your BrokerCompany Legal Name">
+                                </div>
+                            </form>
 
-
-                        <table class="table" style="width: 95%" id="quantserviceleveldetails">
-                            <tr>
-                                <th></th>
-                                <th>#</th>
-                                <th>Service Level</th>
-                                <th>Description</th>
-                                <th>Unit of Measurement</th>
-                                <th>Value type</th>
-                                <th>Min Value</th>
-                                <th>Max Value</th>
-                                <th>Is Range</th>
-                                <th>Higher is better</th>
-                            </tr>
-                        </table>
-                        <div class="bc-button4table" style="width: 95%">
-                            <button class="btn btn-default" id="quant_sl_table_add" onclick="addQuantSLConcept()"> Add </button>
-                            <button class="btn btn-default" id="quant_sl_table_delete" onclick="deleteQuantSLConcept()"> Delete </button>
                         </div>
                     </div>
-                    <div>
-                        <h1>Specify Qualitative Service Level Schemas </h1>
 
-                        <table class="table" style="width: 95%" id="qualserviceleveldetails">
-                            <tr>
-                                <th></th>
-                                <th>#</th>
-                                <th>Service Level</th>
-                                <th>Description</th>
-                            </tr>
-                        </table>
-                        <div class="bc-button4table" style="width: 95%">
-                            <button class="btn btn-default" id="qual_sl_table_add" onclick="addQualSLConcept()"> Add </button>
-                            <button class="btn btn-default" id="qual_sl_table_delete" onclick="deleteQualSLConcept()"> Delete </button>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1> Describe your broker policy </h1>
+                        </div>
+                        <div class='panel-body'>
+                            <form>
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input class="form-control" type="text" id="bp_instance" value="YourBrokerPolicyTitle">
+                                </div>
+                                <div class="form-group">
+                                    <label>Broker policy model name</label>
+                                    <input class="form-control" type="text" id="bp_model" value="YourBrokerPolicyModelName">
+                                </div>
+                            </form>
+
+
+
                         </div>
                     </div>
-                    <div class="bc-buttongroup">
-                        <button class="btn btn-default" id="safe_schemas" onclick="save_SLSchemas()">Save the Service Level Schemas. </button>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1> Provide classification taxonomy</h1>
+                        </div>
+                        <div class='panel-body'>
+                            <form>
+                                <div class="form-group">
+                                    <label>Prefix</label>
+                                    <input class="form-control" type="text" id="classtaxpref" value="fc">
+                                </div>
+                                <div class="form-group">
+                                    <label>URI</label>
+                                    <input class="form-control" type="text" id="classtaxURI" value="http://www.broker-cloud.eu/service-descriptions/CAS/categories">
+                                </div>
+                                <div class="form-group">
+                                    <label>Root concept</label>
+                                    <input class="form-control" type="text" id="classtaxroot" value="rootConcept">
+                                </div>
+                            </form>
 
-                        <button class="btn btn-default" id="edit_schemas" disabled="disabled" onclick="activateInputFields()">Edit the Service Level Schemas. </button>
+
+                            <table class="table" style="width: 95%" id="classtaxconcepts">
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Classification tag</th>
+                                    <th>Description</th>
+                                    <th>Label</th>
+                                </tr>
+                            </table>
+                            <div class="bc-button4table" style="width: 95%">
+                                <button class="btn btn-default" id="classtax_table_add" onclick="addClassificationConcept()"> Add </button>
+                                <button class="btn btn-default" id="classtax_table_delete" onclick="deleteClassificationConcept()"> Delete </button>
+                            </div>
+                        </div>
                     </div>
-                    <h1>Specify qualitatve value sets </h1>
-                    <p id="qualvalues">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1>Specify your service level profile type </h1>
+                        </div>
+                        <div class='panel-body'>
+                            <form>
+                                <label>Service Level Profile</label>
+                                <input type="text" class="form-control" id="slp_class" value="SomeServiceLevelProfile"> </p>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1>Specify Quantitative Service Level Schemas</h1>
+                        </div>
+                        <div class='panel-body'>
+                            <table class="table" style="width: 95%" id="quantserviceleveldetails">
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Service Level</th>
+                                    <th>Description</th>
+                                    <th>Unit of Measurement</th>
+                                    <th>Value type</th>
+                                    <th>Min Value</th>
+                                    <th>Max Value</th>
+                                    <th>Is Range</th>
+                                    <th>Higher is better</th>
+                                </tr>
+                            </table>
+                            <div class="bc-button4table" style="width: 95%">
+                                <button class="btn btn-default" id="quant_sl_table_add" onclick="addQuantSLConcept()"> Add </button>
+                                <button class="btn btn-default" id="quant_sl_table_delete" onclick="deleteQuantSLConcept()"> Delete </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1>Qualitative Service Levels</h1>
+                        </div>
+                        <div class='panel-body'>
+                            <h2>Specify Qualitative Service Level Schemas </h2>
 
-                    </p>
+                            <table class="table" style="width: 95%" id="qualserviceleveldetails">
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Service Level</th>
+                                    <th>Description</th>
+                                </tr>
+                            </table>
+                            <div class="bc-button4table" style="width: 95%">
+                                <button class="btn btn-default" id="qual_sl_table_add" onclick="addQualSLConcept()"> Add </button>
+                                <button class="btn btn-default" id="qual_sl_table_delete" onclick="deleteQualSLConcept()"> Delete </button>
+                            </div>
+
+                            <div class="bc-buttongroup">
+                                <button class="btn btn-default" id="safe_schemas" onclick="save_SLSchemas()">Save the Service Level Schemas. </button>
+
+                                <button class="btn btn-default" id="edit_schemas" disabled="disabled" onclick="activateInputFields()">Edit the Service Level Schemas. </button>
+                            </div>
+                            <div class="panel panel-default collapse" id='qualValuePanel'>
+                                <div class="panel-heading">
+                                    <h2>Qualitatve value sets </h2>
+                                </div>
+                                <div class='panel-body'>
+                                    <p id="qualvalues">
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bc-buttongroup">
+                            <button class="btn btn-default" onclick="storeBP()">Show the business policy specification. </button>
 
 
-                    <div class="bc-buttongroup">
-                        <button class="btn btn-default" onclick="storeBP()">Show the business policy specification. </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 </body>
 
 

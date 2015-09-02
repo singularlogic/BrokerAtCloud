@@ -166,12 +166,15 @@
             //element1.type = "checkbox";
             //element1.type = "chkbox[]";
             //cell1.appendChild(element1);
+            cell1.className = 'col-sm-1';
             cell1.innerHTML = "<input type='checkbox'>";
             var cell2 = row.insertCell(1);
             cell2.innerHTML = rowCount + 1;
+            cell2.className = 'col-sm-1';
             var cell3 = row.insertCell(2);
             var tax_class = document.getElementById("classtaxonomy").value;
             cell3.innerHTML = tax_class;
+            cell3.className = 'col-sm-10';
         }
 
         function deleteConcept() {
@@ -374,70 +377,94 @@
         </div>
 
         <div id="serviceEditArea" class="collapse">
-            <h1> Specify your namespace </h1>
-            <p> Namespace:
-                <input type="text" id="sd_namespace" value="http://yournamespace.com"> </p>
-            <h1> Describe your legal business entity </h1>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1> Specify your namespace </h1>
+                </div>
+                <div class="panel-body">
+                    <!--p> Specify your broker namespace </p-->
+                    <form>
+                        <div class="form-group">
+                            <label>Broker Namespace</label>
+                            <input type="text" class="form-control" id="sd_namespace" value="http://yourbrokernamespace.com">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>Describe your legal business entity </h1>
+                </div>
+                <div class="panel-body">
+                    <form>
+                        <div class="form-group">
+                            <label>Provider acronym</label>
+                            <input class="form-control" type="text" id="sp_business_entity" value="YourCompanyAcronym">
+                        </div>
+                        <div class="form-group">
+                            <label>Provider legal name</label>
+                            <input class="form-control" type="text" id="sp_legal_name" value="Your Company Legal Name">
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>Describe your service</h1></div>
+                <div class="panel-body">
+                    <form>
+                        <div class="form-group">
+                            <label>Title</label>
+                            <input class="form-control" type="text" id="sd" value="YourServiceDescriptionTitle">
+                            <input type="text" id="servicemodel_class" value="Broker Policy Class" disabled="disabled" hidden="hidden">
+                        </div>
+                        <div class="form-group">
+                            <label>Service model name</label>
+                            <input class="form-control" type="text" id="sd_model" value="YourServiceModelName">
+                            <input type="text" id="servicemodel" value="Broker Policy Instance" disabled="disabled" hidden="hidden">
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-            <table style="width: 80%">
-                <tr>
-                    <td style="width: 20%"> Provider acronym :</td>
-                    <td>
-                        <input style="" type="text" id="sp_business_entity" value="YourCompanyAcronym">
-                    </td>
-                </tr>
-                <tr>
-                    <td> Provider legal name: </td>
-                    <td>
-                        <input style="" type="text" id="sp_legal_name" value="Your Company Legal Name">
-                    </td>
-                </tr>
-            </table>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>Classify your service</h1></div>
+                <div class="panel-body">
+                    <b>Available service classification concepts:</b>
+                    <select name="classifications" id="classtaxonomy"> </select>
+                    <button class="btn btn-default" onclick="addConcept()"> Add </button>
+                    <button class="btn btn-default" onclick="deleteConcept()"> Delete </button>
 
-            <h1> Describe your service </h1>
-            <table style="width: 80%">
-                <tr>
-                    <td style="width: 20%"> Title: </td>
-                    <td>
-                        <input type="text" id="sd" value="YourServiceDescriptionTitle">
-                    </td>
-                    <td>
-                        <input type="text" id="servicemodel_class" value="Broker Policy Class" disabled="disabled" hidden="hidden"> </td>
-                </tr>
-                <tr>
-                    <td> Service model name: </td>
-                    <td>
-                        <input type="text" id="sd_model" value="YourServiceModelName"> </td>
-                    <td>
-                        <input type="text" id="servicemodel" value="Broker Policy Instance" disabled="disabled" hidden="hidden"> </td>
-                </tr>
-            </table>
+                    <div class='col-sm-12'>
+                        <table class='table' id="class_table">
+
+                        </table>
+                    </div>
+                </div>
+            </div>
 
 
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1>Select a Service Level Profile applicable to your service </h1>
+                </div>
+                <div class="panel-body">
 
-            <h1> Classify your service</h1>
-            <p>Available service classification concepts:
-                <select name="classifications" id="classtaxonomy"> </select>
-                <button class="btn btn-default" onclick="addConcept()"> Add </button>
-                <button class="btn btn-default" onclick="deleteConcept()"> Delete </button>
-                <table id="class_table">
-                </table>
-            </p>
-            <h1>Select a Service Level Profile applicable to your service </h1>
-            <p>
-                <input type="text" id="slp_class" value="SomeServiceLevelProfile" disabled="disabled" hidden="hidden">
-                <select name="servicelevelprofiles" id="slp" onchange="loadServiceLevels()"> </select>
-            </p>
-
-            <table style="width: 80%" id="serviceleveldetails">
-                <tr>
-                    <th>Service Level</th>
-                    <th>Value</th>
-                    <th>Value Label</th>
-                </tr>
-            </table>
+                    <input type="text" id="slp_class" value="SomeServiceLevelProfile" disabled="disabled" hidden="hidden">
+                    <select name="servicelevelprofiles" id="slp" onchange="loadServiceLevels()"> </select>
 
 
+                    <table class='table' style="width: 80%" id="serviceleveldetails">
+                        <tr>
+                            <th>Service Level</th>
+                            <th>Value</th>
+                            <th>Value Label</th>
+                        </tr>
+                    </table>
+
+                </div>
+            </div>
             <p>
                 <button class="btn btn-default" onclick="storeSD()">Show the service description specification. </button>
             </p>
