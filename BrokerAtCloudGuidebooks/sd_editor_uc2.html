@@ -262,7 +262,7 @@
             var quant_sl_table = document.getElementById("slvaluequant");
             var quant_sl_size = document.getElementById("slQuantitative").children.length;
             //for (i = 1; i < quant_sl_table.rows.length; i++) {
-            for (i = 1; i < quant_sl_size; i++) {
+            for (i = 1; i <= quant_sl_size; i++) {
                 var idType = prefix + i + '_type';
                 var idInstance = prefix + i + '_instance';
                 var idInstanceDesc = prefix + i + '_instanceDesc';
@@ -273,7 +273,7 @@
                 var idMaxValue = prefix + i + '_maxValue';
                 var idValue = prefix + i + '_value';
 
-                var quant_value_typeNG = document.getElementById(idType).value;
+                var quant_value_typeNG = document.getElementById(idType).innerHTML;
                 var quant_value_instNG = document.getElementById(idInstance).value;
                 var uomNG = document.getElementById(idUom).value;
                 var isRangeNG = document.getElementById(idIsRange).checked;
