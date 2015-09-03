@@ -1,0 +1,275 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . 
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> . 
+@prefix dcterms: <http://purl.org/dc/terms/> . 
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> . 
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> . 
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> . 
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> . 
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> . 
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> . 
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> . 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+@prefix ctag: <http://commontag.org/ns#> . 
+@prefix org: <http://www.w3.org/ns/org#> . 
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> . 
+@prefix time: <http://www.w3.org/2006/time#> . 
+@prefix gr: <http://purl.org/goodrelations/v1#> . 
+@prefix doap: <http://usefulinc.com/ns/doap#> . 
+@prefix px: <http://www.broker-cloud.eu/service-descriptions/torax/categories#> . 
+@prefix bp: <http://yourbrokernamespace.com#> . 
+
+bp:AAAAAAAcronymAAA 
+  a gr:BusinessEntity ; 
+  gr:legalName "Broker Legal NameSSS"^^xsd:string . 
+
+bp:AAAAAAAcronymAAAEntityInvolvement 
+  a usdl-core:EntityInvolvement ; 
+  usdl-core:withBusinessRole usdl-business-roles:intermediary ; 
+  usdl-core:ofBusinessEntity bp:AAAAAAAcronymAAA . 
+
+bp:MyBrokerPolicyTitle 
+  a bp:MyBrokerPolicyModelName ; 
+  dcterms:creator bp:AAAAAAAcronymAAA ; 
+  usdl-core:hasEntityInvolvement bp:AAAAAAAcronymAAAEntityInvolvement ; 
+  usdl-core-cb:hasClassificationDimension px:rootOfAllEvil . 
+
+bp:MyBrokerPolicyModelName 
+  rdfs:subClassOf usdl-core:ServiceModel . 
+
+bp:BestServiceLevelProvile 
+  rdfs:subClassOf usdl-sla:ServiceLevelProfile . 
+
+bp:hasBestServiceLevelProvile 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile ; 
+  rdfs:domain bp:MyBrokerPolicyModelName ; 
+  rdfs:range bp:BestServiceLevelProvile . 
+
+px:MyBrokerPolicyTitleConceptScheme 
+  a skos:ConceptScheme ; 
+  dcterms:title "Root for all classification dimensions." ; 
+  skos:prefLabel "Root Concept Scheme"@en ; 
+  skos:hasTopConcept px:rootOfAllEvil . 
+
+px:rootOfAllEvil 
+  a usdl-core-cb:ClassificationDimension ; 
+  skos:prefLabel "Root Concept"@en ; 
+  skos:topConceptOf px:MyBrokerPolicyTitleConceptScheme ; 
+  skos:inScheme px:MyBrokerPolicyTitleConceptScheme ; 
+  skos:narrower px:ClassA , 
+    px:Special . 
+
+px:ClassA 
+  a usdl-core-cb:ClassificationDimension ; 
+  dcterms:title "Class a" ; 
+  skos:prefLabel "caLabel"@en ; 
+  skos:broader px:rootOfAllEvil ; 
+  skos:inScheme px:MyBrokerPolicyTitleConceptScheme . 
+
+px:Special 
+  a usdl-core-cb:ClassificationDimension ; 
+  dcterms:title "very special" ; 
+  skos:prefLabel "specialLabel"@en ; 
+  skos:broader px:rootOfAllEvil ; 
+  skos:inScheme px:MyBrokerPolicyTitleConceptScheme . 
+
+bp:SLAristocracy 
+  rdfs:subClassOf usdl-sla:ServiceLevel . 
+
+bp:hasSLAristocracy 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
+  rdfs:domain bp:BestServiceLevelProvile ; 
+  rdfs:range bp:SLAristocracy . 
+
+bp:SLEAristocracy 
+  rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+bp:hasSLEAristocracy 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
+  rdfs:domain bp:SLAristocracy ; 
+  rdfs:range bp:SLEAristocracy . 
+
+bp:VarAristocracy 
+  rdfs:subClassOf usdl-sla:Variable . 
+
+bp:hasVarAristocracy 
+  rdfs:subPropertyOf usdl-sla:hasVariable ; 
+  rdfs:domain bp:SLEAristocracy ; 
+  rdfs:range bp:VarAristocracy . 
+
+bp:Aristocracy 
+  rdfs:subClassOf gr:QualitativeValue ; 
+  rdfs:label "Nobility by title"^^xsd:string . 
+
+bp:hasDefaultAristocracy 
+  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
+  rdfs:domain bp:VarAristocracy ; 
+  rdfs:range bp:Aristocracy . 
+
+bp:hasAristocracy 
+  rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty ; 
+  rdfs:domain bp:MyBrokerPolicyModelName ; 
+  rdfs:range bp:Aristocracy . 
+
+bp:SLMusic 
+  rdfs:subClassOf usdl-sla:ServiceLevel . 
+
+bp:hasSLMusic 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
+  rdfs:domain bp:BestServiceLevelProvile ; 
+  rdfs:range bp:SLMusic . 
+
+bp:SLEMusic 
+  rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+bp:hasSLEMusic 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
+  rdfs:domain bp:SLMusic ; 
+  rdfs:range bp:SLEMusic . 
+
+bp:VarMusic 
+  rdfs:subClassOf usdl-sla:Variable . 
+
+bp:hasVarMusic 
+  rdfs:subPropertyOf usdl-sla:hasVariable ; 
+  rdfs:domain bp:SLEMusic ; 
+  rdfs:range bp:VarMusic . 
+
+bp:Music 
+  rdfs:subClassOf gr:QualitativeValue ; 
+  rdfs:label "The bells are ringing"^^xsd:string . 
+
+bp:hasDefaultMusic 
+  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
+  rdfs:domain bp:VarMusic ; 
+  rdfs:range bp:Music . 
+
+bp:hasMusic 
+  rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty ; 
+  rdfs:domain bp:MyBrokerPolicyModelName ; 
+  rdfs:range bp:Music . 
+
+bp:SLCarelessness 
+  rdfs:subClassOf usdl-sla:ServiceLevel . 
+
+bp:hasSLCarelessness 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
+  rdfs:domain bp:BestServiceLevelProvile ; 
+  rdfs:range bp:SLCarelessness . 
+
+bp:SLECarelessness 
+  rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+bp:hasSLECarelessness 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
+  rdfs:domain bp:SLCarelessness ; 
+  rdfs:range bp:SLECarelessness . 
+
+bp:VarCarelessness 
+  rdfs:subClassOf usdl-sla:Variable . 
+
+bp:hasVarCarelessness 
+  rdfs:subPropertyOf usdl-sla:hasVariable ; 
+  rdfs:domain bp:SLECarelessness ; 
+  rdfs:range bp:VarCarelessness . 
+
+bp:Carelessness 
+  rdfs:subClassOf gr:QuantitativeValueFloat ; 
+  rdfs:label "Who cares"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "cares"^^xsd:string ; 
+  gr:hasMinValueFloat "0"^^xsd:float ; 
+  gr:hasMaxValueFloat "10000"^^xsd:float ; 
+  usdl-core-cb:isRange "true"^^xsd:boolean ; 
+  usdl-core-cb:higherIsBetter "false"^^xsd:boolean . 
+
+bp:CarelessnessValueRange 
+  a bp:Carelessness ; 
+  rdfs:label "Who cares"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "cares"^^xsd:string ; 
+  gr:hasMinValueFloat "0"^^xsd:float ; 
+  gr:hasMaxValueFloat "10000"^^xsd:float . 
+
+bp:hasDefaultCarelessness 
+  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:VarCarelessness ; 
+  rdfs:range bp:Carelessness . 
+
+bp:hasCarelessness 
+  rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ; 
+  rdfs:domain bp:MyBrokerPolicyModelName ; 
+  rdfs:range bp:Carelessness . 
+
+bp:SLSpecialness 
+  rdfs:subClassOf usdl-sla:ServiceLevel . 
+
+bp:hasSLSpecialness 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
+  rdfs:domain bp:BestServiceLevelProvile ; 
+  rdfs:range bp:SLSpecialness . 
+
+bp:SLESpecialness 
+  rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+bp:hasSLESpecialness 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
+  rdfs:domain bp:SLSpecialness ; 
+  rdfs:range bp:SLESpecialness . 
+
+bp:VarSpecialness 
+  rdfs:subClassOf usdl-sla:Variable . 
+
+bp:hasVarSpecialness 
+  rdfs:subPropertyOf usdl-sla:hasVariable ; 
+  rdfs:domain bp:SLESpecialness ; 
+  rdfs:range bp:VarSpecialness . 
+
+bp:Specialness 
+  rdfs:subClassOf gr:QuantitativeValueInteger ; 
+  rdfs:label "With all my heart"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "Luftballons"^^xsd:string ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "99"^^xsd:integer ; 
+  usdl-core-cb:isRange "false"^^xsd:boolean ; 
+  usdl-core-cb:higherIsBetter "true"^^xsd:boolean . 
+
+bp:SpecialnessValueRange 
+  a bp:Specialness ; 
+  rdfs:label "With all my heart"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "Luftballons"^^xsd:string ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "99"^^xsd:integer . 
+
+bp:hasDefaultSpecialness 
+  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:VarSpecialness ; 
+  rdfs:range bp:Specialness . 
+
+bp:hasSpecialness 
+  rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ; 
+  rdfs:domain bp:MyBrokerPolicyModelName ; 
+  rdfs:range bp:Specialness . 
+
+bp:King 
+  a bp:Aristocracy ; 
+  rdfs:label "like the chess thing"@en . 
+
+bp:Count 
+  a bp:Aristocracy ; 
+  rdfs:label "Can you count everything?"@en . 
+
+bp:Knight 
+  a bp:Aristocracy ; 
+  rdfs:label "Knight as in Jedi"@en . 
+
+bp:Rock 
+  a bp:Music ; 
+  rdfs:label "Du rockst"@en . 
+
+bp:Pop 
+  a bp:Music ; 
+  rdfs:label "Nunja"@en . 
+
+bp:silence 
+  a bp:Music ; 
+  rdfs:label "keine Musik für dich"@en . 

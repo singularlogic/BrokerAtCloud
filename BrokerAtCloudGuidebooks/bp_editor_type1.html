@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html prefix="rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+              rdfs: http://www.w3.org/2000/01/rdf-schema#
+              foaf: http://xmlns.com/foaf/0.1/
+              owl: http://www.w3.org/2002/07/owl#
+              dcterms: http://purl.org/dc/terms/
+              gr: http://purl.org/goodrelations/v1#
+              usdl-core: http://www.linked-usdl.org/ns/usdl-core#
+
+              vcard: http://www.w3.org/2006/vcard/ns#
+              xsd: http://www.w3.org/2001/XMLSchema#">
+
+<head>
+    <!--link rel="stylesheet" type = "text/css" href="styles.css"-->
+    <style>
+        .droptarget {
+            float: down;
+            <!-- width: 400px;
+            --> height: 50px;
+            margin: 5px;
+            padding: 5px;
+            font-size: 14pt;
+            border: 5px solid #ffaaaa;
+            background-color: lightgrey;
+        }
+    </style>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge;chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+    <title>USDL Service Description Editor for Broker Policies with instantiated profiles</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="viewport" content="width=980" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="shortcut icon" href="images/usdl-solo.ico" />
+    <link rel="apple-touch-icon" href="images/splash_about.png" />
+    <link rel="stylesheet" href="jquery/css/smoothness/jquery-ui-1.8.6.custom.css" />
+    <link rel="stylesheet" href="css/jquery-ui-timepicker-addon.css" />
+    <!--link rel="stylesheet" href="css/jquery.jgrowl.css" type="text/css"/-->
+    <!--link rel="stylesheet" href="css/ui.sa.css" />
+<link rel="stylesheet" href="css/sapUiUx3.css" />
+<link rel="stylesheet" href="css/infovis.css" /-->
+
+    <!-- Bootstrap -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Bootstrap theme -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap-theme.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="template.css" rel="stylesheet">
+
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/jquery-ui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!--script type="text/javascript" src="jquery/js/jquery-1.6.2.min.js" ></script-->
+    <!--script type="text/javascript" src="jquery/js/jquery-ui-1.8.16.custom.min.js"></script-->
+    <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+    <script type="text/javascript" src="js/jquery.editable-1.3.3.js"></script>
+    <script type="text/javascript" src="js/jquery.livequery.js"></script>
+    <script type="text/javascript" src="js/jquery.clicknscroll.v1.0.js"></script>
+    <script type="text/javascript" src="js/jquery.sa.js"></script>
+    <script type="text/javascript" src="js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/mime.js"></script>
+    <script type="text/javascript" src="js/slidedeck.js"></script>
+    <script type="text/javascript" src="js/jquery.jgrowl_minimized.js"></script>
+    <script type="text/javascript" src="js/Math.uuid.js"></script>
+    <script type="text/javascript" src="js/base64.js"></script>
+    <!--script type="text/javascript" src="js/jit-yc.js"></script-->
+    <script type="text/javascript" src="rdfquery/jquery.json.js"></script>
+    <script type="text/javascript" src="rdfquery/jquery.uri.js"></script>
+    <script type="text/javascript" src="rdfquery/jquery.xmlns.js"></script>
+    <script type="text/javascript" src="rdfquery/jquery.curie.js"></script>
+    <script type="text/javascript" src="rdfquery/jquery.datatype.js"></script>
+    <script type="text/javascript" src="rdfquery/jquery.rdf.js"></script>
+    <script type="text/javascript" src="rdfquery/jquery.rdfa.js"></script>
+    <script type="text/javascript" src="rdfquery/jquery.rdf.json.js"></script>
+    <script type="text/javascript" src="rdfquery/jquery.rdf.xml.js"></script>
+    <script type="text/javascript" src="rdfquery/jquery.rdf.turtle.js"></script>
+    <!--<script type="text/javascript" src="js/usdl.editor.cas.js"></script> -->
+    <script type="text/javascript">
+        var checkboxStatic = "<div class='checkbox'><label><input type='checkbox' value=''></label></div>";
+
+        var kb;
+
+        function storeBP() {
+            var kb_bp = $.rdf()
+                .base(document.getElementById("bp_namespace").value)
+                .prefix('foaf', 'http://xmlns.com/foaf/0.1/')
+                .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+                .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
+                .prefix('owl', 'http://www.w3.org/2002/07/owl#')
+                .prefix('dcterms', 'http://purl.org/dc/terms/')
+                .prefix('usdl-core', 'http://www.linked-usdl.org/ns/usdl-core#')
+                .prefix('usdl-core-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker#')
+                .prefix('usdl-sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
+                .prefix('usdl-sla-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#')
+                .prefix('usdl-business-roles', 'http://www.linked-usdl.org/ns/usdl-business-roles#')
+                .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
+                .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
+                .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
+                .prefix('ctag', 'http://commontag.org/ns#')
+                .prefix('org', 'http://www.w3.org/ns/org#')
+                .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
+                .prefix('time', 'http://www.w3.org/2006/time#')
+                .prefix('gr', 'http://purl.org/goodrelations/v1#')
+                .prefix('doap', 'http://usefulinc.com/ns/doap#')
+                .prefix(document.getElementById("classtaxpref").value, document.getElementById("classtaxURI").value + "#")
+                .prefix('bp', document.getElementById("bp_namespace").value + "#")
+                //  .prefix('bp', document.kb.databank.baseURI)
+                // Create the business entity of broker
+                //.add("<" + document.getElementById("bp_business_entity").value + "> a gr:BusinessEntity .")
+                .add("bp:" + document.getElementById("bp_business_entity").value + " a gr:BusinessEntity .")
+
+            .add("bp:" + document.getElementById("bp_business_entity").value + ' gr:legalName ' + '"' + document.getElementById("bp_legal_name").value + '"^^xsd:string .')
+                // Create the entity involvement instance and bind it to the broker business entity
+                .add("bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement" + " a usdl-core:EntityInvolvement .")
+                .add("bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement" + " usdl-core:withBusinessRole usdl-business-roles:intermediary .")
+                .add("bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement" + " usdl-core:ofBusinessEntity " + "bp:" + document.getElementById("bp_business_entity").value + " .")
+                // Create the business policy instance
+                .add("bp:" + document.getElementById("bp_instance").value + " a " + "bp:" + document.getElementById("bp_model").value + " .")
+                .add("bp:" + document.getElementById("bp_instance").value + " dcterms:creator " + "bp:" + document.getElementById("bp_business_entity").value + " .")
+                .add("bp:" + document.getElementById("bp_instance").value + " usdl-core:hasEntityInvolvement " + "bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement .")
+                .add("bp:" + document.getElementById("bp_instance").value + " usdl-core-cb:hasClassificationDimension " + document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " .")
+                // Create the bp service model
+                .add("bp:" + document.getElementById("bp_model").value + " rdfs:subClassOf usdl-core:ServiceModel .")
+
+
+            // Create the SL profile
+            .add("bp:" + document.getElementById("slp_class").value + " rdfs:subClassOf usdl-sla:ServiceLevelProfile .")
+                .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile .")
+                .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:domain " + "bp:" + document.getElementById("bp_model").value + " .")
+                .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:range " + "bp:" + document.getElementById("slp_class").value + " .")
+
+            // Add classification
+            kb_bp = addClassificationConcepts(kb_bp);
+
+            // Create the SL schemas for qualitative values
+            kb_bp = addQualSLSchemas(kb_bp);
+            // Create the SL schemas for quantitative values
+            kb_bp = addQuantSLSchemas(kb_bp);
+            // Store bp with schemas to a global var
+            kb_bp = addQualValues(kb_bp);
+
+            // Assign the selected profile instance to the service model
+            //  .add("<" + document.getElementById("sd_model").value + "> bp:" + document.getElementById("slp_class").value + " <" + document.getElementById("slp").value + "> .");
+            // Add the chosen classification concepts to the service model
+            //  kb_sd = addClassificationConcepts(kb_sd);
+            // Dump the kb with the service description to a turtle format and show it in a separate window.
+            var dmp = kb_bp.databank.dump({
+                format: 'text/turtle',
+                indent: true,
+                serialize: true
+            })
+            var uueFile = Base64.encode(dmp)
+            var uri = 'data:text/turtle;base64,' + encodeURIComponent(uueFile)
+            window.open(uri)
+        }
+        // Other editor
+        function createQuantitativeIntTables() {}
+        // Other editor
+        function createQuantitativeFloatTables() {}
+
+        function createQualitativeTables() {
+            var qual_sl_table = document.getElementById("qualserviceleveldetails");
+            var anchor = document.getElementById("qualvalues");
+            var tables_section = '';
+            //tables_section = tables_section + '<div class="bc-buttongroup">';
+            for (i = 1; i < qual_sl_table.rows.length; i++) {
+                tables_section = tables_section + '<div class="panel panel-default"><div class="panel-heading"><H2>Specify qualitative values for ' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '</H2></div>';
+                tables_section = tables_section + '<div class="panel-body"><table style="width: 90%" id="table_' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '"' + '>' + '<tr><th></th><th></th><th>Value</th><th style="width: 80%">Description</th></tr> </table>';
+                tables_section = tables_section + "<div style='width: 90%' class='bc-button4table'><button onclick='" + 'addQualValue(qual_table = ' + '"table_' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '"' + ")'> Add </button>" +
+                    "<button onclick='" + 'deleteQualValue(qual_table = ' + '"table_' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '"' + ")'> Delete </button></div></div></div>";
+            }
+            anchor.innerHTML = tables_section;
+            $("#qualValuePanel").collapse('show');
+            //window.alert(anchor.innerHTML);
+        }
+
+        function deleteQualitativeTables() {
+            var anchor = document.getElementById("qualvalues");
+            anchor.innerHTML = "";
+            // tbd
+        }
+
+        function save_SLSchemas() {
+            //Deactivate all input fields
+            deactivateInputFields();
+            // Create tables for qualitative value instances
+            createQualitativeTables();
+            // Create tables for int quantitative value instances
+            //createQuantitativeIntTables();
+            // Create tables for float quantitative value instances
+            //createQuantitativeFloatTables();
+
+        }
+
+        function deactivateInputFields() {
+            document.getElementById("bp_namespace").disabled = true;
+            document.getElementById("bp_business_entity").disabled = true;
+            document.getElementById("bp_legal_name").disabled = true;
+            document.getElementById("bp_instance").disabled = true;
+            document.getElementById("bp_model").disabled = true;
+            document.getElementById("slp_class").disabled = true;
+            document.getElementById("classtaxpref").disabled = true;
+            document.getElementById("classtaxroot").disabled = true;
+            document.getElementById("classtaxURI").disabled = true;
+
+            deactivateQuantSLSchemaTable();
+            document.getElementById("quant_sl_table_add").disabled = true;
+            document.getElementById("quant_sl_table_delete").disabled = true;
+            deactivateQualSLSchemaTable();
+            document.getElementById("qual_sl_table_add").disabled = true;
+            document.getElementById("qual_sl_table_delete").disabled = true;
+            deactivateClassTaxTable();
+            document.getElementById("classtax_table_add").disabled = true;
+            document.getElementById("classtax_table_delete").disabled = true;
+
+            document.getElementById("safe_schemas").disabled = true;
+            document.getElementById("edit_schemas").disabled = false;
+        }
+
+        function deactivateQuantSLSchemaTable() {
+            var quant_sl_table = document.getElementById("quantserviceleveldetails");
+            for (i = 1; i < quant_sl_table.rows.length; i++) {
+
+                quant_sl_table.rows[i].cells[2].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[3].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[4].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[5].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[6].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[7].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[8].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[9].childNodes[0].disabled = true;
+            }
+        }
+
+        function activateQuantSLSchemaTable() {
+            var quant_sl_table = document.getElementById("quantserviceleveldetails");
+            for (i = 1; i < quant_sl_table.rows.length; i++) {
+
+                quant_sl_table.rows[i].cells[2].childNodes[0].disabled = false;
+                quant_sl_table.rows[i].cells[3].childNodes[0].disabled = false;
+                quant_sl_table.rows[i].cells[4].childNodes[0].disabled = false;
+                quant_sl_table.rows[i].cells[5].childNodes[0].disabled = false;
+                quant_sl_table.rows[i].cells[6].childNodes[0].disabled = false;
+                quant_sl_table.rows[i].cells[7].childNodes[0].disabled = false;
+                quant_sl_table.rows[i].cells[8].childNodes[0].disabled = false;
+                quant_sl_table.rows[i].cells[9].childNodes[0].disabled = false;
+            }
+        }
+
+        function deactivateQualSLSchemaTable() {
+            var qual_sl_table = document.getElementById("qualserviceleveldetails");
+            for (i = 1; i < qual_sl_table.rows.length; i++) {
+                qual_sl_table.rows[i].cells[2].childNodes[0].disabled = true;
+                qual_sl_table.rows[i].cells[3].childNodes[0].disabled = true;
+            }
+        }
+
+        function activateQualSLSchemaTable() {
+            var qual_sl_table = document.getElementById("qualserviceleveldetails");
+            for (i = 1; i < qual_sl_table.rows.length; i++) {
+                qual_sl_table.rows[i].cells[2].childNodes[0].disabled = false;
+                qual_sl_table.rows[i].cells[3].childNodes[0].disabled = false;
+            }
+        }
+
+        function deactivateClassTaxTable() {
+            var qual_sl_table = document.getElementById("classtaxconcepts");
+            for (i = 1; i < qual_sl_table.rows.length; i++) {
+                qual_sl_table.rows[i].cells[2].childNodes[0].disabled = true;
+                qual_sl_table.rows[i].cells[3].childNodes[0].disabled = true;
+                qual_sl_table.rows[i].cells[4].childNodes[0].disabled = true;
+            }
+        }
+
+        function activateClassTaxTable() {
+            var qual_sl_table = document.getElementById("classtaxconcepts");
+            for (i = 1; i < qual_sl_table.rows.length; i++) {
+                qual_sl_table.rows[i].cells[2].childNodes[0].disabled = false;
+                qual_sl_table.rows[i].cells[3].childNodes[0].disabled = false;
+                qual_sl_table.rows[i].cells[4].childNodes[0].disabled = false;
+            }
+        }
+
+        function activateInputFields() {
+            document.getElementById("bp_namespace").disabled = false;
+            document.getElementById("bp_business_entity").disabled = false;
+            document.getElementById("bp_legal_name").disabled = false;
+            document.getElementById("bp_instance").disabled = false;
+            document.getElementById("bp_model").disabled = false;
+            document.getElementById("slp_class").disabled = false;
+            document.getElementById("classtaxpref").disabled = false;
+            document.getElementById("classtaxroot").disabled = false;
+            document.getElementById("classtaxURI").disabled = false;
+            activateQuantSLSchemaTable();
+            document.getElementById("quant_sl_table_add").disabled = false;
+            document.getElementById("quant_sl_table_delete").disabled = false;
+            activateQualSLSchemaTable();
+            document.getElementById("qual_sl_table_add").disabled = false;
+            document.getElementById("qual_sl_table_delete").disabled = false;
+            activateClassTaxTable();
+            document.getElementById("classtax_table_add").disabled = false;
+            document.getElementById("classtax_table_delete").disabled = false;
+
+            document.getElementById("safe_schemas").disabled = false;
+            document.getElementById("edit_schemas").disabled = true;
+            deleteQualitativeTables();
+            $('#qualValuePanel').collapse('hide');
+        }
+
+        function allowDrop(event) {
+            event.preventDefault();
+        }
+        findBase = function (kb) {
+            var base = kb.databank.baseURI
+            var services = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel");
+
+            services.each(function () {
+                var selection_class = this["serviceModel"];
+                var selection_instance = this["brokerPolicy"];
+
+                var url_class = selection_class.value._string;
+                var url_instance = selection_instance.value._string;
+                base = url_class.split('#')[0];
+                document.getElementById("bp_namespace").value = base;
+                // Assign the service model class and instance to the business policy form
+                document.getElementById("bp_model").value = url_class.split('#')[1];
+                document.getElementById("bp_instance").value = url_instance.split('#')[1];
+
+            })
+            var business_entity = kb.where("?bentity a gr:BusinessEntity")
+                .where("?bentity gr:legalName ?legalName")
+            business_entity.each(function () {
+                var bizentity = this["bentity"];
+                var legalname = this["legalName"];
+
+                var url_bizentity = bizentity.value._string;
+
+                // Assign the service model class and instance to the business policy form
+                document.getElementById("bp_business_entity").value = url_bizentity.split('#')[1];
+                document.getElementById("bp_legal_name").value = legalname.value;
+
+            })
+
+            return base
+        }
+
+        function addQuantSLConcept() {
+            var table = document.getElementById("quantserviceleveldetails");
+            var rowCount = table.rows.length;
+            var row = table.insertRow(rowCount);
+            var cell1 = row.insertCell(0);
+            //var element1 = document.createElement("input");
+            //element1.type = "checkbox";
+            //element1.type = "chkbox[]";
+            //cell1.appendChild(element1);
+            cell1.innerHTML = checkboxStatic;
+            var cell2 = row.insertCell(1);
+            cell2.innerHTML = rowCount + 1;
+            var cell3 = row.insertCell(2);
+            cell3.innerHTML = "<input type='text'>";
+            var cell4 = row.insertCell(3);
+            cell4.innerHTML = "<input type='text'>";
+            var cell5 = row.insertCell(4);
+            cell5.innerHTML = "<input type='text'>";
+            var cell6 = row.insertCell(5);
+            cell6.innerHTML = "<select name='valuetype' id='value_type' > <option>integer</option> <option>float</option> </select>";
+            var cell7 = row.insertCell(6);
+            cell7.innerHTML = "<input type='text'>";
+            var cell8 = row.insertCell(7);
+            cell8.innerHTML = "<input type='text'>";
+            var cell9 = row.insertCell(8);
+            cell9.innerHTML = "<input type='checkbox'>";
+            var cell10 = row.insertCell(9);
+            cell10.innerHTML = "<input type='checkbox'>";
+        }
+
+        function deleteQuantSLConcept() {
+            try {
+                var table = document.getElementById("quantserviceleveldetails");
+                var rowCount = table.rows.length;
+                for (var i = 1; i < rowCount; i++) {
+                    var row = table.rows[i];
+                    var chkbox = row.cells[0].childNodes[0].childNodes[0].childNodes[0];
+                    if (null != chkbox && true == chkbox.checked) {
+                        table.deleteRow(i);
+                        rowCount--;
+                        i--;
+                    }
+                }
+            } catch (e) {
+                alert(e);
+            }
+        }
+
+        function addQualSLConcept() {
+            var table = document.getElementById("qualserviceleveldetails");
+            var rowCount = table.rows.length;
+            var row = table.insertRow(rowCount);
+            var cell1 = row.insertCell(0);
+
+            cell1.innerHTML = checkboxStatic;
+            var cell2 = row.insertCell(1);
+            cell2.innerHTML = rowCount + 1;
+            var cell3 = row.insertCell(2);
+            cell3.innerHTML = "<input type='text'>";
+            var cell4 = row.insertCell(3);
+            cell4.innerHTML = "<input type='text'>";
+        }
+
+        function addClassificationConcept() {
+            var table = document.getElementById("classtaxconcepts");
+            var rowCount = table.rows.length;
+            var row = table.insertRow(rowCount);
+            var cell1 = row.insertCell(0);
+
+            cell1.innerHTML = checkboxStatic;
+            var cell2 = row.insertCell(1);
+            cell2.innerHTML = rowCount + 1;
+            var cell3 = row.insertCell(2);
+            cell3.innerHTML = "<input type='text'>";
+            var cell4 = row.insertCell(3);
+            cell4.innerHTML = "<input type='text'>";
+            var cell5 = row.insertCell(4);
+            cell5.innerHTML = "<input type='text'>";
+
+        }
+
+        function addQualValue(qual_table) {
+            var table = document.getElementById(qual_table);
+            var rowCount = table.rows.length;
+            var row = table.insertRow(rowCount);
+            var cell1 = row.insertCell(0);
+
+            cell1.innerHTML = checkboxStatic;
+            var cell2 = row.insertCell(1);
+            cell2.innerHTML = rowCount + 1;
+            var cell3 = row.insertCell(2);
+            cell3.innerHTML = "<input type='text'>";
+            var cell4 = row.insertCell(3);
+            cell4.innerHTML = "<input type='text'>";
+        }
+
+        function deleteQualSLConcept() {
+            try {
+                var table = document.getElementById("qualserviceleveldetails");
+                var rowCount = table.rows.length;
+                for (var i = 1; i < rowCount; i++) {
+                    var row = table.rows[i];
+                    var chkbox = row.cells[0].childNodes[0].childNodes[0].childNodes[0];
+                    if (null != chkbox && true == chkbox.checked) {
+                        table.deleteRow(i);
+                        rowCount--;
+                        i--;
+                    }
+                }
+            } catch (e) {
+                alert(e);
+            }
+        }
+
+        function deleteClassificationConcept() {
+            try {
+                var table = document.getElementById("classtaxconcepts");
+                var rowCount = table.rows.length;
+                for (var i = 1; i < rowCount; i++) {
+                    var row = table.rows[i];
+                    var chkbox = row.cells[0].childNodes[0].childNodes[0].childNodes[0];
+                    if (null != chkbox && true == chkbox.checked) {
+                        table.deleteRow(i);
+                        rowCount--;
+                        i--;
+                    }
+                }
+            } catch (e) {
+                alert(e);
+            }
+        }
+
+        function deleteQualValue(qual_table) {
+            try {
+                var table = document.getElementById(qual_table);
+                var rowCount = table.rows.length;
+                for (var i = 1; i < rowCount; i++) {
+                    var row = table.rows[i];
+                    var chkbox = row.cells[0].childNodes[0].childNodes[0].childNodes[0];
+                    if (null != chkbox && true == chkbox.checked) {
+                        table.deleteRow(i);
+                        rowCount--;
+                        i--;
+                    }
+                }
+            } catch (e) {
+                alert(e);
+            }
+        }
+
+        function addConcept() {
+            var table = document.getElementById("class_table");
+            var rowCount = table.rows.length;
+            var row = table.insertRow(rowCount);
+            var cell1 = row.insertCell(0);
+            //var element1 = document.createElement("input");
+            //element1.type = "checkbox";
+            //element1.type = "chkbox[]";
+            //cell1.appendChild(element1);
+            cell1.innerHTML = checkboxStatic;
+            var cell2 = row.insertCell(1);
+            cell2.innerHTML = rowCount + 1;
+            var cell3 = row.insertCell(2);
+            var tax_class = document.getElementById("classtaxonomy").value;
+            cell3.innerHTML = tax_class;
+        }
+
+        function deleteConcept() {
+            try {
+                var table = document.getElementById("class_table");
+                var rowCount = table.rows.length;
+                for (var i = 1; i < rowCount; i++) {
+                    var row = table.rows[i];
+                    var chkbox = row.cells[0].childNodes[0].childNodes[0].childNodes[0];
+                    if (null != chkbox && true == chkbox.checked) {
+                        table.deleteRow(i);
+                        rowCount--;
+                        i--;
+                    }
+                }
+            } catch (e) {
+                alert(e);
+            }
+        }
+
+        function addClassificationConcepts(kb) {
+            // Add concept scheme
+            kb.add(document.getElementById("classtaxpref").value + ":" + document.getElementById("bp_instance").value + "ConceptScheme a skos:ConceptScheme .")
+            kb.add(document.getElementById("classtaxpref").value + ":" + document.getElementById("bp_instance").value + "ConceptScheme" + ' dcterms:title "Root for all classification dimensions." .')
+            kb.add(document.getElementById("classtaxpref").value + ":" + document.getElementById("bp_instance").value + "ConceptScheme" + ' skos:prefLabel "Root Concept Scheme"@en .')
+            kb.add(document.getElementById("classtaxpref").value + ":" + document.getElementById("bp_instance").value + "ConceptScheme" + " skos:hasTopConcept " + document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " .")
+                //Add root concept
+
+            kb.add(document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " a usdl-core-cb:ClassificationDimension .")
+            kb.add(document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + ' skos:prefLabel "Root Concept"@en .')
+            kb.add(document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " skos:topConceptOf " + document.getElementById("classtaxpref").value + ":" + document.getElementById("bp_instance").value + "ConceptScheme .")
+            kb.add(document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " skos:inScheme " + document.getElementById("classtaxpref").value + ":" + document.getElementById("bp_instance").value + "ConceptScheme .")
+
+            var classtax_table = document.getElementById("classtaxconcepts");
+            for (j = 1; j < classtax_table.rows.length; j++) {
+                kb.add(document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " skos:narrower " + document.getElementById("classtaxpref").value + ":" + classtax_table.rows[j].cells[2].childNodes[0].value + " .")
+                kb.add(document.getElementById("classtaxpref").value + ":" + classtax_table.rows[j].cells[2].childNodes[0].value + " a usdl-core-cb:ClassificationDimension .")
+                kb.add(document.getElementById("classtaxpref").value + ":" + classtax_table.rows[j].cells[2].childNodes[0].value + " dcterms:title " + '"' + classtax_table.rows[j].cells[3].childNodes[0].value + '" .')
+                kb.add(document.getElementById("classtaxpref").value + ":" + classtax_table.rows[j].cells[2].childNodes[0].value + " skos:prefLabel " + '"' + classtax_table.rows[j].cells[4].childNodes[0].value + '"@en .')
+                kb.add(document.getElementById("classtaxpref").value + ":" + classtax_table.rows[j].cells[2].childNodes[0].value + " skos:broader " + document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " .")
+                kb.add(document.getElementById("classtaxpref").value + ":" + classtax_table.rows[j].cells[2].childNodes[0].value + " skos:inScheme " + document.getElementById("classtaxpref").value + ":" + document.getElementById("bp_instance").value + "ConceptScheme .");
+            }
+
+            return kb;
+        }
+
+        function addQualValues(kb) {
+            var qual_sl_table = document.getElementById("qualserviceleveldetails");
+            for (i = 1; i < qual_sl_table.rows.length; i++) {
+                var table_id = "table_" + qual_sl_table.rows[i].cells[2].childNodes[0].value;
+                var qual_value_type = qual_sl_table.rows[i].cells[2].childNodes[0].value;
+                var qual_values_table = document.getElementById(table_id);
+                for (j = 1; j < qual_values_table.rows.length; j++) {
+                    kb.add("bp:" + qual_values_table.rows[j].cells[2].childNodes[0].value + " a " + "bp:" + qual_value_type + " .");
+                    kb.add("bp:" + qual_values_table.rows[j].cells[2].childNodes[0].value + " rdfs:label " + '"' + qual_values_table.rows[j].cells[3].childNodes[0].value + '"@en .');
+                }
+            }
+            return kb;
+        }
+
+        function addQualSLSchemas(kb) {
+            var quant_sl_table = document.getElementById("qualserviceleveldetails");
+            for (i = 1; i < quant_sl_table.rows.length; i++) {
+
+                // SL subclass
+                kb.add("bp:" + "SL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf usdl-sla:ServiceLevel .")
+                    // SL subproperty
+                    .add("bp:" + "hasSL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf usdl-sla:hasServiceLevel .")
+                    .add("bp:" + "hasSL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + document.getElementById("slp_class").value + " .")
+                    .add("bp:" + "hasSL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + "SL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+
+                // SLE subclass
+                kb.add("bp:" + "SLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf usdl-sla:ServiceLevelExpression .")
+                    // SLE subproperty
+                    .add("bp:" + "hasSLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression .")
+                    .add("bp:" + "hasSLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + "SL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                    .add("bp:" + "hasSLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + "SLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+
+                // Var subclass
+                kb.add("bp:" + "Var" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf usdl-sla:Variable .")
+                    // Var subproperty
+                    .add("bp:" + "hasVar" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf usdl-sla:hasVariable .")
+                    .add("bp:" + "hasVar" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + "SLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                    .add("bp:" + "hasVar" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + "Var" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                    // qualitative value subclass
+
+                kb.add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf gr:QualitativeValue .")
+                    .add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+
+                // Value subproperty
+                kb.add("bp:" + "hasDefault" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue .")
+                    .add("bp:" + "hasDefault" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + "Var" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                    .add("bp:" + "hasDefault" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+
+                kb.add("bp:" + "has" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty .")
+                    .add("bp:" + "has" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + document.getElementById("bp_model").value + " .")
+                    .add("bp:" + "has" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+            }
+            return kb;
+        }
+
+
+        function addQuantSLSchemas(kb) {
+            var quant_sl_table = document.getElementById("quantserviceleveldetails");
+            for (i = 1; i < quant_sl_table.rows.length; i++) {
+                var quant_type = quant_sl_table.rows[i].cells[2].childNodes[0].value;
+                // SL subclass
+                kb.add("bp:" + "SL" + quant_type + " rdfs:subClassOf usdl-sla:ServiceLevel .")
+                    // SL subproperty
+                    .add("bp:" + "hasSL" + quant_type + " rdfs:subPropertyOf usdl-sla:hasServiceLevel .")
+                    .add("bp:" + "hasSL" + quant_type + " rdfs:domain " + "bp:" + document.getElementById("slp_class").value + " .")
+                    .add("bp:" + "hasSL" + quant_type + " rdfs:range " + "bp:" + "SL" + quant_type + " .")
+
+                // SLE subclass
+                kb.add("bp:" + "SLE" + quant_type + " rdfs:subClassOf usdl-sla:ServiceLevelExpression .")
+                    // SLE subproperty
+                    .add("bp:" + "hasSLE" + quant_type + " rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression .")
+                    .add("bp:" + "hasSLE" + quant_type + " rdfs:domain " + "bp:" + "SL" + quant_type + " .")
+                    .add("bp:" + "hasSLE" + quant_type + " rdfs:range " + "bp:" + "SLE" + quant_type + " .")
+
+                // Var subclass
+                kb.add("bp:" + "Var" + quant_type + " rdfs:subClassOf usdl-sla:Variable .")
+                    // Var subproperty
+                    .add("bp:" + "hasVar" + quant_type + " rdfs:subPropertyOf usdl-sla:hasVariable .")
+                    .add("bp:" + "hasVar" + quant_type + " rdfs:domain " + "bp:" + "SLE" + quant_type + " .")
+                    .add("bp:" + "hasVar" + quant_type + " rdfs:range " + "bp:" + "Var" + quant_type + " .")
+                    // int or float value subclass
+                if (quant_sl_table.rows[i].cells[5].childNodes[0].value == "integer") {
+                    // Int value subclass
+                    kb.add("bp:" + quant_type + " rdfs:subClassOf gr:QuantitativeValueInteger .")
+                        .add("bp:" + quant_type + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + ' gr:hasMinValueInteger "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                        .add("bp:" + quant_type + ' gr:hasMaxValueInteger "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                        // Int value range instance
+                    kb.add("bp:" + quant_type + "ValueRange" + " a " + "bp:" + quant_type + " .")
+                        .add("bp:" + quant_type + "ValueRange" + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + "ValueRange" + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + "ValueRange" + ' gr:hasMinValueInteger "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                        .add("bp:" + quant_type + "ValueRange" + ' gr:hasMaxValueInteger "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+
+                } else {
+                    // Float value subclass
+                    kb.add("bp:" + quant_type + " rdfs:subClassOf gr:QuantitativeValueFloat .")
+                        .add("bp:" + quant_type + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + ' gr:hasMinValueFloat "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^xsd:float .')
+                        .add("bp:" + quant_type + ' gr:hasMaxValueFloat "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^xsd:float .')
+                        // Float value range instance
+                    kb.add("bp:" + quant_type + "ValueRange" + " a " + "bp:" + quant_type + " .")
+                        .add("bp:" + quant_type + "ValueRange" + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + "ValueRange" + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + "ValueRange" + ' gr:hasMinValueFloat "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#float> .')
+                        .add("bp:" + quant_type + "ValueRange" + ' gr:hasMaxValueFloat "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#float> .')
+
+                }
+                if (quant_sl_table.rows[i].cells[8].childNodes[0].checked == true) {
+                    kb.add("bp:" + quant_type + ' usdl-core-cb:isRange "true"^^xsd:boolean .')
+                } else {
+                    kb.add("bp:" + quant_type + ' usdl-core-cb:isRange "false"^^xsd:boolean .')
+                }
+                if (quant_sl_table.rows[i].cells[9].childNodes[0].checked == true) {
+                    kb.add("bp:" + quant_type + ' usdl-core-cb:higherIsBetter "true"^^xsd:boolean .')
+                } else {
+                    kb.add("bp:" + quant_type + ' usdl-core-cb:higherIsBetter "false"^^xsd:boolean .')
+                }
+                // Value subproperty
+                kb.add("bp:" + "hasDefault" + quant_type + " rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue .")
+                    .add("bp:" + "hasDefault" + quant_type + " rdfs:domain " + "bp:" + "Var" + quant_type + " .")
+                    .add("bp:" + "hasDefault" + quant_type + " rdfs:range " + "bp:" + quant_type + " .")
+                kb.add("bp:" + "has" + quant_type + " rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .")
+                    .add("bp:" + "has" + quant_type + " rdfs:domain " + "bp:" + document.getElementById("bp_model").value + " .")
+                    .add("bp:" + "has" + quant_type + " rdfs:range " + "bp:" + quant_type + " .")
+
+            }
+            return kb;
+        }
+
+
+
+        function setServiceLevels(url, prop) {
+            //Empty SL table
+            var sl_table = document.getElementById("serviceleveldetails");
+            while (sl_table.rows.length > 1) {
+                sl_table.deleteRow(-1);
+            }
+            //Insert service levels into SL table
+            for (i = 0; i < prop.length; i++) {
+                var sl_prop = prop[i];
+                //   window.alert (sl_prop);
+                var sl = document.kb.where("<" + url + ">" + " <" + prop[i] + "> " + "?sl");
+                sl.each(function () {
+
+                    var sel = this["sl"];
+                    var sl_url = sel.value._string;
+                    var value_instance_url = "";
+                    var value_instance_label = "";
+                    //var unit_of_measurement="";
+                    // Find label of the value instance
+                    var value_instance = document.kb.where("<" + sl_url + ">" + " ?sle_prop " + " ?sle")
+                        .where("?sle_prop rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression")
+                        .where("?sle ?var_prop ?var")
+                        .where("?var_prop rdfs:subPropertyOf usdl-sla:hasVariable")
+                        .where("?var ?value_prop ?value")
+                        .where("?value rdfs:label ?text");
+                    //.where("?value gr:valueReference ?unit");
+                    //.optional("?value_prop rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue");
+                    value_instance.each(function () {
+                            var sel_value_instance = this["value"];
+                            value_instance_url = sel_value_instance.value._string;
+                            var sel_label = this["text"];
+                            value_instance_label = sel_label.value;
+                            //var sel_unit = this["unit"];
+                            //if (sel_unit === undefined) {window.alert("undefined!")} else
+                            //{unit_of_measurement = sel_unit.value._string;}
+
+                            //window.alert(var_url);
+                        })
+                        // Insert data into the table
+                    var sl_table = document.getElementById("serviceleveldetails");
+                    var new_row = sl_table.insertRow(-1);
+                    var cell1 = new_row.insertCell(0);
+                    var cell2 = new_row.insertCell(1);
+                    var cell3 = new_row.insertCell(2);
+                    //var cell4 = new_row.insertCell(3);
+                    cell1.innerHTML = sl_url.split('#')[1];
+                    cell2.innerHTML = value_instance_url.split('#')[1];
+                    cell3.innerHTML = value_instance_label;
+                    //cell4.innerHTML = "Unit of Measurement: " + unit_of_measurement;
+                    // window.alert("event fired!");
+                })
+            }
+        }
+
+
+        function loadBP(event) {
+            event.preventDefault();
+            var dt = event.dataTransfer
+            var files = dt.files
+            if (files.length == 1) {
+
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var content = event.target.result;
+                    var kb = $.rdf();
+                    kb.load(content);
+
+                    kb.prefix('foaf', 'http://xmlns.com/foaf/0.1/')
+                        .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+                        .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
+                        .prefix('owl', 'http://www.w3.org/2002/07/owl#')
+                        .prefix('dcterms', 'http://purl.org/dc/terms/')
+                        .prefix('usdl-core', 'http://www.linked-usdl.org/ns/usdl-core#')
+                        .prefix('usdl-core-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker#')
+                        .prefix('usdl-sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
+                        .prefix('usdl-sla-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#')
+                        .prefix('usdl-business-roles', 'http://www.linked-usdl.org/ns/usdl-business-roles#')
+                        .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
+                        .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
+                        .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
+                        .prefix('ctag', 'http://commontag.org/ns#')
+                        .prefix('org', 'http://www.w3.org/ns/org#')
+                        .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
+                        .prefix('time', 'http://www.w3.org/2006/time#')
+                        .prefix('gr', 'http://purl.org/goodrelations/v1#')
+                        .prefix('doap', 'http://usefulinc.com/ns/doap#')
+                        .base(findBase(kb) + "#");
+
+                    kb.prefix('bp', kb.base());
+
+                    loadClassificationTaxonomy(kb);
+
+                    //Load SLP class
+                    var slpclasses = kb.where("?slps rdfs:subClassOf usdl-sla:ServiceLevelProfile");
+                    slpclasses.each(function () {
+                        var sel = this["slps"];
+                        var url_slps = sel.value._string;
+                        document.getElementById("slp_class").value = url_slps.split('#')[1];
+                    })
+                    loadQuantitativeSLSchemas(kb);
+                    loadQualitativeSLSchemas(kb);
+                    save_SLSchemas();
+
+                    //load qual values
+
+                    loadQualValues(kb);
+
+                    //window.alert(kb.base());
+                    document.kb = kb;
+                }
+                reader.readAsText(files[0]);
+                document.getElementById("bp").innerHTML = "Broker policy loaded!";
+                $("#serviceEditArea").collapse('show');
+                $("#serviceLoadArea").collapse('hide');
+
+            }
+        }
+
+        function loadQualValues(kb) {
+            var qual_sl_table = document.getElementById("qualserviceleveldetails");
+            for (i = 1; i < qual_sl_table.rows.length; i++) {
+                var table_id = "table_" + qual_sl_table.rows[i].cells[2].childNodes[0].value;
+                var qual_value_type = qual_sl_table.rows[i].cells[2].childNodes[0].value;
+                var query = kb.where("?valinst a bp:" + qual_value_type + "");
+                //
+                query.each(function () {
+                    var selection = this["valinst"];
+                    var qv_url = selection.value._string;
+                    var table = document.getElementById(table_id);
+                    var rowCount = table.rows.length;
+                    var row = table.insertRow(rowCount);
+                    var cell1 = row.insertCell(0);
+                    cell1.innerHTML = checkboxStatic;
+                    var cell2 = row.insertCell(1);
+                    cell2.innerHTML = rowCount + 1;
+                    var cell3 = row.insertCell(2);
+                    cell3.innerHTML = "<input type='text'>";
+                    cell3.childNodes[0].value = qv_url.split("#")[1];
+                    var cell4 = row.insertCell(3);
+                    cell4.innerHTML = "<input type='text'>";
+                    //Label
+                    var label = kb.where("<" + qv_url + ">" + " rdfs:label ?label");
+                    label.each(function () {
+                        cell4.childNodes[0].value = this["label"].value;
+                    })
+                })
+
+            }
+        }
+
+        function loadQualitativeSLSchemas(kb) {
+            var quant_sls = kb.where("?qvc rdfs:subClassOf gr:QualitativeValue");
+            quant_sls.each(function () {
+                var selection = this["qvc"];
+                var sls_url = selection.value._string;
+                var table = document.getElementById("qualserviceleveldetails");
+                var rowCount = table.rows.length;
+                var row = table.insertRow(rowCount);
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = checkboxStatic;
+                var cell2 = row.insertCell(1);
+                cell2.innerHTML = rowCount + 1;
+                var cell3 = row.insertCell(2);
+                cell3.innerHTML = "<input type='text'>";
+                cell3.childNodes[0].value = sls_url.split("#")[1];
+                var cell4 = row.insertCell(3);
+                cell4.innerHTML = "<input type='text'>";
+                //Label
+                var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
+                label.each(function () {
+                    cell4.childNodes[0].value = this["label"].value;
+                })
+            })
+        }
+
+        function loadQuantitativeSLSchemas(kb) {
+            var quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueInteger");
+            quant_sls.each(function () {
+                var selection = this["qvc"];
+                var sls_url = selection.value._string;
+                var table = document.getElementById("quantserviceleveldetails");
+                var rowCount = table.rows.length;
+                var row = table.insertRow(rowCount);
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = checkboxStatic;
+                var cell2 = row.insertCell(1);
+                cell2.innerHTML = rowCount + 1;
+                var cell3 = row.insertCell(2);
+                cell3.innerHTML = "<input type='text'>";
+                cell3.childNodes[0].value = sls_url.split("#")[1];
+                var cell4 = row.insertCell(3);
+                cell4.innerHTML = "<input type='text'>";
+                var cell5 = row.insertCell(4);
+                cell5.innerHTML = "<input type='text'>";
+                var cell6 = row.insertCell(5);
+                cell6.innerHTML = "<select name='valuetype' id='value_type' > <option>integer</option> <option>float</option> </select>";
+                var cell7 = row.insertCell(6);
+                cell7.innerHTML = "<input type='text'>";
+                var cell8 = row.insertCell(7);
+                cell8.innerHTML = "<input type='text'>";
+                var cell9 = row.insertCell(8);
+                cell9.innerHTML = "<input type='checkbox'>";
+                var cell10 = row.insertCell(9);
+                cell10.innerHTML = "<input type='checkbox'>";
+                //Label
+                var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
+                label.each(function () {
+                        cell4.childNodes[0].value = this["label"].value;
+                    })
+                    // Unit of Measurement
+                var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
+                uom.each(function () {
+                        cell5.childNodes[0].value = this["uom"].value;
+                    })
+                    // Min value integer
+                var minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueInteger ?minv");
+                minv.each(function () {
+                        cell7.childNodes[0].value = this["minv"].value;
+                    })
+                    // Max value integer
+                var maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueInteger ?maxv");
+                maxv.each(function () {
+                        cell8.childNodes[0].value = this["maxv"].value;
+                    })
+                    // Range
+                var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
+                range.each(function () {
+                        if (this["range"].value.toString() == "true") {
+                            cell9.childNodes[0].checked = true;
+                        } else {
+                            cell9.childNodes[0].checked = false;
+                        }
+                    })
+                    //Higher is better
+                var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
+                hib.each(function () {
+
+                    if (this["hib"].value.toString() == "true") {
+                        cell10.childNodes[0].checked = true;
+                    } else {
+                        cell10.childNodes[0].checked = false;
+                    }
+
+                })
+            })
+            quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueFloat");
+            quant_sls.each(function () {
+                var selection = this["qvc"];
+                var sls_url = selection.value._string;
+                var table = document.getElementById("quantserviceleveldetails");
+                var rowCount = table.rows.length;
+                var row = table.insertRow(rowCount);
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = checkboxStatic;
+                var cell2 = row.insertCell(1);
+                cell2.innerHTML = rowCount + 1;
+                var cell3 = row.insertCell(2);
+                cell3.innerHTML = "<input type='text'>";
+
+                cell3.childNodes[0].value = sls_url.split("#")[1];
+                var cell4 = row.insertCell(3);
+                cell4.innerHTML = "<input type='text'>";
+                var cell5 = row.insertCell(4);
+                cell5.innerHTML = "<input type='text'>";
+                var cell6 = row.insertCell(5);
+                cell6.innerHTML = "<select name='valuetype' id='value_type' > <option>float</option> <option>integer</option>  </select>";
+                var cell7 = row.insertCell(6);
+                cell7.innerHTML = "<input type='text'>";
+                var cell8 = row.insertCell(7);
+                cell8.innerHTML = "<input type='text'>";
+                var cell9 = row.insertCell(8);
+                cell9.innerHTML = "<input type='checkbox'>";
+                var cell10 = row.insertCell(9);
+                cell10.innerHTML = "<input type='checkbox'>";
+                //Label
+                var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
+                label.each(function () {
+                        cell4.childNodes[0].value = this["label"].value;
+                    })
+                    // Unit of Measurement
+                var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
+                uom.each(function () {
+                        cell5.childNodes[0].value = this["uom"].value;
+                    })
+                    // Min value integer
+                var minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueFloat ?minv");
+                minv.each(function () {
+                        cell7.childNodes[0].value = this["minv"].value;
+                    })
+                    // Max value integer
+                var maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueFloat ?maxv");
+                maxv.each(function () {
+                        cell8.childNodes[0].value = this["maxv"].value;
+                    })
+                    // Range
+                var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
+                range.each(function () {
+                    if (this["range"].value.toString() == "true") {
+                        cell9.childNodes[0].checked = true;
+                    } else {
+                        cell9.childNodes[0].checked = false;
+                    }
+                })
+
+                //Higher is better
+
+                var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
+                hib.each(function () {
+                    if (this["hib"].value.toString() == "true") {
+                        cell10.childNodes[0].checked = true;
+                    } else {
+                        cell10.childNodes[0].checked = false;
+                    }
+                })
+
+            })
+
+        }
+
+        function loadClassificationTaxonomy(kb) {
+            // load top concept
+            var topconcept = kb.where("?concept a usdl-core-cb:ClassificationDimension")
+                .where("?scheme a skos:ConceptScheme")
+                .where("?concept skos:topConceptOf ?scheme");
+            var tc = "";
+            topconcept.each(function () {
+                var selection = this["concept"];
+                var tc_url = selection.value._string;
+
+                tc = tc_url;
+                document.getElementById("classtaxURI").value = tc_url.split("#")[0];
+                document.getElementById("classtaxroot").valueclasstaxroot = tc_url.split("#")[1];
+            })
+            var query = "?classconcept skos:broader <" + tc + ">";
+
+            var classconcepts = kb.where(query)
+                .where("?classconcept a usdl-core-cb:ClassificationDimension");
+            var c_url = "";
+            classconcepts.each(function () {
+                var selection = this["classconcept"];
+                var c_url = selection.value._string;
+                var table = document.getElementById("classtaxconcepts");
+                var rowCount = table.rows.length;
+                var row = table.insertRow(rowCount);
+                var cell1 = row.insertCell(0);
+
+                cell1.innerHTML = checkboxStatic;
+                var cell2 = row.insertCell(1);
+                cell2.innerHTML = rowCount + 1;
+                var cell3 = row.insertCell(2);
+                cell3.innerHTML = "<input type='text'>";
+                cell3.childNodes[0].value = c_url.split("#")[1];
+
+                var cell4 = row.insertCell(3);
+                cell4.innerHTML = "<input type='text'>";
+                var cell5 = row.insertCell(4);
+                cell5.innerHTML = "<input type='text'>";
+
+                var title = kb.where("<" + c_url + ">" + " dcterms:title ?title");
+                title.each(function () {
+                    cell4.childNodes[0].value = this["title"].value;
+                })
+                var label = kb.where("<" + c_url + ">" + " skos:prefLabel ?label");
+                label.each(function () {
+                    cell5.childNodes[0].value = this["label"].value;
+                })
+
+            })
+
+        }
+    </script>
+</head>
+
+<body style="background-color: lightsilver">
+    <div class="jumbotron">
+        <div class="container">
+            <div class="col-md-3">
+                <a href="http://www.broker-cloud.eu/">
+                    <img src="images/BrokerAtCloud_medium.png" alt="Broker@Cloud Logo" style="width:100%">
+                </a>
+            </div>
+            <div class="col-md-9">
+                <h1> Welcome to the Broker@Cloud Broker Policy Type 1 Editor</h1>
+                <p>More description will be entered here.</p>
+            </div>
+        </div>
+    </div>
+    <div class="container" role="main">
+
+        <div class="col-md-12">
+            <div class="row">
+                <div id="serviceLoadArea" class="collapse in">
+
+                    <p>Note: You can load a valid broker policy into the editor.</p>
+                    <h1> Use drag and drop functionality to load the file containing the broker policy!</h1>
+
+                    <div class="droptarget" ondrop="loadBP(event)" ondragover="allowDrop(event)">
+                        <p id="bp"> Drop your broker policy here! </p>
+                    </div>
+
+                </div>
+
+                <div id="serviceEditArea" class="collapse in">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1>Specify your Broker Namespace </h1></div>
+                        <div class="panel-body">
+                            <!--p> Specify your broker namespace </p-->
+                            <form>
+                                <div class="form-group">
+                                    <label>Broker Namespace</label>
+                                    <input type="text" class="form-control" id="bp_namespace" value="http://yourbrokernamespace.com">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1> Describe your legal business entity </h1>
+                        </div>
+                        <div class='panel-body'>
+                            <form>
+                                <div class="form-group">
+                                    <label>Broker acronym</label>
+                                    <input class="form-control" type="text" id="bp_business_entity" value="YourBrokerCompanyAcronym">
+                                </div>
+                                <div class="form-group">
+                                    <label>Broker legal name</label>
+                                    <input class="form-control" type="text" id="bp_legal_name" value="Your BrokerCompany Legal Name">
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1> Describe your broker policy </h1>
+                        </div>
+                        <div class='panel-body'>
+                            <form>
+                                <div class="form-group">
+                                    <label>Title</label>
+                                    <input class="form-control" type="text" id="bp_instance" value="YourBrokerPolicyTitle">
+                                </div>
+                                <div class="form-group">
+                                    <label>Broker policy model name</label>
+                                    <input class="form-control" type="text" id="bp_model" value="YourBrokerPolicyModelName">
+                                </div>
+                            </form>
+
+
+
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1> Provide classification taxonomy</h1>
+                        </div>
+                        <div class='panel-body'>
+                            <form>
+                                <div class="form-group">
+                                    <label>Prefix</label>
+                                    <input class="form-control" type="text" id="classtaxpref" value="fc">
+                                </div>
+                                <div class="form-group">
+                                    <label>URI</label>
+                                    <input class="form-control" type="text" id="classtaxURI" value="http://www.broker-cloud.eu/service-descriptions/CAS/categories">
+                                </div>
+                                <div class="form-group">
+                                    <label>Root concept</label>
+                                    <input class="form-control" type="text" id="classtaxroot" value="rootConcept">
+                                </div>
+                            </form>
+
+
+                            <table class="table" style="width: 95%" id="classtaxconcepts">
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Classification tag</th>
+                                    <th>Description</th>
+                                    <th>Label</th>
+                                </tr>
+                            </table>
+                            <div class="bc-button4table" style="width: 95%">
+                                <button class="btn btn-default" id="classtax_table_add" onclick="addClassificationConcept()"> Add </button>
+                                <button class="btn btn-default" id="classtax_table_delete" onclick="deleteClassificationConcept()"> Delete </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1>Specify your service level profile type </h1>
+                        </div>
+                        <div class='panel-body'>
+                            <form>
+                                <label>Service Level Profile</label>
+                                <input type="text" class="form-control" id="slp_class" value="SomeServiceLevelProfile"> </p>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1>Specify Quantitative Service Level Schemas</h1>
+                        </div>
+                        <div class='panel-body'>
+                            <table class="table" style="width: 95%" id="quantserviceleveldetails">
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Service Level</th>
+                                    <th>Description</th>
+                                    <th>Unit of Measurement</th>
+                                    <th>Value type</th>
+                                    <th>Min Value</th>
+                                    <th>Max Value</th>
+                                    <th>Is Range</th>
+                                    <th>Higher is better</th>
+                                </tr>
+                            </table>
+                            <div class="bc-button4table" style="width: 95%">
+                                <button class="btn btn-default" id="quant_sl_table_add" onclick="addQuantSLConcept()"> Add </button>
+                                <button class="btn btn-default" id="quant_sl_table_delete" onclick="deleteQuantSLConcept()"> Delete </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h1>Qualitative Service Levels</h1>
+                        </div>
+                        <div class='panel-body'>
+                            <h2>Specify Qualitative Service Level Schemas </h2>
+
+                            <table class="table" style="width: 95%" id="qualserviceleveldetails">
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Service Level</th>
+                                    <th>Description</th>
+                                </tr>
+                            </table>
+                            <div class="bc-button4table" style="width: 95%">
+                                <button class="btn btn-default" id="qual_sl_table_add" onclick="addQualSLConcept()"> Add </button>
+                                <button class="btn btn-default" id="qual_sl_table_delete" onclick="deleteQualSLConcept()"> Delete </button>
+                            </div>
+
+                            <div class="bc-buttongroup">
+                                <button class="btn btn-default" id="safe_schemas" onclick="save_SLSchemas()">Save the Service Level Schemas. </button>
+
+                                <button class="btn btn-default" id="edit_schemas" disabled="disabled" onclick="activateInputFields()">Edit the Service Level Schemas. </button>
+                            </div>
+                            <div class="panel panel-default collapse" id='qualValuePanel'>
+                                <div class="panel-heading">
+                                    <h2>Qualitatve value sets </h2>
+                                </div>
+                                <div class='panel-body'>
+                                    <p id="qualvalues">
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bc-buttongroup">
+                            <button class="btn btn-default" onclick="storeBP()">Show the business policy specification. </button>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+</body>
+
+
+
+
+</html>
