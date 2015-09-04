@@ -95,6 +95,7 @@
                 .prefix('usdl-core-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker#')
                 .prefix('usdl-sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
                 .prefix('usdl-sla-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#')
+                .prefix('usdl-pref', 'http://www.linked-usdl.org/ns/usdl-pref#')
                 .prefix('usdl-business-roles', 'http://www.linked-usdl.org/ns/usdl-business-roles#')
                 .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
                 .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
@@ -571,42 +572,50 @@
         }
 
         function addQualSLSchemas(kb) {
-            var quant_sl_table = document.getElementById("qualserviceleveldetails");
-            for (i = 1; i < quant_sl_table.rows.length; i++) {
-
+            var qual_sl_table = document.getElementById("qualserviceleveldetails");
+            for (i = 1; i < qual_sl_table.rows.length; i++) {
+                var qual_value_type = qual_sl_table.rows[i].cells[2].childNodes[0].value;
                 // SL subclass
-                kb.add("bp:" + "SL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf usdl-sla:ServiceLevel .")
+                kb.add("bp:" + "SL" + qual_value_type + " rdfs:subClassOf usdl-sla:ServiceLevel .")
                     // SL subproperty
-                    .add("bp:" + "hasSL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf usdl-sla:hasServiceLevel .")
-                    .add("bp:" + "hasSL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + document.getElementById("slp_class").value + " .")
-                    .add("bp:" + "hasSL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + "SL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                    .add("bp:" + "hasSL" + qual_value_type + " rdfs:subPropertyOf usdl-sla:hasServiceLevel .")
+                    .add("bp:" + "hasSL" + qual_value_type + " rdfs:domain " + "bp:" + document.getElementById("slp_class").value + " .")
+                    .add("bp:" + "hasSL" + qual_value_type + " rdfs:range " + "bp:" + "SL" + qual_value_type + " .")
 
                 // SLE subclass
-                kb.add("bp:" + "SLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf usdl-sla:ServiceLevelExpression .")
+                kb.add("bp:" + "SLE" + qual_value_type + " rdfs:subClassOf usdl-sla:ServiceLevelExpression .")
                     // SLE subproperty
-                    .add("bp:" + "hasSLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression .")
-                    .add("bp:" + "hasSLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + "SL" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
-                    .add("bp:" + "hasSLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + "SLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                    .add("bp:" + "hasSLE" + qual_value_type + " rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression .")
+                    .add("bp:" + "hasSLE" + qual_value_type + " rdfs:domain " + "bp:" + "SL" + qual_value_type + " .")
+                    .add("bp:" + "hasSLE" + qual_value_type + " rdfs:range " + "bp:" + "SLE" + qual_value_type + " .")
 
                 // Var subclass
-                kb.add("bp:" + "Var" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf usdl-sla:Variable .")
+                kb.add("bp:" + "Var" + qual_value_type + " rdfs:subClassOf usdl-sla:Variable .")
                     // Var subproperty
-                    .add("bp:" + "hasVar" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf usdl-sla:hasVariable .")
-                    .add("bp:" + "hasVar" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + "SLE" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
-                    .add("bp:" + "hasVar" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + "Var" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                    .add("bp:" + "hasVar" + qual_value_type + " rdfs:subPropertyOf usdl-sla:hasVariable .")
+                    .add("bp:" + "hasVar" + qual_value_type + " rdfs:domain " + "bp:" + "SLE" + qual_value_type + " .")
+                    .add("bp:" + "hasVar" + qual_value_type + " rdfs:range " + "bp:" + "Var" + qual_value_type + " .")
                     // qualitative value subclass
 
-                kb.add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subClassOf gr:QualitativeValue .")
-                    .add("bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                kb.add("bp:" + qual_value_type + " rdfs:subClassOf gr:QualitativeValue .")
+                    .add("bp:" + qual_value_type + ' rdfs:label "' + qual_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
 
                 // Value subproperty
-                kb.add("bp:" + "hasDefault" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue .")
-                    .add("bp:" + "hasDefault" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + "Var" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
-                    .add("bp:" + "hasDefault" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                kb.add("bp:" + "hasDefault" + qual_value_type + " rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue .")
+                    .add("bp:" + "hasDefault" + qual_value_type + " rdfs:domain " + "bp:" + "Var" + qual_value_type + " .")
+                    .add("bp:" + "hasDefault" + qual_value_type + " rdfs:range " + "bp:" + qual_value_type + " .")
 
-                kb.add("bp:" + "has" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty .")
-                    .add("bp:" + "has" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:domain " + "bp:" + document.getElementById("bp_model").value + " .")
-                    .add("bp:" + "has" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " rdfs:range " + "bp:" + quant_sl_table.rows[i].cells[2].childNodes[0].value + " .")
+                kb.add("bp:" + "has" + qual_value_type + " rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty .")
+                    .add("bp:" + "has" + qual_value_type + " rdfs:domain " + "bp:" + document.getElementById("bp_model").value + " .")
+                    .add("bp:" + "has" + qual_value_type + " rdfs:range " + "bp:" + qual_value_type + " .")
+                // Pref var subclass
+              kb.add("bp:" + qual_value_type + "PreferenceVariable" + " rdfs:subClassOf usdl-pref:QualitativeVariable .")
+                    .add("bp:" + qual_value_type + "PreferenceVariable" + " usdl-pref:belongsTo " + document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " .")
+                    .add("bp:" + qual_value_type + "PreferenceVariable" + " usdl-pref:refToServiceAttribute " + "<http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null>" + " .")
+                //Pref var subproperty
+                kb.add("bp:" + "hasDefaultPrefVar" + qual_value_type + " rdfs:subPropertyOf usdl-pref:hasDefaultQualitativeValue .")
+                    .add("bp:" + "hasDefaultPrefVar" + qual_value_type + " rdfs:domain " + "bp:"+ qual_value_type + "PreferenceVariable"  + " .")
+                    .add("bp:" + "hasDefaultPrefVar" + qual_value_type + " rdfs:range " + "bp:" + qual_value_type + " .")
             }
             return kb;
         }
@@ -683,6 +692,14 @@
                 kb.add("bp:" + "has" + quant_type + " rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty .")
                     .add("bp:" + "has" + quant_type + " rdfs:domain " + "bp:" + document.getElementById("bp_model").value + " .")
                     .add("bp:" + "has" + quant_type + " rdfs:range " + "bp:" + quant_type + " .")
+                // Pref var subclass
+              kb.add("bp:" + quant_type + "PreferenceVariable" + " rdfs:subClassOf usdl-pref:QuantitativeVariable .")
+                    .add("bp:" + quant_type + "PreferenceVariable" + " usdl-pref:belongsTo " + document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " .")
+                    .add("bp:" + quant_type + "PreferenceVariable" + " usdl-pref:refToServiceAttribute " + "<http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null>" + " .")
+                //Pref var subproperty
+                kb.add("bp:" + "hasDefaultPrefVar" + quant_type + " rdfs:subPropertyOf usdl-pref:hasDefaultQuantitativeValue .")
+                    .add("bp:" + "hasDefaultPrefVar" + quant_type + " rdfs:domain " + "bp:"+ quant_type + "PreferenceVariable"  + " .")
+                    .add("bp:" + "hasDefaultPrefVar" + quant_type + " rdfs:range " + "bp:" + quant_type + " .")
 
             }
             return kb;

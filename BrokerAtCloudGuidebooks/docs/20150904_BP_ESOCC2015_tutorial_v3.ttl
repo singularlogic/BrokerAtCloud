@@ -7,6 +7,7 @@
 @prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> . 
 @prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> . 
 @prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> . 
+@prefix usdl-pref: <http://www.linked-usdl.org/ns/usdl-pref#> . 
 @prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> . 
 @prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> . 
 @prefix vcard: <http://www.w3.org/2006/vcard/ns#> . 
@@ -82,221 +83,271 @@ fc:PointOfSales
   skos:broader fc:rootConcept ; 
   skos:inScheme fc:BrokerAtCloudESOCC2015TutorialBrokerPolicyConceptScheme . 
 
-bp:SLAllowedSecurityLevelValue 
+bp:SLSecurityLevel 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
 
-bp:hasSLAllowedSecurityLevelValue 
+bp:hasSLSecurityLevel 
   rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
-  rdfs:range bp:SLAllowedSecurityLevelValue . 
+  rdfs:range bp:SLSecurityLevel . 
 
-bp:SLEAllowedSecurityLevelValue 
+bp:SLESecurityLevel 
   rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
 
-bp:hasSLEAllowedSecurityLevelValue 
+bp:hasSLESecurityLevel 
   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
-  rdfs:domain bp:SLAllowedSecurityLevelValue ; 
-  rdfs:range bp:SLEAllowedSecurityLevelValue . 
+  rdfs:domain bp:SLSecurityLevel ; 
+  rdfs:range bp:SLESecurityLevel . 
 
-bp:VarAllowedSecurityLevelValue 
+bp:VarSecurityLevel 
   rdfs:subClassOf usdl-sla:Variable . 
 
-bp:hasVarAllowedSecurityLevelValue 
+bp:hasVarSecurityLevel 
   rdfs:subPropertyOf usdl-sla:hasVariable ; 
-  rdfs:domain bp:SLEAllowedSecurityLevelValue ; 
-  rdfs:range bp:VarAllowedSecurityLevelValue . 
+  rdfs:domain bp:SLESecurityLevel ; 
+  rdfs:range bp:VarSecurityLevel . 
 
-bp:AllowedSecurityLevelValue 
+bp:SecurityLevel 
   rdfs:subClassOf gr:QualitativeValue ; 
   rdfs:label "Defines the protection level of the virtual machine instance, which is applied by the IaaS networking controller"^^xsd:string . 
 
-bp:hasDefaultAllowedSecurityLevelValue 
+bp:hasDefaultSecurityLevel 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
-  rdfs:domain bp:VarAllowedSecurityLevelValue ; 
-  rdfs:range bp:AllowedSecurityLevelValue . 
+  rdfs:domain bp:VarSecurityLevel ; 
+  rdfs:range bp:SecurityLevel . 
 
-bp:hasAllowedSecurityLevelValue 
+bp:hasSecurityLevel 
   rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
-  rdfs:range bp:AllowedSecurityLevelValue . 
+  rdfs:range bp:SecurityLevel . 
 
-bp:SLAllowedAuditabilityValue 
+bp:SecurityLevelPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QualitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarSecurityLevel 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQualitativeValue ; 
+  rdfs:domain bp:SecurityLevelPreferenceVariable ; 
+  rdfs:range bp:SecurityLevel . 
+
+bp:SLAuditability 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
 
-bp:hasSLAllowedAuditabilityValue 
+bp:hasSLAuditability 
   rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
-  rdfs:range bp:SLAllowedAuditabilityValue . 
+  rdfs:range bp:SLAuditability . 
 
-bp:SLEAllowedAuditabilityValue 
+bp:SLEAuditability 
   rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
 
-bp:hasSLEAllowedAuditabilityValue 
+bp:hasSLEAuditability 
   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
-  rdfs:domain bp:SLAllowedAuditabilityValue ; 
-  rdfs:range bp:SLEAllowedAuditabilityValue . 
+  rdfs:domain bp:SLAuditability ; 
+  rdfs:range bp:SLEAuditability . 
 
-bp:VarAllowedAuditabilityValue 
+bp:VarAuditability 
   rdfs:subClassOf usdl-sla:Variable . 
 
-bp:hasVarAllowedAuditabilityValue 
+bp:hasVarAuditability 
   rdfs:subPropertyOf usdl-sla:hasVariable ; 
-  rdfs:domain bp:SLEAllowedAuditabilityValue ; 
-  rdfs:range bp:VarAllowedAuditabilityValue . 
+  rdfs:domain bp:SLEAuditability ; 
+  rdfs:range bp:VarAuditability . 
 
-bp:AllowedAuditabilityValue 
+bp:Auditability 
   rdfs:subClassOf gr:QualitativeValue ; 
   rdfs:label "Defines the level of support for auditability."^^xsd:string . 
 
-bp:hasDefaultAllowedAuditabilityValue 
+bp:hasDefaultAuditability 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
-  rdfs:domain bp:VarAllowedAuditabilityValue ; 
-  rdfs:range bp:AllowedAuditabilityValue . 
+  rdfs:domain bp:VarAuditability ; 
+  rdfs:range bp:Auditability . 
 
-bp:hasAllowedAuditabilityValue 
+bp:hasAuditability 
   rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
-  rdfs:range bp:AllowedAuditabilityValue . 
+  rdfs:range bp:Auditability . 
 
-bp:SLAllowedTransportSecurityGuaranteesValue 
+bp:AuditabilityPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QualitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarAuditability 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQualitativeValue ; 
+  rdfs:domain bp:AuditabilityPreferenceVariable ; 
+  rdfs:range bp:Auditability . 
+
+bp:SLTransportSecurityGuarantees 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
 
-bp:hasSLAllowedTransportSecurityGuaranteesValue 
+bp:hasSLTransportSecurityGuarantees 
   rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
-  rdfs:range bp:SLAllowedTransportSecurityGuaranteesValue . 
+  rdfs:range bp:SLTransportSecurityGuarantees . 
 
-bp:SLEAllowedTransportSecurityGuaranteesValue 
+bp:SLETransportSecurityGuarantees 
   rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
 
-bp:hasSLEAllowedTransportSecurityGuaranteesValue 
+bp:hasSLETransportSecurityGuarantees 
   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
-  rdfs:domain bp:SLAllowedTransportSecurityGuaranteesValue ; 
-  rdfs:range bp:SLEAllowedTransportSecurityGuaranteesValue . 
+  rdfs:domain bp:SLTransportSecurityGuarantees ; 
+  rdfs:range bp:SLETransportSecurityGuarantees . 
 
-bp:VarAllowedTransportSecurityGuaranteesValue 
+bp:VarTransportSecurityGuarantees 
   rdfs:subClassOf usdl-sla:Variable . 
 
-bp:hasVarAllowedTransportSecurityGuaranteesValue 
+bp:hasVarTransportSecurityGuarantees 
   rdfs:subPropertyOf usdl-sla:hasVariable ; 
-  rdfs:domain bp:SLEAllowedTransportSecurityGuaranteesValue ; 
-  rdfs:range bp:VarAllowedTransportSecurityGuaranteesValue . 
+  rdfs:domain bp:SLETransportSecurityGuarantees ; 
+  rdfs:range bp:VarTransportSecurityGuarantees . 
 
-bp:AllowedTransportSecurityGuaranteesValue 
+bp:TransportSecurityGuarantees 
   rdfs:subClassOf gr:QualitativeValue ; 
   rdfs:label "Defines the level of transport security."^^xsd:string . 
 
-bp:hasDefaultAllowedTransportSecurityGuaranteesValue 
+bp:hasDefaultTransportSecurityGuarantees 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
-  rdfs:domain bp:VarAllowedTransportSecurityGuaranteesValue ; 
-  rdfs:range bp:AllowedTransportSecurityGuaranteesValue . 
+  rdfs:domain bp:VarTransportSecurityGuarantees ; 
+  rdfs:range bp:TransportSecurityGuarantees . 
 
-bp:hasAllowedTransportSecurityGuaranteesValue 
+bp:hasTransportSecurityGuarantees 
   rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
-  rdfs:range bp:AllowedTransportSecurityGuaranteesValue . 
+  rdfs:range bp:TransportSecurityGuarantees . 
 
-bp:SLAllowedLearnabilityValue 
+bp:TransportSecurityGuaranteesPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QualitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarTransportSecurityGuarantees 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQualitativeValue ; 
+  rdfs:domain bp:TransportSecurityGuaranteesPreferenceVariable ; 
+  rdfs:range bp:TransportSecurityGuarantees . 
+
+bp:SLLearnability 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
 
-bp:hasSLAllowedLearnabilityValue 
+bp:hasSLLearnability 
   rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
-  rdfs:range bp:SLAllowedLearnabilityValue . 
+  rdfs:range bp:SLLearnability . 
 
-bp:SLEAllowedLearnabilityValue 
+bp:SLELearnability 
   rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
 
-bp:hasSLEAllowedLearnabilityValue 
+bp:hasSLELearnability 
   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
-  rdfs:domain bp:SLAllowedLearnabilityValue ; 
-  rdfs:range bp:SLEAllowedLearnabilityValue . 
+  rdfs:domain bp:SLLearnability ; 
+  rdfs:range bp:SLELearnability . 
 
-bp:VarAllowedLearnabilityValue 
+bp:VarLearnability 
   rdfs:subClassOf usdl-sla:Variable . 
 
-bp:hasVarAllowedLearnabilityValue 
+bp:hasVarLearnability 
   rdfs:subPropertyOf usdl-sla:hasVariable ; 
-  rdfs:domain bp:SLEAllowedLearnabilityValue ; 
-  rdfs:range bp:VarAllowedLearnabilityValue . 
+  rdfs:domain bp:SLELearnability ; 
+  rdfs:range bp:VarLearnability . 
 
-bp:AllowedLearnabilityValue 
+bp:Learnability 
   rdfs:subClassOf gr:QualitativeValue ; 
   rdfs:label "Defines the level of learning effort."^^xsd:string . 
 
-bp:hasDefaultAllowedLearnabilityValue 
+bp:hasDefaultLearnability 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
-  rdfs:domain bp:VarAllowedLearnabilityValue ; 
-  rdfs:range bp:AllowedLearnabilityValue . 
+  rdfs:domain bp:VarLearnability ; 
+  rdfs:range bp:Learnability . 
 
-bp:hasAllowedLearnabilityValue 
+bp:hasLearnability 
   rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
-  rdfs:range bp:AllowedLearnabilityValue . 
+  rdfs:range bp:Learnability . 
 
-bp:SLAllowedAccessibilityValue 
+bp:LearnabilityPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QualitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarLearnability 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQualitativeValue ; 
+  rdfs:domain bp:LearnabilityPreferenceVariable ; 
+  rdfs:range bp:Learnability . 
+
+bp:SLAccessibility 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
 
-bp:hasSLAllowedAccessibilityValue 
+bp:hasSLAccessibility 
   rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
-  rdfs:range bp:SLAllowedAccessibilityValue . 
+  rdfs:range bp:SLAccessibility . 
 
-bp:SLEAllowedAccessibilityValue 
+bp:SLEAccessibility 
   rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
 
-bp:hasSLEAllowedAccessibilityValue 
+bp:hasSLEAccessibility 
   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
-  rdfs:domain bp:SLAllowedAccessibilityValue ; 
-  rdfs:range bp:SLEAllowedAccessibilityValue . 
+  rdfs:domain bp:SLAccessibility ; 
+  rdfs:range bp:SLEAccessibility . 
 
-bp:VarAllowedAccessibilityValue 
+bp:VarAccessibility 
   rdfs:subClassOf usdl-sla:Variable . 
 
-bp:hasVarAllowedAccessibilityValue 
+bp:hasVarAccessibility 
   rdfs:subPropertyOf usdl-sla:hasVariable ; 
-  rdfs:domain bp:SLEAllowedAccessibilityValue ; 
-  rdfs:range bp:VarAllowedAccessibilityValue . 
+  rdfs:domain bp:SLEAccessibility ; 
+  rdfs:range bp:VarAccessibility . 
 
-bp:AllowedAccessibilityValue 
+bp:Accessibility 
   rdfs:subClassOf gr:QualitativeValue ; 
   rdfs:label "Defines supported accessibility levels"^^xsd:string . 
 
-bp:hasDefaultAllowedAccessibilityValue 
+bp:hasDefaultAccessibility 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
-  rdfs:domain bp:VarAllowedAccessibilityValue ; 
-  rdfs:range bp:AllowedAccessibilityValue . 
+  rdfs:domain bp:VarAccessibility ; 
+  rdfs:range bp:Accessibility . 
 
-bp:hasAllowedAccessibilityValue 
+bp:hasAccessibility 
   rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
-  rdfs:range bp:AllowedAccessibilityValue . 
+  rdfs:range bp:Accessibility . 
 
-bp:SLAllowedAmountOfVCPUsValue 
+bp:AccessibilityPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QualitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarAccessibility 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQualitativeValue ; 
+  rdfs:domain bp:AccessibilityPreferenceVariable ; 
+  rdfs:range bp:Accessibility . 
+
+bp:SLAmountOfVCPUs 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
 
-bp:hasSLAllowedAmountOfVCPUsValue 
+bp:hasSLAmountOfVCPUs 
   rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
-  rdfs:range bp:SLAllowedAmountOfVCPUsValue . 
+  rdfs:range bp:SLAmountOfVCPUs . 
 
-bp:SLEAllowedAmountOfVCPUsValue 
+bp:SLEAmountOfVCPUs 
   rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
 
-bp:hasSLEAllowedAmountOfVCPUsValue 
+bp:hasSLEAmountOfVCPUs 
   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
-  rdfs:domain bp:SLAllowedAmountOfVCPUsValue ; 
-  rdfs:range bp:SLEAllowedAmountOfVCPUsValue . 
+  rdfs:domain bp:SLAmountOfVCPUs ; 
+  rdfs:range bp:SLEAmountOfVCPUs . 
 
-bp:VarAllowedAmountOfVCPUsValue 
+bp:VarAmountOfVCPUs 
   rdfs:subClassOf usdl-sla:Variable . 
 
-bp:hasVarAllowedAmountOfVCPUsValue 
+bp:hasVarAmountOfVCPUs 
   rdfs:subPropertyOf usdl-sla:hasVariable ; 
-  rdfs:domain bp:SLEAllowedAmountOfVCPUsValue ; 
-  rdfs:range bp:VarAllowedAmountOfVCPUsValue . 
+  rdfs:domain bp:SLEAmountOfVCPUs ; 
+  rdfs:range bp:VarAmountOfVCPUs . 
 
-bp:AllowedAmountOfVCPUsValue 
+bp:AmountOfVCPUs 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
   rdfs:label "Amount of virtual CPUs allocated by the hyperviser"^^xsd:string ; 
   gr:hasUnitOfMeasurement "core"^^xsd:string ; 
@@ -305,48 +356,58 @@ bp:AllowedAmountOfVCPUsValue
   usdl-core-cb:isRange "true"^^xsd:boolean ; 
   usdl-core-cb:higherIsBetter "true"^^xsd:boolean . 
 
-bp:AllowedAmountOfVCPUsValueValueRange 
-  a bp:AllowedAmountOfVCPUsValue ; 
+bp:AmountOfVCPUsValueRange 
+  a bp:AmountOfVCPUs ; 
   rdfs:label "Amount of virtual CPUs allocated by the hyperviser"^^xsd:string ; 
   gr:hasUnitOfMeasurement "core"^^xsd:string ; 
   gr:hasMinValueInteger "1"^^xsd:integer ; 
   gr:hasMaxValueInteger "4"^^xsd:integer . 
 
-bp:hasDefaultAllowedAmountOfVCPUsValue 
+bp:hasDefaultAmountOfVCPUs 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue ; 
-  rdfs:domain bp:VarAllowedAmountOfVCPUsValue ; 
-  rdfs:range bp:AllowedAmountOfVCPUsValue . 
+  rdfs:domain bp:VarAmountOfVCPUs ; 
+  rdfs:range bp:AmountOfVCPUs . 
 
-bp:hasAllowedAmountOfVCPUsValue 
+bp:hasAmountOfVCPUs 
   rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
-  rdfs:range bp:AllowedAmountOfVCPUsValue . 
+  rdfs:range bp:AmountOfVCPUs . 
 
-bp:SLAllowedAmountOfConcurrentInstancesValue 
+bp:AmountOfVCPUsPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QuantitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarAmountOfVCPUs 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:AmountOfVCPUsPreferenceVariable ; 
+  rdfs:range bp:AmountOfVCPUs . 
+
+bp:SLAmountOfConcurrentInstances 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
 
-bp:hasSLAllowedAmountOfConcurrentInstancesValue 
+bp:hasSLAmountOfConcurrentInstances 
   rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
-  rdfs:range bp:SLAllowedAmountOfConcurrentInstancesValue . 
+  rdfs:range bp:SLAmountOfConcurrentInstances . 
 
-bp:SLEAllowedAmountOfConcurrentInstancesValue 
+bp:SLEAmountOfConcurrentInstances 
   rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
 
-bp:hasSLEAllowedAmountOfConcurrentInstancesValue 
+bp:hasSLEAmountOfConcurrentInstances 
   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
-  rdfs:domain bp:SLAllowedAmountOfConcurrentInstancesValue ; 
-  rdfs:range bp:SLEAllowedAmountOfConcurrentInstancesValue . 
+  rdfs:domain bp:SLAmountOfConcurrentInstances ; 
+  rdfs:range bp:SLEAmountOfConcurrentInstances . 
 
-bp:VarAllowedAmountOfConcurrentInstancesValue 
+bp:VarAmountOfConcurrentInstances 
   rdfs:subClassOf usdl-sla:Variable . 
 
-bp:hasVarAllowedAmountOfConcurrentInstancesValue 
+bp:hasVarAmountOfConcurrentInstances 
   rdfs:subPropertyOf usdl-sla:hasVariable ; 
-  rdfs:domain bp:SLEAllowedAmountOfConcurrentInstancesValue ; 
-  rdfs:range bp:VarAllowedAmountOfConcurrentInstancesValue . 
+  rdfs:domain bp:SLEAmountOfConcurrentInstances ; 
+  rdfs:range bp:VarAmountOfConcurrentInstances . 
 
-bp:AllowedAmountOfConcurrentInstancesValue 
+bp:AmountOfConcurrentInstances 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
   rdfs:label "Amount of working containers able to handle execution load of the service"^^xsd:string ; 
   gr:hasUnitOfMeasurement "VMinstance"^^xsd:string ; 
@@ -355,48 +416,58 @@ bp:AllowedAmountOfConcurrentInstancesValue
   usdl-core-cb:isRange "false"^^xsd:boolean ; 
   usdl-core-cb:higherIsBetter "true"^^xsd:boolean . 
 
-bp:AllowedAmountOfConcurrentInstancesValueValueRange 
-  a bp:AllowedAmountOfConcurrentInstancesValue ; 
+bp:AmountOfConcurrentInstancesValueRange 
+  a bp:AmountOfConcurrentInstances ; 
   rdfs:label "Amount of working containers able to handle execution load of the service"^^xsd:string ; 
   gr:hasUnitOfMeasurement "VMinstance"^^xsd:string ; 
   gr:hasMinValueInteger "0"^^xsd:integer ; 
   gr:hasMaxValueInteger "2"^^xsd:integer . 
 
-bp:hasDefaultAllowedAmountOfConcurrentInstancesValue 
+bp:hasDefaultAmountOfConcurrentInstances 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue ; 
-  rdfs:domain bp:VarAllowedAmountOfConcurrentInstancesValue ; 
-  rdfs:range bp:AllowedAmountOfConcurrentInstancesValue . 
+  rdfs:domain bp:VarAmountOfConcurrentInstances ; 
+  rdfs:range bp:AmountOfConcurrentInstances . 
 
-bp:hasAllowedAmountOfConcurrentInstancesValue 
+bp:hasAmountOfConcurrentInstances 
   rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
-  rdfs:range bp:AllowedAmountOfConcurrentInstancesValue . 
+  rdfs:range bp:AmountOfConcurrentInstances . 
 
-bp:SLAllowedRAMValue 
+bp:AmountOfConcurrentInstancesPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QuantitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarAmountOfConcurrentInstances 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:AmountOfConcurrentInstancesPreferenceVariable ; 
+  rdfs:range bp:AmountOfConcurrentInstances . 
+
+bp:SLRAM 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
 
-bp:hasSLAllowedRAMValue 
+bp:hasSLRAM 
   rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
-  rdfs:range bp:SLAllowedRAMValue . 
+  rdfs:range bp:SLRAM . 
 
-bp:SLEAllowedRAMValue 
+bp:SLERAM 
   rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
 
-bp:hasSLEAllowedRAMValue 
+bp:hasSLERAM 
   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
-  rdfs:domain bp:SLAllowedRAMValue ; 
-  rdfs:range bp:SLEAllowedRAMValue . 
+  rdfs:domain bp:SLRAM ; 
+  rdfs:range bp:SLERAM . 
 
-bp:VarAllowedRAMValue 
+bp:VarRAM 
   rdfs:subClassOf usdl-sla:Variable . 
 
-bp:hasVarAllowedRAMValue 
+bp:hasVarRAM 
   rdfs:subPropertyOf usdl-sla:hasVariable ; 
-  rdfs:domain bp:SLEAllowedRAMValue ; 
-  rdfs:range bp:VarAllowedRAMValue . 
+  rdfs:domain bp:SLERAM ; 
+  rdfs:range bp:VarRAM . 
 
-bp:AllowedRAMValue 
+bp:RAM 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
   rdfs:label "Amount of main memory"^^xsd:string ; 
   gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
@@ -405,48 +476,58 @@ bp:AllowedRAMValue
   usdl-core-cb:isRange "true"^^xsd:boolean ; 
   usdl-core-cb:higherIsBetter "true"^^xsd:boolean . 
 
-bp:AllowedRAMValueValueRange 
-  a bp:AllowedRAMValue ; 
+bp:RAMValueRange 
+  a bp:RAM ; 
   rdfs:label "Amount of main memory"^^xsd:string ; 
   gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
   gr:hasMinValueInteger "512"^^xsd:integer ; 
   gr:hasMaxValueInteger "4096"^^xsd:integer . 
 
-bp:hasDefaultAllowedRAMValue 
+bp:hasDefaultRAM 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue ; 
-  rdfs:domain bp:VarAllowedRAMValue ; 
-  rdfs:range bp:AllowedRAMValue . 
+  rdfs:domain bp:VarRAM ; 
+  rdfs:range bp:RAM . 
 
-bp:hasAllowedRAMValue 
+bp:hasRAM 
   rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
-  rdfs:range bp:AllowedRAMValue . 
+  rdfs:range bp:RAM . 
 
-bp:SLAllowedDiscValue 
+bp:RAMPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QuantitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarRAM 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:RAMPreferenceVariable ; 
+  rdfs:range bp:RAM . 
+
+bp:SLDisc 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
 
-bp:hasSLAllowedDiscValue 
+bp:hasSLDisc 
   rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
-  rdfs:range bp:SLAllowedDiscValue . 
+  rdfs:range bp:SLDisc . 
 
-bp:SLEAllowedDiscValue 
+bp:SLEDisc 
   rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
 
-bp:hasSLEAllowedDiscValue 
+bp:hasSLEDisc 
   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
-  rdfs:domain bp:SLAllowedDiscValue ; 
-  rdfs:range bp:SLEAllowedDiscValue . 
+  rdfs:domain bp:SLDisc ; 
+  rdfs:range bp:SLEDisc . 
 
-bp:VarAllowedDiscValue 
+bp:VarDisc 
   rdfs:subClassOf usdl-sla:Variable . 
 
-bp:hasVarAllowedDiscValue 
+bp:hasVarDisc 
   rdfs:subPropertyOf usdl-sla:hasVariable ; 
-  rdfs:domain bp:SLEAllowedDiscValue ; 
-  rdfs:range bp:VarAllowedDiscValue . 
+  rdfs:domain bp:SLEDisc ; 
+  rdfs:range bp:VarDisc . 
 
-bp:AllowedDiscValue 
+bp:Disc 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
   rdfs:label "Persistent memory on a hard disc"^^xsd:string ; 
   gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
@@ -455,48 +536,58 @@ bp:AllowedDiscValue
   usdl-core-cb:isRange "true"^^xsd:boolean ; 
   usdl-core-cb:higherIsBetter "true"^^xsd:boolean . 
 
-bp:AllowedDiscValueValueRange 
-  a bp:AllowedDiscValue ; 
+bp:DiscValueRange 
+  a bp:Disc ; 
   rdfs:label "Persistent memory on a hard disc"^^xsd:string ; 
   gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
   gr:hasMinValueInteger "1"^^xsd:integer ; 
   gr:hasMaxValueInteger "50"^^xsd:integer . 
 
-bp:hasDefaultAllowedDiscValue 
+bp:hasDefaultDisc 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue ; 
-  rdfs:domain bp:VarAllowedDiscValue ; 
-  rdfs:range bp:AllowedDiscValue . 
+  rdfs:domain bp:VarDisc ; 
+  rdfs:range bp:Disc . 
 
-bp:hasAllowedDiscValue 
+bp:hasDisc 
   rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
-  rdfs:range bp:AllowedDiscValue . 
+  rdfs:range bp:Disc . 
 
-bp:SLAllowedFloatingIPsValue 
+bp:DiscPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QuantitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarDisc 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:DiscPreferenceVariable ; 
+  rdfs:range bp:Disc . 
+
+bp:SLFloatingIPs 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
 
-bp:hasSLAllowedFloatingIPsValue 
+bp:hasSLFloatingIPs 
   rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
-  rdfs:range bp:SLAllowedFloatingIPsValue . 
+  rdfs:range bp:SLFloatingIPs . 
 
-bp:SLEAllowedFloatingIPsValue 
+bp:SLEFloatingIPs 
   rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
 
-bp:hasSLEAllowedFloatingIPsValue 
+bp:hasSLEFloatingIPs 
   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
-  rdfs:domain bp:SLAllowedFloatingIPsValue ; 
-  rdfs:range bp:SLEAllowedFloatingIPsValue . 
+  rdfs:domain bp:SLFloatingIPs ; 
+  rdfs:range bp:SLEFloatingIPs . 
 
-bp:VarAllowedFloatingIPsValue 
+bp:VarFloatingIPs 
   rdfs:subClassOf usdl-sla:Variable . 
 
-bp:hasVarAllowedFloatingIPsValue 
+bp:hasVarFloatingIPs 
   rdfs:subPropertyOf usdl-sla:hasVariable ; 
-  rdfs:domain bp:SLEAllowedFloatingIPsValue ; 
-  rdfs:range bp:VarAllowedFloatingIPsValue . 
+  rdfs:domain bp:SLEFloatingIPs ; 
+  rdfs:range bp:VarFloatingIPs . 
 
-bp:AllowedFloatingIPsValue 
+bp:FloatingIPs 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
   rdfs:label "Number of publically accessable end points"^^xsd:string ; 
   gr:hasUnitOfMeasurement "IPaddress"^^xsd:string ; 
@@ -505,48 +596,58 @@ bp:AllowedFloatingIPsValue
   usdl-core-cb:isRange "false"^^xsd:boolean ; 
   usdl-core-cb:higherIsBetter "true"^^xsd:boolean . 
 
-bp:AllowedFloatingIPsValueValueRange 
-  a bp:AllowedFloatingIPsValue ; 
+bp:FloatingIPsValueRange 
+  a bp:FloatingIPs ; 
   rdfs:label "Number of publically accessable end points"^^xsd:string ; 
   gr:hasUnitOfMeasurement "IPaddress"^^xsd:string ; 
   gr:hasMinValueInteger "0"^^xsd:integer ; 
   gr:hasMaxValueInteger "2"^^xsd:integer . 
 
-bp:hasDefaultAllowedFloatingIPsValue 
+bp:hasDefaultFloatingIPs 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue ; 
-  rdfs:domain bp:VarAllowedFloatingIPsValue ; 
-  rdfs:range bp:AllowedFloatingIPsValue . 
+  rdfs:domain bp:VarFloatingIPs ; 
+  rdfs:range bp:FloatingIPs . 
 
-bp:hasAllowedFloatingIPsValue 
+bp:hasFloatingIPs 
   rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
-  rdfs:range bp:AllowedFloatingIPsValue . 
+  rdfs:range bp:FloatingIPs . 
 
-bp:SLAllowedEphemeralDiscValue 
+bp:FloatingIPsPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QuantitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarFloatingIPs 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:FloatingIPsPreferenceVariable ; 
+  rdfs:range bp:FloatingIPs . 
+
+bp:SLEphemeralDisc 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
 
-bp:hasSLAllowedEphemeralDiscValue 
+bp:hasSLEphemeralDisc 
   rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
-  rdfs:range bp:SLAllowedEphemeralDiscValue . 
+  rdfs:range bp:SLEphemeralDisc . 
 
-bp:SLEAllowedEphemeralDiscValue 
+bp:SLEEphemeralDisc 
   rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
 
-bp:hasSLEAllowedEphemeralDiscValue 
+bp:hasSLEEphemeralDisc 
   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
-  rdfs:domain bp:SLAllowedEphemeralDiscValue ; 
-  rdfs:range bp:SLEAllowedEphemeralDiscValue . 
+  rdfs:domain bp:SLEphemeralDisc ; 
+  rdfs:range bp:SLEEphemeralDisc . 
 
-bp:VarAllowedEphemeralDiscValue 
+bp:VarEphemeralDisc 
   rdfs:subClassOf usdl-sla:Variable . 
 
-bp:hasVarAllowedEphemeralDiscValue 
+bp:hasVarEphemeralDisc 
   rdfs:subPropertyOf usdl-sla:hasVariable ; 
-  rdfs:domain bp:SLEAllowedEphemeralDiscValue ; 
-  rdfs:range bp:VarAllowedEphemeralDiscValue . 
+  rdfs:domain bp:SLEEphemeralDisc ; 
+  rdfs:range bp:VarEphemeralDisc . 
 
-bp:AllowedEphemeralDiscValue 
+bp:EphemeralDisc 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
   rdfs:label "Amount of disc space which is operational only if the VM instance is alive"^^xsd:string ; 
   gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
@@ -555,48 +656,58 @@ bp:AllowedEphemeralDiscValue
   usdl-core-cb:isRange "true"^^xsd:boolean ; 
   usdl-core-cb:higherIsBetter "true"^^xsd:boolean . 
 
-bp:AllowedEphemeralDiscValueValueRange 
-  a bp:AllowedEphemeralDiscValue ; 
+bp:EphemeralDiscValueRange 
+  a bp:EphemeralDisc ; 
   rdfs:label "Amount of disc space which is operational only if the VM instance is alive"^^xsd:string ; 
   gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
   gr:hasMinValueInteger "1"^^xsd:integer ; 
   gr:hasMaxValueInteger "10"^^xsd:integer . 
 
-bp:hasDefaultAllowedEphemeralDiscValue 
+bp:hasDefaultEphemeralDisc 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue ; 
-  rdfs:domain bp:VarAllowedEphemeralDiscValue ; 
-  rdfs:range bp:AllowedEphemeralDiscValue . 
+  rdfs:domain bp:VarEphemeralDisc ; 
+  rdfs:range bp:EphemeralDisc . 
 
-bp:hasAllowedEphemeralDiscValue 
+bp:hasEphemeralDisc 
   rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
-  rdfs:range bp:AllowedEphemeralDiscValue . 
+  rdfs:range bp:EphemeralDisc . 
 
-bp:SLAllowedSwapDiscValue 
+bp:EphemeralDiscPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QuantitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarEphemeralDisc 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:EphemeralDiscPreferenceVariable ; 
+  rdfs:range bp:EphemeralDisc . 
+
+bp:SLSwapDisc 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
 
-bp:hasSLAllowedSwapDiscValue 
+bp:hasSLSwapDisc 
   rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
-  rdfs:range bp:SLAllowedSwapDiscValue . 
+  rdfs:range bp:SLSwapDisc . 
 
-bp:SLEAllowedSwapDiscValue 
+bp:SLESwapDisc 
   rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
 
-bp:hasSLEAllowedSwapDiscValue 
+bp:hasSLESwapDisc 
   rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
-  rdfs:domain bp:SLAllowedSwapDiscValue ; 
-  rdfs:range bp:SLEAllowedSwapDiscValue . 
+  rdfs:domain bp:SLSwapDisc ; 
+  rdfs:range bp:SLESwapDisc . 
 
-bp:VarAllowedSwapDiscValue 
+bp:VarSwapDisc 
   rdfs:subClassOf usdl-sla:Variable . 
 
-bp:hasVarAllowedSwapDiscValue 
+bp:hasVarSwapDisc 
   rdfs:subPropertyOf usdl-sla:hasVariable ; 
-  rdfs:domain bp:SLEAllowedSwapDiscValue ; 
-  rdfs:range bp:VarAllowedSwapDiscValue . 
+  rdfs:domain bp:SLESwapDisc ; 
+  rdfs:range bp:VarSwapDisc . 
 
-bp:AllowedSwapDiscValue 
+bp:SwapDisc 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
   rdfs:label "Amount of space on the hard disc used as a vitual memory extension as computers main memory"^^xsd:string ; 
   gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
@@ -605,84 +716,94 @@ bp:AllowedSwapDiscValue
   usdl-core-cb:isRange "true"^^xsd:boolean ; 
   usdl-core-cb:higherIsBetter "true"^^xsd:boolean . 
 
-bp:AllowedSwapDiscValueValueRange 
-  a bp:AllowedSwapDiscValue ; 
+bp:SwapDiscValueRange 
+  a bp:SwapDisc ; 
   rdfs:label "Amount of space on the hard disc used as a vitual memory extension as computers main memory"^^xsd:string ; 
   gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
   gr:hasMinValueInteger "0"^^xsd:integer ; 
   gr:hasMaxValueInteger "4096"^^xsd:integer . 
 
-bp:hasDefaultAllowedSwapDiscValue 
+bp:hasDefaultSwapDisc 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue ; 
-  rdfs:domain bp:VarAllowedSwapDiscValue ; 
-  rdfs:range bp:AllowedSwapDiscValue . 
+  rdfs:domain bp:VarSwapDisc ; 
+  rdfs:range bp:SwapDisc . 
 
-bp:hasAllowedSwapDiscValue 
+bp:hasSwapDisc 
   rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ; 
   rdfs:domain bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
-  rdfs:range bp:AllowedSwapDiscValue . 
+  rdfs:range bp:SwapDisc . 
+
+bp:SwapDiscPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QuantitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarSwapDisc 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:SwapDiscPreferenceVariable ; 
+  rdfs:range bp:SwapDisc . 
 
 bp:Low_SecurityLevel 
-  a bp:AllowedSecurityLevelValue ; 
+  a bp:SecurityLevel ; 
   rdfs:label "No IP filtering will be applied"@en ; 
   gr:lesser bp:Medium_SecurityLevel . 
 
 bp:Medium_SecurityLevel 
-  a bp:AllowedSecurityLevelValue ; 
+  a bp:SecurityLevel ; 
   rdfs:label "ICMP and IGB traffic is filtered. The VM is unresolvable."@en ; 
   gr:lesser bp:High_SecurityLevel . 
 
 bp:High_SecurityLevel 
-  a bp:AllowedSecurityLevelValue ; 
+  a bp:SecurityLevel ; 
   rdfs:label "Port filtering is prevented, except the basic HTTP connectivity ports -80, -443."@en . 
 
 bp:Low_Auditability 
-  a bp:AllowedAuditabilityValue ; 
+  a bp:Auditability ; 
   rdfs:label "No auditability support provided by the system."@en ; 
   gr:lesser bp:High_Auditability . 
 
 bp:High_Auditability 
-  a bp:AllowedAuditabilityValue ; 
+  a bp:Auditability ; 
   rdfs:label "Auditability logging is provided by the system"@en . 
 
 bp:No_TransportSecurityGuarantees 
-  a bp:AllowedTransportSecurityGuaranteesValue ; 
+  a bp:TransportSecurityGuarantees ; 
   rdfs:label "No transport security guarantees are provided."@en ; 
   gr:lesser bp:OneWay_TransportSecurityGuarantees . 
 
 bp:OneWay_TransportSecurityGuarantees 
-  a bp:AllowedTransportSecurityGuaranteesValue ; 
+  a bp:TransportSecurityGuarantees ; 
   rdfs:label "One way security guarantees are provided."@en ; 
   gr:lesser bp:TwoWay_TransportSecurityGuarantees . 
 
 bp:TwoWay_TransportSecurityGuarantees 
-  a bp:AllowedTransportSecurityGuaranteesValue ; 
+  a bp:TransportSecurityGuarantees ; 
   rdfs:label "Two way security guarantees are provided."@en . 
 
 bp:Easy_Learnability 
-  a bp:AllowedLearnabilityValue ; 
+  a bp:Learnability ; 
   rdfs:label "The learning curve is low."@en ; 
   gr:lesser bp:Fair_Learnability . 
 
 bp:Fair_Learnability 
-  a bp:AllowedLearnabilityValue ; 
+  a bp:Learnability ; 
   rdfs:label "The learning curve is fair."@en ; 
   gr:lesser bp:Difficult_Learnability . 
 
 bp:Difficult_Learnability 
-  a bp:AllowedLearnabilityValue ; 
+  a bp:Learnability ; 
   rdfs:label "The learning curve is high."@en . 
 
 bp:Low_Accessibility 
-  a bp:AllowedAccessibilityValue ; 
+  a bp:Accessibility ; 
   rdfs:label "No specific accessibility features are offered. "@en ; 
   gr:lesser bp:Adequate_Accessibility . 
 
 bp:Adequate_Accessibility 
-  a bp:AllowedAccessibilityValue ; 
+  a bp:Accessibility ; 
   rdfs:label "Standard accessibility features are supported."@en ; 
   gr:lesser bp:Full_Accessibility . 
 
 bp:Full_Accessibility 
-  a bp:AllowedAccessibilityValue ; 
+  a bp:Accessibility ; 
   rdfs:label "All accessibility features are supported."@en . 
