@@ -129,7 +129,7 @@ public class SampleAction implements IWorkbenchWindowActionDelegate {
 //							Repository.mainRoot.getScenarios().iterator().next().getContext().get(0)
 //						);
 					try {
-						sleep(60000);
+						sleep(3600000);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

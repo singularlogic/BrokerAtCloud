@@ -37,6 +37,8 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 import diva.BoolVariableValue;
 import diva.BooleanVariable;
+import diva.ConfigVariant;
+import diva.Configuration;
 import diva.Context;
 import diva.ContextExpression;
 import diva.Dimension;
@@ -62,6 +64,7 @@ import diva.brokeratcloud.fpr.input.abstracts.ServiceAttribute;
 import diva.brokeratcloud.fpr.input.abstracts.ServiceCategory;
 import diva.brokeratcloud.fpr.input.abstracts.ServiceDependency;
 import diva.brokeratcloud.fpr.input.json.ConsumerProfileJson;
+import diva.brokeratcloud.fpr.input.sparql.ServiceDependencySparql;
 import diva.helpers.DivaHelper;
 import diva.parser.DivaExpressionParser;
 
@@ -214,6 +217,8 @@ public class DivaRoot {
 		
 	}
 	
+	public String fileNamePrefix = null;
+	
 	public void _runSimulation(){
 		
 		if(root.getSimulation()==null)
@@ -230,18 +235,32 @@ public class DivaRoot {
 		configPool = new ConfigurationsPool(
 					root.getSimulation().getScenario().get(0).getContext().get(0)
 				);
-		this.saveModel(URI.createPlatformResourceURI("BrokerAtCloud/model/Orbi-gen.diva"));
+		
+		this.saveModel(this.fileNamePrefix);
 	}
 	
 	private void updateCategoryAndService(){
 		List<String> cats = ServiceCategory.INSTANCE.getCategories();
 		for(String cat : cats){
+			String catAvail = null;
 			Dimension dim = factory.createDimension();
 			dim.setId(cat);
 			dim.setName(cat);
 			dim.setLower(0);
-			dim.setUpper(1);
+			if("FC".equals(cat))
+				dim.setUpper(5);
+			else{
+				dim.setUpper(1);
+			}
+//			BooleanVariable bv = factory.createBooleanVariable();
+//			catAvail = cat + "Avail";
+//			bv.setId(catAvail);
+//			bv.setName(catAvail);
+//			root.getContext().add(bv);
+//
 			root.getDimension().add(dim);
+			
+			
 			
 			for(Property p : root.getProperty()){
 				dim.getProperty().add(p);
@@ -260,6 +279,18 @@ public class DivaRoot {
 					var.getPropertyValue().add(value);
 				}
 				
+//				if(! cat.equals("FC")){
+//					var.setAvailable(factory.createContextExpression());
+//					var.getAvailable().setText(catAvail);
+//					try {
+//						Term term =  DivaExpressionParser.parse(root, catAvail.trim());
+//						var.getAvailable().setTerm(term);
+//					} catch (Exception e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//				}
+				
 			}
 		}
 	}
@@ -269,7 +300,8 @@ public class DivaRoot {
 		
 		for(String s : ServiceAttribute.INSTANCE.listCommonAttributes()){
 			Property p = factory.createProperty();
-			p.setDirection(1);
+//			p.setDirection(1);
+			p.setDirection(0);
 			p.setName(s);
 			p.setId(s);
 			root.getProperty().add(p);
@@ -640,7 +672,133 @@ public class DivaRoot {
 		return configPool;
 	}
 	
+	public List<String> getRecommQuery(String consumer, List<String> srvs){
+		List<String> result = new ArrayList<String>();
+		Set<String> requirements = new HashSet<String>();
+		ServiceDependencySparql dc = new ServiceDependencySparql();
+		
+		for(Dimension dim : root.getDimension()){
+			if(! "FC".equals(dim.getId())){
+				//boolean found = false;
+//				dim.setUpper(1);
+//				for(String s : srvs){
+//					if(dim.getId().startsWith(s))
+//						dim.setUpper(1);
+//				}
+				continue;
+			}
+				
+			for(Variant v: dim.getVariant()){
+				String fc = v.getId();
+				for(String dep : dc.getDependency(fc)){
+					for(String input : srvs){
+						if(input.equals(dep))
+							requirements.addAll(dc.getRequirement(fc));
+					}
+				}
+			}
+		}
+		
+//		for(String srv : srvs){
+//			for(String dep : dc.getDependency(srv)){
+//				for(String req : dc.getRequirement(dep)){
+//					if(req.startsWith("RFC")){
+//						requirements.add("RFC");
+//					}
+//				}
+//			}
+//		}
+		
+		Context ctx = root.getSimulation().getScenario().get(0).getContext().get(0);
+		ctx.getVariable().clear();
+		
+		for(Variable var : root.getContext()){
+			if(var instanceof BooleanVariable){
+				BoolVariableValue varval = DivaFactory.eINSTANCE.createBoolVariableValue();
+				ctx.getVariable().add(varval);
+				varval.setVariable(var);
+				String id = var.getId();
+				if(id.startsWith("RFC")){
+					if(requirements.contains(var.getId()))
+						varval.setBool(true);
+					else
+						varval.setBool(false);
+				}
+				else if(id.startsWith("For")){
+					if(var.getId().equals("ForCustomer"))
+						varval.setBool(true);
+					else
+						varval.setBool(false);
+				}
+				else if(id.endsWith("Avail")){
+					varval.setBool(false);
+					for(String s : srvs){
+						if(id.startsWith(s.substring(0, s.length()-2))){
+							varval.setBool(true);
+						}
+					}
+					for(String s: requirements){
+						if(id.startsWith(s.substring(1)))
+							varval.setBool(true);
+					}
+				}
+			}
+		}
+		
+		List<Dimension> toRemove = new ArrayList<Dimension>();
+		for(Dimension dim : root.getDimension()){
+			boolean remitted = false;
+			for(Variant v : dim.getVariant()){
+				for(String srv : srvs){
+					if(srv.equals(v.getId())){
+						dim.setLower(1);
+						remitted = true;
+						break;
+					}
+				}
+				if(remitted) 
+					break;
+				 for(Dimension dim2 : root.getDimension()){
+					 for(Variant v2 : dim2.getVariant()){
+						 for(String srv : srvs){
+							 try{
+								 if(v2.getId().equals(srv) && v2.getDependency().getText().contains(v.getId()))
+										 remitted = true;
+							 }
+							 catch(Exception e){
+								 
+							 }
+						 }
+					 }
+				 }
+			}
+			if(! remitted)
+				toRemove.add(dim);
+		}
+		
+		root.getDimension().removeAll(toRemove);
+		saveModel(consumer+"-before");
+		this.fileNamePrefix = consumer;
+		_runSimulation();
+		
+		try{
+			Configuration config =	
+					root.getSimulation().getScenario().get(0).getContext().get(0).getConfiguration().get(0);
+			for(ConfigVariant v : config.getVariant()){
+				result.add(v.getVariant().getId());
+			}
+		}
+		catch(Exception e){
+			e.printStackTrace();
+			result.add(e.getStackTrace().toString());
+		}
+		return result;
+	}
+	
+	private static org.eclipse.emf.common.util.URI previousSaveUri= null;
 	public void saveModel(org.eclipse.emf.common.util.URI uri){
+		if(previousSaveUri==null)
+			previousSaveUri = uri;
 		Resource res = new XMIResourceImpl(uri);
 		res.getContents().add(root);
 		try {
@@ -649,6 +807,23 @@ public class DivaRoot {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+
+
+	
+	
+	public void saveModel(String prefix){
+		if(previousSaveUri == null){
+			throw new RuntimeException("saveModel() cannot be called for the first time - must have a parameter");
+		}
+		if(prefix == null){
+			saveModel(previousSaveUri);
+		}
+		String uriString = previousSaveUri.toPlatformString(true);
+		uriString = uriString.substring(0, uriString.length()-5)+"-" + prefix + ".diva";
+		URI uri = URI.createURI(uriString);
+		saveModel(uri);
 	}
 	
 	public void generateRule(){
