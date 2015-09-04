@@ -277,5 +277,6 @@ tr input {
 
 .innerTable {
     margin: 0px;
-    padding: 40px;
+    margin-right: px;
+    border: 0px;
 }

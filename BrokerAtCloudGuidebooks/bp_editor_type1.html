@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html prefix="rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
               rdfs: http://www.w3.org/2000/01/rdf-schema#
@@ -141,10 +142,6 @@
             // Store bp with schemas to a global var
             kb_bp = addQualValues(kb_bp);
 
-            // Assign the selected profile instance to the service model
-            //  .add("<" + document.getElementById("sd_model").value + "> bp:" + document.getElementById("slp_class").value + " <" + document.getElementById("slp").value + "> .");
-            // Add the chosen classification concepts to the service model
-            //  kb_sd = addClassificationConcepts(kb_sd);
             // Dump the kb with the service description to a turtle format and show it in a separate window.
             var dmp = kb_bp.databank.dump({
                 format: 'text/turtle',
@@ -167,7 +164,7 @@
             //tables_section = tables_section + '<div class="bc-buttongroup">';
             for (i = 1; i < qual_sl_table.rows.length; i++) {
                 tables_section = tables_section + '<div class="panel panel-default"><div class="panel-heading"><H2>Specify qualitative values for ' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '</H2></div>';
-                tables_section = tables_section + '<div class="panel-body"><table style="width: 90%" id="table_' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '"' + '>' + '<tr><th></th><th></th><th>Value</th><th style="width: 80%">Description</th></tr> </table>';
+                tables_section = tables_section + '<div class="panel-body"><table style="width: 90%" id="table_' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '"' + '>' + '<tr><th></th><th></th><th>Value</th><th style="width: 60%">Description</th><th>Ordinal relation to successor</th></tr> </table>';
                 tables_section = tables_section + "<div style='width: 90%' class='bc-button4table'><button onclick='" + 'addQualValue(qual_table = ' + '"table_' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '"' + ")'> Add </button>" +
                     "<button onclick='" + 'deleteQualValue(qual_table = ' + '"table_' + qual_sl_table.rows[i].cells[2].childNodes[0].value + '"' + ")'> Delete </button></div></div></div>";
             }
@@ -187,11 +184,6 @@
             deactivateInputFields();
             // Create tables for qualitative value instances
             createQualitativeTables();
-            // Create tables for int quantitative value instances
-            //createQuantitativeIntTables();
-            // Create tables for float quantitative value instances
-            //createQuantitativeFloatTables();
-
         }
 
         function deactivateInputFields() {
@@ -441,6 +433,8 @@
             cell3.innerHTML = "<input type='text'>";
             var cell4 = row.insertCell(3);
             cell4.innerHTML = "<input type='text'>";
+            var cell5 = row.insertCell(4);
+            cell5.innerHTML = "<select name='ordinal' id='ordinal_rel' > <option>nonEqual</option> <option>lesser</option> </select>";
         }
 
         function deleteQualSLConcept() {
@@ -565,8 +559,12 @@
                 var qual_value_type = qual_sl_table.rows[i].cells[2].childNodes[0].value;
                 var qual_values_table = document.getElementById(table_id);
                 for (j = 1; j < qual_values_table.rows.length; j++) {
-                    kb.add("bp:" + qual_values_table.rows[j].cells[2].childNodes[0].value + " a " + "bp:" + qual_value_type + " .");
-                    kb.add("bp:" + qual_values_table.rows[j].cells[2].childNodes[0].value + " rdfs:label " + '"' + qual_values_table.rows[j].cells[3].childNodes[0].value + '"@en .');
+                  var qual_value = qual_values_table.rows[j].cells[2].childNodes[0].value;
+                    kb.add("bp:" + qual_value + " a " + "bp:" + qual_value_type + " .");
+                    kb.add("bp:" + qual_value + " rdfs:label " + '"' + qual_values_table.rows[j].cells[3].childNodes[0].value + '"@en .');
+                    if (j < qual_values_table.rows.length-1){
+                        kb.add("bp:" + qual_value + " gr:" + qual_values_table.rows[j].cells[4].childNodes[0].value + " bp:" + qual_values_table.rows[j+1].cells[2].childNodes[0].value + " .")
+                    }
                 }
             }
             return kb;
@@ -691,62 +689,6 @@
         }
 
 
-
-        function setServiceLevels(url, prop) {
-            //Empty SL table
-            var sl_table = document.getElementById("serviceleveldetails");
-            while (sl_table.rows.length > 1) {
-                sl_table.deleteRow(-1);
-            }
-            //Insert service levels into SL table
-            for (i = 0; i < prop.length; i++) {
-                var sl_prop = prop[i];
-                //   window.alert (sl_prop);
-                var sl = document.kb.where("<" + url + ">" + " <" + prop[i] + "> " + "?sl");
-                sl.each(function () {
-
-                    var sel = this["sl"];
-                    var sl_url = sel.value._string;
-                    var value_instance_url = "";
-                    var value_instance_label = "";
-                    //var unit_of_measurement="";
-                    // Find label of the value instance
-                    var value_instance = document.kb.where("<" + sl_url + ">" + " ?sle_prop " + " ?sle")
-                        .where("?sle_prop rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression")
-                        .where("?sle ?var_prop ?var")
-                        .where("?var_prop rdfs:subPropertyOf usdl-sla:hasVariable")
-                        .where("?var ?value_prop ?value")
-                        .where("?value rdfs:label ?text");
-                    //.where("?value gr:valueReference ?unit");
-                    //.optional("?value_prop rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue");
-                    value_instance.each(function () {
-                            var sel_value_instance = this["value"];
-                            value_instance_url = sel_value_instance.value._string;
-                            var sel_label = this["text"];
-                            value_instance_label = sel_label.value;
-                            //var sel_unit = this["unit"];
-                            //if (sel_unit === undefined) {window.alert("undefined!")} else
-                            //{unit_of_measurement = sel_unit.value._string;}
-
-                            //window.alert(var_url);
-                        })
-                        // Insert data into the table
-                    var sl_table = document.getElementById("serviceleveldetails");
-                    var new_row = sl_table.insertRow(-1);
-                    var cell1 = new_row.insertCell(0);
-                    var cell2 = new_row.insertCell(1);
-                    var cell3 = new_row.insertCell(2);
-                    //var cell4 = new_row.insertCell(3);
-                    cell1.innerHTML = sl_url.split('#')[1];
-                    cell2.innerHTML = value_instance_url.split('#')[1];
-                    cell3.innerHTML = value_instance_label;
-                    //cell4.innerHTML = "Unit of Measurement: " + unit_of_measurement;
-                    // window.alert("event fired!");
-                })
-            }
-        }
-
-
         function loadBP(event) {
             event.preventDefault();
             var dt = event.dataTransfer
@@ -836,6 +778,13 @@
                     var label = kb.where("<" + qv_url + ">" + " rdfs:label ?label");
                     label.each(function () {
                         cell4.childNodes[0].value = this["label"].value;
+                    })
+                    //Ordinal
+                    var cell5 = row.insertCell(4);
+                    cell5.innerHTML = "<select name='ordinal' id='ordinal_rel' > <option>nonEqual</option> <option>lesser</option> </select>";
+                    var ordinal = kb.where("<" + qv_url + ">" + " gr:lesser ?successor");
+                    ordinal.each(function(){
+                      cell5.innerHTML = "<select name='ordinal' id='ordinal_rel' > <option>lesser</option> <option>nonEqual</option> </select>"
                     })
                 })
 

@@ -624,11 +624,13 @@ bp:hasAllowedSwapDiscValue
 
 bp:Low_SecurityLevel 
   a bp:AllowedSecurityLevelValue ; 
-  rdfs:label "No IP filtering will be applied"@en . 
+  rdfs:label "No IP filtering will be applied"@en ; 
+  gr:lesser bp:Medium_SecurityLevel . 
 
 bp:Medium_SecurityLevel 
   a bp:AllowedSecurityLevelValue ; 
-  rdfs:label "ICMP and IGB traffic is filtered. The VM is unresolvable."@en . 
+  rdfs:label "ICMP and IGB traffic is filtered. The VM is unresolvable."@en ; 
+  gr:lesser bp:High_SecurityLevel . 
 
 bp:High_SecurityLevel 
   a bp:AllowedSecurityLevelValue ; 
@@ -636,7 +638,8 @@ bp:High_SecurityLevel
 
 bp:Low_Auditability 
   a bp:AllowedAuditabilityValue ; 
-  rdfs:label "No auditability support provided by the system."@en . 
+  rdfs:label "No auditability support provided by the system."@en ; 
+  gr:lesser bp:High_Auditability . 
 
 bp:High_Auditability 
   a bp:AllowedAuditabilityValue ; 
@@ -644,11 +647,13 @@ bp:High_Auditability
 
 bp:No_TransportSecurityGuarantees 
   a bp:AllowedTransportSecurityGuaranteesValue ; 
-  rdfs:label "No transport security guarantees are provided."@en . 
+  rdfs:label "No transport security guarantees are provided."@en ; 
+  gr:lesser bp:OneWay_TransportSecurityGuarantees . 
 
 bp:OneWay_TransportSecurityGuarantees 
   a bp:AllowedTransportSecurityGuaranteesValue ; 
-  rdfs:label "One way security guarantees are provided."@en . 
+  rdfs:label "One way security guarantees are provided."@en ; 
+  gr:lesser bp:TwoWay_TransportSecurityGuarantees . 
 
 bp:TwoWay_TransportSecurityGuarantees 
   a bp:AllowedTransportSecurityGuaranteesValue ; 
@@ -656,11 +661,13 @@ bp:TwoWay_TransportSecurityGuarantees
 
 bp:Easy_Learnability 
   a bp:AllowedLearnabilityValue ; 
-  rdfs:label "The learning curve is low."@en . 
+  rdfs:label "The learning curve is low."@en ; 
+  gr:lesser bp:Fair_Learnability . 
 
 bp:Fair_Learnability 
   a bp:AllowedLearnabilityValue ; 
-  rdfs:label "The learning curve is fair."@en . 
+  rdfs:label "The learning curve is fair."@en ; 
+  gr:lesser bp:Difficult_Learnability . 
 
 bp:Difficult_Learnability 
   a bp:AllowedLearnabilityValue ; 
@@ -668,11 +675,13 @@ bp:Difficult_Learnability
 
 bp:Low_Accessibility 
   a bp:AllowedAccessibilityValue ; 
-  rdfs:label "No specific accessibility features are offered. "@en . 
+  rdfs:label "No specific accessibility features are offered. "@en ; 
+  gr:lesser bp:Adequate_Accessibility . 
 
 bp:Adequate_Accessibility 
   a bp:AllowedAccessibilityValue ; 
-  rdfs:label "Standard accessibility features are supported."@en . 
+  rdfs:label "Standard accessibility features are supported."@en ; 
+  gr:lesser bp:Full_Accessibility . 
 
 bp:Full_Accessibility 
   a bp:AllowedAccessibilityValue ; 
