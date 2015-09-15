@@ -97,9 +97,34 @@
             document.getElementById("classtaxroot").disabled = true;
             document.getElementById("classtaxURI").disabled = true;
 
+            //deactivateQuantSLSchemaTable();
+            //document.getElementById("quant_sl_table_add").disabled = true;
+            //document.getElementById("quant_sl_table_delete").disabled = true;
             deactivateQualSLSchemaTable();
+            //document.getElementById("qual_sl_table_add").disabled = true;
+            //document.getElementById("qual_sl_table_delete").disabled = true;
             deactivateClassTaxTable();
+            //document.getElementById("classtax_table_add").disabled = true;
+            //document.getElementById("classtax_table_delete").disabled = true;
+
+            //document.getElementById("safe_schemas").disabled = true;
+            //document.getElementById("edit_schemas").disabled = false;
         }
+
+        /*function deactivateQuantSLSchemaTable() {
+            var quant_sl_table = document.getElementById("quantserviceleveldetails");
+            for (i = 1; i < quant_sl_table.rows.length; i++) {
+
+                quant_sl_table.rows[i].cells[2].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[3].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[4].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[5].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[6].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[7].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[8].childNodes[0].disabled = true;
+                quant_sl_table.rows[i].cells[9].childNodes[0].disabled = true;
+            }
+        }*/
 
         function deactivateQualSLSchemaTable() {
             var qual_sl_table = document.getElementById("qualserviceleveldetails");
@@ -400,7 +425,6 @@
             var qvTable = document.createElement('table');
             qvTable.setAttribute('id', 'table_' + serviceLevel);
             qvTable.setAttribute('style', 'width: 90%');
-            //qvTable.className = 'table innerTable';
             var qvHeader = qvTable.insertRow();
             [{
                 content: 'Value',
@@ -467,11 +491,10 @@
             descriptionNode.appendChild(document.createTextNode(description));
             panelBody.appendChild(descriptionNode);
 
-
+            panelBody.appendChild(qvTable);
+            panelBody.appendChild(selectbox);
             panel.appendChild(panelHeader);
             panel.appendChild(panelBody);
-            panel.appendChild(qvTable);
-            panel.appendChild(selectbox);
             document.getElementById("qualvalues").appendChild(panel);
 
         }
@@ -813,8 +836,10 @@
         }
 
         function storeSD() {
+            //todo: ein / statt -
+            var sp_namespace = document.getElementById("sd_namespace").value + "/" + document.getElementById("sd").value + "/";
             var kb_sd = $.rdf()
-                .base(document.getElementById("sd_namespace").value)
+                .base(sp_namespace)
                 .prefix('foaf', 'http://xmlns.com/foaf/0.1/')
                 .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
                 .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
@@ -845,6 +870,8 @@
                 // Create the service instance
                 .add("<" + document.getElementById("sd").value + "> a usdl-core:Service .")
                 .add("<" + document.getElementById("sd").value + "> dcterms:creator <" + document.getElementById("sp_business_entity").value + "> .")
+                .add("<" + document.getElementById("sd").value + '> dcterms:title ' + '"' + document.getElementById("sd_title").value + '"' + ' .')
+                .add("<" + document.getElementById("sd").value + '> dcterms:description ' + '"' + document.getElementById("sd_description").value + '"' + ' .')
                 .add("<" + document.getElementById("sd").value + "> usdl-core:hasEntityInvolvement <" + document.getElementById("sp_business_entity").value + "EntityInvolvement> .")
                 .add("<" + document.getElementById("sd").value + "> usdl-core-cb:hasServiceModel <" + document.getElementById("sd_model").value + "> .")
                 // Create the service model instance
@@ -975,9 +1002,21 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label" for="sd">Service title</label>
+                                                <label class="col-sm-4 control-label" for="sd">Service acronym</label>
                                                 <div class="col-sm-8">
-                                                    <input class="form-control" type="text" id="sd" value="YourServiceDescriptionTitle">
+                                                    <input class="form-control" type="text" id="sd" value="YourServiceDescriptionAcronym">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="sd_title">Service title</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="sd_title" value="YourServiceDescriptionTitle">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="sd_description">Service description</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="sd_description" value="YourServiceDescription">
                                                 </div>
                                             </div>
                                             <div class="form-group">

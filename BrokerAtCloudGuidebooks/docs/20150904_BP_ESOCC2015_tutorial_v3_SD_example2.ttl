@@ -1,0 +1,260 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . 
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> . 
+@prefix dcterms: <http://purl.org/dc/terms/> . 
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> . 
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> . 
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> . 
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> . 
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> . 
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> . 
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> . 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+@prefix ctag: <http://commontag.org/ns#> . 
+@prefix org: <http://www.w3.org/ns/org#> . 
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> . 
+@prefix time: <http://www.w3.org/2006/time#> . 
+@prefix gr: <http://purl.org/goodrelations/v1#> . 
+@prefix doap: <http://usefulinc.com/ns/doap#> . 
+@prefix bp: <http://guide.broker-cloud.eu/esocc2015#> . 
+
+<http://yournamespace.com_MyService/YourCompanyAcronym> 
+  a gr:BusinessEntity ; 
+  gr:legalName "Your Company Legal Name" . 
+
+<http://yournamespace.com_MyService/YourCompanyAcronymEntityInvolvement> 
+  a usdl-core:EntityInvolvement ; 
+  usdl-core:withBusinessRole usdl-business-roles:provider ; 
+  usdl-core:ofBusinessEntity <http://yournamespace.com_MyService/YourCompanyAcronym> . 
+
+<http://yournamespace.com_MyService/MyService> 
+  a usdl-core:Service ; 
+  dcterms:creator <http://yournamespace.com_MyService/YourCompanyAcronym> ; 
+  dcterms:title <http://yournamespace.com_MyService/YourServiceDescriptionTitle> ; 
+  dcterms:description <http://yournamespace.com_MyService/YourServiceDescription> ; 
+  usdl-core:hasEntityInvolvement <http://yournamespace.com_MyService/YourCompanyAcronymEntityInvolvement> ; 
+  usdl-core-cb:hasServiceModel <http://yournamespace.com_MyService/YourServiceModelName> . 
+
+<http://yournamespace.com_MyService/YourServiceModelName> 
+  a bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
+  gr:isVariantOf bp:BrokerAtCloudESOCC2015TutorialBrokerPolicy ; 
+  bp:hasBrokerAtCloudESOCC2015TutorialServiceLevelProfile <http://yournamespace.com_MyService/YourServiceLevelProfileTitle> ; 
+  usdl-core-cb:hasClassificationDimension <http://www.broker-cloud.eu/service-descriptions/CAS/categories#rootConcept> . 
+
+<http://yournamespace.com_MyService/YourServiceLevelProfileTitle> 
+  a bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
+  bp:hasSLSecurityLevel <http://yournamespace.com_MyService/SLSecurityLevelInstance> ; 
+  bp:hasSLAuditability <http://yournamespace.com_MyService/SLAuditabilityInstance> ; 
+  bp:hasSLTransportSecurityGuarantees <http://yournamespace.com_MyService/SLTransportSecurityGuaranteesInstance> ; 
+  bp:hasSLLearnability <http://yournamespace.com_MyService/SLLearnabilityInstance> ; 
+  bp:hasSLAccessibility <http://yournamespace.com_MyService/SLAccessibilityInstance> ; 
+  bp:hasSLAmountOfVCPUs <http://yournamespace.com_MyService/SLAmountOfVCPUsInstance> ; 
+  bp:hasSLAmountOfConcurrentInstances <http://yournamespace.com_MyService/SLAmountOfConcurrentInstancesInstance> ; 
+  bp:hasSLRAM <http://yournamespace.com_MyService/SLRAMInstance> ; 
+  bp:hasSLDisc <http://yournamespace.com_MyService/SLDiscInstance> ; 
+  bp:hasSLFloatingIPs <http://yournamespace.com_MyService/SLFloatingIPsInstance> ; 
+  bp:hasSLEphemeralDisc <http://yournamespace.com_MyService/SLEphemeralDiscInstance> ; 
+  bp:hasSLSwapDisc <http://yournamespace.com_MyService/SLSwapDiscInstance> . 
+
+<http://yournamespace.com_MyService/SLSecurityLevelInstance> 
+  a bp:SLSecurityLevel ; 
+  bp:hasSLESecurityLevel <http://yournamespace.com_MyService/SLESecurityLevelInstance> . 
+
+<http://yournamespace.com_MyService/SLESecurityLevelInstance> 
+  a bp:SLESecurityLevel ; 
+  bp:hasVarSecurityLevel <http://yournamespace.com_MyService/VarSecurityLevelInstance> . 
+
+<http://yournamespace.com_MyService/VarSecurityLevelInstance> 
+  a bp:VarSecurityLevel ; 
+  bp:hasDefaultSecurityLevel bp:Low_SecurityLevel . 
+
+<http://yournamespace.com_MyService/SLAuditabilityInstance> 
+  a bp:SLAuditability ; 
+  bp:hasSLEAuditability <http://yournamespace.com_MyService/SLEAuditabilityInstance> . 
+
+<http://yournamespace.com_MyService/SLEAuditabilityInstance> 
+  a bp:SLEAuditability ; 
+  bp:hasVarAuditability <http://yournamespace.com_MyService/VarAuditabilityInstance> . 
+
+<http://yournamespace.com_MyService/VarAuditabilityInstance> 
+  a bp:VarAuditability ; 
+  bp:hasDefaultAuditability bp:Low_Auditability . 
+
+<http://yournamespace.com_MyService/SLTransportSecurityGuaranteesInstance> 
+  a bp:SLTransportSecurityGuarantees ; 
+  bp:hasSLETransportSecurityGuarantees <http://yournamespace.com_MyService/SLETransportSecurityGuaranteesInstance> . 
+
+<http://yournamespace.com_MyService/SLETransportSecurityGuaranteesInstance> 
+  a bp:SLETransportSecurityGuarantees ; 
+  bp:hasVarTransportSecurityGuarantees <http://yournamespace.com_MyService/VarTransportSecurityGuaranteesInstance> . 
+
+<http://yournamespace.com_MyService/VarTransportSecurityGuaranteesInstance> 
+  a bp:VarTransportSecurityGuarantees ; 
+  bp:hasDefaultTransportSecurityGuarantees bp:No_TransportSecurityGuarantees . 
+
+<http://yournamespace.com_MyService/SLLearnabilityInstance> 
+  a bp:SLLearnability ; 
+  bp:hasSLELearnability <http://yournamespace.com_MyService/SLELearnabilityInstance> . 
+
+<http://yournamespace.com_MyService/SLELearnabilityInstance> 
+  a bp:SLELearnability ; 
+  bp:hasVarLearnability <http://yournamespace.com_MyService/VarLearnabilityInstance> . 
+
+<http://yournamespace.com_MyService/VarLearnabilityInstance> 
+  a bp:VarLearnability ; 
+  bp:hasDefaultLearnability bp:Difficult_Learnability . 
+
+<http://yournamespace.com_MyService/SLAccessibilityInstance> 
+  a bp:SLAccessibility ; 
+  bp:hasSLEAccessibility <http://yournamespace.com_MyService/SLEAccessibilityInstance> . 
+
+<http://yournamespace.com_MyService/SLEAccessibilityInstance> 
+  a bp:SLEAccessibility ; 
+  bp:hasVarAccessibility <http://yournamespace.com_MyService/VarAccessibilityInstance> . 
+
+<http://yournamespace.com_MyService/VarAccessibilityInstance> 
+  a bp:VarAccessibility ; 
+  bp:hasDefaultAccessibility bp:Low_Accessibility . 
+
+<http://yournamespace.com_MyService/SLAmountOfVCPUsInstance> 
+  a bp:SLAmountOfVCPUs ; 
+  bp:hasSLEAmountOfVCPUs <http://yournamespace.com_MyService/SLEAmountOfVCPUsInstance> . 
+
+<http://yournamespace.com_MyService/SLEAmountOfVCPUsInstance> 
+  a bp:SLEAmountOfVCPUs ; 
+  bp:hasVarAmountOfVCPUs <http://yournamespace.com_MyService/VarAmountOfVCPUsInstance> . 
+
+<http://yournamespace.com_MyService/VarAmountOfVCPUsInstance> 
+  a bp:VarAmountOfVCPUs ; 
+  bp:hasDefaultAmountOfVCPUs <http://yournamespace.com_MyService/1> . 
+
+<http://yournamespace.com_MyService/1> 
+  a bp:AmountOfVCPUs ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "core"^^xsd:string ; 
+  gr:valueReference bp:AmountOfVCPUsValueRange ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "4"^^xsd:integer . 
+
+<http://yournamespace.com_MyService/SLAmountOfConcurrentInstancesInstance> 
+  a bp:SLAmountOfConcurrentInstances ; 
+  bp:hasSLEAmountOfConcurrentInstances <http://yournamespace.com_MyService/SLEAmountOfConcurrentInstancesInstance> . 
+
+<http://yournamespace.com_MyService/SLEAmountOfConcurrentInstancesInstance> 
+  a bp:SLEAmountOfConcurrentInstances ; 
+  bp:hasVarAmountOfConcurrentInstances <http://yournamespace.com_MyService/VarAmountOfConcurrentInstancesInstance> . 
+
+<http://yournamespace.com_MyService/VarAmountOfConcurrentInstancesInstance> 
+  a bp:VarAmountOfConcurrentInstances ; 
+  bp:hasDefaultAmountOfConcurrentInstances <http://yournamespace.com_MyService/2> . 
+
+<http://yournamespace.com_MyService/2> 
+  a bp:AmountOfConcurrentInstances ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "VMinstance"^^xsd:string ; 
+  gr:valueReference bp:AmountOfConcurrentInstancesValueRange ; 
+  gr:hasValueInteger "1"^^xsd:integer ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "1"^^xsd:integer . 
+
+<http://yournamespace.com_MyService/SLRAMInstance> 
+  a bp:SLRAM ; 
+  bp:hasSLERAM <http://yournamespace.com_MyService/SLERAMInstance> . 
+
+<http://yournamespace.com_MyService/SLERAMInstance> 
+  a bp:SLERAM ; 
+  bp:hasVarRAM <http://yournamespace.com_MyService/VarRAMInstance> . 
+
+<http://yournamespace.com_MyService/VarRAMInstance> 
+  a bp:VarRAM ; 
+  bp:hasDefaultRAM <http://yournamespace.com_MyService/3> . 
+
+<http://yournamespace.com_MyService/3> 
+  a bp:RAM ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:valueReference bp:RAMValueRange ; 
+  gr:hasMinValueInteger "512"^^xsd:integer ; 
+  gr:hasMaxValueInteger "4096"^^xsd:integer . 
+
+<http://yournamespace.com_MyService/SLDiscInstance> 
+  a bp:SLDisc ; 
+  bp:hasSLEDisc <http://yournamespace.com_MyService/SLEDiscInstance> . 
+
+<http://yournamespace.com_MyService/SLEDiscInstance> 
+  a bp:SLEDisc ; 
+  bp:hasVarDisc <http://yournamespace.com_MyService/VarDiscInstance> . 
+
+<http://yournamespace.com_MyService/VarDiscInstance> 
+  a bp:VarDisc ; 
+  bp:hasDefaultDisc <http://yournamespace.com_MyService/4> . 
+
+<http://yournamespace.com_MyService/4> 
+  a bp:Disc ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
+  gr:valueReference bp:DiscValueRange ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "50"^^xsd:integer . 
+
+<http://yournamespace.com_MyService/SLFloatingIPsInstance> 
+  a bp:SLFloatingIPs ; 
+  bp:hasSLEFloatingIPs <http://yournamespace.com_MyService/SLEFloatingIPsInstance> . 
+
+<http://yournamespace.com_MyService/SLEFloatingIPsInstance> 
+  a bp:SLEFloatingIPs ; 
+  bp:hasVarFloatingIPs <http://yournamespace.com_MyService/VarFloatingIPsInstance> . 
+
+<http://yournamespace.com_MyService/VarFloatingIPsInstance> 
+  a bp:VarFloatingIPs ; 
+  bp:hasDefaultFloatingIPs <http://yournamespace.com_MyService/5> . 
+
+<http://yournamespace.com_MyService/5> 
+  a bp:FloatingIPs ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "IPaddress"^^xsd:string ; 
+  gr:valueReference bp:FloatingIPsValueRange ; 
+  gr:hasValueInteger "1"^^xsd:integer ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "1"^^xsd:integer . 
+
+<http://yournamespace.com_MyService/SLEphemeralDiscInstance> 
+  a bp:SLEphemeralDisc ; 
+  bp:hasSLEEphemeralDisc <http://yournamespace.com_MyService/SLEEphemeralDiscInstance> . 
+
+<http://yournamespace.com_MyService/SLEEphemeralDiscInstance> 
+  a bp:SLEEphemeralDisc ; 
+  bp:hasVarEphemeralDisc <http://yournamespace.com_MyService/VarEphemeralDiscInstance> . 
+
+<http://yournamespace.com_MyService/VarEphemeralDiscInstance> 
+  a bp:VarEphemeralDisc ; 
+  bp:hasDefaultEphemeralDisc <http://yournamespace.com_MyService/6> . 
+
+<http://yournamespace.com_MyService/6> 
+  a bp:EphemeralDisc ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
+  gr:valueReference bp:EphemeralDiscValueRange ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "10"^^xsd:integer . 
+
+<http://yournamespace.com_MyService/SLSwapDiscInstance> 
+  a bp:SLSwapDisc ; 
+  bp:hasSLESwapDisc <http://yournamespace.com_MyService/SLESwapDiscInstance> . 
+
+<http://yournamespace.com_MyService/SLESwapDiscInstance> 
+  a bp:SLESwapDisc ; 
+  bp:hasVarSwapDisc <http://yournamespace.com_MyService/VarSwapDiscInstance> . 
+
+<http://yournamespace.com_MyService/VarSwapDiscInstance> 
+  a bp:VarSwapDisc ; 
+  bp:hasDefaultSwapDisc <http://yournamespace.com_MyService/7> . 
+
+<http://yournamespace.com_MyService/7> 
+  a bp:SwapDisc ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:valueReference bp:SwapDiscValueRange ; 
+  gr:hasMinValueInteger "0"^^xsd:integer ; 
+  gr:hasMaxValueInteger "4096"^^xsd:integer . 

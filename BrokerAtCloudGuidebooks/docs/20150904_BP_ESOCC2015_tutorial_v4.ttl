@@ -109,7 +109,7 @@ bp:hasVarSecurityLevel
 
 bp:SecurityLevel 
   rdfs:subClassOf gr:QualitativeValue ; 
-  rdfs:label "Defines the protection level of the virtual machine instance, which is applied by the IaaS networking controller"^^xsd:string . 
+  rdfs:label "Defines the protection level of the virtual machine instance, which is applied by the IaaS networking controller"@en . 
 
 bp:hasDefaultSecurityLevel 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
@@ -157,7 +157,7 @@ bp:hasVarAuditability
 
 bp:Auditability 
   rdfs:subClassOf gr:QualitativeValue ; 
-  rdfs:label "Defines the level of support for auditability."^^xsd:string . 
+  rdfs:label "Defines the level of support for auditability."@en . 
 
 bp:hasDefaultAuditability 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
@@ -205,7 +205,7 @@ bp:hasVarTransportSecurityGuarantees
 
 bp:TransportSecurityGuarantees 
   rdfs:subClassOf gr:QualitativeValue ; 
-  rdfs:label "Defines the level of transport security."^^xsd:string . 
+  rdfs:label "Defines the level of transport security."@en . 
 
 bp:hasDefaultTransportSecurityGuarantees 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
@@ -253,7 +253,7 @@ bp:hasVarLearnability
 
 bp:Learnability 
   rdfs:subClassOf gr:QualitativeValue ; 
-  rdfs:label "Defines the level of learning effort."^^xsd:string . 
+  rdfs:label "Defines the level of learning effort."@en . 
 
 bp:hasDefaultLearnability 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
@@ -301,7 +301,7 @@ bp:hasVarAccessibility
 
 bp:Accessibility 
   rdfs:subClassOf gr:QualitativeValue ; 
-  rdfs:label "Defines supported accessibility levels"^^xsd:string . 
+  rdfs:label "Defines supported accessibility levels"@en . 
 
 bp:hasDefaultAccessibility 
   rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
@@ -349,7 +349,7 @@ bp:hasVarAmountOfVCPUs
 
 bp:AmountOfVCPUs 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
-  rdfs:label "Amount of virtual CPUs allocated by the hyperviser"^^xsd:string ; 
+  rdfs:label "Amount of virtual CPUs allocated by the hyperviser"@en ; 
   gr:hasUnitOfMeasurement "core"^^xsd:string ; 
   gr:hasMinValueInteger "1"^^xsd:integer ; 
   gr:hasMaxValueInteger "4"^^xsd:integer ; 
@@ -358,7 +358,7 @@ bp:AmountOfVCPUs
 
 bp:AmountOfVCPUsValueRange 
   a bp:AmountOfVCPUs ; 
-  rdfs:label "Amount of virtual CPUs allocated by the hyperviser"^^xsd:string ; 
+  rdfs:label "Amount of virtual CPUs allocated by the hyperviser"@en ; 
   gr:hasUnitOfMeasurement "core"^^xsd:string ; 
   gr:hasMinValueInteger "1"^^xsd:integer ; 
   gr:hasMaxValueInteger "4"^^xsd:integer . 
@@ -409,7 +409,7 @@ bp:hasVarAmountOfConcurrentInstances
 
 bp:AmountOfConcurrentInstances 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
-  rdfs:label "Amount of working containers able to handle execution load of the service"^^xsd:string ; 
+  rdfs:label "Amount of working containers able to handle execution load of the service"@en ; 
   gr:hasUnitOfMeasurement "VMinstance"^^xsd:string ; 
   gr:hasMinValueInteger "0"^^xsd:integer ; 
   gr:hasMaxValueInteger "2"^^xsd:integer ; 
@@ -418,7 +418,7 @@ bp:AmountOfConcurrentInstances
 
 bp:AmountOfConcurrentInstancesValueRange 
   a bp:AmountOfConcurrentInstances ; 
-  rdfs:label "Amount of working containers able to handle execution load of the service"^^xsd:string ; 
+  rdfs:label "Amount of working containers able to handle execution load of the service"@en ; 
   gr:hasUnitOfMeasurement "VMinstance"^^xsd:string ; 
   gr:hasMinValueInteger "0"^^xsd:integer ; 
   gr:hasMaxValueInteger "2"^^xsd:integer . 
@@ -469,7 +469,7 @@ bp:hasVarRAM
 
 bp:RAM 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
-  rdfs:label "Amount of main memory"^^xsd:string ; 
+  rdfs:label "Amount of main memory"@en ; 
   gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
   gr:hasMinValueInteger "512"^^xsd:integer ; 
   gr:hasMaxValueInteger "4096"^^xsd:integer ; 
@@ -478,7 +478,7 @@ bp:RAM
 
 bp:RAMValueRange 
   a bp:RAM ; 
-  rdfs:label "Amount of main memory"^^xsd:string ; 
+  rdfs:label "Amount of main memory"@en ; 
   gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
   gr:hasMinValueInteger "512"^^xsd:integer ; 
   gr:hasMaxValueInteger "4096"^^xsd:integer . 
@@ -529,7 +529,7 @@ bp:hasVarDisc
 
 bp:Disc 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
-  rdfs:label "Persistent memory on a hard disc"^^xsd:string ; 
+  rdfs:label "Persistent memory on a hard disc"@en ; 
   gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
   gr:hasMinValueInteger "1"^^xsd:integer ; 
   gr:hasMaxValueInteger "50"^^xsd:integer ; 
@@ -538,7 +538,7 @@ bp:Disc
 
 bp:DiscValueRange 
   a bp:Disc ; 
-  rdfs:label "Persistent memory on a hard disc"^^xsd:string ; 
+  rdfs:label "Persistent memory on a hard disc"@en ; 
   gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
   gr:hasMinValueInteger "1"^^xsd:integer ; 
   gr:hasMaxValueInteger "50"^^xsd:integer . 
@@ -589,7 +589,7 @@ bp:hasVarFloatingIPs
 
 bp:FloatingIPs 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
-  rdfs:label "Number of publically accessable end points"^^xsd:string ; 
+  rdfs:label "Number of publically accessable end points"@en ; 
   gr:hasUnitOfMeasurement "IPaddress"^^xsd:string ; 
   gr:hasMinValueInteger "0"^^xsd:integer ; 
   gr:hasMaxValueInteger "2"^^xsd:integer ; 
@@ -598,7 +598,7 @@ bp:FloatingIPs
 
 bp:FloatingIPsValueRange 
   a bp:FloatingIPs ; 
-  rdfs:label "Number of publically accessable end points"^^xsd:string ; 
+  rdfs:label "Number of publically accessable end points"@en ; 
   gr:hasUnitOfMeasurement "IPaddress"^^xsd:string ; 
   gr:hasMinValueInteger "0"^^xsd:integer ; 
   gr:hasMaxValueInteger "2"^^xsd:integer . 
@@ -649,7 +649,7 @@ bp:hasVarEphemeralDisc
 
 bp:EphemeralDisc 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
-  rdfs:label "Amount of disc space which is operational only if the VM instance is alive"^^xsd:string ; 
+  rdfs:label "Amount of disc space which is operational only if the VM instance is alive"@en ; 
   gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
   gr:hasMinValueInteger "1"^^xsd:integer ; 
   gr:hasMaxValueInteger "10"^^xsd:integer ; 
@@ -658,7 +658,7 @@ bp:EphemeralDisc
 
 bp:EphemeralDiscValueRange 
   a bp:EphemeralDisc ; 
-  rdfs:label "Amount of disc space which is operational only if the VM instance is alive"^^xsd:string ; 
+  rdfs:label "Amount of disc space which is operational only if the VM instance is alive"@en ; 
   gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
   gr:hasMinValueInteger "1"^^xsd:integer ; 
   gr:hasMaxValueInteger "10"^^xsd:integer . 
@@ -709,7 +709,7 @@ bp:hasVarSwapDisc
 
 bp:SwapDisc 
   rdfs:subClassOf gr:QuantitativeValueInteger ; 
-  rdfs:label "Amount of space on the hard disc used as a vitual memory extension as computers main memory"^^xsd:string ; 
+  rdfs:label "Amount of space on the hard disc used as a vitual memory extension as computers main memory"@en ; 
   gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
   gr:hasMinValueInteger "0"^^xsd:integer ; 
   gr:hasMaxValueInteger "4096"^^xsd:integer ; 
@@ -718,7 +718,7 @@ bp:SwapDisc
 
 bp:SwapDiscValueRange 
   a bp:SwapDisc ; 
-  rdfs:label "Amount of space on the hard disc used as a vitual memory extension as computers main memory"^^xsd:string ; 
+  rdfs:label "Amount of space on the hard disc used as a vitual memory extension as computers main memory"@en ; 
   gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
   gr:hasMinValueInteger "0"^^xsd:integer ; 
   gr:hasMaxValueInteger "4096"^^xsd:integer . 
@@ -780,7 +780,7 @@ bp:TwoWay_TransportSecurityGuarantees
   a bp:TransportSecurityGuarantees ; 
   rdfs:label "Two way security guarantees are provided."@en . 
 
-bp:Easy_Learnability 
+bp:Difficult_Learnability 
   a bp:Learnability ; 
   rdfs:label "The learning curve is low."@en ; 
   gr:lesser bp:Fair_Learnability . 
@@ -788,9 +788,9 @@ bp:Easy_Learnability
 bp:Fair_Learnability 
   a bp:Learnability ; 
   rdfs:label "The learning curve is fair."@en ; 
-  gr:lesser bp:Difficult_Learnability . 
+  gr:lesser bp:Easy_Learnability . 
 
-bp:Difficult_Learnability 
+bp:Easy_Learnability 
   a bp:Learnability ; 
   rdfs:label "The learning curve is high."@en . 
 

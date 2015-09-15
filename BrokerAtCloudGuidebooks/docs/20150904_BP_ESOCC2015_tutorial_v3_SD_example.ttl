@@ -1,0 +1,258 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . 
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> . 
+@prefix dcterms: <http://purl.org/dc/terms/> . 
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> . 
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> . 
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> . 
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> . 
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> . 
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> . 
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> . 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+@prefix ctag: <http://commontag.org/ns#> . 
+@prefix org: <http://www.w3.org/ns/org#> . 
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> . 
+@prefix time: <http://www.w3.org/2006/time#> . 
+@prefix gr: <http://purl.org/goodrelations/v1#> . 
+@prefix doap: <http://usefulinc.com/ns/doap#> . 
+@prefix bp: <http://guide.broker-cloud.eu/esocc2015#> . 
+
+<http://yournamespace.com/YourCompanyAcronym> 
+  a gr:BusinessEntity ; 
+  gr:legalName "Your Company Legal Name" . 
+
+<http://yournamespace.com/YourCompanyAcronymEntityInvolvement> 
+  a usdl-core:EntityInvolvement ; 
+  usdl-core:withBusinessRole usdl-business-roles:provider ; 
+  usdl-core:ofBusinessEntity <http://yournamespace.com/YourCompanyAcronym> . 
+
+<http://yournamespace.com/YourServiceDescriptionTitle> 
+  a usdl-core:Service ; 
+  dcterms:creator <http://yournamespace.com/YourCompanyAcronym> ; 
+  usdl-core:hasEntityInvolvement <http://yournamespace.com/YourCompanyAcronymEntityInvolvement> ; 
+  usdl-core-cb:hasServiceModel <http://yournamespace.com/YourServiceModelName> . 
+
+<http://yournamespace.com/YourServiceModelName> 
+  a bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
+  gr:isVariantOf bp:BrokerAtCloudESOCC2015TutorialBrokerPolicy ; 
+  bp:hasBrokerAtCloudESOCC2015TutorialServiceLevelProfile <http://yournamespace.com/YourServiceLevelProfileTitle> ; 
+  usdl-core-cb:hasClassificationDimension <http://www.broker-cloud.eu/service-descriptions/CAS/categories#Shipment> . 
+
+<http://yournamespace.com/YourServiceLevelProfileTitle> 
+  a bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
+  bp:hasSLSecurityLevel <http://yournamespace.com/SLSecurityLevelInstance> ; 
+  bp:hasSLAuditability <http://yournamespace.com/SLAuditabilityInstance> ; 
+  bp:hasSLTransportSecurityGuarantees <http://yournamespace.com/SLTransportSecurityGuaranteesInstance> ; 
+  bp:hasSLLearnability <http://yournamespace.com/SLLearnabilityInstance> ; 
+  bp:hasSLAccessibility <http://yournamespace.com/SLAccessibilityInstance> ; 
+  bp:hasSLAmountOfVCPUs <http://yournamespace.com/SLAmountOfVCPUsInstance> ; 
+  bp:hasSLAmountOfConcurrentInstances <http://yournamespace.com/SLAmountOfConcurrentInstancesInstance> ; 
+  bp:hasSLRAM <http://yournamespace.com/SLRAMInstance> ; 
+  bp:hasSLDisc <http://yournamespace.com/SLDiscInstance> ; 
+  bp:hasSLFloatingIPs <http://yournamespace.com/SLFloatingIPsInstance> ; 
+  bp:hasSLEphemeralDisc <http://yournamespace.com/SLEphemeralDiscInstance> ; 
+  bp:hasSLSwapDisc <http://yournamespace.com/SLSwapDiscInstance> . 
+
+<http://yournamespace.com/SLSecurityLevelInstance> 
+  a bp:SLSecurityLevel ; 
+  bp:hasSLESecurityLevel <http://yournamespace.com/SLESecurityLevelInstance> . 
+
+<http://yournamespace.com/SLESecurityLevelInstance> 
+  a bp:SLESecurityLevel ; 
+  bp:hasVarSecurityLevel <http://yournamespace.com/VarSecurityLevelInstance> . 
+
+<http://yournamespace.com/VarSecurityLevelInstance> 
+  a bp:VarSecurityLevel ; 
+  bp:hasDefaultSecurityLevel bp:Low_SecurityLevel . 
+
+<http://yournamespace.com/SLAuditabilityInstance> 
+  a bp:SLAuditability ; 
+  bp:hasSLEAuditability <http://yournamespace.com/SLEAuditabilityInstance> . 
+
+<http://yournamespace.com/SLEAuditabilityInstance> 
+  a bp:SLEAuditability ; 
+  bp:hasVarAuditability <http://yournamespace.com/VarAuditabilityInstance> . 
+
+<http://yournamespace.com/VarAuditabilityInstance> 
+  a bp:VarAuditability ; 
+  bp:hasDefaultAuditability bp:Low_Auditability . 
+
+<http://yournamespace.com/SLTransportSecurityGuaranteesInstance> 
+  a bp:SLTransportSecurityGuarantees ; 
+  bp:hasSLETransportSecurityGuarantees <http://yournamespace.com/SLETransportSecurityGuaranteesInstance> . 
+
+<http://yournamespace.com/SLETransportSecurityGuaranteesInstance> 
+  a bp:SLETransportSecurityGuarantees ; 
+  bp:hasVarTransportSecurityGuarantees <http://yournamespace.com/VarTransportSecurityGuaranteesInstance> . 
+
+<http://yournamespace.com/VarTransportSecurityGuaranteesInstance> 
+  a bp:VarTransportSecurityGuarantees ; 
+  bp:hasDefaultTransportSecurityGuarantees bp:No_TransportSecurityGuarantees . 
+
+<http://yournamespace.com/SLLearnabilityInstance> 
+  a bp:SLLearnability ; 
+  bp:hasSLELearnability <http://yournamespace.com/SLELearnabilityInstance> . 
+
+<http://yournamespace.com/SLELearnabilityInstance> 
+  a bp:SLELearnability ; 
+  bp:hasVarLearnability <http://yournamespace.com/VarLearnabilityInstance> . 
+
+<http://yournamespace.com/VarLearnabilityInstance> 
+  a bp:VarLearnability ; 
+  bp:hasDefaultLearnability bp:Easy_Learnability . 
+
+<http://yournamespace.com/SLAccessibilityInstance> 
+  a bp:SLAccessibility ; 
+  bp:hasSLEAccessibility <http://yournamespace.com/SLEAccessibilityInstance> . 
+
+<http://yournamespace.com/SLEAccessibilityInstance> 
+  a bp:SLEAccessibility ; 
+  bp:hasVarAccessibility <http://yournamespace.com/VarAccessibilityInstance> . 
+
+<http://yournamespace.com/VarAccessibilityInstance> 
+  a bp:VarAccessibility ; 
+  bp:hasDefaultAccessibility bp:Low_Accessibility . 
+
+<http://yournamespace.com/SLAmountOfVCPUsInstance> 
+  a bp:SLAmountOfVCPUs ; 
+  bp:hasSLEAmountOfVCPUs <http://yournamespace.com/SLEAmountOfVCPUsInstance> . 
+
+<http://yournamespace.com/SLEAmountOfVCPUsInstance> 
+  a bp:SLEAmountOfVCPUs ; 
+  bp:hasVarAmountOfVCPUs <http://yournamespace.com/VarAmountOfVCPUsInstance> . 
+
+<http://yournamespace.com/VarAmountOfVCPUsInstance> 
+  a bp:VarAmountOfVCPUs ; 
+  bp:hasDefaultAmountOfVCPUs <http://yournamespace.com/VCPUs> . 
+
+<http://yournamespace.com/VCPUs> 
+  a bp:AmountOfVCPUs ; 
+  rdfs:label "fdfdsfs"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "core"^^xsd:string ; 
+  gr:valueReference bp:AmountOfVCPUsValueRange ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "4"^^xsd:integer . 
+
+<http://yournamespace.com/SLAmountOfConcurrentInstancesInstance> 
+  a bp:SLAmountOfConcurrentInstances ; 
+  bp:hasSLEAmountOfConcurrentInstances <http://yournamespace.com/SLEAmountOfConcurrentInstancesInstance> . 
+
+<http://yournamespace.com/SLEAmountOfConcurrentInstancesInstance> 
+  a bp:SLEAmountOfConcurrentInstances ; 
+  bp:hasVarAmountOfConcurrentInstances <http://yournamespace.com/VarAmountOfConcurrentInstancesInstance> . 
+
+<http://yournamespace.com/VarAmountOfConcurrentInstancesInstance> 
+  a bp:VarAmountOfConcurrentInstances ; 
+  bp:hasDefaultAmountOfConcurrentInstances <http://yournamespace.com/Concinst> . 
+
+<http://yournamespace.com/Concinst> 
+  a bp:AmountOfConcurrentInstances ; 
+  rdfs:label "dsdsdsds"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "VMinstance"^^xsd:string ; 
+  gr:valueReference bp:AmountOfConcurrentInstancesValueRange ; 
+  gr:hasValueInteger "1"^^xsd:integer ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "1"^^xsd:integer . 
+
+<http://yournamespace.com/SLRAMInstance> 
+  a bp:SLRAM ; 
+  bp:hasSLERAM <http://yournamespace.com/SLERAMInstance> . 
+
+<http://yournamespace.com/SLERAMInstance> 
+  a bp:SLERAM ; 
+  bp:hasVarRAM <http://yournamespace.com/VarRAMInstance> . 
+
+<http://yournamespace.com/VarRAMInstance> 
+  a bp:VarRAM ; 
+  bp:hasDefaultRAM <http://yournamespace.com/Mem> . 
+
+<http://yournamespace.com/Mem> 
+  a bp:RAM ; 
+  rdfs:label "fdsdfdsds"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:valueReference bp:RAMValueRange ; 
+  gr:hasMinValueInteger "1024"^^xsd:integer ; 
+  gr:hasMaxValueInteger "2048"^^xsd:integer . 
+
+<http://yournamespace.com/SLDiscInstance> 
+  a bp:SLDisc ; 
+  bp:hasSLEDisc <http://yournamespace.com/SLEDiscInstance> . 
+
+<http://yournamespace.com/SLEDiscInstance> 
+  a bp:SLEDisc ; 
+  bp:hasVarDisc <http://yournamespace.com/VarDiscInstance> . 
+
+<http://yournamespace.com/VarDiscInstance> 
+  a bp:VarDisc ; 
+  bp:hasDefaultDisc <http://yournamespace.com/Disc> . 
+
+<http://yournamespace.com/Disc> 
+  a bp:Disc ; 
+  rdfs:label "dsddsfsadf"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
+  gr:valueReference bp:DiscValueRange ; 
+  gr:hasMinValueInteger "2"^^xsd:integer ; 
+  gr:hasMaxValueInteger "40"^^xsd:integer . 
+
+<http://yournamespace.com/SLFloatingIPsInstance> 
+  a bp:SLFloatingIPs ; 
+  bp:hasSLEFloatingIPs <http://yournamespace.com/SLEFloatingIPsInstance> . 
+
+<http://yournamespace.com/SLEFloatingIPsInstance> 
+  a bp:SLEFloatingIPs ; 
+  bp:hasVarFloatingIPs <http://yournamespace.com/VarFloatingIPsInstance> . 
+
+<http://yournamespace.com/VarFloatingIPsInstance> 
+  a bp:VarFloatingIPs ; 
+  bp:hasDefaultFloatingIPs <http://yournamespace.com/IP> . 
+
+<http://yournamespace.com/IP> 
+  a bp:FloatingIPs ; 
+  rdfs:label "asasdsad"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "IPaddress"^^xsd:string ; 
+  gr:valueReference bp:FloatingIPsValueRange ; 
+  gr:hasValueInteger "1"^^xsd:integer ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "1"^^xsd:integer . 
+
+<http://yournamespace.com/SLEphemeralDiscInstance> 
+  a bp:SLEphemeralDisc ; 
+  bp:hasSLEEphemeralDisc <http://yournamespace.com/SLEEphemeralDiscInstance> . 
+
+<http://yournamespace.com/SLEEphemeralDiscInstance> 
+  a bp:SLEEphemeralDisc ; 
+  bp:hasVarEphemeralDisc <http://yournamespace.com/VarEphemeralDiscInstance> . 
+
+<http://yournamespace.com/VarEphemeralDiscInstance> 
+  a bp:VarEphemeralDisc ; 
+  bp:hasDefaultEphemeralDisc <http://yournamespace.com/VMInst> . 
+
+<http://yournamespace.com/VMInst> 
+  a bp:EphemeralDisc ; 
+  rdfs:label "dsdsd"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
+  gr:valueReference bp:EphemeralDiscValueRange ; 
+  gr:hasMinValueInteger "2"^^xsd:integer ; 
+  gr:hasMaxValueInteger "9"^^xsd:integer . 
+
+<http://yournamespace.com/SLSwapDiscInstance> 
+  a bp:SLSwapDisc ; 
+  bp:hasSLESwapDisc <http://yournamespace.com/SLESwapDiscInstance> . 
+
+<http://yournamespace.com/SLESwapDiscInstance> 
+  a bp:SLESwapDisc ; 
+  bp:hasVarSwapDisc <http://yournamespace.com/VarSwapDiscInstance> . 
+
+<http://yournamespace.com/VarSwapDiscInstance> 
+  a bp:VarSwapDisc ; 
+  bp:hasDefaultSwapDisc <http://yournamespace.com/VME> . 
+
+<http://yournamespace.com/VME> 
+  a bp:SwapDisc ; 
+  rdfs:label "sdfsfsdf"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:valueReference bp:SwapDiscValueRange ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "4000"^^xsd:integer . 

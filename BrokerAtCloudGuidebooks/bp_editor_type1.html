@@ -598,7 +598,7 @@
                     // qualitative value subclass
 
                 kb.add("bp:" + qual_value_type + " rdfs:subClassOf gr:QualitativeValue .")
-                    .add("bp:" + qual_value_type + ' rdfs:label "' + qual_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                    .add("bp:" + qual_value_type + ' rdfs:label "' + qual_sl_table.rows[i].cells[3].childNodes[0].value + '"@en .')
 
                 // Value subproperty
                 kb.add("bp:" + "hasDefault" + qual_value_type + " rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue .")
@@ -649,13 +649,13 @@
                 if (quant_sl_table.rows[i].cells[5].childNodes[0].value == "integer") {
                     // Int value subclass
                     kb.add("bp:" + quant_type + " rdfs:subClassOf gr:QuantitativeValueInteger .")
-                        .add("bp:" + quant_type + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"@en .')
                         .add("bp:" + quant_type + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
                         .add("bp:" + quant_type + ' gr:hasMinValueInteger "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
                         .add("bp:" + quant_type + ' gr:hasMaxValueInteger "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
                         // Int value range instance
                     kb.add("bp:" + quant_type + "ValueRange" + " a " + "bp:" + quant_type + " .")
-                        .add("bp:" + quant_type + "ValueRange" + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + "ValueRange" + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"@en .')
                         .add("bp:" + quant_type + "ValueRange" + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
                         .add("bp:" + quant_type + "ValueRange" + ' gr:hasMinValueInteger "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
                         .add("bp:" + quant_type + "ValueRange" + ' gr:hasMaxValueInteger "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
@@ -663,13 +663,13 @@
                 } else {
                     // Float value subclass
                     kb.add("bp:" + quant_type + " rdfs:subClassOf gr:QuantitativeValueFloat .")
-                        .add("bp:" + quant_type + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
-                        .add("bp:" + quant_type + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"@en .')
+                        .add("bp:" + quant_type + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:sttring .')
                         .add("bp:" + quant_type + ' gr:hasMinValueFloat "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^xsd:float .')
                         .add("bp:" + quant_type + ' gr:hasMaxValueFloat "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^xsd:float .')
                         // Float value range instance
                     kb.add("bp:" + quant_type + "ValueRange" + " a " + "bp:" + quant_type + " .")
-                        .add("bp:" + quant_type + "ValueRange" + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"^^xsd:string .')
+                        .add("bp:" + quant_type + "ValueRange" + ' rdfs:label "' + quant_sl_table.rows[i].cells[3].childNodes[0].value + '"@en .')
                         .add("bp:" + quant_type + "ValueRange" + ' gr:hasUnitOfMeasurement "' + quant_sl_table.rows[i].cells[4].childNodes[0].value + '"^^xsd:string .')
                         .add("bp:" + quant_type + "ValueRange" + ' gr:hasMinValueFloat "' + quant_sl_table.rows[i].cells[6].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#float> .')
                         .add("bp:" + quant_type + "ValueRange" + ' gr:hasMaxValueFloat "' + quant_sl_table.rows[i].cells[7].childNodes[0].value + '"^^<http://www.w3.org/2001/XMLSchema#float> .')
