@@ -30,13 +30,12 @@ import diva.VariableValue;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Enum Term</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Enum Term</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.EnumTermImpl#getValue <em>Value</em>}</li>
+ * <li>{@link diva.impl.EnumTermImpl#getValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *
@@ -45,8 +44,8 @@ import diva.visitors.Visitor;
 public class EnumTermImpl extends VariableTermImpl implements EnumTerm {
 	/**
 	 * The cached value of the '{@link #getValue() <em>Value</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getValue()
 	 * @generated
 	 * @ordered
@@ -54,8 +53,8 @@ public class EnumTermImpl extends VariableTermImpl implements EnumTerm {
 	protected EnumLiteral value;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected EnumTermImpl() {
@@ -63,8 +62,8 @@ public class EnumTermImpl extends VariableTermImpl implements EnumTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -73,25 +72,26 @@ public class EnumTermImpl extends VariableTermImpl implements EnumTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EnumLiteral getValue() {
 		if (value != null && value.eIsProxy()) {
-			InternalEObject oldValue = (InternalEObject)value;
-			value = (EnumLiteral)eResolveProxy(oldValue);
+			InternalEObject oldValue = (InternalEObject) value;
+			value = (EnumLiteral) eResolveProxy(oldValue);
 			if (value != oldValue) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DivaPackage.ENUM_TERM__VALUE, oldValue, value));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DivaPackage.ENUM_TERM__VALUE, oldValue,
+							value));
 			}
 		}
 		return value;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EnumLiteral basicGetValue() {
@@ -99,8 +99,8 @@ public class EnumTermImpl extends VariableTermImpl implements EnumTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setValue(EnumLiteral newValue) {
@@ -111,8 +111,8 @@ public class EnumTermImpl extends VariableTermImpl implements EnumTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -120,64 +120,65 @@ public class EnumTermImpl extends VariableTermImpl implements EnumTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.ENUM_TERM__VALUE:
-				if (resolve) return getValue();
-				return basicGetValue();
+		case DivaPackage.ENUM_TERM__VALUE:
+			if (resolve)
+				return getValue();
+			return basicGetValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.ENUM_TERM__VALUE:
-				setValue((EnumLiteral)newValue);
-				return;
+		case DivaPackage.ENUM_TERM__VALUE:
+			setValue((EnumLiteral) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.ENUM_TERM__VALUE:
-				setValue((EnumLiteral)null);
-				return;
+		case DivaPackage.ENUM_TERM__VALUE:
+			setValue((EnumLiteral) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.ENUM_TERM__VALUE:
-				return value != null;
+		case DivaPackage.ENUM_TERM__VALUE:
+			return value != null;
 		}
 		return super.eIsSet(featureID);
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -185,17 +186,16 @@ public class EnumTermImpl extends VariableTermImpl implements EnumTerm {
 		builder.append("one " + getVariable().getId() + "_" + getValue().getId());
 	}
 
-	
 	/**
 	 * @generated NOT
 	 */
 	public boolean eval(Context ctx, Configuration cfg) {
-		for(VariableValue vv : ctx.getVariable()) {
+		for (VariableValue vv : ctx.getVariable()) {
 			if (vv.getVariable() == getVariable()) {
-				return ((EnumVariableValue)vv).getLiteral() == getValue();
+				return ((EnumVariableValue) vv).getLiteral() == getValue();
 			}
 		}
 		return false;
 	}
 
-} //EnumTermImpl
+} // EnumTermImpl

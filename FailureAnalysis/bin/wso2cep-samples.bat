@@ -1,19 +1,20 @@
 @echo off
 
-REM ---------------------------------------------------------------------------
-REM        Copyright 2005-2009 WSO2, Inc. http://www.wso2.org
+REM Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 REM
-REM  Licensed under the Apache License, Version 2.0 (the "License");
-REM  you may not use this file except in compliance with the License.
-REM  You may obtain a copy of the License at
+REM WSO2 Inc. licenses this file to you under the Apache License,
+REM Version 2.0 (the "License"); you may not use this file except
+REM in compliance with the License.
+REM You may obtain a copy of the License at
 REM
-REM      http://www.apache.org/licenses/LICENSE-2.0
+REM    http://www.apache.org/licenses/LICENSE-2.0
 REM
-REM  Unless required by applicable law or agreed to in writing, software
-REM  distributed under the License is distributed on an "AS IS" BASIS,
-REM  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-REM  See the License for the specific language governing permissions and
-REM  limitations under the License.
+REM Unless required by applicable law or agreed to in writing,
+REM software distributed under the License is distributed on an
+REM "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+REM KIND, either express or implied.  See the License for the
+REM specific language governing permissions and limitations
+REM under the License.
 
 rem ---------------------------------------------------------------------------
 rem Main Script for WSO2 Carbon
@@ -57,7 +58,29 @@ wso2server.bat %CMD% -Daxis2.repo=../samples/artifacts/%cn%
 goto done
 
 :copyfile
-if exist ..\samples\artifacts\%cn%\stream-definitions.xml copy ..\samples\artifacts\%cn%\stream-definitions.xml ..\repository\conf\data-bridge > nul
+if not exist ..\samples\artifacts\%cn%\webapps ( mkdir ..\samples\artifacts\%cn%\webapps > nul
+if exist ..\repository\deployment\server\webapps\inputwebsocket.war ( copy ..\repository\deployment\server\webapps\inputwebsocket.war ..\samples\artifacts\%cn%\webapps\ > nul )
+if exist ..\repository\deployment\server\webapps\outputwebsocket.war ( copy ..\repository\deployment\server\webapps\outputwebsocket.war ..\samples\artifacts\%cn%\webapps\ > nul )
+if exist ..\repository\deployment\server\webapps\outputui.war ( copy ..\repository\deployment\server\webapps\outputui.war ..\samples\artifacts\%cn%\webapps\ > nul )
+if exist ..\repository\deployment\server\webapps\shindig.war ( copy ..\repository\deployment\server\webapps\shindig.war ..\samples\artifacts\%cn%\webapps\ > nul )
+if exist ..\repository\deployment\server\webapps\STRATOS_ROOT ( xcopy ..\repository\deployment\server\webapps\STRATOS_ROOT ..\samples\artifacts\%cn%\webapps\STRATOS_ROOT /s /q /i > nul )
+) else ( if not exist ..\samples\artifacts\%cn%\webapps\inputwebsocket.war ( copy ..\repository\deployment\server\webapps\inputwebsocket.war ..\samples\artifacts\%cn%\webapps\ > nul )
+if not exist ..\samples\artifacts\%cn%\webapps\outputwebsocket.war ( copy ..\repository\deployment\server\webapps\outputwebsocket.war ..\samples\artifacts\%cn%\webapps\ > nul )
+if not exist ..\samples\artifacts\%cn%\webapps\outputui.war ( copy ..\repository\deployment\server\webapps\outputui.war ..\samples\artifacts\%cn%\webapps\ > nul )
+if not exist ..\samples\artifacts\%cn%\webapps\shindig.war ( copy ..\repository\deployment\server\webapps\shindig.war ..\samples\artifacts\%cn%\webapps\ > nul )
+if not exist ..\samples\artifacts\%cn%\webapps\STRATOS_ROOT ( xcopy ..\repository\deployment\server\webapps\STRATOS_ROOT ..\samples\artifacts\%cn%\webapps\STRATOS_ROOT /s /q /i > nul ) )
+
+if not exist ..\samples\artifacts\%cn%\jaggeryapps ( mkdir ..\samples\artifacts\%cn%\jaggeryapps\portal > nul
+xcopy ..\repository\deployment\server\jaggeryapps\portal ..\samples\artifacts\%cn%\jaggeryapps\portal\ /s /q > nul
+rmdir ..\samples\artifacts\%cn%\jaggeryapps\portal\store /s /q > nul
+mkdir ..\samples\artifacts\%cn%\jaggeryapps\portal\store\carbon.super > nul
+xcopy ..\repository\deployment\server\jaggeryapps\portal\store\carbon.super ..\samples\artifacts\%cn%\jaggeryapps\portal\store\carbon.super /s /q > nul
+rmdir ..\samples\artifacts\%cn%\jaggeryapps\portal\store\carbon.super\gadget /s /q > nul
+mkdir ..\samples\artifacts\%cn%\jaggeryapps\portal\store\carbon.super\gadget > nul
+mkdir ..\samples\artifacts\%cn%\jaggeryapps\portal\store\wso2.com > nul
+xcopy ..\repository\deployment\server\jaggeryapps\portal\store\wso2.com ..\samples\artifacts\%cn%\jaggeryapps\portal\store\wso2.com /s /q > nul
+rmdir ..\samples\artifacts\%cn%\jaggeryapps\portal\store\wso2.com\gadget /s /q > nul
+mkdir ..\samples\artifacts\%cn%\jaggeryapps\portal\store\wso2.com\gadget > nul )
 goto run
 
 :invalid_number

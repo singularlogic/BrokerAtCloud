@@ -21,9 +21,8 @@ import diva.DivaPackage;
 import diva.Term;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Term</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Term</b></em>'. <!-- end-user-doc -->
  * <p>
  * </p>
  *
@@ -31,8 +30,8 @@ import diva.Term;
  */
 public abstract class TermImpl extends DiVAModelElementImpl implements Term {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected TermImpl() {
@@ -40,8 +39,8 @@ public abstract class TermImpl extends DiVAModelElementImpl implements Term {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -49,4 +48,4 @@ public abstract class TermImpl extends DiVAModelElementImpl implements Term {
 		return DivaPackage.Literals.TERM;
 	}
 
-} //TermImpl
+} // TermImpl

@@ -29,13 +29,12 @@ import diva.Variant;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Config Variant</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Config Variant</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.ConfigVariantImpl#getVariant <em>Variant</em>}</li>
+ * <li>{@link diva.impl.ConfigVariantImpl#getVariant <em>Variant</em>}</li>
  * </ul>
  * </p>
  *
@@ -43,9 +42,9 @@ import diva.visitors.Visitor;
  */
 public class ConfigVariantImpl extends ScoredElementImpl implements ConfigVariant {
 	/**
-	 * The cached value of the '{@link #getVariant() <em>Variant</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getVariant() <em>Variant</em>}'
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getVariant()
 	 * @generated
 	 * @ordered
@@ -53,8 +52,8 @@ public class ConfigVariantImpl extends ScoredElementImpl implements ConfigVarian
 	protected Variant variant;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ConfigVariantImpl() {
@@ -62,8 +61,8 @@ public class ConfigVariantImpl extends ScoredElementImpl implements ConfigVarian
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -72,25 +71,26 @@ public class ConfigVariantImpl extends ScoredElementImpl implements ConfigVarian
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Variant getVariant() {
 		if (variant != null && variant.eIsProxy()) {
-			InternalEObject oldVariant = (InternalEObject)variant;
-			variant = (Variant)eResolveProxy(oldVariant);
+			InternalEObject oldVariant = (InternalEObject) variant;
+			variant = (Variant) eResolveProxy(oldVariant);
 			if (variant != oldVariant) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DivaPackage.CONFIG_VARIANT__VARIANT, oldVariant, variant));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DivaPackage.CONFIG_VARIANT__VARIANT,
+							oldVariant, variant));
 			}
 		}
 		return variant;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Variant basicGetVariant() {
@@ -98,20 +98,21 @@ public class ConfigVariantImpl extends ScoredElementImpl implements ConfigVarian
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setVariant(Variant newVariant) {
 		Variant oldVariant = variant;
 		variant = newVariant;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.CONFIG_VARIANT__VARIANT, oldVariant, variant));
+			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.CONFIG_VARIANT__VARIANT, oldVariant,
+					variant));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -119,60 +120,61 @@ public class ConfigVariantImpl extends ScoredElementImpl implements ConfigVarian
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.CONFIG_VARIANT__VARIANT:
-				if (resolve) return getVariant();
-				return basicGetVariant();
+		case DivaPackage.CONFIG_VARIANT__VARIANT:
+			if (resolve)
+				return getVariant();
+			return basicGetVariant();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.CONFIG_VARIANT__VARIANT:
-				setVariant((Variant)newValue);
-				return;
+		case DivaPackage.CONFIG_VARIANT__VARIANT:
+			setVariant((Variant) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.CONFIG_VARIANT__VARIANT:
-				setVariant((Variant)null);
-				return;
+		case DivaPackage.CONFIG_VARIANT__VARIANT:
+			setVariant((Variant) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.CONFIG_VARIANT__VARIANT:
-				return variant != null;
+		case DivaPackage.CONFIG_VARIANT__VARIANT:
+			return variant != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -181,7 +183,7 @@ public class ConfigVariantImpl extends ScoredElementImpl implements ConfigVarian
 	 * @generated NOT
 	 */
 	public int getContribution(Property property) {
-		for(PropertyValue pv : getVariant().getPropertyValue()) {
+		for (PropertyValue pv : getVariant().getPropertyValue()) {
 			if (pv.getProperty() == property)
 				return pv.getValue();
 		}
@@ -193,8 +195,8 @@ public class ConfigVariantImpl extends ScoredElementImpl implements ConfigVarian
 	 */
 	public void computeTotalScore() {
 		setTotalScore(0);
-		for(Score s : getScore())
-			setTotalScore(getTotalScore() + s.getScore());		
+		for (Score s : getScore())
+			setTotalScore(getTotalScore() + s.getScore());
 	}
 
-} //ConfigVariantImpl
+} // ConfigVariantImpl

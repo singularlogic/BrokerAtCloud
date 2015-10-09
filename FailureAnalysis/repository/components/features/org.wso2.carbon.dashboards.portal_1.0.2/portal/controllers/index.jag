@@ -1,0 +1,14 @@
+<%
+(function() {
+    if (!user) {
+        sendLogin();
+        return;
+    }
+
+    if (userDomain !== (urlDomain || superDomain)) {
+        response.sendRedirect(utils.tenantedPrefix(urlPrefix, userDomain));
+        return;
+    }
+
+    include(utils.resolvePath('templates/index.jag'));
+} ()); %>

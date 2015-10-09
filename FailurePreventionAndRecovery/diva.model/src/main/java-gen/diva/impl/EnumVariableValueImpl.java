@@ -27,13 +27,12 @@ import diva.VariableValue;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Enum Variable Value</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Enum Variable Value</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.EnumVariableValueImpl#getLiteral <em>Literal</em>}</li>
+ * <li>{@link diva.impl.EnumVariableValueImpl#getLiteral <em>Literal</em>}</li>
  * </ul>
  * </p>
  *
@@ -41,9 +40,9 @@ import diva.visitors.Visitor;
  */
 public class EnumVariableValueImpl extends VariableValueImpl implements EnumVariableValue {
 	/**
-	 * The cached value of the '{@link #getLiteral() <em>Literal</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getLiteral() <em>Literal</em>}'
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getLiteral()
 	 * @generated
 	 * @ordered
@@ -51,8 +50,8 @@ public class EnumVariableValueImpl extends VariableValueImpl implements EnumVari
 	protected EnumLiteral literal;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected EnumVariableValueImpl() {
@@ -60,8 +59,8 @@ public class EnumVariableValueImpl extends VariableValueImpl implements EnumVari
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -70,25 +69,26 @@ public class EnumVariableValueImpl extends VariableValueImpl implements EnumVari
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EnumLiteral getLiteral() {
 		if (literal != null && literal.eIsProxy()) {
-			InternalEObject oldLiteral = (InternalEObject)literal;
-			literal = (EnumLiteral)eResolveProxy(oldLiteral);
+			InternalEObject oldLiteral = (InternalEObject) literal;
+			literal = (EnumLiteral) eResolveProxy(oldLiteral);
 			if (literal != oldLiteral) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DivaPackage.ENUM_VARIABLE_VALUE__LITERAL, oldLiteral, literal));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DivaPackage.ENUM_VARIABLE_VALUE__LITERAL,
+							oldLiteral, literal));
 			}
 		}
 		return literal;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EnumLiteral basicGetLiteral() {
@@ -96,20 +96,21 @@ public class EnumVariableValueImpl extends VariableValueImpl implements EnumVari
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setLiteral(EnumLiteral newLiteral) {
 		EnumLiteral oldLiteral = literal;
 		literal = newLiteral;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.ENUM_VARIABLE_VALUE__LITERAL, oldLiteral, literal));
+			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.ENUM_VARIABLE_VALUE__LITERAL, oldLiteral,
+					literal));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -117,64 +118,65 @@ public class EnumVariableValueImpl extends VariableValueImpl implements EnumVari
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.ENUM_VARIABLE_VALUE__LITERAL:
-				if (resolve) return getLiteral();
-				return basicGetLiteral();
+		case DivaPackage.ENUM_VARIABLE_VALUE__LITERAL:
+			if (resolve)
+				return getLiteral();
+			return basicGetLiteral();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.ENUM_VARIABLE_VALUE__LITERAL:
-				setLiteral((EnumLiteral)newValue);
-				return;
+		case DivaPackage.ENUM_VARIABLE_VALUE__LITERAL:
+			setLiteral((EnumLiteral) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.ENUM_VARIABLE_VALUE__LITERAL:
-				setLiteral((EnumLiteral)null);
-				return;
+		case DivaPackage.ENUM_VARIABLE_VALUE__LITERAL:
+			setLiteral((EnumLiteral) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.ENUM_VARIABLE_VALUE__LITERAL:
-				return literal != null;
+		case DivaPackage.ENUM_VARIABLE_VALUE__LITERAL:
+			return literal != null;
 		}
 		return super.eIsSet(featureID);
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -188,9 +190,9 @@ public class EnumVariableValueImpl extends VariableValueImpl implements EnumVari
 	 */
 	public boolean hasSameValue(VariableValue vv) {
 		if (vv instanceof EnumVariableValue) {
-			return ((EnumVariableValue)vv).getLiteral().equals(getLiteral());
+			return ((EnumVariableValue) vv).getLiteral().equals(getLiteral());
 		}
 		return false;
 	}
 
-} //EnumVariableValueImpl
+} // EnumVariableValueImpl

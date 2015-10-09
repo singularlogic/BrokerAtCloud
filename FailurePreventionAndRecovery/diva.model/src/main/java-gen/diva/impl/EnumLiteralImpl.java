@@ -26,13 +26,12 @@ import diva.EnumVariable;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Enum Literal</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Enum Literal</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.EnumLiteralImpl#getQuery <em>Query</em>}</li>
+ * <li>{@link diva.impl.EnumLiteralImpl#getQuery <em>Query</em>}</li>
  * </ul>
  * </p>
  *
@@ -41,8 +40,8 @@ import diva.visitors.Visitor;
 public class EnumLiteralImpl extends NamedElementImpl implements EnumLiteral {
 	/**
 	 * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getQuery()
 	 * @generated
 	 * @ordered
@@ -50,8 +49,8 @@ public class EnumLiteralImpl extends NamedElementImpl implements EnumLiteral {
 	protected static final String QUERY_EDEFAULT = null;
 	/**
 	 * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getQuery()
 	 * @generated
 	 * @ordered
@@ -59,8 +58,8 @@ public class EnumLiteralImpl extends NamedElementImpl implements EnumLiteral {
 	protected String query = QUERY_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected EnumLiteralImpl() {
@@ -68,8 +67,8 @@ public class EnumLiteralImpl extends NamedElementImpl implements EnumLiteral {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -78,8 +77,8 @@ public class EnumLiteralImpl extends NamedElementImpl implements EnumLiteral {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getQuery() {
@@ -87,8 +86,8 @@ public class EnumLiteralImpl extends NamedElementImpl implements EnumLiteral {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setQuery(String newQuery) {
@@ -99,8 +98,8 @@ public class EnumLiteralImpl extends NamedElementImpl implements EnumLiteral {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -108,103 +107,108 @@ public class EnumLiteralImpl extends NamedElementImpl implements EnumLiteral {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.ENUM_LITERAL__QUERY:
-				return getQuery();
+		case DivaPackage.ENUM_LITERAL__QUERY:
+			return getQuery();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.ENUM_LITERAL__QUERY:
-				setQuery((String)newValue);
-				return;
+		case DivaPackage.ENUM_LITERAL__QUERY:
+			setQuery((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.ENUM_LITERAL__QUERY:
-				setQuery(QUERY_EDEFAULT);
-				return;
+		case DivaPackage.ENUM_LITERAL__QUERY:
+			setQuery(QUERY_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.ENUM_LITERAL__QUERY:
-				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
+		case DivaPackage.ENUM_LITERAL__QUERY:
+			return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
 		}
 		return super.eIsSet(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
 		if (baseClass == CEPable.class) {
 			switch (derivedFeatureID) {
-				case DivaPackage.ENUM_LITERAL__QUERY: return DivaPackage.CE_PABLE__QUERY;
-				default: return -1;
+			case DivaPackage.ENUM_LITERAL__QUERY:
+				return DivaPackage.CE_PABLE__QUERY;
+			default:
+				return -1;
 			}
 		}
 		return super.eBaseStructuralFeatureID(derivedFeatureID, baseClass);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
 		if (baseClass == CEPable.class) {
 			switch (baseFeatureID) {
-				case DivaPackage.CE_PABLE__QUERY: return DivaPackage.ENUM_LITERAL__QUERY;
-				default: return -1;
+			case DivaPackage.CE_PABLE__QUERY:
+				return DivaPackage.ENUM_LITERAL__QUERY;
+			default:
+				return -1;
 			}
 		}
 		return super.eDerivedStructuralFeatureID(baseFeatureID, baseClass);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (query: ");
@@ -217,6 +221,7 @@ public class EnumLiteralImpl extends NamedElementImpl implements EnumLiteral {
 	 * @generated NOT
 	 */
 	public void toAlloy(StringBuilder builder) {
-		builder.append("lone sig " + ((EnumVariable)eContainer()).getId() + "_" + getId() + " extends " + ((EnumVariable)eContainer()).getId() + " {}\n");
+		builder.append("lone sig " + ((EnumVariable) eContainer()).getId() + "_" + getId() + " extends "
+				+ ((EnumVariable) eContainer()).getId() + " {}\n");
 	}
-} //EnumLiteralImpl
+} // EnumLiteralImpl

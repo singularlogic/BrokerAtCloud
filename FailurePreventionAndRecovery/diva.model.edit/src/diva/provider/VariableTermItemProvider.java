@@ -15,7 +15,6 @@
  */
 package diva.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -33,22 +32,16 @@ import diva.DivaPackage;
 
 /**
  * This is the item provider adapter for a {@link diva.VariableTerm} object.
- * <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> <!-- end-user-doc -->
+ * 
  * @generated
  */
-public class VariableTermItemProvider
-	extends TermItemProvider
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource {
+public class VariableTermItemProvider extends TermItemProvider implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 	/**
-	 * This constructs an instance from a factory and a notifier.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This constructs an instance from a factory and a notifier. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VariableTermItemProvider(AdapterFactory adapterFactory) {
@@ -56,9 +49,9 @@ public class VariableTermItemProvider
 	}
 
 	/**
-	 * This returns the property descriptors for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the property descriptors for the adapted class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -72,31 +65,24 @@ public class VariableTermItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Variable feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Variable feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addVariablePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_VariableTerm_variable_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_VariableTerm_variable_feature", "_UI_VariableTerm_type"),
-				 DivaPackage.Literals.VARIABLE_TERM__VARIABLE,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_VariableTerm_variable_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_VariableTerm_variable_feature",
+								"_UI_VariableTerm_type"),
+						DivaPackage.Literals.VARIABLE_TERM__VARIABLE, true, false, true, null, null, null));
 	}
 
 	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the label text for the adapted class. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -105,10 +91,11 @@ public class VariableTermItemProvider
 	}
 
 	/**
-	 * This handles model notifications by calling {@link #updateChildren} to update any cached
-	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This handles model notifications by calling {@link #updateChildren} to
+	 * update any cached children and by creating a viewer notification, which
+	 * it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -118,10 +105,10 @@ public class VariableTermItemProvider
 	}
 
 	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-	 * that can be created under this object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s
+	 * describing the children that can be created under this object. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

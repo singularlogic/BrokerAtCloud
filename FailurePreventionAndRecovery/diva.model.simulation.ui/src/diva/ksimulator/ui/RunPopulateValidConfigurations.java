@@ -57,13 +57,12 @@ public class RunPopulateValidConfigurations implements IObjectActionDelegate, Ru
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 
-		if (selection instanceof StructuredSelection)
-		{
-			currentSelection = (StructuredSelection)selection;
+		if (selection instanceof StructuredSelection) {
+			currentSelection = (StructuredSelection) selection;
 			Iterator it = currentSelection.iterator();
 
-			while(it.hasNext()) {
-				file = (IFile)it.next();
+			while (it.hasNext()) {
+				file = (IFile) it.next();
 			}
 
 		}

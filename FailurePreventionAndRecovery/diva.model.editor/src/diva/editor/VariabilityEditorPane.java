@@ -41,25 +41,22 @@ public class VariabilityEditorPane extends DiVATableEditorPane implements Adapte
 
 	Notifier eNotifier;
 
-	
 	public Notifier getTarget() {
 		return eNotifier;
 	}
 
-	
 	public boolean isAdapterForType(Object type) {
 		return false;
 	}
 
-	
 	public void notifyChanged(Notification notification) {
-		if (treeViewerWithColumns.isBusy()) return;
+		if (treeViewerWithColumns.isBusy())
+			return;
 		if (notification.getNotifier() instanceof Expression) {
-			treeViewerWithColumns.update(((EObject)notification.getNotifier()).eContainer(), null);
+			treeViewerWithColumns.update(((EObject) notification.getNotifier()).eContainer(), null);
 		}
 	}
-	
-	
+
 	public void setTarget(Notifier newTarget) {
 		eNotifier = newTarget;
 	}
@@ -67,9 +64,10 @@ public class VariabilityEditorPane extends DiVATableEditorPane implements Adapte
 	public VariabilityEditorPane(DiVATableEditor editor, IWorkbenchPage page, IWorkbenchPart part) {
 		super(editor, page, part);
 	}
-	
-	/** Initializes the table tree viewer, creating columns and setting up editing.
-	 *  {@link #treeViewerWithColumns} should be valid before calling.
+
+	/**
+	 * Initializes the table tree viewer, creating columns and setting up
+	 * editing. {@link #treeViewerWithColumns} should be valid before calling.
 	 */
 	protected void initializeTableTreeViewer() {
 
@@ -79,17 +77,16 @@ public class VariabilityEditorPane extends DiVATableEditorPane implements Adapte
 		tree.setLinesVisible(true);
 
 		createColumns(treeViewerWithColumns);
-		
+
 		createExpressionColumn(DivaPackage.eINSTANCE.getVariant_Dependency(), this);
 		createExpressionColumn(DivaPackage.eINSTANCE.getVariant_Available(), this);
 		createExpressionColumn(DivaPackage.eINSTANCE.getVariant_Required(), this);
 
-		treeViewerWithColumns
-				.setContentProvider(new VariantContentProvider(editor.getAdaptedFactory()));
-		
+		treeViewerWithColumns.setContentProvider(new VariantContentProvider(editor.getAdaptedFactory()));
+
 		// get the model
 		Resource r = editor.getEditingDomain().getResourceSet().getResources().get(0);
-		
+
 		// Find the VariabilityModel and set the input
 		for (EObject o : r.getContents()) {
 			if (o instanceof VariabilityModel) {
@@ -97,57 +94,48 @@ public class VariabilityEditorPane extends DiVATableEditorPane implements Adapte
 				break;
 			}
 		}
-		
+
 		treeViewerWithColumns.expandAll();
 		// resize all the columns
-		for(TreeColumn c : columns) c.pack();
-		
-		
+		for (TreeColumn c : columns)
+			c.pack();
+
 	}
-	
+
 	class VariantContentProvider extends AdapterFactoryContentProvider {
 
 		public VariantContentProvider(AdapterFactory adapterFactory) {
 			super(adapterFactory);
 		}
 
-		
 		public Object[] getChildren(Object object) {
 			if (object instanceof VariabilityModel) {
-				return ((VariabilityModel)object).getDimension().toArray();
-			}
-			else if(object instanceof Variant) {
+				return ((VariabilityModel) object).getDimension().toArray();
+			} else if (object instanceof Variant) {
 				return new Object[0];
-			}
-			else if(object instanceof MultiplicityConstraint) {
+			} else if (object instanceof MultiplicityConstraint) {
 				return new Object[0];
 			}
 			return super.getChildren(object);
 		}
 
-		
 		public boolean hasChildren(Object object) {
 			if (object instanceof VariabilityModel) {
-				return ((VariabilityModel)object).getDimension().size() != 0;
-			}
-			else if(object instanceof Variant) {
+				return ((VariabilityModel) object).getDimension().size() != 0;
+			} else if (object instanceof Variant) {
 				return false;
-			}
-			else if(object instanceof MultiplicityConstraint) {
+			} else if (object instanceof MultiplicityConstraint) {
 				return false;
 			}
 			return super.hasChildren(object);
 		}
 
-		
 		public Object[] getElements(Object object) {
 			if (object instanceof VariabilityModel) {
-				return ((VariabilityModel)object).getDimension().toArray();
-			}
-			else if(object instanceof Variant) {
+				return ((VariabilityModel) object).getDimension().toArray();
+			} else if (object instanceof Variant) {
 				return new Object[0];
-			}
-			else if(object instanceof MultiplicityConstraint) {
+			} else if (object instanceof MultiplicityConstraint) {
 				return new Object[0];
 			}
 			return super.getElements(object);
@@ -164,9 +152,9 @@ public class VariabilityEditorPane extends DiVATableEditorPane implements Adapte
 		list.add(new ColumnDescriptor("ID", null, "id"));
 		list.add(new ColumnDescriptor("Lower", null, "lower"));
 		list.add(new ColumnDescriptor("Upper", null, "upper"));
-		//list.add(new ColumnDescriptor("Dependency", null, "dependency"));
-		//list.add(new ColumnDescriptor("Available", null, "available"));
-		//list.add(new ColumnDescriptor("Required", null, "required"));
+		// list.add(new ColumnDescriptor("Dependency", null, "dependency"));
+		// list.add(new ColumnDescriptor("Available", null, "available"));
+		// list.add(new ColumnDescriptor("Required", null, "required"));
 		return list;
 	}
 

@@ -49,16 +49,17 @@ public class AlloyWrapper implements Callable<Entry<Context, List<Configuration>
 
 	File input;
 	List<Configuration> results;
-	
+
 	Thread t;
 
 	static volatile A4Options opt = new A4Options();
+
 	static {
 		// Chooses the Alloy4 options
 		opt.solver = A4Options.SatSolver.SAT4J;
-		//opt.symmetry = 0;
-		//opt.solver = A4Options.SatSolver.MiniSatJNI;
-		//opt.solver.options()
+		// opt.symmetry = 0;
+		// opt.solver = A4Options.SatSolver.MiniSatJNI;
+		// opt.solver.options()
 	}
 
 	boolean done = false;
@@ -69,9 +70,9 @@ public class AlloyWrapper implements Callable<Entry<Context, List<Configuration>
 		this.variants = variants;
 
 	}
-	
+
 	public void kill() {
-		if (t!=null) {
+		if (t != null) {
 			t.interrupt();
 			t.stop();
 		}
@@ -87,8 +88,11 @@ public class AlloyWrapper implements Callable<Entry<Context, List<Configuration>
 			// TODO Auto-generated method stub
 			try {
 				Module world = CompUtil.parseEverything_fromFile(null, null, input.getAbsolutePath());
-				//solution = TranslateAlloyToKodkod.execute_command(NOP, world.getAllReachableSigs(), world.getAllCommands().get(0), opt);
-				solution = TranslateAlloyToKodkod.execute_command(NOP, world.getAllReachableSigs(), world.getAllCommands().get(0), opt);
+				// solution = TranslateAlloyToKodkod.execute_command(NOP,
+				// world.getAllReachableSigs(), world.getAllCommands().get(0),
+				// opt);
+				solution = TranslateAlloyToKodkod.execute_command(NOP, world.getAllReachableSigs(),
+						world.getAllCommands().get(0), opt);
 			} catch (Err e) {
 				System.err.println("Alloy ERROR:\n" + e.msg);
 				e.printStackTrace();
@@ -106,15 +110,15 @@ public class AlloyWrapper implements Callable<Entry<Context, List<Configuration>
 		t = new Thread(r);
 		t.start();
 		t.join(5000);
-		
+
 		if (r.solution != null) {
 			StringBuilder result = new StringBuilder();
 			result.append("");
 			A4Solution s = r.solution;
 			int i = 0;
-			while(s.satisfiable() && i <= 100) {
+			while (s.satisfiable() && i <= 100) {
 				Iterator<ExprVar> atoms = s.getAllAtoms().iterator();
-				while(atoms.hasNext()) {
+				while (atoms.hasNext()) {
 					ExprVar v = atoms.next();
 					result.append(v.label.replaceAll("\\$0", "") + " ");
 				}
@@ -124,7 +128,7 @@ public class AlloyWrapper implements Callable<Entry<Context, List<Configuration>
 			}
 			t.interrupt();
 			t.stop();
-			return result.toString(); 
+			return result.toString();
 		} else {
 			System.err.println("Alloy freezes on " + ctx.getName());
 			t.interrupt();
@@ -135,12 +139,12 @@ public class AlloyWrapper implements Callable<Entry<Context, List<Configuration>
 	}
 
 	public Entry<Context, List<Configuration>> call() throws Exception {
-		if (!done) {		
+		if (!done) {
 			done = true;
 			ctx.getConfiguration().clear();
 			String context = "";
 			int i = 0;
-			for(VariableValue v : ctx.getVariable()) {
+			for (VariableValue v : ctx.getVariable()) {
 				if (i > 0)
 					context += " and ";
 				StringBuilder b = new StringBuilder();
@@ -173,12 +177,12 @@ public class AlloyWrapper implements Callable<Entry<Context, List<Configuration>
 			String alloyResult = computeConfigurations();
 			if (alloyResult != null) {
 				results = new ArrayList<Configuration>();
-				for(String solution : alloyResult.split("\n")) {
-					//System.out.println("Solution: " + solution);
+				for (String solution : alloyResult.split("\n")) {
+					// System.out.println("Solution: " + solution);
 					Configuration nc = DivaFactory.eINSTANCE.createConfiguration();
-					for(String atom : solution.split(" ")) {
-						for(Entry<String, Variant> v : variants.entrySet()) {
-							if(atom.equals(v.getKey())) {
+					for (String atom : solution.split(" ")) {
+						for (Entry<String, Variant> v : variants.entrySet()) {
+							if (atom.equals(v.getKey())) {
 								nc.addVariant(v.getValue());
 							}
 						}

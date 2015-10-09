@@ -29,13 +29,12 @@ import diva.Term;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Not Term</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Not Term</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.NotTermImpl#getTerm <em>Term</em>}</li>
+ * <li>{@link diva.impl.NotTermImpl#getTerm <em>Term</em>}</li>
  * </ul>
  * </p>
  *
@@ -43,9 +42,9 @@ import diva.visitors.Visitor;
  */
 public class NotTermImpl extends TermImpl implements NotTerm {
 	/**
-	 * The cached value of the '{@link #getTerm() <em>Term</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getTerm() <em>Term</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getTerm()
 	 * @generated
 	 * @ordered
@@ -53,8 +52,8 @@ public class NotTermImpl extends TermImpl implements NotTerm {
 	protected Term term;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected NotTermImpl() {
@@ -62,8 +61,8 @@ public class NotTermImpl extends TermImpl implements NotTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -72,8 +71,8 @@ public class NotTermImpl extends TermImpl implements NotTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Term getTerm() {
@@ -81,42 +80,48 @@ public class NotTermImpl extends TermImpl implements NotTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetTerm(Term newTerm, NotificationChain msgs) {
 		Term oldTerm = term;
 		term = newTerm;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DivaPackage.NOT_TERM__TERM, oldTerm, newTerm);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DivaPackage.NOT_TERM__TERM,
+					oldTerm, newTerm);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setTerm(Term newTerm) {
 		if (newTerm != term) {
 			NotificationChain msgs = null;
 			if (term != null)
-				msgs = ((InternalEObject)term).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DivaPackage.NOT_TERM__TERM, null, msgs);
+				msgs = ((InternalEObject) term).eInverseRemove(this,
+						EOPPOSITE_FEATURE_BASE - DivaPackage.NOT_TERM__TERM, null, msgs);
 			if (newTerm != null)
-				msgs = ((InternalEObject)newTerm).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DivaPackage.NOT_TERM__TERM, null, msgs);
+				msgs = ((InternalEObject) newTerm).eInverseAdd(this,
+						EOPPOSITE_FEATURE_BASE - DivaPackage.NOT_TERM__TERM, null, msgs);
 			msgs = basicSetTerm(newTerm, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.NOT_TERM__TERM, newTerm, newTerm));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -124,77 +129,77 @@ public class NotTermImpl extends TermImpl implements NotTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case DivaPackage.NOT_TERM__TERM:
-				return basicSetTerm(null, msgs);
+		case DivaPackage.NOT_TERM__TERM:
+			return basicSetTerm(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.NOT_TERM__TERM:
-				return getTerm();
+		case DivaPackage.NOT_TERM__TERM:
+			return getTerm();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.NOT_TERM__TERM:
-				setTerm((Term)newValue);
-				return;
+		case DivaPackage.NOT_TERM__TERM:
+			setTerm((Term) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.NOT_TERM__TERM:
-				setTerm((Term)null);
-				return;
+		case DivaPackage.NOT_TERM__TERM:
+			setTerm((Term) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.NOT_TERM__TERM:
-				return term != null;
+		case DivaPackage.NOT_TERM__TERM:
+			return term != null;
 		}
 		return super.eIsSet(featureID);
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -202,7 +207,7 @@ public class NotTermImpl extends TermImpl implements NotTerm {
 		builder.append("not ");
 		getTerm().toAlloy(builder);
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -210,4 +215,4 @@ public class NotTermImpl extends TermImpl implements NotTerm {
 		return !getTerm().eval(ctx, cfg);
 	}
 
-} //NotTermImpl
+} // NotTermImpl

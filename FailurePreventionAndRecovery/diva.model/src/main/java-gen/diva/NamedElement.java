@@ -15,17 +15,15 @@
  */
 package diva;
 
-
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Named Element</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '
+ * <em><b>Named Element</b></em>'. <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link diva.NamedElement#getName <em>Name</em>}</li>
- *   <li>{@link diva.NamedElement#getId <em>Id</em>}</li>
+ * <li>{@link diva.NamedElement#getName <em>Name</em>}</li>
+ * <li>{@link diva.NamedElement#getId <em>Id</em>}</li>
  * </ul>
  * </p>
  *
@@ -35,13 +33,14 @@ package diva;
  */
 public interface NamedElement extends DiVAModelElement {
 	/**
-	 * Returns the value of the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Name</b></em>' attribute. <!--
+	 * begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Name</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Name</em>' attribute isn't clear, there really
+	 * should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Name</em>' attribute.
 	 * @see #setName(String)
 	 * @see diva.DivaPackage#getNamedElement_Name()
@@ -49,31 +48,33 @@ public interface NamedElement extends DiVAModelElement {
 	 * @generated
 	 */
 	String getName();
-	
+
 	/**
 	 * @generated NOT
 	 * @return
 	 */
 	String getNameNoSpace();
-	
+
 	/**
-	 * Sets the value of the '{@link diva.NamedElement#getName <em>Name</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Name</em>' attribute.
+	 * Sets the value of the '{@link diva.NamedElement#getName <em>Name</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Name</em>' attribute.
 	 * @see #getName()
 	 * @generated
 	 */
 	void setName(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Id</b></em>' attribute. <!--
+	 * begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Id</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Id</em>' attribute isn't clear, there really
+	 * should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Id</em>' attribute.
 	 * @see #setId(String)
 	 * @see diva.DivaPackage#getNamedElement_Id()
@@ -83,10 +84,11 @@ public interface NamedElement extends DiVAModelElement {
 	String getId();
 
 	/**
-	 * Sets the value of the '{@link diva.NamedElement#getId <em>Id</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Id</em>' attribute.
+	 * Sets the value of the '{@link diva.NamedElement#getId <em>Id</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Id</em>' attribute.
 	 * @see #getId()
 	 * @generated
 	 */

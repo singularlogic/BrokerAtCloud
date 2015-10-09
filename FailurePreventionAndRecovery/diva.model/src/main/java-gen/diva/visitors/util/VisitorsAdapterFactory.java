@@ -26,26 +26,25 @@ import diva.visitors.Visitor;
 import diva.visitors.VisitorsPackage;
 
 /**
- * <!-- begin-user-doc -->
- * The <b>Adapter Factory</b> for the model.
- * It provides an adapter <code>createXXX</code> method for each class of the model.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides
+ * an adapter <code>createXXX</code> method for each class of the model. <!--
+ * end-user-doc -->
+ * 
  * @see diva.visitors.VisitorsPackage
  * @generated
  */
 public class VisitorsAdapterFactory extends AdapterFactoryImpl {
 	/**
-	 * The cached model package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected static VisitorsPackage modelPackage;
 
 	/**
-	 * Creates an instance of the adapter factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VisitorsAdapterFactory() {
@@ -56,9 +55,10 @@ public class VisitorsAdapterFactory extends AdapterFactoryImpl {
 
 	/**
 	 * Returns whether this factory is applicable for the type of the object.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns <code>true</code> if the object is either the model's package or is an instance object of the model.
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> This implementation returns <code>true</code> if
+	 * the object is either the model's package or is an instance object of the
+	 * model. <!-- end-user-doc -->
+	 * 
 	 * @return whether this factory is applicable for the type of the object.
 	 * @generated
 	 */
@@ -68,57 +68,60 @@ public class VisitorsAdapterFactory extends AdapterFactoryImpl {
 			return true;
 		}
 		if (object instanceof EObject) {
-			return ((EObject)object).eClass().getEPackage() == modelPackage;
+			return ((EObject) object).eClass().getEPackage() == modelPackage;
 		}
 		return false;
 	}
 
 	/**
-	 * The switch that delegates to the <code>createXXX</code> methods.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The switch that delegates to the <code>createXXX</code> methods. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	protected VisitorsSwitch<Adapter> modelSwitch =
-		new VisitorsSwitch<Adapter>() {
-			@Override
-			public Adapter caseVisitable(Visitable object) {
-				return createVisitableAdapter();
-			}
-			@Override
-			public <ContextType, ResultType> Adapter caseVisitor(Visitor<ContextType, ResultType> object) {
-				return createVisitorAdapter();
-			}
-			@Override
-			public <ContextType, ResultType> Adapter caseTopDownVisitor(TopDownVisitor<ContextType, ResultType> object) {
-				return createTopDownVisitorAdapter();
-			}
-			@Override
-			public Adapter defaultCase(EObject object) {
-				return createEObjectAdapter();
-			}
-		};
+	protected VisitorsSwitch<Adapter> modelSwitch = new VisitorsSwitch<Adapter>() {
+		@Override
+		public Adapter caseVisitable(Visitable object) {
+			return createVisitableAdapter();
+		}
+
+		@Override
+		public <ContextType, ResultType> Adapter caseVisitor(Visitor<ContextType, ResultType> object) {
+			return createVisitorAdapter();
+		}
+
+		@Override
+		public <ContextType, ResultType> Adapter caseTopDownVisitor(TopDownVisitor<ContextType, ResultType> object) {
+			return createTopDownVisitorAdapter();
+		}
+
+		@Override
+		public Adapter defaultCase(EObject object) {
+			return createEObjectAdapter();
+		}
+	};
 
 	/**
-	 * Creates an adapter for the <code>target</code>.
-	 * <!-- begin-user-doc -->
+	 * Creates an adapter for the <code>target</code>. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param target the object to adapt.
+	 * 
+	 * @param target
+	 *            the object to adapt.
 	 * @return the adapter for the <code>target</code>.
 	 * @generated
 	 */
 	@Override
 	public Adapter createAdapter(Notifier target) {
-		return modelSwitch.doSwitch((EObject)target);
+		return modelSwitch.doSwitch((EObject) target);
 	}
 
-
 	/**
-	 * Creates a new adapter for an object of class '{@link diva.visitors.Visitable <em>Visitable</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link diva.visitors.Visitable <em>Visitable</em>}'. <!-- begin-user-doc
+	 * --> This default implementation returns null so that we can easily ignore
+	 * cases; it's useful to ignore a case when inheritance will catch all the
+	 * cases anyway. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see diva.visitors.Visitable
 	 * @generated
@@ -128,11 +131,12 @@ public class VisitorsAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link diva.visitors.Visitor <em>Visitor</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link diva.visitors.Visitor <em>Visitor</em>}'. <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore
+	 * cases; it's useful to ignore a case when inheritance will catch all the
+	 * cases anyway. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see diva.visitors.Visitor
 	 * @generated
@@ -142,11 +146,12 @@ public class VisitorsAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for an object of class '{@link diva.visitors.TopDownVisitor <em>Top Down Visitor</em>}'.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null so that we can easily ignore cases;
-	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for an object of class '
+	 * {@link diva.visitors.TopDownVisitor <em>Top Down Visitor</em>}'. <!--
+	 * begin-user-doc --> This default implementation returns null so that we
+	 * can easily ignore cases; it's useful to ignore a case when inheritance
+	 * will catch all the cases anyway. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @see diva.visitors.TopDownVisitor
 	 * @generated
@@ -156,10 +161,9 @@ public class VisitorsAdapterFactory extends AdapterFactoryImpl {
 	}
 
 	/**
-	 * Creates a new adapter for the default case.
-	 * <!-- begin-user-doc -->
-	 * This default implementation returns null.
-	 * <!-- end-user-doc -->
+	 * Creates a new adapter for the default case. <!-- begin-user-doc --> This
+	 * default implementation returns null. <!-- end-user-doc -->
+	 * 
 	 * @return the new adapter.
 	 * @generated
 	 */
@@ -167,4 +171,4 @@ public class VisitorsAdapterFactory extends AdapterFactoryImpl {
 		return null;
 	}
 
-} //VisitorsAdapterFactory
+} // VisitorsAdapterFactory

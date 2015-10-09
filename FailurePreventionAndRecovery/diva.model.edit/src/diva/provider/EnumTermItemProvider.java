@@ -15,7 +15,6 @@
  */
 package diva.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -32,23 +31,17 @@ import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import diva.DivaPackage;
 
 /**
- * This is the item provider adapter for a {@link diva.EnumTerm} object.
- * <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link diva.EnumTerm} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
+ * 
  * @generated
  */
-public class EnumTermItemProvider
-	extends VariableTermItemProvider
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource {
+public class EnumTermItemProvider extends VariableTermItemProvider implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 	/**
-	 * This constructs an instance from a factory and a notifier.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This constructs an instance from a factory and a notifier. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EnumTermItemProvider(AdapterFactory adapterFactory) {
@@ -56,9 +49,9 @@ public class EnumTermItemProvider
 	}
 
 	/**
-	 * This returns the property descriptors for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the property descriptors for the adapted class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -72,31 +65,23 @@ public class EnumTermItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Value feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Value feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addValuePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_EnumTerm_value_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_EnumTerm_value_feature", "_UI_EnumTerm_type"),
-				 DivaPackage.Literals.ENUM_TERM__VALUE,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_EnumTerm_value_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_EnumTerm_value_feature",
+								"_UI_EnumTerm_type"),
+						DivaPackage.Literals.ENUM_TERM__VALUE, true, false, true, null, null, null));
 	}
 
 	/**
-	 * This returns EnumTerm.gif.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns EnumTerm.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -105,9 +90,9 @@ public class EnumTermItemProvider
 	}
 
 	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the label text for the adapted class. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -116,10 +101,11 @@ public class EnumTermItemProvider
 	}
 
 	/**
-	 * This handles model notifications by calling {@link #updateChildren} to update any cached
-	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This handles model notifications by calling {@link #updateChildren} to
+	 * update any cached children and by creating a viewer notification, which
+	 * it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -129,10 +115,10 @@ public class EnumTermItemProvider
 	}
 
 	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-	 * that can be created under this object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s
+	 * describing the children that can be created under this object. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

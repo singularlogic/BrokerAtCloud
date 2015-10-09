@@ -68,34 +68,38 @@ import diva.brokeratcloud.fpr.input.sparql.ServiceDependencySparql;
 import diva.helpers.DivaHelper;
 import diva.parser.DivaExpressionParser;
 
-
 public class DivaRoot {
-	
+
 	private static final String NONE = "NoImpendingFailure";
 	private static final String LOW = "impendingFailureLow";
 	private static final String MEDIUM = "impendingFailureMedium";
 	private static final String HIGH = "impendingFailureHigh";
 	private static final String FAILED = "occurredFailure";
 	private static final String RECOVERED = "failureRecovered";
-	
-	private int getFailureNumValue(String s){
-		switch(s){
-		case NONE: return 0;
-		case LOW: return 1;
-		case MEDIUM: return 2;
-		case HIGH: return 4;
-		case FAILED: return 0x4000;
-		case RECOVERED: return 0;
+
+	private int getFailureNumValue(String s) {
+		switch (s) {
+		case NONE:
+			return 0;
+		case LOW:
+			return 1;
+		case MEDIUM:
+			return 2;
+		case HIGH:
+			return 4;
+		case FAILED:
+			return 0x4000;
+		case RECOVERED:
+			return 0;
 		}
 		return -1;
 	}
-	
+
 	private DivaFactory factory = DivaFactory.eINSTANCE;
-	
+
 	private String combinedId = null;
 	private Date timeQueried = null;
 
-	
 	public Date getTimeQueried() {
 		return timeQueried;
 	}
@@ -111,24 +115,21 @@ public class DivaRoot {
 	public void setCombinedId(String combinedId) {
 		this.combinedId = combinedId;
 	}
-	
-	
 
 	ConfigurationsPool configPool = null;
 	protected VariabilityModel root = null;
-	
-	protected DivaRoot(VariabilityModel root){
+
+	protected DivaRoot(VariabilityModel root) {
 		this.root = root;
 	}
 
-	public DivaRoot(URI uri){
+	public DivaRoot(URI uri) {
 		ResourceSet rs = new ResourceSetImpl();
 		Resource res = rs.createResource(uri);
-		try{
+		try {
 			res.load(Collections.EMPTY_MAP);
-			this.root = (VariabilityModel) res.getContents().get(0);			
-		}
-		catch(Exception e){
+			this.root = (VariabilityModel) res.getContents().get(0);
+		} catch (Exception e) {
 			this.root = DivaFactory.eINSTANCE.createVariabilityModel();
 			SimulationModel simu = DivaFactory.eINSTANCE.createSimulationModel();
 			Scenario scenario = DivaFactory.eINSTANCE.createScenario();
@@ -143,50 +144,50 @@ public class DivaRoot {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
-			//e.printStackTrace();
+
+			// e.printStackTrace();
 		}
 	}
-	
-	public Collection<Scenario> getScenarios(){
+
+	public Collection<Scenario> getScenarios() {
 		return root.getSimulation().getScenario();
 	}
-	
-	public void runSimulation(){
+
+	public void runSimulation() {
 		runSimulation(false);
 	}
-	
-	public void runSimulation(Boolean isAdmin){
+
+	public void runSimulation(Boolean isAdmin) {
 		ServiceCategory serviceCategory = ServiceCategory.INSTANCE;
 		Map<String, String> remember = new HashMap<String, String>();
-		if(isAdmin){
+		if (isAdmin) {
 
-			for(Dimension dim : root.getDimension())
-				for(Variant variant : dim.getVariant()){
+			for (Dimension dim : root.getDimension())
+				for (Variant variant : dim.getVariant()) {
 					String dep = null;
-					try{
+					try {
 						dep = variant.getDependency().getText();
-					}catch(NullPointerException e){
+					} catch (NullPointerException e) {
 						continue;
 					}
-					if(dep==null || dep.length()==0)
+					if (dep == null || dep.length() == 0)
 						continue;
-					
+
 					List<String> atoms = ServiceDependency.INSTANCE.getDependency(variant.getId());
 					List<String> strauss = new ArrayList<String>();
-					for(String atom : atoms){
+					for (String atom : atoms) {
 						List<String> group = serviceCategory.getGroup(atom.trim());
-						if(group != null && group.size()!=0){
+						if (group != null && group.size() != 0) {
 							String alternative = org.apache.commons.lang.StringUtils.join(group, " or ");
-							strauss.add( "(" + alternative + ")");
-							
+							strauss.add("(" + alternative + ")");
+
 						}
 					}
 					String alternative = org.apache.commons.lang.StringUtils.join(strauss, " and ");
 					remember.put(variant.getName(), dep);
 					variant.getDependency().setText(alternative);
 					try {
-						Term term =  DivaExpressionParser.parse(root, alternative.trim());
+						Term term = DivaExpressionParser.parse(root, alternative.trim());
 						variant.getDependency().setTerm(term);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -194,18 +195,18 @@ public class DivaRoot {
 					}
 				}
 		}
-		
+
 		_runSimulation();
-		
-		if(isAdmin){
-			for(Dimension dim : root.getDimension())
-				for(Variant variant : dim.getVariant()){
+
+		if (isAdmin) {
+			for (Dimension dim : root.getDimension())
+				for (Variant variant : dim.getVariant()) {
 					String original = remember.get(variant);
-					if(original == null || original.length() == 0 )
+					if (original == null || original.length() == 0)
 						continue;
 					variant.getDependency().setText(original);
 					try {
-						Term term =  DivaExpressionParser.parse(root, original.trim());
+						Term term = DivaExpressionParser.parse(root, original.trim());
 						variant.getDependency().setTerm(term);
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -213,94 +214,90 @@ public class DivaRoot {
 					}
 				}
 		}
-		
-		
+
 	}
-	
+
 	public String fileNamePrefix = null;
-	
-	public void _runSimulation(){
-		
-		if(root.getSimulation()==null)
+
+	public void _runSimulation() {
+
+		if (root.getSimulation() == null)
 			return;
 		root.getSimulation().populatePriorities();
 		root.getSimulation().populateScores();
 		root.getSimulation().populateVerdicts();
 		DivaHelper.computeSuitableConfigurations(root, 0);
-		//root.getSimulation().getScenario().get(0).getContext().get(0).
+		// root.getSimulation().getScenario().get(0).getContext().get(0).
 		setTimeQueried(Calendar.getInstance().getTime());
-		//root.getSimulation().
+		// root.getSimulation().
 		root.getSimulation().populateScores();
 		root.getSimulation().populateVerdicts();
-		configPool = new ConfigurationsPool(
-					root.getSimulation().getScenario().get(0).getContext().get(0)
-				);
-		
+		configPool = new ConfigurationsPool(root.getSimulation().getScenario().get(0).getContext().get(0));
+
 		this.saveModel(this.fileNamePrefix);
 	}
-	
-	private void updateCategoryAndService(){
+
+	private void updateCategoryAndService() {
 		List<String> cats = ServiceCategory.INSTANCE.getCategories();
-		for(String cat : cats){
+		for (String cat : cats) {
 			String catAvail = null;
 			Dimension dim = factory.createDimension();
 			dim.setId(cat);
 			dim.setName(cat);
 			dim.setLower(0);
-			if("FC".equals(cat))
+			if ("FC".equals(cat))
 				dim.setUpper(5);
-			else{
+			else {
 				dim.setUpper(1);
 			}
-//			BooleanVariable bv = factory.createBooleanVariable();
-//			catAvail = cat + "Avail";
-//			bv.setId(catAvail);
-//			bv.setName(catAvail);
-//			root.getContext().add(bv);
-//
+			// BooleanVariable bv = factory.createBooleanVariable();
+			// catAvail = cat + "Avail";
+			// bv.setId(catAvail);
+			// bv.setName(catAvail);
+			// root.getContext().add(bv);
+			//
 			root.getDimension().add(dim);
-			
-			
-			
-			for(Property p : root.getProperty()){
+
+			for (Property p : root.getProperty()) {
 				dim.getProperty().add(p);
 			}
-			
-			for(String svc : ServiceCategory.INSTANCE.getServices(cat)){
+
+			for (String svc : ServiceCategory.INSTANCE.getServices(cat)) {
 				Variant var = factory.createVariant();
 				var.setId(svc);
 				var.setName(svc);
 				dim.getVariant().add(var);
 				var.setType(dim);
-				
-				for(Property property : root.getProperty()){
+
+				for (Property property : root.getProperty()) {
 					PropertyValue value = factory.createPropertyValue();
 					value.setProperty(property);
 					var.getPropertyValue().add(value);
 				}
-				
-//				if(! cat.equals("FC")){
-//					var.setAvailable(factory.createContextExpression());
-//					var.getAvailable().setText(catAvail);
-//					try {
-//						Term term =  DivaExpressionParser.parse(root, catAvail.trim());
-//						var.getAvailable().setTerm(term);
-//					} catch (Exception e) {
-//						// TODO Auto-generated catch block
-//						e.printStackTrace();
-//					}
-//				}
-				
+
+				// if(! cat.equals("FC")){
+				// var.setAvailable(factory.createContextExpression());
+				// var.getAvailable().setText(catAvail);
+				// try {
+				// Term term = DivaExpressionParser.parse(root,
+				// catAvail.trim());
+				// var.getAvailable().setTerm(term);
+				// } catch (Exception e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
+				// }
+
 			}
 		}
 	}
-	
-	/*Before Category*/
-	private void updatePropertyDef(){
-		
-		for(String s : ServiceAttribute.INSTANCE.listCommonAttributes()){
+
+	/* Before Category */
+	private void updatePropertyDef() {
+
+		for (String s : ServiceAttribute.INSTANCE.listCommonAttributes()) {
 			Property p = factory.createProperty();
-//			p.setDirection(1);
+			// p.setDirection(1);
 			p.setDirection(0);
 			p.setName(s);
 			p.setId(s);
@@ -312,222 +309,212 @@ public class DivaRoot {
 		p.setName(s);
 		p.setId(s);
 		root.getProperty().add(p);
-		
+
 	}
-	
-	private void updateFixed(){		
-		
+
+	private void updateFixed() {
+
 		AdaptRule rules = AdaptRule.INSTANCE;
-		for(String ruleName : rules.allRuleNames()){
+		for (String ruleName : rules.allRuleNames()) {
 			PriorityRule rule = factory.createPriorityRule();
 			rule.setId(ruleName);
 			rule.setName(ruleName);
-			for(Property p : root.getProperty()){
+			for (Property p : root.getProperty()) {
 				Priority priority = factory.createPriority();
 				priority.setProperty(p);
 				priority.setPriority(rules.getPriority(ruleName, p.getId()));
 			}
 		}
 	}
-	private void updateAutoFullAvailability(){
-//		for(Dimension dim : root.getDimension())
-//			for(Variant vrt : dim.getVariant()){
-//				
-//				String name = vrt.getId();
-//				
-//				BooleanVariable variable = factory.createBooleanVariable();
-//				variable.setName(name+"Available");
-//				variable.setId(name+"Available");
-//				
-//				root.getContext().add(variable);
-//					
-//				if(vrt.getAvailable() == null){
-//					vrt.setAvailable(factory.createContextExpression());
-//				}
-//				ContextExpression expr = vrt.getAvailable();
-//				expr.setText(String.format("%sAvailable", name));
-//				try{
-//					Term term = DivaExpressionParser.parse(root, expr.getText().trim());
-//					expr.setTerm(term);
-//				}
-//				catch(Exception e){
-//					e.printStackTrace();
-//				}
-//				
-//				
-//			}
-		
+
+	private void updateAutoFullAvailability() {
+		// for(Dimension dim : root.getDimension())
+		// for(Variant vrt : dim.getVariant()){
+		//
+		// String name = vrt.getId();
+		//
+		// BooleanVariable variable = factory.createBooleanVariable();
+		// variable.setName(name+"Available");
+		// variable.setId(name+"Available");
+		//
+		// root.getContext().add(variable);
+		//
+		// if(vrt.getAvailable() == null){
+		// vrt.setAvailable(factory.createContextExpression());
+		// }
+		// ContextExpression expr = vrt.getAvailable();
+		// expr.setText(String.format("%sAvailable", name));
+		// try{
+		// Term term = DivaExpressionParser.parse(root, expr.getText().trim());
+		// expr.setTerm(term);
+		// }
+		// catch(Exception e){
+		// e.printStackTrace();
+		// }
+		//
+		//
+		// }
+
 		BooleanVariable bv = factory.createBooleanVariable();
 		bv.setName("cpuOverload");
 		bv.setId("cpuOverload");
 		root.getContext().add(bv);
-		
+
 		bv = factory.createBooleanVariable();
 		bv.setName("memoryOverload");
 		bv.setId("memoryOverload");
 		root.getContext().add(bv);
-		
+
 		bv = factory.createBooleanVariable();
 		bv.setName("Normal");
 		bv.setId("Normal");
 		root.getContext().add(bv);
-		
+
 	}
-	
+
 	/**
 	 * Not used?
 	 */
-	private void updateAvailable(){
-		for(Dimension dim : root.getDimension())
-			for(Variant vrt : dim.getVariant()){
+	private void updateAvailable() {
+		for (Dimension dim : root.getDimension())
+			for (Variant vrt : dim.getVariant()) {
 				List<String> requiredIds = new ArrayList<String>();
-				for(Variable var : root.getContext()){
+				for (Variable var : root.getContext()) {
 					Object val = ServiceAttribute.INSTANCE.get(vrt.getId(), var.getId());
-					if(val == null || !(val instanceof Boolean) || !((Boolean) val).booleanValue())
+					if (val == null || !(val instanceof Boolean) || !((Boolean) val).booleanValue())
 						continue;
 					requiredIds.add(var.getId());
 				}
 				String res = "";
 				Iterator<String> it = requiredIds.iterator();
-				if(it.hasNext()){
+				if (it.hasNext()) {
 					res = res + it.next();
-					while(it.hasNext()){
+					while (it.hasNext()) {
 						res = res + " or " + it.next();
 					}
-					
-					if(vrt.getAvailable() == null){
+
+					if (vrt.getAvailable() == null) {
 						vrt.setAvailable(factory.createContextExpression());
 					}
 					ContextExpression expr = vrt.getAvailable();
 					expr.setText(res);
-					try{
+					try {
 						Term term = DivaExpressionParser.parse(root, expr.getText().trim());
 						expr.setTerm(term);
-					}
-					catch(Exception e){
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
-				
-				
+
 			}
-		
+
 	}
-	
-	private void updateProperty(){
-		
-		for(Dimension dim : root.getDimension()){
-			for(Variant var : dim.getVariant()){
-				for(PropertyValue pv : var.getPropertyValue()){
-					Object res = ServiceAttribute.INSTANCE.get(
-							var.getId(), 
-							pv.getProperty().getId()
-						);
-					if(res != null && res instanceof Integer)
-						pv.setValue((Integer)res);
+
+	private void updateProperty() {
+
+		for (Dimension dim : root.getDimension()) {
+			for (Variant var : dim.getVariant()) {
+				for (PropertyValue pv : var.getPropertyValue()) {
+					Object res = ServiceAttribute.INSTANCE.get(var.getId(), pv.getProperty().getId());
+					if (res != null && res instanceof Integer)
+						pv.setValue((Integer) res);
 					// TODO: handle properties in other types.
 				}
 			}
 		}
 	}
-	
-	private void updateProfileContext(String consumer, String profile){
+
+	private void updateProfileContext(String consumer, String profile) {
 		Context context = root.getSimulation().getScenario().get(0).getContext().get(0);
 		context.getVariable().clear();
 		Map<String, Object> prf = (Map<String, Object>) ConsumerProfile.INSTANCE.getRequired(consumer, profile);
-		
-		
-		
-		if(prf != null){
-			for(Variable v: root.getContext()){
+
+		if (prf != null) {
+			for (Variable v : root.getContext()) {
 				Object value = prf.get(v.getName());
-				if(v instanceof EnumVariable){
+				if (v instanceof EnumVariable) {
 					EnumLiteral el = null;
-					if(value == null){
+					if (value == null) {
 						String pubValue = ConsumerProfileJson.INSTANCE.publicStatus.get(v.getName());
-						
-						if(pubValue==null)
+
+						if (pubValue == null)
 							el = ((EnumVariable) v).getLiteral().get(0);
 						value = pubValue;
-						
+
 					}
-					for(EnumLiteral literal : ((EnumVariable) v).getLiteral()){
-						if(literal.getName().equals(value))
+					for (EnumLiteral literal : ((EnumVariable) v).getLiteral()) {
+						if (literal.getName().equals(value))
 							el = literal;
 					}
 					EnumVariableValue vv = factory.createEnumVariableValue();
 					vv.setVariable(v);
 					vv.setLiteral(el);
 					context.getVariable().add(vv);
-				}
-				else{
+				} else {
 					BoolVariableValue vv = factory.createBoolVariableValue();
 					vv.setVariable(v);
-					if(Boolean.valueOf(true).equals(value)){
+					if (Boolean.valueOf(true).equals(value)) {
 						vv.setBool(true);
-					}
-					else if("true".equals(ConsumerProfileJson.INSTANCE.publicStatus.get(v.getName())))
+					} else if ("true".equals(ConsumerProfileJson.INSTANCE.publicStatus.get(v.getName())))
 						vv.setBool(true);
-					else if("false".equals(ConsumerProfileJson.INSTANCE.publicStatus.get(v.getName())))
+					else if ("false".equals(ConsumerProfileJson.INSTANCE.publicStatus.get(v.getName())))
 						vv.setBool(false);
 					else
 						vv.setBool(false);
 					context.getVariable().add(vv);
 				}
 			}
-			
-			for(Dimension d : root.getDimension()){
-				if(Boolean.valueOf(true).equals(prf.get(d.getName()))){
+
+			for (Dimension d : root.getDimension()) {
+				if (Boolean.valueOf(true).equals(prf.get(d.getName()))) {
 					d.setLower(1);
 				}
 			}
-			
-			//this.generateRule();
+
+			// this.generateRule();
 		}
 	}
-	
-	private void updateRequirement(){
-		
-		
-		
-		for(Dimension dim : root.getDimension()){
-			for(Variant var : dim.getVariant()){
+
+	private void updateRequirement() {
+
+		for (Dimension dim : root.getDimension()) {
+			for (Variant var : dim.getVariant()) {
 				ServiceDependency servDep = ServiceDependency.INSTANCE;
 				List<String> req = servDep.getRequirement(var.getId());
-				
-				for(String r : req){
+
+				for (String r : req) {
 					Variable found = null;
-					for(Variable v : root.getContext()){
-						if(v.getId().equals(r)){
+					for (Variable v : root.getContext()) {
+						if (v.getId().equals(r)) {
 							found = v;
 							break;
 						}
 					}
-					if(found == null){
+					if (found == null) {
 						Variable v = DivaFactory.eINSTANCE.createBooleanVariable();
 						v.setId(r);
 						v.setName(r);
 						root.getContext().add(v);
 					}
 				}
-				
-				if(req == null || req.isEmpty())
+
+				if (req == null || req.isEmpty())
 					continue;
-				if(var.getRequired() == null){
+				if (var.getRequired() == null) {
 					ContextExpression expr = factory.createContextExpression();
 					var.setRequired(expr);
 				}
 				String operator = " and ";
-				
+
 				Iterator<String> it = req.iterator();
 				String s = it.next();
-				while(it.hasNext()){ 
+				while (it.hasNext()) {
 					String aDep = it.next();
 					s = s + operator + aDep;
 				}
 				var.getRequired().setText(s);
 				try {
-					Term term =  DivaExpressionParser.parse(root, s.trim());
+					Term term = DivaExpressionParser.parse(root, s.trim());
 					var.getRequired().setTerm(term);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -536,44 +523,45 @@ public class DivaRoot {
 			}
 		}
 	}
-	
-	private void updateDependency(){
-		for(Dimension dim : root.getDimension()){
-			for(Variant var : dim.getVariant()){
+
+	private void updateDependency() {
+		for (Dimension dim : root.getDimension()) {
+			for (Variant var : dim.getVariant()) {
 				ServiceDependency servDep = ServiceDependency.INSTANCE;
 				List<String> dep = servDep.getDependency(var.getId());
-				if(dep == null || dep.isEmpty())
+				if (dep == null || dep.isEmpty())
 					continue;
-				if(var.getDependency() == null){
+				if (var.getDependency() == null) {
 					VariantExpression expr = factory.createVariantExpression();
 					var.setDependency(expr);
 				}
 				String operator = " and ";
-				if(servDep.isAlternative(var.getId()))
+				if (servDep.isAlternative(var.getId()))
 					operator = " or ";
-				
+
 				Iterator<String> it = dep.iterator();
 				String s = it.next();
-				while(it.hasNext()){ 
+				while (it.hasNext()) {
 					String aDep = it.next();
-//					Could allow user to define dependency on categories, but not finished yet!
-//					if(aDep.equals("CASCalenderApp"))
-//						System.out.println("something");
-//					for(Dimension d : this.root.getDimension()){
-//						if(d.getId().equals(aDep)){
-//							Iterator<Variant> itv = dim.getVariant().iterator();
-//							String result = itv.next().getId();
-//							while(itv.hasNext()){
-//								result = result + " or " + itv.next().getId();
-//							}
-//							aDep ="(" + result + ")";
-//						}
-//					}
+					// Could allow user to define dependency on categories, but
+					// not finished yet!
+					// if(aDep.equals("CASCalenderApp"))
+					// System.out.println("something");
+					// for(Dimension d : this.root.getDimension()){
+					// if(d.getId().equals(aDep)){
+					// Iterator<Variant> itv = dim.getVariant().iterator();
+					// String result = itv.next().getId();
+					// while(itv.hasNext()){
+					// result = result + " or " + itv.next().getId();
+					// }
+					// aDep ="(" + result + ")";
+					// }
+					// }
 					s = s + operator + aDep;
 				}
 				var.getDependency().setText(s);
 				try {
-					Term term =  DivaExpressionParser.parse(root, s.trim());
+					Term term = DivaExpressionParser.parse(root, s.trim());
 					var.getDependency().setTerm(term);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
@@ -584,7 +572,7 @@ public class DivaRoot {
 	}
 
 	public void updateModel() {
-		
+
 		root.getDimension().clear();
 		root.getContext().clear();
 		root.getRule().clear();
@@ -598,59 +586,64 @@ public class DivaRoot {
 		updateFixed();
 		generateRule();
 	}
-	
-	public String updateFailureLikelihood(String service, String likelihood){
-		if("cpuOverload".equals(service)){
-			if("recovered".equals(likelihood.toLowerCase()))
+
+	public String updateFailureLikelihood(String service, String likelihood) {
+		if ("cpuOverload".equals(service)) {
+			if ("recovered".equals(likelihood.toLowerCase()))
 				ConsumerProfileJson.INSTANCE.publicStatus.remove(service);
 			else
 				ConsumerProfileJson.INSTANCE.publicStatus.put(service, "true");
 			return "CPU updated";
 		}
-		if("memoryOverload".equals(service)){
-			if("recovered".equals(likelihood.toLowerCase()))
+		if ("memoryOverload".equals(service)) {
+			if ("recovered".equals(likelihood.toLowerCase()))
 				ConsumerProfileJson.INSTANCE.publicStatus.remove(service);
 			else
 				ConsumerProfileJson.INSTANCE.publicStatus.put(service, "true");
 			return "Ram updated";
 		}
-//		if(FAILED.toLowerCase().equals(likelihood.toLowerCase()) || RECOVERED.toLowerCase().equals(likelihood.toLowerCase())){
-////			for(VariableValue v : root.getSimulation().getScenario().get(0).getContext().get(0).getVariable()){
-////				if(v.getVariable().equals(service+"S")){
-////					for(EnumLiteral l : ((EnumVariable)v.getVariable()).getLiteral()){
-////						if(l.getName().equals(service+"F") || "Failed".equals(likelihood))
-////							((EnumVariableValue)v).setLiteral(l);
-////						else if(l.getName().equals(service+"A") || "Recovered".equals(likelihood))
-////							((EnumVariableValue)v).setLiteral(l);
-////					}
-////				}
-////			}
-//			//TODO: Not done by updating DivaRoot...
-//			if(FAILED.toLowerCase().equals(likelihood.toLowerCase()))
-//				ConsumerProfileLocal.INSTANCE.publicStatus.put(service+"Available", service+"false");
-//			else
-//				ConsumerProfileLocal.INSTANCE.publicStatus.remove(service+"Available");
-//			return "updated";
-//		}
+		// if(FAILED.toLowerCase().equals(likelihood.toLowerCase()) ||
+		// RECOVERED.toLowerCase().equals(likelihood.toLowerCase())){
+		//// for(VariableValue v :
+		// root.getSimulation().getScenario().get(0).getContext().get(0).getVariable()){
+		//// if(v.getVariable().equals(service+"S")){
+		//// for(EnumLiteral l : ((EnumVariable)v.getVariable()).getLiteral()){
+		//// if(l.getName().equals(service+"F") || "Failed".equals(likelihood))
+		//// ((EnumVariableValue)v).setLiteral(l);
+		//// else if(l.getName().equals(service+"A") ||
+		// "Recovered".equals(likelihood))
+		//// ((EnumVariableValue)v).setLiteral(l);
+		//// }
+		//// }
+		//// }
+		// //TODO: Not done by updating DivaRoot...
+		// if(FAILED.toLowerCase().equals(likelihood.toLowerCase()))
+		// ConsumerProfileLocal.INSTANCE.publicStatus.put(service+"Available",
+		// service+"false");
+		// else
+		// ConsumerProfileLocal.INSTANCE.publicStatus.remove(service+"Available");
+		// return "updated";
+		// }
 		int nlikelihood = this.getFailureNumValue(likelihood);
-		if(nlikelihood<0)
+		if (nlikelihood < 0)
 			return "Not a valid level name";
-		for(Dimension d : root.getDimension()){
-			for(Variant v : d.getVariant()){
-				if(v.getName().equals(service)){
-					
-					for(PropertyValue p : v.getPropertyValue()){
-						if("Failure".equals(p.getProperty().getName())){
+		for (Dimension d : root.getDimension()) {
+			for (Variant v : d.getVariant()) {
+				if (v.getName().equals(service)) {
+
+					for (PropertyValue p : v.getPropertyValue()) {
+						if ("Failure".equals(p.getProperty().getName())) {
 							p.setValue(nlikelihood);
-							if(FAILED.equals(likelihood))
+							if (FAILED.equals(likelihood))
 								return String.format("%s is set to be failed", v.getName());
-							else if(RECOVERED.equals(likelihood))
+							else if (RECOVERED.equals(likelihood))
 								return String.format("%s is recovered from failure", v.getName());
 							else
-								return String.format("Failure likelihood of %s is changed to %d", v.getName(), nlikelihood);
-								
+								return String.format("Failure likelihood of %s is changed to %d", v.getName(),
+										nlikelihood);
+
 						}
-						
+
 					}
 				}
 			}
@@ -658,146 +651,143 @@ public class DivaRoot {
 		return "No specified service found";
 	}
 
-	public void updateOnRequest(String consumer, String profile){
+	public void updateOnRequest(String consumer, String profile) {
 		this.updateProfileContext(consumer, profile);
-		//this.updateProperty();
+		// this.updateProperty();
 	}
-	
-	public DivaRoot fork(){
+
+	public DivaRoot fork() {
 		VariabilityModel model = EcoreUtil.copy(root);
 		return new DivaRoot(model);
 	}
-	
-	public ConfigurationsPool getConfigurationPool(){
+
+	public ConfigurationsPool getConfigurationPool() {
 		return configPool;
 	}
-	
-	public List<String> getRecommQuery(String consumer, List<String> srvs){
+
+	public List<String> getRecommQuery(String consumer, List<String> srvs) {
 		List<String> result = new ArrayList<String>();
 		Set<String> requirements = new HashSet<String>();
 		ServiceDependencySparql dc = new ServiceDependencySparql();
-		
-		for(Dimension dim : root.getDimension()){
-			if(! "FC".equals(dim.getId())){
-				//boolean found = false;
-//				dim.setUpper(1);
-//				for(String s : srvs){
-//					if(dim.getId().startsWith(s))
-//						dim.setUpper(1);
-//				}
+
+		for (Dimension dim : root.getDimension()) {
+			if (!"FC".equals(dim.getId())) {
+				// boolean found = false;
+				// dim.setUpper(1);
+				// for(String s : srvs){
+				// if(dim.getId().startsWith(s))
+				// dim.setUpper(1);
+				// }
 				continue;
 			}
-				
-			for(Variant v: dim.getVariant()){
+
+			for (Variant v : dim.getVariant()) {
 				String fc = v.getId();
-				for(String dep : dc.getDependency(fc)){
-					for(String input : srvs){
-						if(input.equals(dep))
+				for (String dep : dc.getDependency(fc)) {
+					for (String input : srvs) {
+						if (input.equals(dep))
 							requirements.addAll(dc.getRequirement(fc));
 					}
 				}
 			}
 		}
-		
-//		for(String srv : srvs){
-//			for(String dep : dc.getDependency(srv)){
-//				for(String req : dc.getRequirement(dep)){
-//					if(req.startsWith("RFC")){
-//						requirements.add("RFC");
-//					}
-//				}
-//			}
-//		}
-		
+
+		// for(String srv : srvs){
+		// for(String dep : dc.getDependency(srv)){
+		// for(String req : dc.getRequirement(dep)){
+		// if(req.startsWith("RFC")){
+		// requirements.add("RFC");
+		// }
+		// }
+		// }
+		// }
+
 		Context ctx = root.getSimulation().getScenario().get(0).getContext().get(0);
 		ctx.getVariable().clear();
-		
-		for(Variable var : root.getContext()){
-			if(var instanceof BooleanVariable){
+
+		for (Variable var : root.getContext()) {
+			if (var instanceof BooleanVariable) {
 				BoolVariableValue varval = DivaFactory.eINSTANCE.createBoolVariableValue();
 				ctx.getVariable().add(varval);
 				varval.setVariable(var);
 				String id = var.getId();
-				if(id.startsWith("RFC")){
-					if(requirements.contains(var.getId()))
+				if (id.startsWith("RFC")) {
+					if (requirements.contains(var.getId()))
 						varval.setBool(true);
 					else
 						varval.setBool(false);
-				}
-				else if(id.startsWith("For")){
-					if(var.getId().equals("ForCustomer"))
+				} else if (id.startsWith("For")) {
+					if (var.getId().equals("ForCustomer"))
 						varval.setBool(true);
 					else
 						varval.setBool(false);
-				}
-				else if(id.endsWith("Avail")){
+				} else if (id.endsWith("Avail")) {
 					varval.setBool(false);
-					for(String s : srvs){
-						if(id.startsWith(s.substring(0, s.length()-2))){
+					for (String s : srvs) {
+						if (id.startsWith(s.substring(0, s.length() - 2))) {
 							varval.setBool(true);
 						}
 					}
-					for(String s: requirements){
-						if(id.startsWith(s.substring(1)))
+					for (String s : requirements) {
+						if (id.startsWith(s.substring(1)))
 							varval.setBool(true);
 					}
 				}
 			}
 		}
-		
+
 		List<Dimension> toRemove = new ArrayList<Dimension>();
-		for(Dimension dim : root.getDimension()){
+		for (Dimension dim : root.getDimension()) {
 			boolean remitted = false;
-			for(Variant v : dim.getVariant()){
-				for(String srv : srvs){
-					if(srv.equals(v.getId())){
+			for (Variant v : dim.getVariant()) {
+				for (String srv : srvs) {
+					if (srv.equals(v.getId())) {
 						dim.setLower(1);
 						remitted = true;
 						break;
 					}
 				}
-				if(remitted) 
+				if (remitted)
 					break;
-				 for(Dimension dim2 : root.getDimension()){
-					 for(Variant v2 : dim2.getVariant()){
-						 for(String srv : srvs){
-							 try{
-								 if(v2.getId().equals(srv) && v2.getDependency().getText().contains(v.getId()))
-										 remitted = true;
-							 }
-							 catch(Exception e){
-								 
-							 }
-						 }
-					 }
-				 }
+				for (Dimension dim2 : root.getDimension()) {
+					for (Variant v2 : dim2.getVariant()) {
+						for (String srv : srvs) {
+							try {
+								if (v2.getId().equals(srv) && v2.getDependency().getText().contains(v.getId()))
+									remitted = true;
+							} catch (Exception e) {
+
+							}
+						}
+					}
+				}
 			}
-			if(! remitted)
+			if (!remitted)
 				toRemove.add(dim);
 		}
-		
+
 		root.getDimension().removeAll(toRemove);
-		saveModel(consumer+"-before");
+		saveModel(consumer + "-before");
 		this.fileNamePrefix = consumer;
 		_runSimulation();
-		
-		try{
-			Configuration config =	
-					root.getSimulation().getScenario().get(0).getContext().get(0).getConfiguration().get(0);
-			for(ConfigVariant v : config.getVariant()){
+
+		try {
+			Configuration config = root.getSimulation().getScenario().get(0).getContext().get(0).getConfiguration()
+					.get(0);
+			for (ConfigVariant v : config.getVariant()) {
 				result.add(v.getVariant().getId());
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			result.add(e.getStackTrace().toString());
 		}
 		return result;
 	}
-	
-	private static org.eclipse.emf.common.util.URI previousSaveUri= null;
-	public void saveModel(org.eclipse.emf.common.util.URI uri){
-		if(previousSaveUri==null)
+
+	private static org.eclipse.emf.common.util.URI previousSaveUri = null;
+
+	public void saveModel(org.eclipse.emf.common.util.URI uri) {
+		if (previousSaveUri == null)
 			previousSaveUri = uri;
 		Resource res = new XMIResourceImpl(uri);
 		res.getContents().add(root);
@@ -808,58 +798,54 @@ public class DivaRoot {
 			e.printStackTrace();
 		}
 	}
-	
 
-
-	
-	
-	public void saveModel(String prefix){
-		if(previousSaveUri == null){
+	public void saveModel(String prefix) {
+		if (previousSaveUri == null) {
 			throw new RuntimeException("saveModel() cannot be called for the first time - must have a parameter");
 		}
-		if(prefix == null){
+		if (prefix == null) {
 			saveModel(previousSaveUri);
 		}
 		String uriString = previousSaveUri.toPlatformString(true);
-		uriString = uriString.substring(0, uriString.length()-5)+"-" + prefix + ".diva";
+		uriString = uriString.substring(0, uriString.length() - 5) + "-" + prefix + ".diva";
 		URI uri = URI.createURI(uriString);
 		saveModel(uri);
 	}
-	
-	public void generateRule(){
-		
+
+	public void generateRule() {
+
 		Map<String, Integer> priorities = new HashMap<String, Integer>();
 		AdaptRule adaptRule = AdaptRule.INSTANCE;
-		
-		for(String r : adaptRule.involvedContext()){
+
+		for (String r : adaptRule.involvedContext()) {
 			Variable found = null;
-			for(Variable v : root.getContext()){
-				if(v.getId().equals(r)){
+			for (Variable v : root.getContext()) {
+				if (v.getId().equals(r)) {
 					found = v;
 					break;
 				}
 			}
-			if(found == null){
+			if (found == null) {
 				Variable v = DivaFactory.eINSTANCE.createBooleanVariable();
 				v.setId(r);
 				v.setName(r);
 				root.getContext().add(v);
 			}
 		}
-		
+
 		List<String> propertyNames = ServiceAttribute.INSTANCE.listCommonAttributes();
-		for(String name : adaptRule.allRuleNames()){
+		for (String name : adaptRule.allRuleNames()) {
 			priorities.clear();
-			for(String propName : propertyNames){
+			for (String propName : propertyNames) {
 				priorities.put(propName, adaptRule.getPriority(name, propName));
 			}
 			priorities.put("Failure", 16);
 			this.fillRule(name, adaptRule.getRule(name), priorities);
 		}
-				
+
 	}
-	
-	private void fillRule(String name, String text, Map<String, Integer> priorities){
+
+	private void fillRule(String name, String text, Map<String, Integer> priorities) {
 		PriorityRule rule = factory.createPriorityRule();
 		root.getRule().add(rule);
 		rule.setName(name);
@@ -873,17 +859,16 @@ public class DivaRoot {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		for(Property p : root.getProperty()){
+		for (Property p : root.getProperty()) {
 			PropertyPriority priority = factory.createPropertyPriority();
 			priority.setProperty(p);
 			Integer pri = priorities.get(p.getName());
-			if(pri == null)
+			if (pri == null)
 				priority.setPriority(0);
 			else
 				priority.setPriority(pri.intValue());
 			rule.getPriority().add(priority);
 		}
 	}
-	
-	
+
 }

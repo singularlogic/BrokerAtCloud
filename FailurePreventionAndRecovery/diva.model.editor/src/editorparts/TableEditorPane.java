@@ -53,21 +53,22 @@ import diva.editor.DiVATypeLabelProvider;
 import diva.visitors.Visitable;
 
 public abstract class TableEditorPane extends ViewerPane {
-	
+
 	protected AdapterFactory adapterFactory;
 	protected TreeViewer treeViewerWithColumns;
-	
+
 	public StructuredViewer getStructuredviewer() {
 		return treeViewerWithColumns;
 	}
-	
+
 	public TableEditorPane(AdapterFactory adapterFactory, IWorkbenchPage page, IWorkbenchPart part) {
 		super(page, part);
 		this.adapterFactory = adapterFactory;
 	}
-	
-	/** Initializes the table tree viewer, creating columns and setting up editing.
-	 *  {@link #treeViewerWithColumns} should be valid before calling.
+
+	/**
+	 * Initializes the table tree viewer, creating columns and setting up
+	 * editing. {@link #treeViewerWithColumns} should be valid before calling.
 	 */
 	protected abstract void initializeTableTreeViewer();
 
@@ -76,7 +77,7 @@ public abstract class TableEditorPane extends ViewerPane {
 	 * @generated
 	 */
 	protected abstract List<ColumnDescriptor> getColumnDescriptors();
-	
+
 	protected List<ColumnDescriptor> getAllColumnDescriptorsForEClass(EClass c) {
 		ArrayList<ColumnDescriptor> list = new ArrayList<ColumnDescriptor>();
 		for (EStructuralFeature property : c.getEStructuralFeatures()) {
@@ -84,11 +85,13 @@ public abstract class TableEditorPane extends ViewerPane {
 		}
 		return list;
 	}
-	
-	
+
 	protected ArrayList<TreeColumn> columns = new ArrayList<TreeColumn>();
-	/** Sets up a viewer to contain columns as described by the list returned
+
+	/**
+	 * Sets up a viewer to contain columns as described by the list returned
 	 * from {@link #getColumnDescriptors()}
+	 * 
 	 * @param viewer
 	 * @see ColumnDescriptor
 	 */
@@ -96,22 +99,17 @@ public abstract class TableEditorPane extends ViewerPane {
 
 		TreeViewerColumn viewerColumn;
 		TreeColumn column;
-		
+
 		/* Column 0 is always the tree itself */
 		viewerColumn = new TreeViewerColumn(viewer, SWT.LEAD);
 		column = viewerColumn.getColumn();
 		columns.add(column);
-		//column.setText("Type");
-		//column.setToolTipText("Type of the context variable");
+		// column.setText("Type");
+		// column.setToolTipText("Type of the context variable");
 		column.setWidth(100);
-		viewerColumn.setLabelProvider(
-				new PropertyColumnLabelProvider(
-						adapterFactory,
-						null
-				)
-		);
-		//viewerColumn.setLabelProvider(editor.labelProvider);
-		
+		viewerColumn.setLabelProvider(new PropertyColumnLabelProvider(adapterFactory, null));
+		// viewerColumn.setLabelProvider(editor.labelProvider);
+
 		/* Now for the rest of the columns */
 		IPropertySourceProvider provider = new AdapterFactoryContentProvider(adapterFactory);
 		List<ColumnDescriptor> columnDescriptors = getColumnDescriptors();
@@ -123,22 +121,11 @@ public abstract class TableEditorPane extends ViewerPane {
 			column.setToolTipText(descriptor.description);
 			column.setAlignment(descriptor.alignment);
 			column.setWidth(descriptor.width);
-			viewerColumn.setLabelProvider(
-					new PropertyColumnLabelProvider(
-							adapterFactory,
-							descriptor.featureName
-					)
-			);
-			viewerColumn.setEditingSupport(
-					new PropertyColumnEditingSupport(viewer, 
-							provider,
-							descriptor.propertyId)
-			);
+			viewerColumn.setLabelProvider(new PropertyColumnLabelProvider(adapterFactory, descriptor.featureName));
+			viewerColumn.setEditingSupport(new PropertyColumnEditingSupport(viewer, provider, descriptor.propertyId));
 		}
 	}
-	
-	
-	
+
 	public static class ColumnDescriptor {
 		public Object propertyId;
 		public String displayName;
@@ -146,7 +133,9 @@ public abstract class TableEditorPane extends ViewerPane {
 		public String featureName;
 		public int alignment;
 		public int width;
-		public ColumnDescriptor(Object propertyId, String displayName, String description, String featureName, int alignment, int width) {
+
+		public ColumnDescriptor(Object propertyId, String displayName, String description, String featureName,
+				int alignment, int width) {
 			this.propertyId = propertyId;
 			this.displayName = displayName;
 			this.description = description;
@@ -154,17 +143,20 @@ public abstract class TableEditorPane extends ViewerPane {
 			this.alignment = alignment;
 			this.width = width;
 		}
+
 		public ColumnDescriptor(String name) {
 			this(name, name, null, name.toLowerCase(), SWT.CENTER, 100);
 		}
+
 		public ColumnDescriptor(String name, String description) {
 			this(name, name, description, name.toLowerCase(), SWT.CENTER, 100);
 		}
+
 		public ColumnDescriptor(String name, String description, String featureName) {
 			this(featureName, name, description, featureName, SWT.CENTER, 100);
 		}
 	}
-	
+
 	public static class PropertyColumnEditingSupport extends EditingSupport {
 
 		protected Object fPropertyId;
@@ -172,16 +164,21 @@ public abstract class TableEditorPane extends ViewerPane {
 		protected Map<Object, IPropertySource> fPropertySources;
 
 		/**
-		 * @param viewer The underlying control for this viewer must be a {@link Composite} or subclass thereof
-		 * @param provider A provider that can provider {@link IPropertySource} for the domain objects. Typically, this should be an {@link AdapterFactoryContentProvider}.
-		 * @param propertyId The propertyId associated with this column. All set and get methods will use this propertyId.
+		 * @param viewer
+		 *            The underlying control for this viewer must be a
+		 *            {@link Composite} or subclass thereof
+		 * @param provider
+		 *            A provider that can provider {@link IPropertySource} for
+		 *            the domain objects. Typically, this should be an
+		 *            {@link AdapterFactoryContentProvider}.
+		 * @param propertyId
+		 *            The propertyId associated with this column. All set and
+		 *            get methods will use this propertyId.
 		 * 
 		 * @see #setValue(Object, Object)
 		 * @see #getValue(Object)
 		 */
-		public PropertyColumnEditingSupport(ColumnViewer viewer, 
-				IPropertySourceProvider provider, 
-				Object propertyId) {
+		public PropertyColumnEditingSupport(ColumnViewer viewer, IPropertySourceProvider provider, Object propertyId) {
 
 			super(viewer);
 			this.fPropertyId = propertyId;
@@ -190,15 +187,22 @@ public abstract class TableEditorPane extends ViewerPane {
 
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.EditingSupport#canEdit(java.lang.Object)
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.jface.viewers.EditingSupport#canEdit(java.lang.Object)
 		 */
 		protected boolean canEdit(Object element) {
 			return getPropertyDescriptor(element) != null;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.EditingSupport#getCellEditor(java.lang.Object)
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.jface.viewers.EditingSupport#getCellEditor(java.lang.
+		 * Object)
 		 */
 		protected org.eclipse.jface.viewers.CellEditor getCellEditor(Object element) {
 			IPropertyDescriptor desc = getPropertyDescriptor(element);
@@ -210,8 +214,11 @@ public abstract class TableEditorPane extends ViewerPane {
 			return null;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.EditingSupport#getValue(java.lang.Object)
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.jface.viewers.EditingSupport#getValue(java.lang.Object)
 		 */
 		protected Object getValue(Object element) {
 
@@ -225,11 +232,16 @@ public abstract class TableEditorPane extends ViewerPane {
 			return null;
 		}
 
-		/* (non-Javadoc)
-		 * @see org.eclipse.jface.viewers.EditingSupport#setValue(java.lang.Object, java.lang.Object)
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.jface.viewers.EditingSupport#setValue(java.lang.Object,
+		 * java.lang.Object)
 		 */
 		protected void setValue(Object element, Object value) {
-			if (value == null) { // Need this check because somehow this gets called with value null
+			if (value == null) { // Need this check because somehow this gets
+									// called with value null
 				return;
 			}
 			IPropertySource propertySource = getPropertySource(element);
@@ -262,7 +274,6 @@ public abstract class TableEditorPane extends ViewerPane {
 		}
 
 	}
-	
 
 	public static class ExpressionColumnEditingSupport extends EditingSupport {
 
@@ -270,99 +281,118 @@ public abstract class TableEditorPane extends ViewerPane {
 		protected IPropertySourceProvider fPropertySourceProvider;
 		protected Map<Object, IPropertySource> fPropertySources;
 
-	/**
-	 * @param viewer The underlying control for this viewer must be a {@link Composite} or subclass thereof
-	 * @param provider A provider that can provider {@link IPropertySource} for the domain objects. Typically, this should be an {@link AdapterFactoryContentProvider}.
-	 * @param propertyId The propertyId associated with this column. All set and get methods will use this propertyId.
-	 * 
-	 * @see #setValue(Object, Object)
-	 * @see #getValue(Object)
-	 */
-		public ExpressionColumnEditingSupport(ColumnViewer viewer, 
-			IPropertySourceProvider provider, 
-			Object propertyId) {
+		/**
+		 * @param viewer
+		 *            The underlying control for this viewer must be a
+		 *            {@link Composite} or subclass thereof
+		 * @param provider
+		 *            A provider that can provider {@link IPropertySource} for
+		 *            the domain objects. Typically, this should be an
+		 *            {@link AdapterFactoryContentProvider}.
+		 * @param propertyId
+		 *            The propertyId associated with this column. All set and
+		 *            get methods will use this propertyId.
+		 * 
+		 * @see #setValue(Object, Object)
+		 * @see #getValue(Object)
+		 */
+		public ExpressionColumnEditingSupport(ColumnViewer viewer, IPropertySourceProvider provider,
+				Object propertyId) {
 
-		super(viewer);
-		this.fPropertyId = propertyId;
-		this.fPropertySourceProvider = provider;
-		this.fPropertySources = new HashMap<Object, IPropertySource>();
+			super(viewer);
+			this.fPropertyId = propertyId;
+			this.fPropertySourceProvider = provider;
+			this.fPropertySources = new HashMap<Object, IPropertySource>();
 
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.EditingSupport#canEdit(java.lang.Object)
-	 */
-	protected boolean canEdit(Object element) {
-		return getPropertyDescriptor(element) != null;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.EditingSupport#getCellEditor(java.lang.Object)
-	 */
-	protected org.eclipse.jface.viewers.CellEditor getCellEditor(Object element) {
-		IPropertyDescriptor desc = getPropertyDescriptor(element);
-
-		if (desc != null) {
-			return desc.createPropertyEditor((Composite) getViewer().getControl());
 		}
 
-		return null;
-	}
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.jface.viewers.EditingSupport#canEdit(java.lang.Object)
+		 */
+		protected boolean canEdit(Object element) {
+			return getPropertyDescriptor(element) != null;
+		}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.EditingSupport#getValue(java.lang.Object)
-	 */
-	protected Object getValue(Object element) {
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.jface.viewers.EditingSupport#getCellEditor(java.lang.
+		 * Object)
+		 */
+		protected org.eclipse.jface.viewers.CellEditor getCellEditor(Object element) {
+			IPropertyDescriptor desc = getPropertyDescriptor(element);
 
-		IPropertySource propertySource = getPropertySource(element);
-		if (propertySource != null) {
-			Object value = propertySource.getPropertyValue(fPropertyId);
-			if (value != null) {
-				return getPropertySource(value).getEditableValue();
+			if (desc != null) {
+				return desc.createPropertyEditor((Composite) getViewer().getControl());
 			}
-		}
-		return null;
-	}
 
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.EditingSupport#setValue(java.lang.Object, java.lang.Object)
-	 */
-	protected void setValue(Object element, Object value) {
-		if (value == null) { // Need this check because somehow this gets called with value null
-			return;
+			return null;
 		}
-		IPropertySource propertySource = getPropertySource(element);
-		if (propertySource != null) {
-			propertySource.setPropertyValue(fPropertyId, value);
-			return;
-		}
-	}
 
-	protected IPropertySource getPropertySource(Object element) {
-		IPropertySource propertySource = fPropertySources.get(element);
-		if (propertySource == null) {
-			propertySource = fPropertySourceProvider.getPropertySource(element);
-			fPropertySources.put(element, propertySource);
-		}
-		return propertySource;
-	}
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.jface.viewers.EditingSupport#getValue(java.lang.Object)
+		 */
+		protected Object getValue(Object element) {
 
-	protected IPropertyDescriptor getPropertyDescriptor(Object element) {
-		IPropertySource propertySource = getPropertySource(element);
-		if (propertySource != null) {
-			IPropertyDescriptor descriptors[] = propertySource.getPropertyDescriptors();
-			for (IPropertyDescriptor descriptor : descriptors) {
-				if (descriptor.getId().equals(fPropertyId)) {
-					return descriptor;
+			IPropertySource propertySource = getPropertySource(element);
+			if (propertySource != null) {
+				Object value = propertySource.getPropertyValue(fPropertyId);
+				if (value != null) {
+					return getPropertySource(value).getEditableValue();
 				}
 			}
+			return null;
 		}
-		return null;
-	}
 
-}
-	
-	
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * org.eclipse.jface.viewers.EditingSupport#setValue(java.lang.Object,
+		 * java.lang.Object)
+		 */
+		protected void setValue(Object element, Object value) {
+			if (value == null) { // Need this check because somehow this gets
+									// called with value null
+				return;
+			}
+			IPropertySource propertySource = getPropertySource(element);
+			if (propertySource != null) {
+				propertySource.setPropertyValue(fPropertyId, value);
+				return;
+			}
+		}
+
+		protected IPropertySource getPropertySource(Object element) {
+			IPropertySource propertySource = fPropertySources.get(element);
+			if (propertySource == null) {
+				propertySource = fPropertySourceProvider.getPropertySource(element);
+				fPropertySources.put(element, propertySource);
+			}
+			return propertySource;
+		}
+
+		protected IPropertyDescriptor getPropertyDescriptor(Object element) {
+			IPropertySource propertySource = getPropertySource(element);
+			if (propertySource != null) {
+				IPropertyDescriptor descriptors[] = propertySource.getPropertyDescriptors();
+				for (IPropertyDescriptor descriptor : descriptors) {
+					if (descriptor.getId().equals(fPropertyId)) {
+						return descriptor;
+					}
+				}
+			}
+			return null;
+		}
+
+	}
 
 	public class PropertyColumnLabelProvider extends ColumnLabelProvider {
 
@@ -371,7 +401,7 @@ public abstract class TableEditorPane extends ViewerPane {
 		protected AdapterFactory fAdapterFactory;
 
 		private org.eclipse.swt.graphics.Color fNoEditColor;
-		
+
 		private final static String NOEDIT_STRING = "-";
 
 		/**
@@ -381,8 +411,8 @@ public abstract class TableEditorPane extends ViewerPane {
 		 * @param featureName
 		 *            Should be same as in
 		 *            {@link EClass#getEStructuralFeature(String)}. Can be
-		 *            <code>null</code>. If <code>null</code>, label is
-		 *            provided for object itself.
+		 *            <code>null</code>. If <code>null</code>, label is provided
+		 *            for object itself.
 		 */
 		public PropertyColumnLabelProvider(AdapterFactory factory, String featureName) {
 			super();
@@ -390,20 +420,21 @@ public abstract class TableEditorPane extends ViewerPane {
 			this.fLabelProvider = new AdapterFactoryLabelProvider(factory);
 			this.fAdapterFactory = factory;
 			this.fNoEditColor = new org.eclipse.swt.graphics.Color(Display.getCurrent(), 230, 230, 230);
-			}
+		}
 
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.Object)
+		 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getText(java.lang.
+		 * Object)
 		 */
 		@Override
 		public String getText(Object element) {
 			if (fFeatureName == null) {
 				if (element instanceof Visitable) {
-					return ((Visitable)element).accept(DiVATypeLabelProvider.getInstance(), null); 
-				}
-				else return fLabelProvider.getText(element);
+					return ((Visitable) element).accept(DiVATypeLabelProvider.getInstance(), null);
+				} else
+					return fLabelProvider.getText(element);
 			}
 
 			EStructuralFeature feature = getFeature(element);
@@ -418,15 +449,15 @@ public abstract class TableEditorPane extends ViewerPane {
 								result.append(", ");
 							}
 							if (child instanceof NamedElement) {
-								result.append(((NamedElement)child).getId());
-							}
-							else result.append(fLabelProvider.getText(child));
+								result.append(((NamedElement) child).getId());
+							} else
+								result.append(fLabelProvider.getText(child));
 						}
 						result.append("}");
 						return result.toString();
 					} else {
 						if (value instanceof Expression) {
-							return ((Expression)value).accept(DiVATextProvider.getInstance(), null);
+							return ((Expression) value).accept(DiVATextProvider.getInstance(), null);
 						}
 						return fLabelProvider.getText(value);
 					}
@@ -441,7 +472,9 @@ public abstract class TableEditorPane extends ViewerPane {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getImage(java.lang.Object)
+		 * @see
+		 * org.eclipse.jface.viewers.ColumnLabelProvider#getImage(java.lang.
+		 * Object)
 		 */
 		@Override
 		public org.eclipse.swt.graphics.Image getImage(Object element) {
@@ -456,8 +489,7 @@ public abstract class TableEditorPane extends ViewerPane {
 
 		protected EStructuralFeature getFeature(Object element) {
 			if (element instanceof EObject) {
-				return ((EObject) element).eClass().getEStructuralFeature(
-						fFeatureName);
+				return ((EObject) element).eClass().getEStructuralFeature(fFeatureName);
 			}
 			return null;
 		}
@@ -476,15 +508,16 @@ public abstract class TableEditorPane extends ViewerPane {
 		/*
 		 * (non-Javadoc)
 		 * 
-		 * @see org.eclipse.jface.viewers.ColumnLabelProvider#getBackground(java.lang.Object)
+		 * @see
+		 * org.eclipse.jface.viewers.ColumnLabelProvider#getBackground(java.lang
+		 * .Object)
 		 */
 		@Override
 		public org.eclipse.swt.graphics.Color getBackground(Object element) {
 			if (fFeatureName != null && getFeature(element) == null) {
 				return this.fNoEditColor;
-			}
-			else if (element instanceof Visitable) {
-				return ((Visitable)element).accept(DiVABackgroundProvider.getInstance(), null); 
+			} else if (element instanceof Visitable) {
+				return ((Visitable) element).accept(DiVABackgroundProvider.getInstance(), null);
 			}
 			return super.getBackground(element);
 		}

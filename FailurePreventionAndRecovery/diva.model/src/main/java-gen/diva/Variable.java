@@ -17,11 +17,9 @@ package diva;
 
 import java.util.List;
 
-
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Variable</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '
+ * <em><b>Variable</b></em>'. <!-- end-user-doc -->
  *
  *
  * @see diva.DivaPackage#getVariable()

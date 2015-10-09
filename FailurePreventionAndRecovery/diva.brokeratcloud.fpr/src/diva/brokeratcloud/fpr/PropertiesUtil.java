@@ -14,12 +14,12 @@ import org.osgi.framework.Bundle;
 
 public class PropertiesUtil {
 	Properties properties = null;
-	
-	public static PropertiesUtil INSTANCE=new PropertiesUtil();
-	
-	protected PropertiesUtil(){
+
+	public static PropertiesUtil INSTANCE = new PropertiesUtil();
+
+	protected PropertiesUtil() {
 		File propertiesFile = new File("./plugin.properties");
-		if(!propertiesFile.exists()){
+		if (!propertiesFile.exists()) {
 			Bundle bundle = Platform.getBundle("diva.brokeratcloud.fpr");
 			URL fileURL = bundle.getEntry("plugin.properties");
 			try {
@@ -43,10 +43,10 @@ public class PropertiesUtil {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
-	
-	public String get(String key){
+
+	public String get(String key) {
 		return properties.getProperty(key);
 	}
 

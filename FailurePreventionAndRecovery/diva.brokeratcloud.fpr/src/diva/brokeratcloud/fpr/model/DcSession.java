@@ -27,60 +27,61 @@ import diva.brokeratcloud.fpr.input.local.ServiceDependencyLocal;
 
 /**
  * Each per request id
+ * 
  * @author Hui Song
  *
  */
 public class DcSession {
-	
+
 	private String requestId;
 	private Set<String> allServices = new HashSet<String>();
-	
+
 	private DivaRoot root = null;
-	
-	public void setDivaRoot(DivaRoot root){
+
+	public void setDivaRoot(DivaRoot root) {
 		this.root = root;
 	}
-	
-	private Collection<String> checkOneStep(){
+
+	private Collection<String> checkOneStep() {
 		Set<String> required = new HashSet<String>();
-		for(String s : allServices){
-			try{
+		for (String s : allServices) {
+			try {
 				List<String> dep = ServiceDependency.INSTANCE.getDependency(s);
-				if(dep !=null)
+				if (dep != null)
 					required.addAll(dep);
-			}
-			catch(Exception e){
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		required.removeAll(allServices);
 		return required;
 	}
-	
-	public DcSession(String requestId){
+
+	public DcSession(String requestId) {
 		this.requestId = requestId;
 	}
-	
-	public void addServices(List<String> services){
+
+	public void addServices(List<String> services) {
 		allServices.addAll(services);
 	}
-	
+
 	/**
-	 * Empty List means the dependency is satisfied
-	 * A mock one requires exactly the existing requested services
+	 * Empty List means the dependency is satisfied A mock one requires exactly
+	 * the existing requested services
+	 * 
 	 * @return
 	 */
-	public Collection<String> getMissed(){
+	public Collection<String> getMissed() {
 		return checkOneStep();
 	}
-	
-	public static List<String> getAllRequired(List<String> query){
+
+	public static List<String> getAllRequired(List<String> query) {
 		DcSession session = new DcSession("temp");
 		session.addServices(query);
 		List<String> allMissed = new ArrayList<String>();
-		while(true){
+		while (true) {
 			Collection<String> missed = session.getMissed();
-			if(missed.isEmpty()){
+			if (missed.isEmpty()) {
 				return allMissed;
 			}
 			allMissed.addAll(missed);

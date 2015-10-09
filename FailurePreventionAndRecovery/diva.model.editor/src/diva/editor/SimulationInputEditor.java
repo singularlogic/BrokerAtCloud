@@ -58,59 +58,58 @@ import diva.Variable;
 import diva.VariableValue;
 import diva.impl.DivaFactoryImpl;
 
-
 public class SimulationInputEditor extends DiVATableEditorPane implements Adapter {
 
-	public SimulationInputEditor(DiVATableEditor editor, IWorkbenchPage page,
-			IWorkbenchPart part) {
+	public SimulationInputEditor(DiVATableEditor editor, IWorkbenchPage page, IWorkbenchPart part) {
 		super(editor, page, part);
 	}
 
 	Notifier eNotifier;
-	
+
 	public Notifier getTarget() {
 		return eNotifier;
 	}
-	
+
 	public boolean isAdapterForType(Object type) {
 		return false;
 	}
-	
+
 	public void notifyChanged(Notification notification) {
 		if (notification.getNotifier() instanceof Scenario) {
 			treeViewerWithColumns.update(notification.getNotifier(), null);
-			for(Context c : ((Scenario)notification.getNotifier()).getContext())
+			for (Context c : ((Scenario) notification.getNotifier()).getContext())
 				treeViewerWithColumns.update(c, null);
 		}
 		if (notification.getNotifier() instanceof SimulationModel) {
-			SimulationModel m = (SimulationModel)notification.getNotifier();
-			for(Scenario d : m.getScenario()) {
-				if (!d.eAdapters().contains(this))d.eAdapters().add(this);
+			SimulationModel m = (SimulationModel) notification.getNotifier();
+			for (Scenario d : m.getScenario()) {
+				if (!d.eAdapters().contains(this))
+					d.eAdapters().add(this);
 			}
 		}
 		if (notification.getNotifier() instanceof VariabilityModel) {
-			VariabilityModel m = (VariabilityModel)notification.getNotifier();
+			VariabilityModel m = (VariabilityModel) notification.getNotifier();
 			if (notification.getFeature() == DivaPackage.eINSTANCE.getVariabilityModel_Simulation()) {
 				SimulationModel sm = m.getSimulation();
 				if (sm != null) {
 					treeViewerWithColumns.setInput(sm);
-					if (!sm.eAdapters().contains(this)) sm.eAdapters().add(this);
-					for(Scenario d : sm.getScenario()) {
+					if (!sm.eAdapters().contains(this))
+						sm.eAdapters().add(this);
+					for (Scenario d : sm.getScenario()) {
 						d.eAdapters().add(this);
 					}
 				}
 			}
 		}
 		if (notification.getNotifier() instanceof VariableValue) {
-			treeViewerWithColumns.update(((VariableValue)notification.getNotifier()).eContainer(), null);
+			treeViewerWithColumns.update(((VariableValue) notification.getNotifier()).eContainer(), null);
 		}
 	}
-	
-	
+
 	public void setTarget(Notifier newTarget) {
-		eNotifier = newTarget;	
+		eNotifier = newTarget;
 	}
-	
+
 	/**
 	 * Initializes the table tree viewer, creating columns and setting up
 	 * editing. {@link #treeViewerWithColumns} should be valid before calling.
@@ -118,49 +117,49 @@ public class SimulationInputEditor extends DiVATableEditorPane implements Adapte
 	protected void initializeTableTreeViewer() {
 
 		Tree tree = treeViewerWithColumns.getTree();
-		
+
 		// Get rid of any existing stuff
-		for(TreeColumn c : columns) c.dispose();
+		for (TreeColumn c : columns)
+			c.dispose();
 		columns.clear();
-		
+
 		tree.setLayoutData(new FillLayout());
 		tree.setHeaderVisible(true);
 		tree.setLinesVisible(true);
 
-		treeViewerWithColumns.setContentProvider(new SimulationInputContentProvider(
-				editor.getAdaptedFactory()));
+		treeViewerWithColumns.setContentProvider(new SimulationInputContentProvider(editor.getAdaptedFactory()));
 
 		// get the model
 		Resource r = editor.getEditingDomain().getResourceSet().getResources().get(0);
-		
+
 		createColumns(treeViewerWithColumns);
-		
+
 		// Find the SimulationModel and set the input
 		for (EObject o : r.getContents()) {
 			if (o instanceof VariabilityModel) {
-				if (!o.eAdapters().contains(this)) o.eAdapters().add(this);
-				createVariableColumns(treeViewerWithColumns, (VariabilityModel)o);
+				if (!o.eAdapters().contains(this))
+					o.eAdapters().add(this);
+				createVariableColumns(treeViewerWithColumns, (VariabilityModel) o);
 				createExpressionColumn(DivaPackage.eINSTANCE.getContext_Oracle(), this);
-				SimulationModel sm = ((VariabilityModel)o).getSimulation();
+				SimulationModel sm = ((VariabilityModel) o).getSimulation();
 				if (sm != null) {
 					treeViewerWithColumns.setInput(sm);
-					if (!sm.eAdapters().contains(this)) sm.eAdapters().add(this);
-					for(Scenario d : sm.getScenario()) {
+					if (!sm.eAdapters().contains(this))
+						sm.eAdapters().add(this);
+					for (Scenario d : sm.getScenario()) {
 						d.eAdapters().add(this);
 					}
 				}
 				break;
 			}
 		}
-		
-		
-		
-		//treeViewerWithColumns.expandAll();
+
+		// treeViewerWithColumns.expandAll();
 		// resize all the columns
 		for (TreeColumn c : columns)
 			c.pack();
 	}
-	
+
 	/**
 	 * @return list of {@link ColumnDescriptor}s
 	 * @generated
@@ -168,8 +167,8 @@ public class SimulationInputEditor extends DiVATableEditorPane implements Adapte
 	protected List<ColumnDescriptor> getColumnDescriptors() {
 		ArrayList<ColumnDescriptor> list = new ArrayList<ColumnDescriptor>();
 		list.add(new ColumnDescriptor("Name", null, "name"));
-		//list.add(new ColumnDescriptor("ID", null, "id"));
-		//list.add(new ColumnDescriptor("Guard", null, "context"));
+		// list.add(new ColumnDescriptor("ID", null, "id"));
+		// list.add(new ColumnDescriptor("Guard", null, "context"));
 		return list;
 	}
 
@@ -178,20 +177,20 @@ public class SimulationInputEditor extends DiVATableEditorPane implements Adapte
 		TreeColumn column;
 
 		/* Column 0 is always the tree itself */
-		//viewerColumn = new TreeViewerColumn(viewer, SWT.LEAD);
-		//column = viewerColumn.getColumn();
-		//columns.add(column);
+		// viewerColumn = new TreeViewerColumn(viewer, SWT.LEAD);
+		// column = viewerColumn.getColumn();
+		// columns.add(column);
 		// column.setText("Type");
 		// column.setToolTipText("Type of the context variable");
-		//column.setWidth(100);
-		//viewerColumn.setLabelProvider(new DiVALabelProvider(
-		//		new AdapterFactoryLabelProvider(editor.getAdaptedFactory())));
+		// column.setWidth(100);
+		// viewerColumn.setLabelProvider(new DiVALabelProvider(
+		// new AdapterFactoryLabelProvider(editor.getAdaptedFactory())));
 
 		for (Variable v : m.getContext()) {
 			viewerColumn = new TreeViewerColumn(viewer, SWT.LEAD);
 			column = viewerColumn.getColumn();
 			columns.add(column);
-			column.setText(""+v.getId());
+			column.setText("" + v.getId());
 			// column.setToolTipText(descriptor.description);
 			column.setAlignment(SWT.CENTER);
 			column.setWidth(100);
@@ -206,40 +205,34 @@ public class SimulationInputEditor extends DiVATableEditorPane implements Adapte
 			super(adapterFactory);
 		}
 
-		
 		public Object[] getChildren(Object object) {
 			if (object instanceof SimulationModel) {
 				return ((SimulationModel) object).getScenario().toArray();
 			} else if (object instanceof Context) {
 				return new Object[0];
-			}
-			else if (object instanceof Scenario) {
+			} else if (object instanceof Scenario) {
 				return ((Scenario) object).getContext().toArray();
 			}
 			return super.getChildren(object);
 		}
 
-		
 		public boolean hasChildren(Object object) {
 			if (object instanceof SimulationModel) {
 				return ((SimulationModel) object).getScenario().size() != 0;
 			} else if (object instanceof Context) {
 				return false;
-			}
-			else if (object instanceof Scenario) {
+			} else if (object instanceof Scenario) {
 				return ((Scenario) object).getContext().size() != 0;
 			}
 			return super.hasChildren(object);
 		}
 
-		
 		public Object[] getElements(Object object) {
 			if (object instanceof SimulationModel) {
 				return ((SimulationModel) object).getScenario().toArray();
 			} else if (object instanceof Context) {
 				return new Object[0];
-			}
-			else if (object instanceof Scenario) {
+			} else if (object instanceof Scenario) {
 				return ((Scenario) object).getContext().toArray();
 			}
 			return super.getElements(object);
@@ -255,73 +248,78 @@ public class SimulationInputEditor extends DiVATableEditorPane implements Adapte
 			this.variable = variable;
 		}
 
-		
 		protected boolean canEdit(Object element) {
 			if (element instanceof Context) {
 				return true;
-			}
-			else return false;
+			} else
+				return false;
 		}
 
-		
 		protected CellEditor getCellEditor(Object element) {
 			CellEditor result = null;
 			if (element instanceof Context) {
 				if (variable instanceof BooleanVariable) {
 					result = new CheckboxCellEditor((Composite) getViewer().getControl(), SWT.CHECK);
-				}
-				else if (variable instanceof EnumVariable){
-					EnumVariable ev = (EnumVariable)variable;
+				} else if (variable instanceof EnumVariable) {
+					EnumVariable ev = (EnumVariable) variable;
 					String[] literals = new String[ev.getLiteral().size()];
-					for (int i=0; i<literals.length; i++) literals[i] = ev.getLiteral().get(i).getName(); 
+					for (int i = 0; i < literals.length; i++)
+						literals[i] = ev.getLiteral().get(i).getName();
 					result = new ComboBoxCellEditor((Composite) getViewer().getControl(), literals);
 				}
 			}
 			return result;
 		}
 
-		
 		protected Object getValue(Object element) {
 			Object result = null;
 			if (element instanceof Context) {
-				Context c = (Context)element;
+				Context c = (Context) element;
 				VariableValue vv = null;
-				for (VariableValue v : c.getVariable()) if(v.getVariable() == variable) { vv = v; break; }
-					
+				for (VariableValue v : c.getVariable())
+					if (v.getVariable() == variable) {
+						vv = v;
+						break;
+					}
+
 				if (variable instanceof BooleanVariable) {
-					BoolVariableValue bvv = (BoolVariableValue)vv;
+					BoolVariableValue bvv = (BoolVariableValue) vv;
 					result = bvv.isBool();
-				}
-				else if (variable instanceof EnumVariable){
-					EnumVariable ev = (EnumVariable)variable;
-					EnumVariableValue evv = (EnumVariableValue)vv;
+				} else if (variable instanceof EnumVariable) {
+					EnumVariable ev = (EnumVariable) variable;
+					EnumVariableValue evv = (EnumVariableValue) vv;
 					result = ev.getLiteral().indexOf(evv.getLiteral());
 				}
 			}
 			return result;
 		}
 
-		
 		protected void setValue(Object element, Object value) {
-			if (value == null) { // Need this check because somehow this gets called with value null
+			if (value == null) { // Need this check because somehow this gets
+									// called with value null
 				return;
 			}
-			
+
 			if (element instanceof Context) {
-				Context c = (Context)element;
+				Context c = (Context) element;
 				VariableValue vv = null;
-				for (VariableValue v : c.getVariable()) if(v.getVariable() == variable) { vv = v; break; }
-					
+				for (VariableValue v : c.getVariable())
+					if (v.getVariable() == variable) {
+						vv = v;
+						break;
+					}
+
 				if (variable instanceof BooleanVariable) {
-					BoolVariableValue bvv = (BoolVariableValue)vv;
-					SetCommand cmd = new SetCommand(editor.getEditingDomain(), bvv, DivaPackage.eINSTANCE.getBoolVariableValue_Bool(), value);
+					BoolVariableValue bvv = (BoolVariableValue) vv;
+					SetCommand cmd = new SetCommand(editor.getEditingDomain(), bvv,
+							DivaPackage.eINSTANCE.getBoolVariableValue_Bool(), value);
 					editor.getEditingDomain().getCommandStack().execute(cmd);
-				}
-				else if (variable instanceof EnumVariable){
-					EnumVariable ev = (EnumVariable)variable;
-					EnumVariableValue evv = (EnumVariableValue)vv;
-					EnumLiteral lit = ev.getLiteral().get((Integer)value);
-					SetCommand cmd = new SetCommand(editor.getEditingDomain(), evv, DivaPackage.eINSTANCE.getEnumVariableValue_Literal(), lit);
+				} else if (variable instanceof EnumVariable) {
+					EnumVariable ev = (EnumVariable) variable;
+					EnumVariableValue evv = (EnumVariableValue) vv;
+					EnumLiteral lit = ev.getLiteral().get((Integer) value);
+					SetCommand cmd = new SetCommand(editor.getEditingDomain(), evv,
+							DivaPackage.eINSTANCE.getEnumVariableValue_Literal(), lit);
 					editor.getEditingDomain().getCommandStack().execute(cmd);
 				}
 			}
@@ -342,69 +340,76 @@ public class SimulationInputEditor extends DiVATableEditorPane implements Adapte
 			this.fNoEditColor = new org.eclipse.swt.graphics.Color(Display.getCurrent(), 230, 230, 230);
 		}
 
-		
 		public String getText(Object element) {
 			String result = NOEDIT_STRING;
 			if (element instanceof Context) {
-				Context c = (Context)element;
+				Context c = (Context) element;
 				VariableValue vv = null;
-				for (VariableValue v : c.getVariable()) if(v.getVariable() == variable) { vv = v; break; }
-					
+				for (VariableValue v : c.getVariable())
+					if (v.getVariable() == variable) {
+						vv = v;
+						break;
+					}
+
 				if (variable instanceof BooleanVariable) {
-					BoolVariableValue bvv = (BoolVariableValue)vv;
+					BoolVariableValue bvv = (BoolVariableValue) vv;
 					// Create the variable value if it does not exist
 					if (bvv == null) {
 						bvv = DivaFactoryImpl.init().createBoolVariableValue();
 						bvv.setBool(false);
 						bvv.setVariable(variable);
-						AddCommand cmd = new AddCommand(editor.getEditingDomain(), c, DivaPackage.eINSTANCE.getContext_Variable(), bvv);
+						AddCommand cmd = new AddCommand(editor.getEditingDomain(), c,
+								DivaPackage.eINSTANCE.getContext_Variable(), bvv);
 						editor.getEditingDomain().getCommandStack().execute(cmd);
 					}
-					if(!bvv.eAdapters().contains(SimulationInputEditor.this))bvv.eAdapters().add(SimulationInputEditor.this);
+					if (!bvv.eAdapters().contains(SimulationInputEditor.this))
+						bvv.eAdapters().add(SimulationInputEditor.this);
 					result = "" + bvv.isBool();
-				}
-				else if (variable instanceof EnumVariable){
-					EnumVariable ev = (EnumVariable)variable;
-					EnumVariableValue evv = (EnumVariableValue)vv;
+				} else if (variable instanceof EnumVariable) {
+					EnumVariable ev = (EnumVariable) variable;
+					EnumVariableValue evv = (EnumVariableValue) vv;
 					// Create the variable value if it does not exist
 					if (evv == null) {
 						evv = DivaFactoryImpl.init().createEnumVariableValue();
 						evv.setVariable(variable);
 						evv.setLiteral(ev.getLiteral().get(0));
-						AddCommand cmd = new AddCommand(editor.getEditingDomain(), c, DivaPackage.eINSTANCE.getContext_Variable(), evv);
+						AddCommand cmd = new AddCommand(editor.getEditingDomain(), c,
+								DivaPackage.eINSTANCE.getContext_Variable(), evv);
 						editor.getEditingDomain().getCommandStack().execute(cmd);
 					}
-					if(!evv.eAdapters().contains(SimulationInputEditor.this))evv.eAdapters().add(SimulationInputEditor.this);
+					if (!evv.eAdapters().contains(SimulationInputEditor.this))
+						evv.eAdapters().add(SimulationInputEditor.this);
 					result = evv.getLiteral().getName();
 				}
 			}
 			return result;
 		}
 
-		
 		public org.eclipse.swt.graphics.Image getImage(Object element) {
 			return super.getImage(element);
 		}
 
-		
 		public void dispose() {
 			this.fNoEditColor.dispose();
 			super.dispose();
 		}
 
-		
 		public org.eclipse.swt.graphics.Color getBackground(Object element) {
-			
+
 			if (element instanceof Context) {
-				Context c = (Context)element;
+				Context c = (Context) element;
 				VariableValue vv = null;
-				for (VariableValue v : c.getVariable()) if(v.getVariable() == variable) { vv = v; break; }
+				for (VariableValue v : c.getVariable())
+					if (v.getVariable() == variable) {
+						vv = v;
+						break;
+					}
 				if (variable instanceof BooleanVariable && vv != null) {
-					if (!((BoolVariableValue)vv).isBool()) return this.fNoEditColor;
+					if (!((BoolVariableValue) vv).isBool())
+						return this.fNoEditColor;
 				}
-				return ((Context)element).accept(DiVABackgroundProvider.getInstance(), null);
-			}
-			else {
+				return ((Context) element).accept(DiVABackgroundProvider.getInstance(), null);
+			} else {
 				return this.fNoEditColor;
 			}
 		}

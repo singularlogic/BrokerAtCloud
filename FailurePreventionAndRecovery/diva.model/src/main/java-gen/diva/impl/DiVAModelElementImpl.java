@@ -31,13 +31,13 @@ import diva.DivaPackage;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Di VA Model Element</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Di VA Model Element</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.DiVAModelElementImpl#getAnnotation <em>Annotation</em>}</li>
+ * <li>{@link diva.impl.DiVAModelElementImpl#getAnnotation <em>Annotation</em>}
+ * </li>
  * </ul>
  * </p>
  *
@@ -45,9 +45,9 @@ import diva.visitors.Visitor;
  */
 public abstract class DiVAModelElementImpl extends EObjectImpl implements DiVAModelElement {
 	/**
-	 * The cached value of the '{@link #getAnnotation() <em>Annotation</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getAnnotation() <em>Annotation</em>}'
+	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getAnnotation()
 	 * @generated
 	 * @ordered
@@ -55,8 +55,8 @@ public abstract class DiVAModelElementImpl extends EObjectImpl implements DiVAMo
 	protected EList<Annotation> annotation;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected DiVAModelElementImpl() {
@@ -64,8 +64,8 @@ public abstract class DiVAModelElementImpl extends EObjectImpl implements DiVAMo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -74,20 +74,21 @@ public abstract class DiVAModelElementImpl extends EObjectImpl implements DiVAMo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<Annotation> getAnnotation() {
 		if (annotation == null) {
-			annotation = new EObjectContainmentEList<Annotation>(Annotation.class, this, DivaPackage.DI_VA_MODEL_ELEMENT__ANNOTATION);
+			annotation = new EObjectContainmentEList<Annotation>(Annotation.class, this,
+					DivaPackage.DI_VA_MODEL_ELEMENT__ANNOTATION);
 		}
 		return annotation;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(Visitor<C, R> visitor, C context) {
@@ -97,82 +98,83 @@ public abstract class DiVAModelElementImpl extends EObjectImpl implements DiVAMo
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case DivaPackage.DI_VA_MODEL_ELEMENT__ANNOTATION:
-				return ((InternalEList<?>)getAnnotation()).basicRemove(otherEnd, msgs);
+		case DivaPackage.DI_VA_MODEL_ELEMENT__ANNOTATION:
+			return ((InternalEList<?>) getAnnotation()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.DI_VA_MODEL_ELEMENT__ANNOTATION:
-				return getAnnotation();
+		case DivaPackage.DI_VA_MODEL_ELEMENT__ANNOTATION:
+			return getAnnotation();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.DI_VA_MODEL_ELEMENT__ANNOTATION:
-				getAnnotation().clear();
-				getAnnotation().addAll((Collection<? extends Annotation>)newValue);
-				return;
+		case DivaPackage.DI_VA_MODEL_ELEMENT__ANNOTATION:
+			getAnnotation().clear();
+			getAnnotation().addAll((Collection<? extends Annotation>) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.DI_VA_MODEL_ELEMENT__ANNOTATION:
-				getAnnotation().clear();
-				return;
+		case DivaPackage.DI_VA_MODEL_ELEMENT__ANNOTATION:
+			getAnnotation().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.DI_VA_MODEL_ELEMENT__ANNOTATION:
-				return annotation != null && !annotation.isEmpty();
+		case DivaPackage.DI_VA_MODEL_ELEMENT__ANNOTATION:
+			return annotation != null && !annotation.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
-	
+
 	/**
 	 * @generated NOT
 	 * 
 	 */
-	public void toAlloy(StringBuilder builder) {}
-} //DiVAModelElementImpl
+	public void toAlloy(StringBuilder builder) {
+	}
+} // DiVAModelElementImpl

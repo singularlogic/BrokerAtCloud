@@ -1,0 +1,14 @@
+{
+  "name": "avgStorageLoadStream",
+  "version": "1.0.0",
+  "payloadData": [
+    {
+      "name": "service",
+      "type": "STRING"
+    },
+    {
+      "name": "avgStorageLoad",
+      "type": "DOUBLE"
+    }
+  ]
+}

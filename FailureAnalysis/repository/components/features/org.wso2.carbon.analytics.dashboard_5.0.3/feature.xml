@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.analytics.dashboard" label="WSO2 Carbon - Analytics Dashboard Feature" provider-name="%providerName" version="5.0.3">
+  <description>This feature contains Analytics Dashboard menu.</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.analytics.dashboard.ui" unpack="false" version="5.0.3"/>
+  <require>
+    <import feature="org.wso2.carbon.core" match="equivalent" version="4.4.1"/>
+  </require>
+</feature>

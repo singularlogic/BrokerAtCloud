@@ -15,11 +15,9 @@
  */
 package diva;
 
-
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Term</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '
+ * <em><b>Term</b></em>'. <!-- end-user-doc -->
  *
  *
  * @see diva.DivaPackage#getTerm()
@@ -27,10 +25,10 @@ package diva;
  * @generated
  */
 public interface Term extends DiVAModelElement {
-	
+
 	/**
 	 * @generated NOT
 	 */
 	public boolean eval(Context ctx, Configuration cfg);
-	
+
 } // Term

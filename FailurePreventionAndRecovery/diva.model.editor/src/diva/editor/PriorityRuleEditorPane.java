@@ -61,26 +61,24 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 
 	Notifier eNotifier;
 
-	
 	public Notifier getTarget() {
 		return eNotifier;
 	}
 
-	
 	public boolean isAdapterForType(Object type) {
 		return false;
 	}
 
-	
 	public void notifyChanged(Notification notification) {
 		if (notification.getNotifier() instanceof Rule) {
 			treeViewerWithColumns.update(notification.getNotifier(), null);
 		}
 		if (notification.getNotifier() instanceof Expression) {
-			if (treeViewerWithColumns.isBusy()) return;
+			if (treeViewerWithColumns.isBusy())
+				return;
 			System.out.println("notify");
-			treeViewerWithColumns.update(((EObject)notification.getNotifier()).eContainer(), null);
-			
+			treeViewerWithColumns.update(((EObject) notification.getNotifier()).eContainer(), null);
+
 		}
 		if (notification.getNotifier() instanceof VariabilityModel) {
 			VariabilityModel m = (VariabilityModel) notification.getNotifier();
@@ -105,7 +103,6 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 
 	}
 
-	
 	public void setTarget(Notifier newTarget) {
 		eNotifier = newTarget;
 	}
@@ -133,10 +130,9 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 		Resource r = editor.getEditingDomain().getResourceSet().getResources().get(0);
 
 		createColumns(treeViewerWithColumns);
-		
+
 		createExpressionColumn(DivaPackage.eINSTANCE.getPriorityRule_Context(), this);
-		
-		
+
 		// Find the VariabilityModel and set the input
 		for (EObject o : r.getContents()) {
 			if (o instanceof VariabilityModel) {
@@ -145,7 +141,8 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 				if (!o.eAdapters().contains(this))
 					o.eAdapters().add(this);
 				for (Rule rule : ((VariabilityModel) o).getRule()) {
-					if (!rule.eAdapters().contains(this)) rule.eAdapters().add(this);
+					if (!rule.eAdapters().contains(this))
+						rule.eAdapters().add(this);
 				}
 				break;
 			}
@@ -182,7 +179,6 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 			super(adapterFactory);
 		}
 
-		
 		public Object[] getChildren(Object object) {
 			if (object instanceof VariabilityModel) {
 				return ((VariabilityModel) object).getRule().toArray();
@@ -191,7 +187,6 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 			}
 		}
 
-		
 		public boolean hasChildren(Object object) {
 			if (object instanceof VariabilityModel) {
 				return ((VariabilityModel) object).getRule().size() != 0;
@@ -200,7 +195,6 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 			}
 		}
 
-		
 		public Object[] getElements(Object object) {
 			if (object instanceof VariabilityModel) {
 				return ((VariabilityModel) object).getRule().toArray();
@@ -218,7 +212,7 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 		ArrayList<ColumnDescriptor> list = new ArrayList<ColumnDescriptor>();
 		list.add(new ColumnDescriptor("Name", null, "name"));
 		list.add(new ColumnDescriptor("ID", null, "id"));
-		//list.add(new ColumnDescriptor("Guard", null, "context"));
+		// list.add(new ColumnDescriptor("Guard", null, "context"));
 		return list;
 	}
 
@@ -233,7 +227,6 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 			this.property = property;
 		}
 
-		
 		protected boolean canEdit(Object element) {
 			if (element instanceof PriorityRule)
 				return true;
@@ -241,7 +234,6 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 				return false;
 		}
 
-		
 		protected CellEditor getCellEditor(Object element) {
 			CellEditor result = null;
 			if (element instanceof PriorityRule) {
@@ -250,7 +242,6 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 			return result;
 		}
 
-		
 		protected Object getValue(Object element) {
 			Object result = null;
 			if (element instanceof PriorityRule) {
@@ -267,7 +258,6 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 			return result;
 		}
 
-		
 		protected void setValue(Object element, Object value) {
 			if (value == null) { // Need this check because somehow this gets
 				// called with value null
@@ -280,7 +270,8 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 					if (o.getProperty() == property)
 						pp = o;
 				if (pp != null) {
-					SetCommand cmd = new SetCommand(editor.getEditingDomain(), pp, DivaPackage.eINSTANCE.getPropertyPriority_Priority(), value);
+					SetCommand cmd = new SetCommand(editor.getEditingDomain(), pp,
+							DivaPackage.eINSTANCE.getPropertyPriority_Priority(), value);
 					editor.getEditingDomain().getCommandStack().execute(cmd);
 				}
 				getViewer().update(r, null);
@@ -302,7 +293,6 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 			this.fNoEditColor = new org.eclipse.swt.graphics.Color(Display.getCurrent(), 230, 230, 230);
 		}
 
-		
 		public String getText(Object element) {
 
 			if (element instanceof PriorityRule) {
@@ -329,18 +319,15 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 			return NOEDIT_STRING;
 		}
 
-		
 		public org.eclipse.swt.graphics.Image getImage(Object element) {
 			return super.getImage(element);
 		}
 
-		
 		public void dispose() {
 			this.fNoEditColor.dispose();
 			super.dispose();
 		}
 
-		
 		public org.eclipse.swt.graphics.Color getBackground(Object element) {
 
 			if (element instanceof PriorityRule) {
@@ -353,7 +340,7 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 					return fNoEditColor;
 				}
 			}
-			
+
 			if (element instanceof Visitable) {
 				return ((Visitable) element).accept(DiVABackgroundProvider.getInstance(), null);
 			}
@@ -361,5 +348,5 @@ public class PriorityRuleEditorPane extends DiVATableEditorPane implements Adapt
 			return super.getBackground(element);
 		}
 	}
-	
+
 }

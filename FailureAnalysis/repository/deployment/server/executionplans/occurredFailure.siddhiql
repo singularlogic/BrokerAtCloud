@@ -1,0 +1,37 @@
+@Plan:name('occurredFailure')
+
+@Plan:statistics('true')
+
+@Plan:trace('true')
+
+@Import('responseTimeStream:1.0.0')
+define stream responseTimeStream (service string, responseTime int);
+
+@Import('queryTimeStream:1.0.0')
+define stream queryTimeStream (service string, queryTime int);
+
+@Export('occurredFailureStream:1.0.0')
+define stream occurredFailureStream (service string, cause string);
+
+define table slowestQueryTimeTable (service string, slowestQueryTime int);
+
+from responseTimeStream[responseTime == 0]
+select service, 'responseTimeout' as cause
+insert into occurredFailureStream;
+
+from queryTimeStream[queryTime == 0]
+select service, 'queryTimeout' as cause
+insert into occurredFailureStream;
+
+from queryTimeStream[not((service == slowestQueryTimeTable.service) in slowestQueryTimeTable)]
+select service, queryTime as slowestQueryTime
+insert into slowestQueryTimeTable;
+
+from queryTimeStream[(service == slowestQueryTimeTable.service and queryTime <= slowestQueryTimeTable.slowestQueryTime) in slowestQueryTimeTable]
+select service, queryTime as slowestQueryTime
+update slowestQueryTimeTable
+on service == slowestQueryTimeTable.service;
+
+from responseTimeStream[(service == slowestQueryTimeTable.service and responseTime >= slowestQueryTimeTable.slowestQueryTime) in slowestQueryTimeTable]
+select service, 'responseTimeAboveQueryTime' as cause
+insert into occurredFailureStream;

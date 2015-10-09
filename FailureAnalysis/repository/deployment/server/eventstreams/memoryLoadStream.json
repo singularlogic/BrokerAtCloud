@@ -1,0 +1,14 @@
+{
+  "name": "memoryLoadStream",
+  "version": "1.0.0",
+  "payloadData": [
+    {
+      "name": "service",
+      "type": "STRING"
+    },
+    {
+      "name": "memoryLoad",
+      "type": "INT"
+    }
+  ]
+}

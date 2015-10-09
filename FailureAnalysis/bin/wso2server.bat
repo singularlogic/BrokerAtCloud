@@ -1,19 +1,20 @@
 @echo off
 
-REM ---------------------------------------------------------------------------
-REM        Copyright 2005-2009 WSO2, Inc. http://www.wso2.org
+REM Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 REM
-REM  Licensed under the Apache License, Version 2.0 (the "License");
-REM  you may not use this file except in compliance with the License.
-REM  You may obtain a copy of the License at
+REM WSO2 Inc. licenses this file to you under the Apache License,
+REM Version 2.0 (the "License"); you may not use this file except
+REM in compliance with the License.
+REM You may obtain a copy of the License at
 REM
-REM      http://www.apache.org/licenses/LICENSE-2.0
+REM    http://www.apache.org/licenses/LICENSE-2.0
 REM
-REM  Unless required by applicable law or agreed to in writing, software
-REM  distributed under the License is distributed on an "AS IS" BASIS,
-REM  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-REM  See the License for the specific language governing permissions and
-REM  limitations under the License.
+REM Unless required by applicable law or agreed to in writing,
+REM software distributed under the License is distributed on an
+REM "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+REM KIND, either express or implied.  See the License for the
+REM specific language governing permissions and limitations
+REM under the License.
 
 rem ---------------------------------------------------------------------------
 rem Main Script for WSO2 Carbon
@@ -120,6 +121,9 @@ goto findJdk
 echo Please specify the debug port after the --debug option
 goto end
 
+rem ----- commandLifecycle -----------------------------------------------------
+:commandLifecycle
+goto findJdk
 
 :doneStart
 if "%OS%"=="Windows_NT" @setlocal
@@ -131,17 +135,17 @@ rem find the version of the jdk
 
 set CMD=RUN %*
 
-:checkJdk16
-"%JAVA_HOME%\bin\java" -version 2>&1 | findstr /r "1.[6|7]" >NUL
+:checkJdk17
+"%JAVA_HOME%\bin\java" -version 2>&1 | findstr /r "1.[7|8]" >NUL
 IF ERRORLEVEL 1 goto unknownJdk
-goto jdk16
+goto jdk17
 
 :unknownJdk
 echo Starting WSO2 Carbon (in unsupported JDK)
-echo [ERROR] CARBON is supported only on JDK 1.6 and 1.7
-goto jdk16
+echo [ERROR] CARBON is supported only on JDK 1.7 and 1.8
+goto jdk17
 
-:jdk16
+:jdk17
 goto runServer
 
 rem ----------------- Execute The Requested Command ----------------------------
@@ -149,13 +153,17 @@ rem ----------------- Execute The Requested Command ----------------------------
 :runServer
 cd %CARBON_HOME%
 
+rem ------------------ Remove tmp folder on startup -----------------------------
+set TMP_DIR=%CARBON_HOME%\tmp
+rmdir "%TMP_DIR%" /s /q
+
 rem ---------- Add jars to classpath ----------------
 
 set CARBON_CLASSPATH=.\lib;%CARBON_CLASSPATH%
 
 set JAVA_ENDORSED=".\lib\endorsed";"%JAVA_HOME%\jre\lib\endorsed";"%JAVA_HOME%\lib\endorsed"
 
-set CMD_LINE_ARGS=-Xbootclasspath/a:%CARBON_XBOOTCLASSPATH% -Xms256m -Xmx1024m -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath="%CARBON_HOME%\repository\logs\heap-dump.hprof"  -Dcom.sun.management.jmxremote -javaagent:%CARBON_HOME%\repository\components\plugins\jamm_0.2.5.wso2v2.jar -classpath %CARBON_CLASSPATH% %JAVA_OPTS% -Djava.endorsed.dirs=%JAVA_ENDORSED% -Dcarbon.registry.root=/ -Dcarbon.home="%CARBON_HOME%" -Dwso2.server.standalone=true -Djava.command="%JAVA_HOME%\bin\java" -Djava.opts="%JAVA_OPTS%" -Djava.io.tmpdir="%CARBON_HOME%\tmp" -Dcatalina.base="%CARBON_HOME%\lib\tomcat" -Dwso2.carbon.xml=%CARBON_HOME%\repository\conf\carbon.xml -Dwso2.registry.xml="%CARBON_HOME%\repository\conf\registry.xml" -Dwso2.user.mgt.xml="%CARBON_HOME%\repository\conf\user-mgt.xml" -Dwso2.transports.xml="%CARBON_HOME%\repository\conf\mgt-transports.xml" -Djava.util.logging.config.file="%CARBON_HOME%\repository\conf\etc\logging-bridge.properties" -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Dcarbon.config.dir.path="%CARBON_HOME%\repository\conf" -Dcarbon.logs.path="%CARBON_HOME%\repository\logs" -Dcomponents.repo="%CARBON_HOME%\repository\components" -Dconf.location="%CARBON_HOME%\repository\conf" -Dcom.atomikos.icatch.file="%CARBON_HOME%\lib\transactions.properties" -Dcom.atomikos.icatch.hide_init_file_path="true" -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dcom.sun.jndi.ldap.connect.pool.authentication=simple -Dcom.sun.jndi.ldap.connect.pool.timeout=3000 -Dorg.terracotta.quartz.skipUpdateCheck=true -Dcarbon.classpath=%CARBON_CLASSPATH% -Dfile.encoding=UTF8 -Ddisable.cassandra.server.startup=true
+set CMD_LINE_ARGS=-Xbootclasspath/a:%CARBON_XBOOTCLASSPATH% -Xms256m -Xmx1024m -XX:MaxPermSize=256m -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath="%CARBON_HOME%\repository\logs\heap-dump.hprof"  -Dcom.sun.management.jmxremote -classpath %CARBON_CLASSPATH% %JAVA_OPTS% -Djava.endorsed.dirs=%JAVA_ENDORSED% -Dcarbon.registry.root=/ -Dcarbon.home="%CARBON_HOME%" -Dwso2.server.standalone=true -Djava.command="%JAVA_HOME%\bin\java" -Djava.opts="%JAVA_OPTS%" -Djava.io.tmpdir="%CARBON_HOME%\tmp" -Dcatalina.base="%CARBON_HOME%\lib\tomcat" -Dwso2.carbon.xml=%CARBON_HOME%\repository\conf\carbon.xml -Dwso2.registry.xml="%CARBON_HOME%\repository\conf\registry.xml" -Dwso2.user.mgt.xml="%CARBON_HOME%\repository\conf\user-mgt.xml" -Dwso2.transports.xml="%CARBON_HOME%\repository\conf\mgt-transports.xml" -Djava.util.logging.config.file="%CARBON_HOME%\repository\conf\etc\logging-bridge.properties" -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Dcarbon.config.dir.path="%CARBON_HOME%\repository\conf"  -Dcomponents.repo="%CARBON_HOME%\repository\components" -Dconf.location="%CARBON_HOME%\repository\conf" -Dcom.atomikos.icatch.file="%CARBON_HOME%\lib\transactions.properties" -Dcom.atomikos.icatch.hide_init_file_path="true" -Dorg.apache.jasper.compiler.Parser.STRICT_QUOTE_ESCAPING=false -Dorg.apache.jasper.runtime.BodyContentImpl.LIMIT_BUFFER=true -Dcom.sun.jndi.ldap.connect.pool.authentication=simple -Dcom.sun.jndi.ldap.connect.pool.timeout=3000 -Dorg.terracotta.quartz.skipUpdateCheck=true -Dcarbon.classpath=%CARBON_CLASSPATH% -Dfile.encoding=UTF8 -Dtenant.idle.time=153722867280912
 
 :runJava
 echo JAVA_HOME environment variable is set to %JAVA_HOME%

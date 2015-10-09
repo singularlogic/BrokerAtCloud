@@ -25,82 +25,57 @@ import java.util.Map;
 import diva.brokeratcloud.fpr.input.abstracts.ServiceCategory;
 
 public class ServiceCategoryLocal extends ServiceCategory {
-	
+
 	public List<String> prefixes = Arrays.asList("Small", "Medium", "Large");
-	
+
 	public static ServiceCategoryLocal INSTANCE = new ServiceCategoryLocal();
-	
+
 	public Map<String, List<String>> fakeRepo = new HashMap<String, List<String>>();
-	
-	public ServiceCategoryLocal(){
+
+	public ServiceCategoryLocal() {
 		initFake();
 	}
-	
-//	private void initFake(){
-//		fakeRepo.put("Map", 
-//				Arrays.asList("GoogleMap", "BingMap", "AppleMap")
-//			);
-//		fakeRepo.put("PubTrans", 
-//				Arrays.asList("Metro")
-//			);
-//		fakeRepo.put("RoutePlan", 
-//				Arrays.asList("FakeRouter", "ToyRouter")
-//			);
-//	}
-	
-	private void initFake(){
-		fakeRepo.put("DatabaseOfferingServiceModel", 
-				Arrays.asList(
-						"SmallMonolithicDBServiceLevelProfile", 
-						"MediumMonolithicDBServiceLevelProfile", 
-						"LargeMonolithicDBServiceLevelProfile",
-						"SmallClusteredDBServiceLevelProfile",
-						"MediumClusteredDBServiceLevelProfile",
-						"LargeClusteredDBServiceLevelProfile",
-						"SmallElasticDBServiceLevelProfile",
-						"MediumElasticDBServiceLevelProfile",
-						"LargeElasticDBServiceLevelProfile"
-					)
-			);
-		fakeRepo.put("ApplicationServerOfferingServiceModel", 
-				Arrays.asList(
-						"SmallSingleInstanceASServiceLevelProfile", 
-						"MediumSingleInstanceASServiceLevelProfile", 
-						"LargeSingleInstanceASServiceLevelProfile",
-						"SmallClusteredASServiceLevelProfile",
-						"MediumClusteredASServiceLevelProfile",
-						"LargeClusteredASServiceLevelProfile",
-						"SmallElasticASServiceLevelProfile",
-						"MediumElasticASServiceLevelProfile",
-						"LargeElasticASServiceLevelProfile"
-					)
-			);
-		fakeRepo.put("NetworkCapacityOfferingServiceModel", 
-				Arrays.asList(
-						"SmallMeteredServiceLevelProfile", 
-						"MediumMeteredServiceLevelProfile", 
-						"LargeMeteredServiceLevelProfile",
-						"SmallUnmeteredServiceLevelProfile",
-						"MediumUnmeteredServiceLevelProfile",
-						"LargeUnmeteredServiceLevelProfile"
-					)
-			);
-		fakeRepo.put("OrbiOfferingServiceModel", 
-				Arrays.asList(
-						"GoldenOrbiServiceLevelProfile", 
-						"SilverOrbiServiceLevelProfile",
-						"BronzeOrbiServiceLevelProfile",
-						"FreeOrbiServiceLevelProfile")
-			);
+
+	// private void initFake(){
+	// fakeRepo.put("Map",
+	// Arrays.asList("GoogleMap", "BingMap", "AppleMap")
+	// );
+	// fakeRepo.put("PubTrans",
+	// Arrays.asList("Metro")
+	// );
+	// fakeRepo.put("RoutePlan",
+	// Arrays.asList("FakeRouter", "ToyRouter")
+	// );
+	// }
+
+	private void initFake() {
+		fakeRepo.put("DatabaseOfferingServiceModel",
+				Arrays.asList("SmallMonolithicDBServiceLevelProfile", "MediumMonolithicDBServiceLevelProfile",
+						"LargeMonolithicDBServiceLevelProfile", "SmallClusteredDBServiceLevelProfile",
+						"MediumClusteredDBServiceLevelProfile", "LargeClusteredDBServiceLevelProfile",
+						"SmallElasticDBServiceLevelProfile", "MediumElasticDBServiceLevelProfile",
+						"LargeElasticDBServiceLevelProfile"));
+		fakeRepo.put("ApplicationServerOfferingServiceModel",
+				Arrays.asList("SmallSingleInstanceASServiceLevelProfile", "MediumSingleInstanceASServiceLevelProfile",
+						"LargeSingleInstanceASServiceLevelProfile", "SmallClusteredASServiceLevelProfile",
+						"MediumClusteredASServiceLevelProfile", "LargeClusteredASServiceLevelProfile",
+						"SmallElasticASServiceLevelProfile", "MediumElasticASServiceLevelProfile",
+						"LargeElasticASServiceLevelProfile"));
+		fakeRepo.put("NetworkCapacityOfferingServiceModel",
+				Arrays.asList("SmallMeteredServiceLevelProfile", "MediumMeteredServiceLevelProfile",
+						"LargeMeteredServiceLevelProfile", "SmallUnmeteredServiceLevelProfile",
+						"MediumUnmeteredServiceLevelProfile", "LargeUnmeteredServiceLevelProfile"));
+		fakeRepo.put("OrbiOfferingServiceModel", Arrays.asList("GoldenOrbiServiceLevelProfile",
+				"SilverOrbiServiceLevelProfile", "BronzeOrbiServiceLevelProfile", "FreeOrbiServiceLevelProfile"));
 	}
-	
+
 	@Override
-	public List<String> getCategories(){
+	public List<String> getCategories() {
 		return new ArrayList<String>(fakeRepo.keySet());
 	}
-	
+
 	@Override
-	public List<String> getServices(String category){
+	public List<String> getServices(String category) {
 		return fakeRepo.get(category);
 	}
 
@@ -109,17 +84,15 @@ public class ServiceCategoryLocal extends ServiceCategory {
 		// TODO Auto-generated method stub
 		List<String> results = new ArrayList<String>();
 		String rest = null;
-		for(String s : prefixes)
-			if(service.startsWith(s))
+		for (String s : prefixes)
+			if (service.startsWith(s))
 				rest = service.substring(s.length());
-		if(rest == null)
+		if (rest == null)
 			return null;
-		for(String s : prefixes)
+		for (String s : prefixes)
 			results.add(s + rest);
 		return results;
-			
+
 	}
-	
-	
 
 }

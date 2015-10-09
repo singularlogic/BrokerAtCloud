@@ -15,7 +15,6 @@
  */
 package diva.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -36,22 +35,16 @@ import diva.DivaPackage;
 
 /**
  * This is the item provider adapter for a {@link diva.BooleanVariable} object.
- * <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> <!-- end-user-doc -->
+ * 
  * @generated
  */
-public class BooleanVariableItemProvider
-	extends VariableItemProvider
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource {
+public class BooleanVariableItemProvider extends VariableItemProvider implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 	/**
-	 * This constructs an instance from a factory and a notifier.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This constructs an instance from a factory and a notifier. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BooleanVariableItemProvider(AdapterFactory adapterFactory) {
@@ -59,9 +52,9 @@ public class BooleanVariableItemProvider
 	}
 
 	/**
-	 * This returns the property descriptors for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the property descriptors for the adapted class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -75,31 +68,25 @@ public class BooleanVariableItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Query feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Query feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addQueryPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_CEPable_query_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_CEPable_query_feature", "_UI_CEPable_type"),
-				 DivaPackage.Literals.CE_PABLE__QUERY,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_CEPable_query_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_CEPable_query_feature",
+								"_UI_CEPable_type"),
+						DivaPackage.Literals.CE_PABLE__QUERY, true, false, false,
+						ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
 	}
 
 	/**
-	 * This returns BooleanVariable.gif.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns BooleanVariable.gif. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -108,24 +95,24 @@ public class BooleanVariableItemProvider
 	}
 
 	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the label text for the adapted class. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((BooleanVariable)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_BooleanVariable_type") :
-			getString("_UI_BooleanVariable_type") + " " + label;
+		String label = ((BooleanVariable) object).getName();
+		return label == null || label.length() == 0 ? getString("_UI_BooleanVariable_type")
+				: getString("_UI_BooleanVariable_type") + " " + label;
 	}
 
 	/**
-	 * This handles model notifications by calling {@link #updateChildren} to update any cached
-	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This handles model notifications by calling {@link #updateChildren} to
+	 * update any cached children and by creating a viewer notification, which
+	 * it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -133,18 +120,18 @@ public class BooleanVariableItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(BooleanVariable.class)) {
-			case DivaPackage.BOOLEAN_VARIABLE__QUERY:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
+		case DivaPackage.BOOLEAN_VARIABLE__QUERY:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+			return;
 		}
 		super.notifyChanged(notification);
 	}
 
 	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-	 * that can be created under this object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s
+	 * describing the children that can be created under this object. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventPublisher name="avgQueryTimePublisher" statistics="enable"
+  trace="enable" xmlns="http://wso2.org/carbon/eventpublisher">
+  <from streamName="avgQueryTimeStream" version="1.0.0"/>
+  <mapping customMapping="enable" type="json">
+    <inline>{"Offering": {{service}}, "AvgQueryTime": {{avgQueryTime}}}</inline>
+  </mapping>
+  <to eventAdapterType="jms">
+    <property name="transport.jms.DestinationType">topic</property>
+    <property name="transport.jms.Destination">AvgQueryTime</property>
+    <property name="transport.jms.ConcurrentPublishers">allow</property>
+    <property name="java.naming.factory.initial">org.wso2.andes.jndi.PropertiesFileInitialContextFactory</property>
+    <property name="java.naming.provider.url">repository/conf/jndi.properties</property>
+    <property name="transport.jms.ConnectionFactoryJNDIName">TopicConnectionFactory</property>
+  </to>
+</eventPublisher>

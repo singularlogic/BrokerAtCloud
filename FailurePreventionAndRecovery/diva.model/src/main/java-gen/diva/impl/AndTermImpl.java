@@ -25,9 +25,8 @@ import diva.Term;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>And Term</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>And Term</b></em>'. <!-- end-user-doc -->
  * <p>
  * </p>
  *
@@ -35,8 +34,8 @@ import diva.visitors.Visitor;
  */
 public class AndTermImpl extends NaryTermImpl implements AndTerm {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected AndTermImpl() {
@@ -44,8 +43,8 @@ public class AndTermImpl extends NaryTermImpl implements AndTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -54,21 +53,21 @@ public class AndTermImpl extends NaryTermImpl implements AndTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
 		return visitor.visitAndTerm(this, context);
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
 	public void toAlloy(StringBuilder builder) {
 		builder.append("(");
 		int i = 0;
-		for(Term t : getTerm()) {
+		for (Term t : getTerm()) {
 			if (i > 0)
 				builder.append(" and ");
 			t.toAlloy(builder);
@@ -82,10 +81,10 @@ public class AndTermImpl extends NaryTermImpl implements AndTerm {
 	 */
 	public boolean eval(Context ctx, Configuration cfg) {
 		boolean result = true;
-		for(Term t : getTerm()){
+		for (Term t : getTerm()) {
 			result &= t.eval(ctx, cfg);
 		}
 		return result;
 	}
 
-} //AndTermImpl
+} // AndTermImpl

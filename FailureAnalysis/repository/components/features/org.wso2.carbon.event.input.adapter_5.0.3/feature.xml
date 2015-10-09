@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.event.input.adapter" label="WSO2 Carbon - Event Publisher Input Adapter Feature" provider-name="%providerName" version="5.0.3">
+  <description>This feature bundles all the input adapters.</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <includes id="org.wso2.carbon.event.input.adapter.server" optional="false" version="5.0.3"/>
+  <includes id="org.wso2.carbon.event.input.adapter.http.server" optional="false" version="5.0.3"/>
+  <includes id="org.wso2.carbon.event.input.adapter.soap.server" optional="false" version="5.0.3"/>
+  <includes id="org.wso2.carbon.event.input.adapter.websocket.server" optional="false" version="5.0.3"/>
+  <includes id="org.wso2.carbon.event.input.adapter.websocket.local.server" optional="false" version="5.0.3"/>
+  <includes id="org.wso2.carbon.event.input.adapter.filetail.server" optional="false" version="5.0.3"/>
+  <includes id="org.wso2.carbon.event.input.adapter.email.server" optional="false" version="5.0.3"/>
+  <includes id="org.wso2.carbon.event.input.adapter.jms.server" optional="false" version="5.0.3"/>
+  <includes id="org.wso2.carbon.event.input.adapter.mqtt.server" optional="false" version="5.0.3"/>
+  <includes id="org.wso2.carbon.event.input.adapter.kafka.server" optional="false" version="5.0.3"/>
+  <includes id="org.wso2.carbon.event.input.adapter.wso2event.server" optional="false" version="5.0.3"/>
+</feature>

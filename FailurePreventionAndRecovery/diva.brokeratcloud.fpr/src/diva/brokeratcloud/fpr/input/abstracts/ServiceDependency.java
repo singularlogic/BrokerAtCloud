@@ -8,7 +8,7 @@ import diva.brokeratcloud.fpr.input.local.ServiceDependencyLocal;
 import diva.brokeratcloud.fpr.input.sparql.ServiceDependencySparql;
 
 public abstract class ServiceDependency {
-	
+
 	public static ServiceDependency INSTANCE = new ServiceDependencySparql();
 
 	public ServiceDependency() {
@@ -16,12 +16,12 @@ public abstract class ServiceDependency {
 	}
 
 	public abstract List<String> getDependency(String srv);
-	
-	public boolean isAlternative(String srv){
+
+	public boolean isAlternative(String srv) {
 		return false;
 	}
-	
-	public List<String> getRequirement(String srv){
+
+	public List<String> getRequirement(String srv) {
 		return Collections.EMPTY_LIST;
 	}
 

@@ -28,16 +28,16 @@ import org.eclipse.ui.IWorkbenchPart;
 public class RunCleanModel implements IObjectActionDelegate, Runnable {
 
 	protected StructuredSelection currentSelection;
-    protected IFile file;
-	
+	protected IFile file;
+
 	public RunCleanModel() {
 		super();
 	}
-	
+
 	public void run() {
-		
+
 		String file_uri = file.getLocation().toOSString();
-		
+
 		diva.reasoning.Reasoner.clean(file_uri);
 	}
 
@@ -58,18 +58,17 @@ public class RunCleanModel implements IObjectActionDelegate, Runnable {
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
-		
-		if (selection instanceof StructuredSelection)
-		{
-			currentSelection = (StructuredSelection)selection;
+
+		if (selection instanceof StructuredSelection) {
+			currentSelection = (StructuredSelection) selection;
 			Iterator it = currentSelection.iterator();
 
-			while(it.hasNext()) {
-				file = (IFile)it.next();
+			while (it.hasNext()) {
+				file = (IFile) it.next();
 			}
 
 		}
-		
+
 	}
 
 }

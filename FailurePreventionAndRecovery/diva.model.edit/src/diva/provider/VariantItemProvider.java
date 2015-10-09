@@ -15,7 +15,6 @@
  */
 package diva.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -37,23 +36,17 @@ import diva.DivaPackage;
 import diva.Variant;
 
 /**
- * This is the item provider adapter for a {@link diva.Variant} object.
- * <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * This is the item provider adapter for a {@link diva.Variant} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
+ * 
  * @generated
  */
-public class VariantItemProvider
-	extends NamedElementItemProvider
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource {
+public class VariantItemProvider extends NamedElementItemProvider implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 	/**
-	 * This constructs an instance from a factory and a notifier.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This constructs an instance from a factory and a notifier. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VariantItemProvider(AdapterFactory adapterFactory) {
@@ -61,9 +54,9 @@ public class VariantItemProvider
 	}
 
 	/**
-	 * This returns the property descriptors for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the property descriptors for the adapted class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -76,11 +69,13 @@ public class VariantItemProvider
 	}
 
 	/**
-	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This specifies how to implement {@link #getChildren} and is used to
+	 * deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand},
+	 * {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in
+	 * {@link #createCommand}. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -96,22 +91,22 @@ public class VariantItemProvider
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	protected EStructuralFeature getChildFeature(Object object, Object child) {
-		// Check the type of the specified child object and return the proper feature to use for
+		// Check the type of the specified child object and return the proper
+		// feature to use for
 		// adding (see {@link AddCommand}) it as a child.
 
 		return super.getChildFeature(object, child);
 	}
 
 	/**
-	 * This returns Variant.gif.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns Variant.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -120,24 +115,24 @@ public class VariantItemProvider
 	}
 
 	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the label text for the adapted class. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Variant)object).getName();
-		return label == null || label.length() == 0 ?
-			getString("_UI_Variant_type") :
-			getString("_UI_Variant_type") + " " + label;
+		String label = ((Variant) object).getName();
+		return label == null || label.length() == 0 ? getString("_UI_Variant_type")
+				: getString("_UI_Variant_type") + " " + label;
 	}
 
 	/**
-	 * This handles model notifications by calling {@link #updateChildren} to update any cached
-	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This handles model notifications by calling {@link #updateChildren} to
+	 * update any cached children and by creating a viewer notification, which
+	 * it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -145,52 +140,45 @@ public class VariantItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(Variant.class)) {
-			case DivaPackage.VARIANT__PROPERTY_VALUE:
-			case DivaPackage.VARIANT__DEPENDENCY:
-			case DivaPackage.VARIANT__AVAILABLE:
-			case DivaPackage.VARIANT__REQUIRED:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case DivaPackage.VARIANT__PROPERTY_VALUE:
+		case DivaPackage.VARIANT__DEPENDENCY:
+		case DivaPackage.VARIANT__AVAILABLE:
+		case DivaPackage.VARIANT__REQUIRED:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}
 
 	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-	 * that can be created under this object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s
+	 * describing the children that can be created under this object. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add
-			(createChildParameter
-				(DivaPackage.Literals.VARIANT__PROPERTY_VALUE,
-				 DivaFactory.eINSTANCE.createPropertyValue()));
+		newChildDescriptors.add(createChildParameter(DivaPackage.Literals.VARIANT__PROPERTY_VALUE,
+				DivaFactory.eINSTANCE.createPropertyValue()));
 
-		newChildDescriptors.add
-			(createChildParameter
-				(DivaPackage.Literals.VARIANT__DEPENDENCY,
-				 DivaFactory.eINSTANCE.createVariantExpression()));
+		newChildDescriptors.add(createChildParameter(DivaPackage.Literals.VARIANT__DEPENDENCY,
+				DivaFactory.eINSTANCE.createVariantExpression()));
 
-		newChildDescriptors.add
-			(createChildParameter
-				(DivaPackage.Literals.VARIANT__AVAILABLE,
-				 DivaFactory.eINSTANCE.createContextExpression()));
+		newChildDescriptors.add(createChildParameter(DivaPackage.Literals.VARIANT__AVAILABLE,
+				DivaFactory.eINSTANCE.createContextExpression()));
 
-		newChildDescriptors.add
-			(createChildParameter
-				(DivaPackage.Literals.VARIANT__REQUIRED,
-				 DivaFactory.eINSTANCE.createContextExpression()));
+		newChildDescriptors.add(createChildParameter(DivaPackage.Literals.VARIANT__REQUIRED,
+				DivaFactory.eINSTANCE.createContextExpression()));
 	}
 
 	/**
-	 * This returns the label text for {@link org.eclipse.emf.edit.command.CreateChildCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the label text for
+	 * {@link org.eclipse.emf.edit.command.CreateChildCommand}. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -198,14 +186,12 @@ public class VariantItemProvider
 		Object childFeature = feature;
 		Object childObject = child;
 
-		boolean qualify =
-			childFeature == DivaPackage.Literals.VARIANT__AVAILABLE ||
-			childFeature == DivaPackage.Literals.VARIANT__REQUIRED;
+		boolean qualify = childFeature == DivaPackage.Literals.VARIANT__AVAILABLE
+				|| childFeature == DivaPackage.Literals.VARIANT__REQUIRED;
 
 		if (qualify) {
-			return getString
-				("_UI_CreateChild_text2",
-				 new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
+			return getString("_UI_CreateChild_text2",
+					new Object[] { getTypeText(childObject), getFeatureText(childFeature), getTypeText(owner) });
 		}
 		return super.getCreateChildText(owner, feature, child, selection);
 	}

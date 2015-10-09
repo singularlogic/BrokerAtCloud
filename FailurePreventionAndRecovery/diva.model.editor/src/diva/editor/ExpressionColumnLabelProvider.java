@@ -42,7 +42,7 @@ public class ExpressionColumnLabelProvider extends ColumnLabelProvider implement
 	private org.eclipse.swt.graphics.Color redColor;
 	private org.eclipse.swt.graphics.Color greenColor;
 	private org.eclipse.swt.graphics.Color fNoEditColor;
-	
+
 	private TreeViewer viewer;
 	protected DiVATableEditor editor;
 
@@ -55,82 +55,78 @@ public class ExpressionColumnLabelProvider extends ColumnLabelProvider implement
 		this.editor = editor;
 		this.redColor = new org.eclipse.swt.graphics.Color(Display.getCurrent(), 255, 200, 200);
 		this.greenColor = new org.eclipse.swt.graphics.Color(Display.getCurrent(), 200, 255, 200);
-		this.fNoEditColor = new org.eclipse.swt.graphics.Color(Display.getCurrent(), 230, 230, 230);	
+		this.fNoEditColor = new org.eclipse.swt.graphics.Color(Display.getCurrent(), 230, 230, 230);
 	}
-	
+
 	Notifier eNotifier;
 
-	
 	public Notifier getTarget() {
 		return eNotifier;
 	}
 
-	
 	public boolean isAdapterForType(Object type) {
 		return false;
 	}
 
-	
 	public void notifyChanged(Notification notification) {
-		if (viewer.isBusy()) return;
-		if (notification.isTouch()) return;
+		if (viewer.isBusy())
+			return;
+		if (notification.isTouch())
+			return;
 		if (notification.getNotifier() instanceof Expression) {
-			Expression exp = (Expression)notification.getNotifier();
+			Expression exp = (Expression) notification.getNotifier();
 			if (notification.getFeature() == DivaPackage.eINSTANCE.getExpression_Text()) {
 				if (exp.getText() == null || exp.getText().trim() == "") {
 					if (exp.getTerm() != null) {
 						// remove the term
-						SetCommand cmd = new SetCommand(editor.getEditingDomain(), exp, DivaPackage.eINSTANCE.getExpression_Term(), null);
+						SetCommand cmd = new SetCommand(editor.getEditingDomain(), exp,
+								DivaPackage.eINSTANCE.getExpression_Term(), null);
 						editor.getEditingDomain().getCommandStack().execute(cmd);
 					}
-				}
-				else {
+				} else {
 					// Parse and update the expression term
 					try {
-						Term term = DivaExpressionParser.parse((VariabilityModel) getContainingModel(exp), exp.getText().trim());
-						SetCommand cmd = new SetCommand(editor.getEditingDomain(), exp, DivaPackage.eINSTANCE.getExpression_Term(), term);
+						Term term = DivaExpressionParser.parse((VariabilityModel) getContainingModel(exp),
+								exp.getText().trim());
+						SetCommand cmd = new SetCommand(editor.getEditingDomain(), exp,
+								DivaPackage.eINSTANCE.getExpression_Term(), term);
 						editor.getEditingDomain().getCommandStack().execute(cmd);
 					} catch (Throwable t) {
-						SetCommand cmd = new SetCommand(editor.getEditingDomain(), exp, DivaPackage.eINSTANCE.getExpression_Term(), null);
+						SetCommand cmd = new SetCommand(editor.getEditingDomain(), exp,
+								DivaPackage.eINSTANCE.getExpression_Term(), null);
 						editor.getEditingDomain().getCommandStack().execute(cmd);
 					}
 				}
-				viewer.update(((EObject)notification.getNotifier()).eContainer(), null);
-			}
-			else if (notification.getFeature() == DivaPackage.eINSTANCE.getExpression_Term()) {
-				
+				viewer.update(((EObject) notification.getNotifier()).eContainer(), null);
+			} else if (notification.getFeature() == DivaPackage.eINSTANCE.getExpression_Term()) {
+
 			}
 		}
 	}
-	
-	
+
 	public void setTarget(Notifier newTarget) {
 		eNotifier = newTarget;
 	}
-	
-	
+
 	public Color getToolTipBackgroundColor(Object element) {
 		Expression exp = getExpression(element);
 		if (exp != null) {
 			if (fixObject(element)) {
 				return greenColor;
-			}
-			else {
+			} else {
 				return redColor;
 			}
 		}
 		return super.getToolTipBackgroundColor(element);
 	}
-	
-	
+
 	public String getToolTipText(Object element) {
 		Expression exp = getExpression(element);
 		if (exp != null) {
 			EObject target = (EObject) element;
 			if (fixObject(element)) {
 				return null;
-			}
-			else {
+			} else {
 				try {
 					DivaExpressionParser.parse(getContainingModel(target), exp.getText().trim());
 					return null;
@@ -142,27 +138,27 @@ public class ExpressionColumnLabelProvider extends ColumnLabelProvider implement
 		return super.getToolTipText(element);
 	}
 
-	
 	protected VariabilityModel getContainingModel(EObject target) {
 		EObject current = target;
 		VariabilityModel result = null;
-		while (result == null && current != null)  {
-			if (current instanceof VariabilityModel) result = (VariabilityModel)current;
+		while (result == null && current != null) {
+			if (current instanceof VariabilityModel)
+				result = (VariabilityModel) current;
 			current = current.eContainer();
 		}
 		return result;
 	}
 
-	// return true if no errors and false otherwise. 
+	// return true if no errors and false otherwise.
 	// return false if there is no expression
 	protected boolean fixObject(Object element) {
 		Expression exp = getExpression(element);
-		
+
 		if (exp == null) {
 			// create an empty expression
 			if (element instanceof EObject) {
 				EObject target = (EObject) element;
-				if (((EClass)property.eContainer()).isInstance(target)) {
+				if (((EClass) property.eContainer()).isInstance(target)) {
 					Expression nexp = null;
 					if (property.getEType() == DivaPackage.eINSTANCE.getExpression())
 						nexp = DivaFactoryImpl.init().createExpression();
@@ -177,18 +173,19 @@ public class ExpressionColumnLabelProvider extends ColumnLabelProvider implement
 				}
 			}
 		}
-		
+
 		if (exp != null) {
 			EObject target = (EObject) element;
-			
-			if (!exp.eAdapters().contains(this)) exp.eAdapters().add(this);
-			
+
+			if (!exp.eAdapters().contains(this))
+				exp.eAdapters().add(this);
+
 			if (exp.getText() == null || exp.getText().trim().equals("")) {
 				if (exp.getTerm() == null) {
 					return true;
 				} else {
-					SetCommand cmd1 = new SetCommand(editor.getEditingDomain(), exp, DivaPackage.eINSTANCE.getExpression_Text(), DivaExpressionParser
-							.print(exp.getTerm()));
+					SetCommand cmd1 = new SetCommand(editor.getEditingDomain(), exp,
+							DivaPackage.eINSTANCE.getExpression_Text(), DivaExpressionParser.print(exp.getTerm()));
 					editor.getEditingDomain().getCommandStack().execute(cmd1);
 					return true;
 				}
@@ -198,14 +195,17 @@ public class ExpressionColumnLabelProvider extends ColumnLabelProvider implement
 					try {
 						term = DivaExpressionParser.parse(getContainingModel(target), exp.getText().trim());
 						CompoundCommand cc = new CompoundCommand();
-						SetCommand cmd1 = new SetCommand(editor.getEditingDomain(), exp, DivaPackage.eINSTANCE.getExpression_Text(), exp.getText().trim());
-						SetCommand cmd2 = new SetCommand(editor.getEditingDomain(), exp, DivaPackage.eINSTANCE.getExpression_Term(), term);
+						SetCommand cmd1 = new SetCommand(editor.getEditingDomain(), exp,
+								DivaPackage.eINSTANCE.getExpression_Text(), exp.getText().trim());
+						SetCommand cmd2 = new SetCommand(editor.getEditingDomain(), exp,
+								DivaPackage.eINSTANCE.getExpression_Term(), term);
 						cc.append(cmd1);
 						cc.append(cmd2);
 						editor.getEditingDomain().getCommandStack().execute(cc);
 						return true;
 					} catch (Throwable t) {
-						//System.out.println("Error parsing " + exp.getText().trim() + "\n" + t.getMessage());
+						// System.out.println("Error parsing " +
+						// exp.getText().trim() + "\n" + t.getMessage());
 						return false;
 					}
 				} else {
@@ -213,19 +213,18 @@ public class ExpressionColumnLabelProvider extends ColumnLabelProvider implement
 						DivaExpressionParser.parse(getContainingModel(target), exp.getText().trim());
 						return true;
 					} catch (Throwable t) {
-						//System.out.println("Error parsing " + exp.getText().trim() + "\n" + t.getMessage());
+						// System.out.println("Error parsing " +
+						// exp.getText().trim() + "\n" + t.getMessage());
 						return false;
 					}
 				}
 			}
-		}
-		else {
-			
+		} else {
+
 		}
 		return false;
 	}
 
-	
 	public String getText(Object element) {
 		String result = NOEDIT_STRING;
 		fixObject(element);
@@ -236,12 +235,10 @@ public class ExpressionColumnLabelProvider extends ColumnLabelProvider implement
 		return result;
 	}
 
-	
 	public org.eclipse.swt.graphics.Image getImage(Object element) {
 		return super.getImage(element);
 	}
 
-	
 	public void dispose() {
 		this.greenColor.dispose();
 		this.redColor.dispose();
@@ -249,26 +246,24 @@ public class ExpressionColumnLabelProvider extends ColumnLabelProvider implement
 		super.dispose();
 	}
 
-	
 	public org.eclipse.swt.graphics.Color getBackground(Object element) {
 		Expression exp = getExpression(element);
 		if (exp != null) {
 			if (fixObject(element)) {
 				return greenColor;
-			}
-			else {
+			} else {
 				return redColor;
 			}
 		}
 		return fNoEditColor;
-	
+
 	}
-	
+
 	protected Expression getExpression(Object element) {
 		Expression result = null;
 		if (element instanceof EObject) {
 			EObject target = (EObject) element;
-			if (((EClass)property.eContainer()).isInstance(target)) {
+			if (((EClass) property.eContainer()).isInstance(target)) {
 				result = (Expression) target.eGet(property);
 			}
 		}

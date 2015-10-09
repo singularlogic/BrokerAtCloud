@@ -1,0 +1,14 @@
+{
+  "name": "queryTimeStream",
+  "version": "1.0.0",
+  "payloadData": [
+    {
+      "name": "service",
+      "type": "STRING"
+    },
+    {
+      "name": "queryTime",
+      "type": "INT"
+    }
+  ]
+}

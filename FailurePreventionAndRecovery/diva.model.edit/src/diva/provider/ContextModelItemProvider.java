@@ -15,7 +15,6 @@
  */
 package diva.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -38,22 +37,16 @@ import diva.DivaPackage;
 
 /**
  * This is the item provider adapter for a {@link diva.ContextModel} object.
- * <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> <!-- end-user-doc -->
+ * 
  * @generated
  */
-public class ContextModelItemProvider
-	extends ItemProviderAdapter
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource {
+public class ContextModelItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 	/**
-	 * This constructs an instance from a factory and a notifier.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This constructs an instance from a factory and a notifier. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ContextModelItemProvider(AdapterFactory adapterFactory) {
@@ -61,9 +54,9 @@ public class ContextModelItemProvider
 	}
 
 	/**
-	 * This returns the property descriptors for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the property descriptors for the adapted class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -76,11 +69,13 @@ public class ContextModelItemProvider
 	}
 
 	/**
-	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
-	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
-	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This specifies how to implement {@link #getChildren} and is used to
+	 * deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand},
+	 * {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in
+	 * {@link #createCommand}. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -93,22 +88,23 @@ public class ContextModelItemProvider
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	protected EStructuralFeature getChildFeature(Object object, Object child) {
-		// Check the type of the specified child object and return the proper feature to use for
+		// Check the type of the specified child object and return the proper
+		// feature to use for
 		// adding (see {@link AddCommand}) it as a child.
 
 		return super.getChildFeature(object, child);
 	}
 
 	/**
-	 * This returns ContextModel.gif.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns ContextModel.gif. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -117,9 +113,9 @@ public class ContextModelItemProvider
 	}
 
 	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the label text for the adapted class. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -128,10 +124,11 @@ public class ContextModelItemProvider
 	}
 
 	/**
-	 * This handles model notifications by calling {@link #updateChildren} to update any cached
-	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This handles model notifications by calling {@link #updateChildren} to
+	 * update any cached children and by creating a viewer notification, which
+	 * it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -139,39 +136,35 @@ public class ContextModelItemProvider
 		updateChildren(notification);
 
 		switch (notification.getFeatureID(ContextModel.class)) {
-			case DivaPackage.CONTEXT_MODEL__VARIABLE:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
-				return;
+		case DivaPackage.CONTEXT_MODEL__VARIABLE:
+			fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
+			return;
 		}
 		super.notifyChanged(notification);
 	}
 
 	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-	 * that can be created under this object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s
+	 * describing the children that can be created under this object. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
 
-		newChildDescriptors.add
-			(createChildParameter
-				(DivaPackage.Literals.CONTEXT_MODEL__VARIABLE,
-				 DivaFactory.eINSTANCE.createBoolVariableValue()));
+		newChildDescriptors.add(createChildParameter(DivaPackage.Literals.CONTEXT_MODEL__VARIABLE,
+				DivaFactory.eINSTANCE.createBoolVariableValue()));
 
-		newChildDescriptors.add
-			(createChildParameter
-				(DivaPackage.Literals.CONTEXT_MODEL__VARIABLE,
-				 DivaFactory.eINSTANCE.createEnumVariableValue()));
+		newChildDescriptors.add(createChildParameter(DivaPackage.Literals.CONTEXT_MODEL__VARIABLE,
+				DivaFactory.eINSTANCE.createEnumVariableValue()));
 	}
 
 	/**
-	 * Return the resource locator for this item provider's resources.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Return the resource locator for this item provider's resources. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

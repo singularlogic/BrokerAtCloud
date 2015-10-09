@@ -22,9 +22,8 @@ import diva.VariantExpression;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Variant Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Variant Expression</b></em>'. <!-- end-user-doc -->
  * <p>
  * </p>
  *
@@ -32,8 +31,8 @@ import diva.visitors.Visitor;
  */
 public class VariantExpressionImpl extends ExpressionImpl implements VariantExpression {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected VariantExpressionImpl() {
@@ -41,8 +40,8 @@ public class VariantExpressionImpl extends ExpressionImpl implements VariantExpr
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -51,12 +50,12 @@ public class VariantExpressionImpl extends ExpressionImpl implements VariantExpr
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
 		return visitor.visitVariantExpression(this, context);
 	}
 
-} //VariantExpressionImpl
+} // VariantExpressionImpl

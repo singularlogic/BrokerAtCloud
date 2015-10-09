@@ -15,8 +15,6 @@
  */
 package diva.editor;
 
-
-
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
@@ -32,15 +30,15 @@ import editorparts.TableEditorPane;
 public abstract class DiVATableEditorPane extends TableEditorPane {
 
 	protected DiVATableEditor editor;
-	
+
 	public DiVATableEditorPane(DiVATableEditor editor, IWorkbenchPage page, IWorkbenchPart part) {
 		super(editor.getAdapterFactory(), page, part);
 		this.editor = editor;
 		createControl(editor.getViewerPaneContainer());
-		treeViewerWithColumns = (TreeViewer)getViewer();
+		treeViewerWithColumns = (TreeViewer) getViewer();
 		initializeTableTreeViewer();
 	}
-	
+
 	protected void createExpressionColumn(EReference property, Adapter adapter) {
 		// create the column to edit the guard
 		TreeViewerColumn viewerColumn;
@@ -53,7 +51,7 @@ public abstract class DiVATableEditorPane extends TableEditorPane {
 		column.setWidth(100);
 		viewerColumn.setLabelProvider(new ExpressionColumnLabelProvider(property, treeViewerWithColumns, editor));
 		viewerColumn.setEditingSupport(new ExpressionEditingSupport(treeViewerWithColumns, property, editor));
-		
+
 		// This is to enable tooltips on the cells:
 		ColumnViewerToolTipSupport.enableFor(treeViewerWithColumns);
 	}

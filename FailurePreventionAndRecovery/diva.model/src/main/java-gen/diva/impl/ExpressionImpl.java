@@ -29,14 +29,13 @@ import diva.Term;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Expression</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.ExpressionImpl#getTerm <em>Term</em>}</li>
- *   <li>{@link diva.impl.ExpressionImpl#getText <em>Text</em>}</li>
+ * <li>{@link diva.impl.ExpressionImpl#getTerm <em>Term</em>}</li>
+ * <li>{@link diva.impl.ExpressionImpl#getText <em>Text</em>}</li>
  * </ul>
  * </p>
  *
@@ -44,9 +43,9 @@ import diva.visitors.Visitor;
  */
 public class ExpressionImpl extends DiVAModelElementImpl implements Expression {
 	/**
-	 * The cached value of the '{@link #getTerm() <em>Term</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getTerm() <em>Term</em>}' containment
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getTerm()
 	 * @generated
 	 * @ordered
@@ -55,8 +54,8 @@ public class ExpressionImpl extends DiVAModelElementImpl implements Expression {
 
 	/**
 	 * The default value of the '{@link #getText() <em>Text</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getText()
 	 * @generated
 	 * @ordered
@@ -65,8 +64,8 @@ public class ExpressionImpl extends DiVAModelElementImpl implements Expression {
 
 	/**
 	 * The cached value of the '{@link #getText() <em>Text</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getText()
 	 * @generated
 	 * @ordered
@@ -74,8 +73,8 @@ public class ExpressionImpl extends DiVAModelElementImpl implements Expression {
 	protected String text = TEXT_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ExpressionImpl() {
@@ -83,8 +82,8 @@ public class ExpressionImpl extends DiVAModelElementImpl implements Expression {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -93,8 +92,8 @@ public class ExpressionImpl extends DiVAModelElementImpl implements Expression {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Term getTerm() {
@@ -102,42 +101,48 @@ public class ExpressionImpl extends DiVAModelElementImpl implements Expression {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetTerm(Term newTerm, NotificationChain msgs) {
 		Term oldTerm = term;
 		term = newTerm;
 		if (eNotificationRequired()) {
-			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DivaPackage.EXPRESSION__TERM, oldTerm, newTerm);
-			if (msgs == null) msgs = notification; else msgs.add(notification);
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DivaPackage.EXPRESSION__TERM,
+					oldTerm, newTerm);
+			if (msgs == null)
+				msgs = notification;
+			else
+				msgs.add(notification);
 		}
 		return msgs;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setTerm(Term newTerm) {
 		if (newTerm != term) {
 			NotificationChain msgs = null;
 			if (term != null)
-				msgs = ((InternalEObject)term).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DivaPackage.EXPRESSION__TERM, null, msgs);
+				msgs = ((InternalEObject) term).eInverseRemove(this,
+						EOPPOSITE_FEATURE_BASE - DivaPackage.EXPRESSION__TERM, null, msgs);
 			if (newTerm != null)
-				msgs = ((InternalEObject)newTerm).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DivaPackage.EXPRESSION__TERM, null, msgs);
+				msgs = ((InternalEObject) newTerm).eInverseAdd(this,
+						EOPPOSITE_FEATURE_BASE - DivaPackage.EXPRESSION__TERM, null, msgs);
 			msgs = basicSetTerm(newTerm, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.EXPRESSION__TERM, newTerm, newTerm));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getText() {
@@ -145,8 +150,8 @@ public class ExpressionImpl extends DiVAModelElementImpl implements Expression {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setText(String newText) {
@@ -157,8 +162,8 @@ public class ExpressionImpl extends DiVAModelElementImpl implements Expression {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -166,95 +171,96 @@ public class ExpressionImpl extends DiVAModelElementImpl implements Expression {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case DivaPackage.EXPRESSION__TERM:
-				return basicSetTerm(null, msgs);
+		case DivaPackage.EXPRESSION__TERM:
+			return basicSetTerm(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.EXPRESSION__TERM:
-				return getTerm();
-			case DivaPackage.EXPRESSION__TEXT:
-				return getText();
+		case DivaPackage.EXPRESSION__TERM:
+			return getTerm();
+		case DivaPackage.EXPRESSION__TEXT:
+			return getText();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.EXPRESSION__TERM:
-				setTerm((Term)newValue);
-				return;
-			case DivaPackage.EXPRESSION__TEXT:
-				setText((String)newValue);
-				return;
+		case DivaPackage.EXPRESSION__TERM:
+			setTerm((Term) newValue);
+			return;
+		case DivaPackage.EXPRESSION__TEXT:
+			setText((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.EXPRESSION__TERM:
-				setTerm((Term)null);
-				return;
-			case DivaPackage.EXPRESSION__TEXT:
-				setText(TEXT_EDEFAULT);
-				return;
+		case DivaPackage.EXPRESSION__TERM:
+			setTerm((Term) null);
+			return;
+		case DivaPackage.EXPRESSION__TEXT:
+			setText(TEXT_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.EXPRESSION__TERM:
-				return term != null;
-			case DivaPackage.EXPRESSION__TEXT:
-				return TEXT_EDEFAULT == null ? text != null : !TEXT_EDEFAULT.equals(text);
+		case DivaPackage.EXPRESSION__TERM:
+			return term != null;
+		case DivaPackage.EXPRESSION__TEXT:
+			return TEXT_EDEFAULT == null ? text != null : !TEXT_EDEFAULT.equals(text);
 		}
 		return super.eIsSet(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (text: ");
@@ -276,11 +282,11 @@ public class ExpressionImpl extends DiVAModelElementImpl implements Expression {
 	 * @generated NOT
 	 */
 	public boolean eval(Context ctx, Configuration cfg) {
-		if (getTerm() == null) 
+		if (getTerm() == null)
 			return true;
 		else
 			return getTerm().eval(ctx, cfg);
 
 	}
 
-} //ExpressionImpl
+} // ExpressionImpl

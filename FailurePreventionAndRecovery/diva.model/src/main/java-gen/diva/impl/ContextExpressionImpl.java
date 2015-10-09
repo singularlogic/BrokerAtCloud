@@ -22,9 +22,8 @@ import diva.DivaPackage;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Context Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Context Expression</b></em>'. <!-- end-user-doc -->
  * <p>
  * </p>
  *
@@ -32,8 +31,8 @@ import diva.visitors.Visitor;
  */
 public class ContextExpressionImpl extends ExpressionImpl implements ContextExpression {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ContextExpressionImpl() {
@@ -41,8 +40,8 @@ public class ContextExpressionImpl extends ExpressionImpl implements ContextExpr
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -51,12 +50,12 @@ public class ContextExpressionImpl extends ExpressionImpl implements ContextExpr
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
 		return visitor.visitContextExpression(this, context);
 	}
 
-} //ContextExpressionImpl
+} // ContextExpressionImpl

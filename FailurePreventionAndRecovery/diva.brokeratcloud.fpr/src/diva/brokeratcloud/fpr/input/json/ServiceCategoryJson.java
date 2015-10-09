@@ -27,122 +27,108 @@ import java.util.Set;
 import diva.brokeratcloud.fpr.input.abstracts.ServiceCategory;
 
 public class ServiceCategoryJson extends ServiceCategory {
-	
+
 	public List<String> prefixes = Arrays.asList("Small", "Medium", "Large");
-	
-	public List<String> profilePrefix = Arrays.asList(
-			"Monolithic", "Clustered", "Elastic", 
-			"SingleInstance", "Metered", "Unmetered" );
-	
+
+	public List<String> profilePrefix = Arrays.asList("Monolithic", "Clustered", "Elastic", "SingleInstance", "Metered",
+			"Unmetered");
+
 	public List<String> categories = new ArrayList<String>();
 	public Map<String, String> subCategories = new HashMap<String, String>();
-	
+
 	public static ServiceCategoryJson INSTANCE = new ServiceCategoryJson();
-	
+
 	public Map<String, List<String>> fakeRepo = new HashMap<String, List<String>>();
-	
-	public ServiceCategoryJson(){
+
+	public ServiceCategoryJson() {
 		init();
 	}
-	
-//	private void initFake(){
-//		fakeRepo.put("Map", 
-//				Arrays.asList("GoogleMap", "BingMap", "AppleMap")
-//			);
-//		fakeRepo.put("PubTrans", 
-//				Arrays.asList("Metro")
-//			);
-//		fakeRepo.put("RoutePlan", 
-//				Arrays.asList("FakeRouter", "ToyRouter")
-//			);
-//	}
-	
-	private void init(){
+
+	// private void initFake(){
+	// fakeRepo.put("Map",
+	// Arrays.asList("GoogleMap", "BingMap", "AppleMap")
+	// );
+	// fakeRepo.put("PubTrans",
+	// Arrays.asList("Metro")
+	// );
+	// fakeRepo.put("RoutePlan",
+	// Arrays.asList("FakeRouter", "ToyRouter")
+	// );
+	// }
+
+	private void init() {
 		this.categories = Arrays.asList("OrbiServiceModel", "DBServiceModel");
 		this.subCategories = new HashMap<String, String>();
 		this.subCategories.put("GoldenOrbi", "OrbiServiceModel");
 		this.subCategories.put("MonolithicDB", "DBServiceModel");
 	}
-	
-	private void original_init(){
-		try{
-			String query = "SELECT ?x\n"+
-					"WHERE\n" +
-					"{\n" +
-					"	?x rdfs:isDefinedBy <http://www.broker-cloud.eu/Singular-OrbiOffering/brokerpolicy> .\n" +
-					"	?x rdfs:subClassOf usdl-core:ServiceModel ." +
-					"}";
+
+	private void original_init() {
+		try {
+			String query = "SELECT ?x\n" + "WHERE\n" + "{\n"
+					+ "	?x rdfs:isDefinedBy <http://www.broker-cloud.eu/Singular-OrbiOffering/brokerpolicy> .\n"
+					+ "	?x rdfs:subClassOf usdl-core:ServiceModel ." + "}";
 
 			Collection mBindings = SparqlRoot.INSTANCE.queryToJsonResults(query);
-			for(Object x : mBindings){
+			for (Object x : mBindings) {
 				Map m = (Map) x;
-				Map service = (Map)m.get("x");
+				Map service = (Map) m.get("x");
 				String[] splitted = service.get("value").toString().split("#");
 				String catName = splitted[1];
-				categories.add(catName); 
+				categories.add(catName);
 			}
-			
-			query = "SELECT ?x ?y\n"+
-					"WHERE\n" +
-					"{\n" +
-					"	?x rdfs:isDefinedBy <http://www.broker-cloud.eu/Singular-OrbiOffering/brokerpolicy> .\n" +
-					"	?policy rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile .\n"+
-					"   ?policy rdfs:domain ?x .\n" +
-					"   ?policy rdfs:range ?y .\n" +
-				    "}"; 
+
+			query = "SELECT ?x ?y\n" + "WHERE\n" + "{\n"
+					+ "	?x rdfs:isDefinedBy <http://www.broker-cloud.eu/Singular-OrbiOffering/brokerpolicy> .\n"
+					+ "	?policy rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile .\n"
+					+ "   ?policy rdfs:domain ?x .\n" + "   ?policy rdfs:range ?y .\n" + "}";
 			mBindings = SparqlRoot.INSTANCE.queryToJsonResults(query);
-			for(Object x : mBindings){
+			for (Object x : mBindings) {
 				Map m = (Map) x;
-				Map catMap = (Map)m.get("x");
+				Map catMap = (Map) m.get("x");
 				String[] splitted = catMap.get("value").toString().split("#");
 				String catName = splitted[1];
-				Map slpMap = (Map)m.get("y");
+				Map slpMap = (Map) m.get("y");
 				String slpName = slpMap.get("value").toString().split("#")[1];
-				
-				
+
 				subCategories.put(slpName, catName);
 			}
 
-		
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
 
 	}
-	
+
 	@Override
-	public List<String> getCategories(){
+	public List<String> getCategories() {
 
 		return new ArrayList<String>(this.categories);
-		
-//		Set<String> cats = new HashSet<String>();		
-		
-//		for(Object i : JsonRoot.INSTANCE.offerings){
-//			Map<String, Object> m = (Map<String,Object>) i;
-//			String profile = m.get(JsonRoot.ServiceLevelProfile).toString();
-//			for(String s : this.profilePrefix){
-//				if(profile.startsWith(s)){
-//					profile = profile.substring(s.length());
-//					break;
-//				}
-//					
-//			}
-//			cats.add(profile);
-//		}
-//		return new ArrayList<String>(cats);
+
+		// Set<String> cats = new HashSet<String>();
+
+		// for(Object i : JsonRoot.INSTANCE.offerings){
+		// Map<String, Object> m = (Map<String,Object>) i;
+		// String profile = m.get(JsonRoot.ServiceLevelProfile).toString();
+		// for(String s : this.profilePrefix){
+		// if(profile.startsWith(s)){
+		// profile = profile.substring(s.length());
+		// break;
+		// }
+		//
+		// }
+		// cats.add(profile);
+		// }
+		// return new ArrayList<String>(cats);
 	}
-	
+
 	@Override
-	public List<String> getServices(String category){
+	public List<String> getServices(String category) {
 		Set<String> sers = new HashSet<String>();
-		
-		for(Object i : JsonRoot.INSTANCE.offerings){
-			Map<String, Object> m = (Map<String,Object>) i;
-			if(category.equals(subCategories.get(m.get(JsonRoot.ServiceLevelProfile).toString())))
+
+		for (Object i : JsonRoot.INSTANCE.offerings) {
+			Map<String, Object> m = (Map<String, Object>) i;
+			if (category.equals(subCategories.get(m.get(JsonRoot.ServiceLevelProfile).toString())))
 				sers.add(m.get(JsonRoot.OfferingName).toString());
 		}
 		return new ArrayList<String>(sers);
@@ -152,18 +138,16 @@ public class ServiceCategoryJson extends ServiceCategory {
 	public List<String> getGroup(String service) {
 		List<String> result = new ArrayList<String>();
 		Map<String, Object> offering = JsonRoot.INSTANCE.getOffering(service);
-		if(offering == null)
+		if (offering == null)
 			return result;
 		String policy = offering.get(JsonRoot.ServiceLevelProfile).toString();
-		for(Object i : JsonRoot.INSTANCE.offerings){
-			Map<String, Object> m = (Map<String,Object>) i;
-			if(policy.equals(m.get(JsonRoot.ServiceLevelProfile)))
+		for (Object i : JsonRoot.INSTANCE.offerings) {
+			Map<String, Object> m = (Map<String, Object>) i;
+			if (policy.equals(m.get(JsonRoot.ServiceLevelProfile)))
 				result.add(m.get(JsonRoot.OfferingName).toString());
 		}
 		return result;
-			
+
 	}
-	
-	
 
 }

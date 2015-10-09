@@ -62,35 +62,34 @@ import diva.VariantTerm;
 import diva.Verdict;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Factory</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	/**
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates the default factory implementation. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static DivaFactory init() {
 		try {
-			DivaFactory theDivaFactory = (DivaFactory)EPackage.Registry.INSTANCE.getEFactory(DivaPackage.eNS_URI);
+			DivaFactory theDivaFactory = (DivaFactory) EPackage.Registry.INSTANCE.getEFactory(DivaPackage.eNS_URI);
 			if (theDivaFactory != null) {
 				return theDivaFactory;
 			}
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
 		return new DivaFactoryImpl();
 	}
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the factory. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public DivaFactoryImpl() {
@@ -98,94 +97,129 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			case DivaPackage.VARIABILITY_MODEL: return createVariabilityModel();
-			case DivaPackage.INVARIANT: return createInvariant();
-			case DivaPackage.ENUM_VARIABLE: return createEnumVariable();
-			case DivaPackage.BOOLEAN_VARIABLE: return createBooleanVariable();
-			case DivaPackage.AND_TERM: return createAndTerm();
-			case DivaPackage.OR_TERM: return createOrTerm();
-			case DivaPackage.NOT_TERM: return createNotTerm();
-			case DivaPackage.VARIANT_TERM: return createVariantTerm();
-			case DivaPackage.ENUM_TERM: return createEnumTerm();
-			case DivaPackage.BOOLEAN_TERM: return createBooleanTerm();
-			case DivaPackage.ENUM_LITERAL: return createEnumLiteral();
-			case DivaPackage.VARIANT: return createVariant();
-			case DivaPackage.DIMENSION: return createDimension();
-			case DivaPackage.EXPRESSION: return createExpression();
-			case DivaPackage.CONTEXT_EXPRESSION: return createContextExpression();
-			case DivaPackage.VARIANT_EXPRESSION: return createVariantExpression();
-			case DivaPackage.PRIORITY_RULE: return createPriorityRule();
-			case DivaPackage.PROPERTY: return createProperty();
-			case DivaPackage.PROPERTY_LITERAL: return createPropertyLiteral();
-			case DivaPackage.PROPERTY_VALUE: return createPropertyValue();
-			case DivaPackage.PROPERTY_PRIORITY: return createPropertyPriority();
-			case DivaPackage.MULTIPLICITY_CONSTRAINT: return createMultiplicityConstraint();
-			case DivaPackage.ANNOTATION: return createAnnotation();
-			case DivaPackage.SIMULATION_MODEL: return createSimulationModel();
-			case DivaPackage.CONTEXT: return createContext();
-			case DivaPackage.CONFIGURATION: return createConfiguration();
-			case DivaPackage.CONFIG_VARIANT: return createConfigVariant();
-			case DivaPackage.SCENARIO: return createScenario();
-			case DivaPackage.SCORE: return createScore();
-			case DivaPackage.PRIORITY: return createPriority();
-			case DivaPackage.BOOL_VARIABLE_VALUE: return createBoolVariableValue();
-			case DivaPackage.ENUM_VARIABLE_VALUE: return createEnumVariableValue();
-			case DivaPackage.CONFIGURATION_MODEL: return createConfigurationModel();
-			case DivaPackage.SUITABLE_CONFIGURATION: return createSuitableConfiguration();
-			case DivaPackage.CONTEXT_MODEL: return createContextModel();
-			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		case DivaPackage.VARIABILITY_MODEL:
+			return createVariabilityModel();
+		case DivaPackage.INVARIANT:
+			return createInvariant();
+		case DivaPackage.ENUM_VARIABLE:
+			return createEnumVariable();
+		case DivaPackage.BOOLEAN_VARIABLE:
+			return createBooleanVariable();
+		case DivaPackage.AND_TERM:
+			return createAndTerm();
+		case DivaPackage.OR_TERM:
+			return createOrTerm();
+		case DivaPackage.NOT_TERM:
+			return createNotTerm();
+		case DivaPackage.VARIANT_TERM:
+			return createVariantTerm();
+		case DivaPackage.ENUM_TERM:
+			return createEnumTerm();
+		case DivaPackage.BOOLEAN_TERM:
+			return createBooleanTerm();
+		case DivaPackage.ENUM_LITERAL:
+			return createEnumLiteral();
+		case DivaPackage.VARIANT:
+			return createVariant();
+		case DivaPackage.DIMENSION:
+			return createDimension();
+		case DivaPackage.EXPRESSION:
+			return createExpression();
+		case DivaPackage.CONTEXT_EXPRESSION:
+			return createContextExpression();
+		case DivaPackage.VARIANT_EXPRESSION:
+			return createVariantExpression();
+		case DivaPackage.PRIORITY_RULE:
+			return createPriorityRule();
+		case DivaPackage.PROPERTY:
+			return createProperty();
+		case DivaPackage.PROPERTY_LITERAL:
+			return createPropertyLiteral();
+		case DivaPackage.PROPERTY_VALUE:
+			return createPropertyValue();
+		case DivaPackage.PROPERTY_PRIORITY:
+			return createPropertyPriority();
+		case DivaPackage.MULTIPLICITY_CONSTRAINT:
+			return createMultiplicityConstraint();
+		case DivaPackage.ANNOTATION:
+			return createAnnotation();
+		case DivaPackage.SIMULATION_MODEL:
+			return createSimulationModel();
+		case DivaPackage.CONTEXT:
+			return createContext();
+		case DivaPackage.CONFIGURATION:
+			return createConfiguration();
+		case DivaPackage.CONFIG_VARIANT:
+			return createConfigVariant();
+		case DivaPackage.SCENARIO:
+			return createScenario();
+		case DivaPackage.SCORE:
+			return createScore();
+		case DivaPackage.PRIORITY:
+			return createPriority();
+		case DivaPackage.BOOL_VARIABLE_VALUE:
+			return createBoolVariableValue();
+		case DivaPackage.ENUM_VARIABLE_VALUE:
+			return createEnumVariableValue();
+		case DivaPackage.CONFIGURATION_MODEL:
+			return createConfigurationModel();
+		case DivaPackage.SUITABLE_CONFIGURATION:
+			return createSuitableConfiguration();
+		case DivaPackage.CONTEXT_MODEL:
+			return createContextModel();
+		default:
+			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object createFromString(EDataType eDataType, String initialValue) {
 		switch (eDataType.getClassifierID()) {
-			case DivaPackage.VERDICT:
-				return createVerdictFromString(eDataType, initialValue);
-			case DivaPackage.STRING:
-				return createStringFromString(eDataType, initialValue);
-			case DivaPackage.INTEGER:
-				return createIntegerFromString(eDataType, initialValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		case DivaPackage.VERDICT:
+			return createVerdictFromString(eDataType, initialValue);
+		case DivaPackage.STRING:
+			return createStringFromString(eDataType, initialValue);
+		case DivaPackage.INTEGER:
+			return createIntegerFromString(eDataType, initialValue);
+		default:
+			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String convertToString(EDataType eDataType, Object instanceValue) {
 		switch (eDataType.getClassifierID()) {
-			case DivaPackage.VERDICT:
-				return convertVerdictToString(eDataType, instanceValue);
-			case DivaPackage.STRING:
-				return convertStringToString(eDataType, instanceValue);
-			case DivaPackage.INTEGER:
-				return convertIntegerToString(eDataType, instanceValue);
-			default:
-				throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
+		case DivaPackage.VERDICT:
+			return convertVerdictToString(eDataType, instanceValue);
+		case DivaPackage.STRING:
+			return convertStringToString(eDataType, instanceValue);
+		case DivaPackage.INTEGER:
+			return convertIntegerToString(eDataType, instanceValue);
+		default:
+			throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
 		}
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VariabilityModel createVariabilityModel() {
@@ -194,8 +228,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Invariant createInvariant() {
@@ -204,8 +238,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EnumVariable createEnumVariable() {
@@ -214,8 +248,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BooleanVariable createBooleanVariable() {
@@ -224,8 +258,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public AndTerm createAndTerm() {
@@ -234,8 +268,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public OrTerm createOrTerm() {
@@ -244,8 +278,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotTerm createNotTerm() {
@@ -254,8 +288,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VariantTerm createVariantTerm() {
@@ -264,8 +298,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EnumTerm createEnumTerm() {
@@ -274,8 +308,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BooleanTerm createBooleanTerm() {
@@ -284,8 +318,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EnumLiteral createEnumLiteral() {
@@ -294,8 +328,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Variant createVariant() {
@@ -304,8 +338,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Dimension createDimension() {
@@ -314,8 +348,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Expression createExpression() {
@@ -324,8 +358,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ContextExpression createContextExpression() {
@@ -334,8 +368,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VariantExpression createVariantExpression() {
@@ -344,8 +378,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public PriorityRule createPriorityRule() {
@@ -354,8 +388,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Property createProperty() {
@@ -364,8 +398,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public PropertyLiteral createPropertyLiteral() {
@@ -374,8 +408,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public PropertyValue createPropertyValue() {
@@ -384,8 +418,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public PropertyPriority createPropertyPriority() {
@@ -394,8 +428,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public MultiplicityConstraint createMultiplicityConstraint() {
@@ -404,8 +438,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Annotation createAnnotation() {
@@ -414,8 +448,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public SimulationModel createSimulationModel() {
@@ -424,8 +458,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Context createContext() {
@@ -434,8 +468,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Configuration createConfiguration() {
@@ -444,8 +478,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ConfigVariant createConfigVariant() {
@@ -454,8 +488,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Scenario createScenario() {
@@ -464,8 +498,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Score createScore() {
@@ -474,8 +508,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Priority createPriority() {
@@ -484,8 +518,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public BoolVariableValue createBoolVariableValue() {
@@ -494,8 +528,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EnumVariableValue createEnumVariableValue() {
@@ -504,8 +538,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ConfigurationModel createConfigurationModel() {
@@ -514,8 +548,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public SuitableConfiguration createSuitableConfiguration() {
@@ -524,8 +558,8 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ContextModel createContextModel() {
@@ -534,19 +568,21 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Verdict createVerdictFromString(EDataType eDataType, String initialValue) {
 		Verdict result = Verdict.get(initialValue);
-		if (result == null) throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
+		if (result == null)
+			throw new IllegalArgumentException(
+					"The value '" + initialValue + "' is not a valid enumerator of '" + eDataType.getName() + "'");
 		return result;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertVerdictToString(EDataType eDataType, Object instanceValue) {
@@ -554,17 +590,17 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String createStringFromString(EDataType eDataType, String initialValue) {
-		return (String)super.createFromString(eDataType, initialValue);
+		return (String) super.createFromString(eDataType, initialValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertStringToString(EDataType eDataType, Object instanceValue) {
@@ -572,17 +608,17 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Integer createIntegerFromString(EDataType eDataType, String initialValue) {
-		return (Integer)super.createFromString(eDataType, initialValue);
+		return (Integer) super.createFromString(eDataType, initialValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String convertIntegerToString(EDataType eDataType, Object instanceValue) {
@@ -590,17 +626,17 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public DivaPackage getDivaPackage() {
-		return (DivaPackage)getEPackage();
+		return (DivaPackage) getEPackage();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @deprecated
 	 * @generated
 	 */
@@ -609,4 +645,4 @@ public class DivaFactoryImpl extends EFactoryImpl implements DivaFactory {
 		return DivaPackage.eINSTANCE;
 	}
 
-} //DivaFactoryImpl
+} // DivaFactoryImpl

@@ -15,7 +15,6 @@
  */
 package diva.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -34,22 +33,16 @@ import diva.DivaPackage;
 
 /**
  * This is the item provider adapter for a {@link diva.ConfigVariant} object.
- * <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> <!-- end-user-doc -->
+ * 
  * @generated
  */
-public class ConfigVariantItemProvider
-	extends ScoredElementItemProvider
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource {
+public class ConfigVariantItemProvider extends ScoredElementItemProvider implements IEditingDomainItemProvider,
+		IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 	/**
-	 * This constructs an instance from a factory and a notifier.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This constructs an instance from a factory and a notifier. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public ConfigVariantItemProvider(AdapterFactory adapterFactory) {
@@ -57,9 +50,9 @@ public class ConfigVariantItemProvider
 	}
 
 	/**
-	 * This returns the property descriptors for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the property descriptors for the adapted class. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -73,31 +66,24 @@ public class ConfigVariantItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Variant feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds a property descriptor for the Variant feature. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void addVariantPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_ConfigVariant_variant_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ConfigVariant_variant_feature", "_UI_ConfigVariant_type"),
-				 DivaPackage.Literals.CONFIG_VARIANT__VARIANT,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
+		itemPropertyDescriptors
+				.add(createItemPropertyDescriptor(((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+						getResourceLocator(), getString("_UI_ConfigVariant_variant_feature"),
+						getString("_UI_PropertyDescriptor_description", "_UI_ConfigVariant_variant_feature",
+								"_UI_ConfigVariant_type"),
+						DivaPackage.Literals.CONFIG_VARIANT__VARIANT, true, false, true, null, null, null));
 	}
 
 	/**
-	 * This returns ConfigVariant.gif.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns ConfigVariant.gif. <!-- begin-user-doc --> <!-- end-user-doc
+	 * -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -106,22 +92,23 @@ public class ConfigVariantItemProvider
 	}
 
 	/**
-	 * This returns the label text for the adapted class.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This returns the label text for the adapted class. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String getText(Object object) {
-		ConfigVariant configVariant = (ConfigVariant)object;
+		ConfigVariant configVariant = (ConfigVariant) object;
 		return getString("_UI_ConfigVariant_type") + " " + configVariant.getTotalScore();
 	}
 
 	/**
-	 * This handles model notifications by calling {@link #updateChildren} to update any cached
-	 * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This handles model notifications by calling {@link #updateChildren} to
+	 * update any cached children and by creating a viewer notification, which
+	 * it passes to {@link #fireNotifyChanged}. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -131,10 +118,10 @@ public class ConfigVariantItemProvider
 	}
 
 	/**
-	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-	 * that can be created under this object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s
+	 * describing the children that can be created under this object. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override

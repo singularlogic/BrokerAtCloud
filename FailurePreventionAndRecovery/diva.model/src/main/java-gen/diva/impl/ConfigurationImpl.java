@@ -41,14 +41,13 @@ import diva.Verdict;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Configuration</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Configuration</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.ConfigurationImpl#getVariant <em>Variant</em>}</li>
- *   <li>{@link diva.impl.ConfigurationImpl#getVerdict <em>Verdict</em>}</li>
+ * <li>{@link diva.impl.ConfigurationImpl#getVariant <em>Variant</em>}</li>
+ * <li>{@link diva.impl.ConfigurationImpl#getVerdict <em>Verdict</em>}</li>
  * </ul>
  * </p>
  *
@@ -56,9 +55,9 @@ import diva.visitors.Visitor;
  */
 public class ConfigurationImpl extends ScoredElementImpl implements Configuration {
 	/**
-	 * The cached value of the '{@link #getVariant() <em>Variant</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getVariant() <em>Variant</em>}'
+	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getVariant()
 	 * @generated
 	 * @ordered
@@ -66,18 +65,18 @@ public class ConfigurationImpl extends ScoredElementImpl implements Configuratio
 	protected EList<ConfigVariant> variant;
 
 	/**
-	 * The default value of the '{@link #getVerdict() <em>Verdict</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getVerdict() <em>Verdict</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getVerdict()
 	 * @generated
 	 * @ordered
 	 */
 	protected static final Verdict VERDICT_EDEFAULT = Verdict.NONE;
 	/**
-	 * The cached value of the '{@link #getVerdict() <em>Verdict</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getVerdict() <em>Verdict</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getVerdict()
 	 * @generated
 	 * @ordered
@@ -85,8 +84,8 @@ public class ConfigurationImpl extends ScoredElementImpl implements Configuratio
 	protected Verdict verdict = VERDICT_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ConfigurationImpl() {
@@ -94,8 +93,8 @@ public class ConfigurationImpl extends ScoredElementImpl implements Configuratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -104,20 +103,21 @@ public class ConfigurationImpl extends ScoredElementImpl implements Configuratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<ConfigVariant> getVariant() {
 		if (variant == null) {
-			variant = new EObjectContainmentEList<ConfigVariant>(ConfigVariant.class, this, DivaPackage.CONFIGURATION__VARIANT);
+			variant = new EObjectContainmentEList<ConfigVariant>(ConfigVariant.class, this,
+					DivaPackage.CONFIGURATION__VARIANT);
 		}
 		return variant;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Verdict getVerdict() {
@@ -125,20 +125,21 @@ public class ConfigurationImpl extends ScoredElementImpl implements Configuratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setVerdict(Verdict newVerdict) {
 		Verdict oldVerdict = verdict;
 		verdict = newVerdict == null ? VERDICT_EDEFAULT : newVerdict;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.CONFIGURATION__VERDICT, oldVerdict, verdict));
+			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.CONFIGURATION__VERDICT, oldVerdict,
+					verdict));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -146,97 +147,98 @@ public class ConfigurationImpl extends ScoredElementImpl implements Configuratio
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case DivaPackage.CONFIGURATION__VARIANT:
-				return ((InternalEList<?>)getVariant()).basicRemove(otherEnd, msgs);
+		case DivaPackage.CONFIGURATION__VARIANT:
+			return ((InternalEList<?>) getVariant()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.CONFIGURATION__VARIANT:
-				return getVariant();
-			case DivaPackage.CONFIGURATION__VERDICT:
-				return getVerdict();
+		case DivaPackage.CONFIGURATION__VARIANT:
+			return getVariant();
+		case DivaPackage.CONFIGURATION__VERDICT:
+			return getVerdict();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.CONFIGURATION__VARIANT:
-				getVariant().clear();
-				getVariant().addAll((Collection<? extends ConfigVariant>)newValue);
-				return;
-			case DivaPackage.CONFIGURATION__VERDICT:
-				setVerdict((Verdict)newValue);
-				return;
+		case DivaPackage.CONFIGURATION__VARIANT:
+			getVariant().clear();
+			getVariant().addAll((Collection<? extends ConfigVariant>) newValue);
+			return;
+		case DivaPackage.CONFIGURATION__VERDICT:
+			setVerdict((Verdict) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.CONFIGURATION__VARIANT:
-				getVariant().clear();
-				return;
-			case DivaPackage.CONFIGURATION__VERDICT:
-				setVerdict(VERDICT_EDEFAULT);
-				return;
+		case DivaPackage.CONFIGURATION__VARIANT:
+			getVariant().clear();
+			return;
+		case DivaPackage.CONFIGURATION__VERDICT:
+			setVerdict(VERDICT_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.CONFIGURATION__VARIANT:
-				return variant != null && !variant.isEmpty();
-			case DivaPackage.CONFIGURATION__VERDICT:
-				return verdict != VERDICT_EDEFAULT;
+		case DivaPackage.CONFIGURATION__VARIANT:
+			return variant != null && !variant.isEmpty();
+		case DivaPackage.CONFIGURATION__VERDICT:
+			return verdict != VERDICT_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (verdict: ");
@@ -244,7 +246,7 @@ public class ConfigurationImpl extends ScoredElementImpl implements Configuratio
 		result.append(')');
 		return result.toString();
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -261,18 +263,20 @@ public class ConfigurationImpl extends ScoredElementImpl implements Configuratio
 		final int k = 2;
 		int totalScore = 0;
 		getScore().clear();
-		for(ConfigVariant variant : getVariant()){
+		for (ConfigVariant variant : getVariant()) {
 			variant.getScore().clear();
 		}
-		for(Priority priority : ctx.getPriority()) {
+		for (Priority priority : ctx.getPriority()) {
 			Score cfgScore = DivaFactory.eINSTANCE.createScore();
 			cfgScore.setProperty(priority.getProperty());
 			cfgScore.setScore(0);
-			for(ConfigVariant variant : getVariant()){
+			for (ConfigVariant variant : getVariant()) {
 				Score varScore = DivaFactory.eINSTANCE.createScore();
 				varScore.setProperty(priority.getProperty());
-				varScore.setScore(new Double(Math.pow(priority.getPriority(), k) * variant.getContribution(priority.getProperty())).intValue());
-				if(priority.getProperty().getDirection() == 0) {
+				varScore.setScore(new Double(
+						Math.pow(priority.getPriority(), k) * variant.getContribution(priority.getProperty()))
+								.intValue());
+				if (priority.getProperty().getDirection() == 0) {
 					varScore.setScore(-varScore.getScore());
 				}
 				variant.getScore().add(varScore);
@@ -282,7 +286,7 @@ public class ConfigurationImpl extends ScoredElementImpl implements Configuratio
 			totalScore += cfgScore.getScore();
 		}
 		setTotalScore(totalScore);
-		for(ConfigVariant variant : getVariant()){
+		for (ConfigVariant variant : getVariant()) {
 			variant.computeTotalScore();
 		}
 	}
@@ -304,9 +308,9 @@ public class ConfigurationImpl extends ScoredElementImpl implements Configuratio
 	 */
 	public String id(VariabilityModel m) {
 		String result = "CFG";
-		for(Dimension d : m.getDimension()) {
-			for(Variant v : d.getVariant()) {
-				for(ConfigVariant cv : getVariant()) {
+		for (Dimension d : m.getDimension()) {
+			for (Variant v : d.getVariant()) {
+				for (ConfigVariant cv : getVariant()) {
 					if (cv.getVariant().equals(v)) {
 						result += "_" + v.getId();
 						break;
@@ -317,4 +321,4 @@ public class ConfigurationImpl extends ScoredElementImpl implements Configuratio
 		return result;
 	}
 
-} //ConfigurationImpl
+} // ConfigurationImpl

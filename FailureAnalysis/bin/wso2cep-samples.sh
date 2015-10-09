@@ -1,18 +1,22 @@
 #!/bin/sh
 
-#  Copyright 2001,2004-2006 The Apache Software Foundation
 #
-#  Licensed under the Apache License, Version 2.0 (the "License");
-#  you may not use this file except in compliance with the License.
-#  You may obtain a copy of the License at
+# Copyright (c) 2005-2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
-#      http://www.apache.org/licenses/LICENSE-2.0
+# WSO2 Inc. licenses this file to you under the Apache License,
+# Version 2.0 (the "License"); you may not use this file except
+# in compliance with the License.
+# You may obtain a copy of the License at
 #
-#  Unless required by applicable law or agreed to in writing, software
-#  distributed under the License is distributed on an "AS IS" BASIS,
-#  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#  See the License for the specific language governing permissions and
-#  limitations under the License.
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#
 
 # ----------------------------------------------------------------------------
 # Script for runnig the WSO2 CEP Server samples
@@ -61,9 +65,31 @@ do
     if [ -z $NODIGITS ]; then
       SAMPLE=""
       CARBON_HOME=`cd "$PRGDIR/.." ; pwd`
-      CMD="$CMD -Daxis2.repo=$CARBON_HOME/samples/artifacts/$c"
-      `[ -f $CARBON_HOME/samples/artifacts/$c/stream-definitions.xml ] && cp $CARBON_HOME/samples/artifacts/$c/stream-definitions.xml $CARBON_HOME/repository/conf/data-bridge`
-    else
+      CMD="$CMD -Daxis2.repo="$CARBON_HOME"/samples/artifacts/$c"
+      if [ ! -d "$CARBON_HOME"/samples/artifacts/$c/webapps ]; then 
+        `mkdir -p "$CARBON_HOME"/samples/artifacts/$c/webapps`
+        `[ -f "$CARBON_HOME"/repository/deployment/server/webapps/inputwebsocket.war ] && cp "$CARBON_HOME"/repository/deployment/server/webapps/inputwebsocket.war "$CARBON_HOME"/samples/artifacts/$c/webapps/`
+        `[ -f "$CARBON_HOME"/repository/deployment/server/webapps/outputwebsocket.war ] && cp "$CARBON_HOME"/repository/deployment/server/webapps/outputwebsocket.war "$CARBON_HOME"/samples/artifacts/$c/webapps/`
+        `[ -f "$CARBON_HOME"/repository/deployment/server/webapps/outputui.war ] && cp "$CARBON_HOME"/repository/deployment/server/webapps/outputui.war "$CARBON_HOME"/samples/artifacts/$c/webapps/`
+        `[ -f "$CARBON_HOME"/repository/deployment/server/webapps/shindig.war ] && cp "$CARBON_HOME"/repository/deployment/server/webapps/shindig.war "$CARBON_HOME"/samples/artifacts/$c/webapps/`
+        `[ -d "$CARBON_HOME"/repository/deployment/server/webapps/STRATOS_ROOT ] && cp -r "$CARBON_HOME"/repository/deployment/server/webapps/STRATOS_ROOT "$CARBON_HOME"/samples/artifacts/$c/webapps/`
+      else
+        `[ ! -f "$CARBON_HOME"/samples/artifacts/$c/webapps/inputwebsocket.war ] && cp "$CARBON_HOME"/repository/deployment/server/webapps/inputwebsocket.war "$CARBON_HOME"/samples/artifacts/$c/webapps/`
+        `[ ! -f "$CARBON_HOME"/samples/artifacts/$c/webapps/outputwebsocket.war ] && cp "$CARBON_HOME"/repository/deployment/server/webapps/outputwebsocket.war "$CARBON_HOME"/samples/artifacts/$c/webapps/`
+        `[ ! -f "$CARBON_HOME"/samples/artifacts/$c/webapps/outputui.war ] && cp "$CARBON_HOME"/repository/deployment/server/webapps/outputui.war "$CARBON_HOME"/samples/artifacts/$c/webapps/`
+        `[ ! -f "$CARBON_HOME"/samples/artifacts/$c/webapps/shindig.war ] && cp "$CARBON_HOME"/repository/deployment/server/webapps/shindig.war "$CARBON_HOME"/samples/artifacts/$c/webapps/`
+        `[ ! -d "$CARBON_HOME"/samples/artifacts/$c/webapps/STRATOS_ROOT ] && cp -r "$CARBON_HOME"/repository/deployment/server/webapps/STRATOS_ROOT "$CARBON_HOME"/samples/artifacts/$c/webapps/`
+      fi
+      if [ ! -d "$CARBON_HOME"/samples/artifacts/$c/jaggeryapps ]; then
+        `mkdir -p "$CARBON_HOME"/samples/artifacts/$c/jaggeryapps`
+        `cp -r "$CARBON_HOME"/repository/deployment/server/jaggeryapps/portal "$CARBON_HOME"/samples/artifacts/$c/jaggeryapps/`
+        `rm -r "$CARBON_HOME"/samples/artifacts/$c/jaggeryapps/portal/store/*`
+        `cp -r "$CARBON_HOME"/repository/deployment/server/jaggeryapps/portal/store/carbon.super "$CARBON_HOME"/samples/artifacts/$c/jaggeryapps/portal/store/`
+        `rm -r "$CARBON_HOME"/samples/artifacts/$c/jaggeryapps/portal/store/carbon.super/gadget/*`
+        `cp -r "$CARBON_HOME"/repository/deployment/server/jaggeryapps/portal/store/wso2.com "$CARBON_HOME"/samples/artifacts/$c/jaggeryapps/portal/store/`
+        `rm -r "$CARBON_HOME"/samples/artifacts/$c/jaggeryapps/portal/store/wso2.com/gadget/*`
+      fi
+   else
       echo "*** Specified sample number is not a number *** Please specify a valid sample number with the -sn option"
       echo "Example, to run sample 1: wso2cep-samples.sh -sn 1"
       exit

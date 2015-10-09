@@ -31,13 +31,13 @@ import diva.SuitableConfiguration;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Configuration Model</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Configuration Model</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.ConfigurationModelImpl#getConfigurations <em>Configurations</em>}</li>
+ * <li>{@link diva.impl.ConfigurationModelImpl#getConfigurations
+ * <em>Configurations</em>}</li>
  * </ul>
  * </p>
  *
@@ -45,9 +45,10 @@ import diva.visitors.Visitor;
  */
 public class ConfigurationModelImpl extends EObjectImpl implements ConfigurationModel {
 	/**
-	 * The cached value of the '{@link #getConfigurations() <em>Configurations</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getConfigurations()
+	 * <em>Configurations</em>}' containment reference list. <!-- begin-user-doc
+	 * --> <!-- end-user-doc -->
+	 * 
 	 * @see #getConfigurations()
 	 * @generated
 	 * @ordered
@@ -55,8 +56,8 @@ public class ConfigurationModelImpl extends EObjectImpl implements Configuration
 	protected EList<SuitableConfiguration> configurations;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ConfigurationModelImpl() {
@@ -64,8 +65,8 @@ public class ConfigurationModelImpl extends EObjectImpl implements Configuration
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -74,20 +75,21 @@ public class ConfigurationModelImpl extends EObjectImpl implements Configuration
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<SuitableConfiguration> getConfigurations() {
 		if (configurations == null) {
-			configurations = new EObjectContainmentEList<SuitableConfiguration>(SuitableConfiguration.class, this, DivaPackage.CONFIGURATION_MODEL__CONFIGURATIONS);
+			configurations = new EObjectContainmentEList<SuitableConfiguration>(SuitableConfiguration.class, this,
+					DivaPackage.CONFIGURATION_MODEL__CONFIGURATIONS);
 		}
 		return configurations;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -95,77 +97,77 @@ public class ConfigurationModelImpl extends EObjectImpl implements Configuration
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case DivaPackage.CONFIGURATION_MODEL__CONFIGURATIONS:
-				return ((InternalEList<?>)getConfigurations()).basicRemove(otherEnd, msgs);
+		case DivaPackage.CONFIGURATION_MODEL__CONFIGURATIONS:
+			return ((InternalEList<?>) getConfigurations()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.CONFIGURATION_MODEL__CONFIGURATIONS:
-				return getConfigurations();
+		case DivaPackage.CONFIGURATION_MODEL__CONFIGURATIONS:
+			return getConfigurations();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.CONFIGURATION_MODEL__CONFIGURATIONS:
-				getConfigurations().clear();
-				getConfigurations().addAll((Collection<? extends SuitableConfiguration>)newValue);
-				return;
+		case DivaPackage.CONFIGURATION_MODEL__CONFIGURATIONS:
+			getConfigurations().clear();
+			getConfigurations().addAll((Collection<? extends SuitableConfiguration>) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.CONFIGURATION_MODEL__CONFIGURATIONS:
-				getConfigurations().clear();
-				return;
+		case DivaPackage.CONFIGURATION_MODEL__CONFIGURATIONS:
+			getConfigurations().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.CONFIGURATION_MODEL__CONFIGURATIONS:
-				return configurations != null && !configurations.isEmpty();
+		case DivaPackage.CONFIGURATION_MODEL__CONFIGURATIONS:
+			return configurations != null && !configurations.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //ConfigurationModelImpl
+} // ConfigurationModelImpl

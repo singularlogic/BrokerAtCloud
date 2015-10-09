@@ -1,37 +1,34 @@
 <!--
-  ~  Licensed to the Apache Software Foundation (ASF) under one
-  ~  or more contributor license agreements.  See the NOTICE file
-  ~  distributed with this work for additional information
-  ~  regarding copyright ownership.  The ASF licenses this file
-  ~  to you under the Apache License, Version 2.0 (the
-  ~  "License"); you may not use this file except in compliance
-  ~  with the License.  You may obtain a copy of the License at
+  ~ Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
-  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
-  ~  Unless required by applicable law or agreed to in writing,
-  ~  software distributed under the License is distributed on an
-  ~   * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~  KIND, either express or implied.  See the License for the
-  ~  specific language governing permissions and limitations
-  ~  under the License.
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
   -->
 
 <project default="build-service">
 
     <property name="cep.home" value="../../.."/>
     <property name="src.dir" value="src/main/java"/>
-    <property name="resources.dir" value="src/main/resources"/>
     <property name="webapp.dir" value="src/main/webapp"/>
     <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
 
-    <property name="sampleNo" value=""/>
+    <property name="sn" value=""/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
         <fileset dir="${cep.home}/repository/components/plugins/">
-            <include name="javax.servlet_*.jar"/>
+            <include name="tomcat-servlet-api_*.jar"/>
+            <include name="org.wso2.carbon.logging_*.jar"/>
         </fileset>
     </path>
 
@@ -50,37 +47,32 @@
 
     <target name="-folder.check">
         <condition property="main.folder">
-            <equals arg1="${sampleNo}" arg2=""/>
+            <equals arg1="${sn}" arg2=""/>
         </condition>
         <condition property="sample.folder">
             <not>
-                <equals arg1="${sampleNo}" arg2=""/>
+                <equals arg1="${sn}" arg2=""/>
             </not>
         </condition>
     </target>
 
     <target name="-assign.sample" if="sample.folder">
-        <echo>Sample No : ${sampleNo}</echo>
-        <property name="services.dir" value="${cep.home}/samples/artifacts/${sampleNo}/webapps"/>
+        <echo>Sample No : ${sn}</echo>
+        <property name="services.dir" value="${cep.home}/samples/artifacts/${sn}/webapps"/>
         <echo>Services Dir : ${services.dir}</echo>
     </target>
 
     <target name="-assign.main" if="main.folder">
-        <echo>Sample No : ${sampleNo}</echo>
+        <echo>Sample No : ${sn}</echo>
         <property name="services.dir" value="${cep.home}/repository/deployment/server/webapps"/>
         <echo>Services Dir : ${services.dir}</echo>
     </target>
 
     <target name="compile" depends="init">
-        <javac debug="on" srcdir="${src.dir}" destdir="${class.dir}">
+        <javac debug="on" srcdir="${src.dir}" destdir="${class.dir}" compiler="modern">
             <include name="*/**"/>
             <classpath refid="javac.classpath"/>
         </javac>
-        <copy todir="${class.dir}" overwrite="true">
-            <fileset dir="${resources.dir}">
-                <include name="*.properties"/>
-            </fileset>
-        </copy>
     </target>
 
     <target name="build-service" depends="compile">

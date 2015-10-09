@@ -1,7 +1,7 @@
-Installing  WSO2 Complex Event Processor (CEP) 3.1.0
+Installing  WSO2 Complex Event Processor (CEP) 4.0.0
 ===================================================================
 
-(1) WSO2 Complex Event Processor 3.1.0 can run in standalone mode.
+(1) WSO2 Complex Event Processor 4.0.0 can run in standalone mode.
 
 
 Standalone Mode
@@ -41,22 +41,22 @@ Standalone Mode
                 -DserverRoles=<roles>		A comma separated list of roles. Used in deploying cApps
                 -Dcarbon.use.registry.repo	Use registry based repository.
                 -DdisableHttpLog		    Disable HTTP access logging
-                -DapplyPatches			    Use this system property when there are patches to be applied/reverted to/from the system.
-                                            Drop the patches to $CARBON_HOME/repository/componenets/patches directory and restart the system with this property.
-                                            When you want to revert a patch, delete it from the patches directory and restart the system with this property
                 -DworkerNode=true			Set this system property when starting as a worker node.
 					                        This is required in clustered setups with master and worker nodes.
 
 
 System Requirements
 =======================
-1. JDK - 1.6.x (1.6.0_24 onwards recommended for production)
-2. Minimum memory - 2 GB
-3. Processor      - Intel Dual-Core 1GHz or equivalent at minimum
-4. The Management Console requires full Javascript enabling of the Web browser
+1. Minimum memory - 2GB
+2. Java 1.7 or higher
+3. The Management Console does not support MS IE.
+4. To compile and run the sample clients, an Ant version is required. Ant 1.7.0
+   version is recommended
+5. To build WSO2 CEP from the Source distribution, it is necessary that you have
+   JDK 1.7 version or later and Maven 3.0.4 or later
 
 For more details see
-http://docs.wso2.org/display/CEP310/Installation+Prerequisites
+http://docs.wso2.com/display/CEP400/Installation+Prerequisites
 
 (2) Running Samples
 -------------------
@@ -66,4 +66,4 @@ CEP server can also start with the sample mode (Note : dashboard will not work i
     Example, to run sample 0001: ./wso2cep-samples.sh -sn 0001
 
 CEP samples are available at CARBON_HOME/samples directory.
-The instructions to run sample are given at http://docs.wso2.org/display/CEP310/Samples.
+The instructions to run sample are given at https://docs.wso2.com/display/CEP400/Samples+Guide .

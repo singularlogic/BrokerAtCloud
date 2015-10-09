@@ -1,0 +1,14 @@
+{
+  "name": "occurredFailureStream",
+  "version": "1.0.0",
+  "payloadData": [
+    {
+      "name": "service",
+      "type": "STRING"
+    },
+    {
+      "name": "cause",
+      "type": "STRING"
+    }
+  ]
+}

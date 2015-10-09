@@ -24,13 +24,12 @@ import diva.PropertyLiteral;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Property Literal</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Property Literal</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.PropertyLiteralImpl#getValue <em>Value</em>}</li>
+ * <li>{@link diva.impl.PropertyLiteralImpl#getValue <em>Value</em>}</li>
  * </ul>
  * </p>
  *
@@ -39,8 +38,8 @@ import diva.visitors.Visitor;
 public class PropertyLiteralImpl extends NamedElementImpl implements PropertyLiteral {
 	/**
 	 * The default value of the '{@link #getValue() <em>Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getValue()
 	 * @generated
 	 * @ordered
@@ -49,8 +48,8 @@ public class PropertyLiteralImpl extends NamedElementImpl implements PropertyLit
 
 	/**
 	 * The cached value of the '{@link #getValue() <em>Value</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getValue()
 	 * @generated
 	 * @ordered
@@ -58,8 +57,8 @@ public class PropertyLiteralImpl extends NamedElementImpl implements PropertyLit
 	protected int value = VALUE_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected PropertyLiteralImpl() {
@@ -67,8 +66,8 @@ public class PropertyLiteralImpl extends NamedElementImpl implements PropertyLit
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -77,8 +76,8 @@ public class PropertyLiteralImpl extends NamedElementImpl implements PropertyLit
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public int getValue() {
@@ -86,20 +85,21 @@ public class PropertyLiteralImpl extends NamedElementImpl implements PropertyLit
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setValue(int newValue) {
 		int oldValue = value;
 		value = newValue;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.PROPERTY_LITERAL__VALUE, oldValue, value));
+			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.PROPERTY_LITERAL__VALUE, oldValue,
+					value));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -107,72 +107,73 @@ public class PropertyLiteralImpl extends NamedElementImpl implements PropertyLit
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.PROPERTY_LITERAL__VALUE:
-				return getValue();
+		case DivaPackage.PROPERTY_LITERAL__VALUE:
+			return getValue();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.PROPERTY_LITERAL__VALUE:
-				setValue((Integer)newValue);
-				return;
+		case DivaPackage.PROPERTY_LITERAL__VALUE:
+			setValue((Integer) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.PROPERTY_LITERAL__VALUE:
-				setValue(VALUE_EDEFAULT);
-				return;
+		case DivaPackage.PROPERTY_LITERAL__VALUE:
+			setValue(VALUE_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.PROPERTY_LITERAL__VALUE:
-				return value != VALUE_EDEFAULT;
+		case DivaPackage.PROPERTY_LITERAL__VALUE:
+			return value != VALUE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (value: ");
@@ -181,4 +182,4 @@ public class PropertyLiteralImpl extends NamedElementImpl implements PropertyLit
 		return result.toString();
 	}
 
-} //PropertyLiteralImpl
+} // PropertyLiteralImpl
