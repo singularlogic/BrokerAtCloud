@@ -138,8 +138,6 @@ class PubsubEventManager extends EventManager {
 		if (topics.size()==0) {
 			System.err.println("PubsubEventManager: No topics found in Pubsub properties file: "+pubsubFile);
 		}
-		
-		//for (String t : topics.keySet()) System.out.println("TOPIC "+t+" : "+java.util.Arrays.deepToString(topics.get(t))+"\n");
 	}
 	
 	protected String[] prepareTopicUrl(String val, String defaultVerb, Properties context, String scope) {

@@ -23,7 +23,7 @@ import eu.brokeratcloud.opt.policy.*;
 import eu.brokeratcloud.opt.RecommendationManager;
 import eu.brokeratcloud.persistence.RdfPersistenceManager;
 import eu.brokeratcloud.persistence.RdfPersistenceManagerFactory;
-import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW;
+import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementService;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -143,7 +143,7 @@ public class ProfileManagementService extends AbstractManagementService {
 		if (prefs==null) return;
 		for (int i=0; i<prefs.length; i++) {
 			String pvUri = prefs[i].getPrefVariable();
-			ServiceCategoryAttributeManagementServiceNEW.PolicyObjects po = ServiceCategoryAttributeManagementServiceNEW.getBrokerPolicyObjects(pvUri, false);
+			ServiceCategoryAttributeManagementService.PolicyObjects po = ServiceCategoryAttributeManagementService.getBrokerPolicyObjects(pvUri, false);
 			logger.trace("retrieveCriteriaIndividuals: #{}: policy objects={}", i, po);
 			if (po==null) continue;
 			PreferenceVariable pv = po.pv;
@@ -155,7 +155,7 @@ public class ProfileManagementService extends AbstractManagementService {
 			if (aqpv.getAllowedValues()!=null) continue;	// It's ready!  How??
 			
 			// ...else, retrieve individual values and add them to 'aqpv'
-			List<QualitativePropertyValue> individuals = ServiceCategoryAttributeManagementServiceNEW.getIndividuals(pm, null, aqpv);
+			List<QualitativePropertyValue> individuals = ServiceCategoryAttributeManagementService.getIndividuals(pm, null, aqpv);
 			if (individuals.size()>0) {
 				aqpv.setAllowedValues( individuals.toArray(new QualitativePropertyValue[ individuals.size() ]) );
 			}

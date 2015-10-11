@@ -8,9 +8,10 @@ import eu.brokeratcloud.opt.ahp.AhpHelper;
 import eu.brokeratcloud.opt.engine.EventManager;
 import eu.brokeratcloud.opt.policy.*;
 import eu.brokeratcloud.rest.opt.ProfileManagementService;
-import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW;
+import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementService;
 import eu.brokeratcloud.util.*;
 
+import eu.brokeratcloud.persistence.DateParser;
 import eu.brokeratcloud.persistence.RdfPersistenceManager;
 import eu.brokeratcloud.persistence.RdfPersistenceManagerFactory;
 import eu.brokeratcloud.persistence.SparqlServiceClient;
@@ -38,6 +39,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.hp.hpl.jena.rdf.model.RDFNode;
+
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAttribute;
 
 public class RecommendationManager extends RootObject {
 	private static final Logger logger = LoggerFactory.getLogger("eu.brokeratcloud.opt.RecommendationManager");
@@ -114,6 +120,7 @@ public class RecommendationManager extends RootObject {
 		p.setProperty("relevanceThreshold", "0");
 		p.setProperty("periodOfIgnores", "0");
 		p.setProperty("ignoresThreshold", "0");
+		p.setProperty("fprcQueryWsUrlTemplate", "");
 		p.setProperty("periodSinceLastRecomOfFRPC", "0");
 		p.setProperty("relevanceThresholdForFRPC", "0");
 		return p;
@@ -190,7 +197,7 @@ public class RecommendationManager extends RootObject {
 			return hmap1.get(pref);
 		} else {
 			String pvUri = pref.getPrefVariable();
-			ServiceCategoryAttributeManagementServiceNEW.PolicyObjects po = ServiceCategoryAttributeManagementServiceNEW.getBrokerPolicyObjects(pvUri, false);
+			ServiceCategoryAttributeManagementService.PolicyObjects po = ServiceCategoryAttributeManagementService.getBrokerPolicyObjects(pvUri, false);
 			logger.trace("_getServiceAttributeId: policy objects={}", po);
 			if (po==null) return null;
 			PreferenceVariable pv = po.pv;
@@ -211,7 +218,7 @@ public class RecommendationManager extends RootObject {
 			return hmap2.get(pref);
 		} else {
 			String pvUri = pref.getPrefVariable();
-			ServiceCategoryAttributeManagementServiceNEW.PolicyObjects po = ServiceCategoryAttributeManagementServiceNEW.getBrokerPolicyObjects(pvUri, false);
+			ServiceCategoryAttributeManagementService.PolicyObjects po = ServiceCategoryAttributeManagementService.getBrokerPolicyObjects(pvUri, false);
 			logger.trace("_getPrefVariable: policy objects={}", po);
 			if (po==null) return null;
 			PreferenceVariable pv = po.pv;
@@ -227,7 +234,7 @@ public class RecommendationManager extends RootObject {
 			return hmap3.get(pref);
 		} else {
 			String pvUri = pref.getPrefVariable();
-			ServiceCategoryAttributeManagementServiceNEW.PolicyObjects po = ServiceCategoryAttributeManagementServiceNEW.getBrokerPolicyObjects(pvUri, false);
+			ServiceCategoryAttributeManagementService.PolicyObjects po = ServiceCategoryAttributeManagementService.getBrokerPolicyObjects(pvUri, false);
 			logger.trace("_getServiceAttributeUri: policy objects={}", po);
 			if (po==null) return null;
 			String uri = po.apvUri;
@@ -306,6 +313,7 @@ public class RecommendationManager extends RootObject {
 				logger.info("Thread pool size has been set using 'setThreadPoolSize': {}", nWorkers);
 			}
 			if (nWorkers<=0) nWorkers = 1;
+			logger.trace("Workers:-A-:  nWorkers={}", nWorkers);
 			_initThreadPool( nWorkers );
 			for (int i=0; i<profilesList.length; i++) {
 				ConsumerPreferenceProfile profile = profilesList[i];
@@ -319,6 +327,7 @@ public class RecommendationManager extends RootObject {
 				String ownerId = profile.getOwner();
 				logger.debug("Generating recommendation for profile: id={}, owner={}", profileId, ownerId);
 				try {
+					logger.trace("Workers:-B-:  NEW WORKER");
 					_startWorkerThread(ownerId, profileId, p, false, newRecoms);
 				} catch (Exception e) {
 					logger.error("requestRecommendations: Input: consumer={}, profile={}. Exception caught:\n{}", ownerId, profileId, e);
@@ -326,6 +335,7 @@ public class RecommendationManager extends RootObject {
 				}
 			}
 			_waitWorkerThreadsToComplete(profilesList.length);
+			logger.trace("Workers:-C-:  WORKERS DONE");
 		}
 		return newRecoms;
 		
@@ -335,6 +345,7 @@ public class RecommendationManager extends RootObject {
 	  }
 	}
 	
+	// Worker threads implementation - BEGIN
 	protected java.util.concurrent.ExecutorService executor;
 	
 	protected static long totalThreadDuration;
@@ -398,6 +409,7 @@ public class RecommendationManager extends RootObject {
 		
 		@Override
 		public void run() {
+			logger.trace("Workers:-D-: RecommendationManager.WorkerThread: START: thread="+Thread.currentThread().getName()+", consumer="+consumerId+", profile="+profileId+", ...");
 			RecommendationManager.logger.debug("RecommendationManager.WorkerThread: START: thread={}, consumer={}, profile={}, settings={}, force-create={}, new-recoms={}", Thread.currentThread().getName(), consumerId, profileId, settings, forceCreation, newRecoms);
 			long startTm = 0;
 			long duration = 0;
@@ -414,12 +426,15 @@ public class RecommendationManager extends RootObject {
 				}
 				duration = System.nanoTime() - startTm;
 				RecommendationManager.logger.debug("RecommendationManager.WorkerThread: COMPLETED: thread={}, consumer={}, profile={}, recom={}", Thread.currentThread().getName(), consumerId, profileId, recom);
+				logger.trace("Workers:-E-:  RecommendationManager.WorkerThread: COMPLETED: thread="+Thread.currentThread().getName()+", consumer="+consumerId+", profile="+profileId+", recom="+recom);
 			} catch (Exception e) {
 				duration = System.nanoTime() - startTm;
 				failed = true;
 				logger.error("RecommendationManager.WorkerThread: EXCEPTION: thread={}, consumer={}, profile={}, exception={}", Thread.currentThread().getName(), consumerId, profileId, e);
+				logger.trace("Workers:-EXCEPTION-:  RecommendationManager.WorkerThread: EXCEPTION: thread="+Thread.currentThread().getName()+", consumer="+consumerId+", profile="+profileId+", exception="+e);
 				e.printStackTrace(System.err);
 			} finally {
+				logger.trace("Workers:-F-:  RecommendationManager.WorkerThread: Duration: thread="+Thread.currentThread().getName()+", consumer="+consumerId+", profile="+profileId+", duration="+duration);
 				synchronized (manager) {
 					totalThreadDuration += duration;
 					if (duration<minThreadDuration) minThreadDuration = duration;
@@ -479,7 +494,9 @@ public class RecommendationManager extends RootObject {
 		}
 		logger.debug("_waitWorkerThreadsToComplete: END: Worker threads completed");
 	}
+	// Worker threads implementation - END
 	
+	// Event Manager methods
 	protected EventManager eventManager;
 	//
 	public EventManager getEventManager() { return eventManager; }
@@ -511,11 +528,13 @@ public class RecommendationManager extends RootObject {
 		boolean alwaysGenerateRecom = Boolean.valueOf( prop.getProperty("alwaysGenerateRecommendation", "false") );		// don't generate a new recommendation if there are no items/services to suggest
 		boolean dontStoreRecom = Boolean.valueOf( prop.getProperty("dontStoreRecommendation") );
 		String recommendationsTopic = prop.getProperty("recommendationsTopic", "").trim();
+		String recomItemSuggestion = prop.getProperty("recomItemSuggestion", "");
 		// Filtering settings
 		long periodOfLastRecom = Long.parseLong( prop.getProperty("periodSinceLastRecom", "0") );
 		double relevanceThreshold = Long.parseLong( prop.getProperty("relevanceThreshold", "0") );
 		long periodOfIgnores = Long.parseLong( prop.getProperty("periodOfIgnores", "0") );
 		int ignoresThreshold = (int)Long.parseLong( prop.getProperty("ignoresThreshold", "0") );
+		String fprcQueryWsUrlTemplate = prop.getProperty("fprcQueryWsUrlTemplate", "");
 		long periodOfLastRecomOfFPRC = Long.parseLong( prop.getProperty("periodSinceLastRecomOfFPRC", "0") );
 		double relevanceThresholdForFRPC = Long.parseLong( prop.getProperty("relevanceThresholdForFPRC", "0") );
 		// debug print
@@ -530,10 +549,12 @@ public class RecommendationManager extends RootObject {
 			logger.debug("alwaysGenerateRecommendation: {}", prop.getProperty("alwaysGenerateRecommendation"));
 			logger.debug("dontStoreRecommendation: {}", prop.getProperty("dontStoreRecommendation"));
 			logger.debug("recommendationsTopic: {}", prop.getProperty("recommendationsTopic"));
+			logger.debug("recomItemSuggestion: {}", prop.getProperty("recomItemSuggestion"));
 			// filtering settings
 			logger.debug("FILTERING SETTINGS:");
 			logger.debug("periodSinceLastRecom: {}", prop.getProperty("periodSinceLastRecom"));
 			logger.debug("relevanceThreshold: {}", prop.getProperty("relevanceThreshold"));
+			logger.debug("fprcQueryWsUrlTemplate: {}", prop.getProperty("fprcQueryWsUrlTemplate"));
 			logger.debug("periodOfIgnores: {}", prop.getProperty("periodOfIgnores"));
 			logger.debug("ignoresThreshold: {}", prop.getProperty("ignoresThreshold"));
 			logger.debug("------------------------------------------------------------------------------");
@@ -590,8 +611,6 @@ public class RecommendationManager extends RootObject {
 			SDs = (ServiceDescription[])_callBrokerRestWS(sgqcWsUrl, "GET", java.lang.reflect.Array.newInstance(ServiceDescription.class, 0).getClass(), null);
 			long callEndTm = System.currentTimeMillis();
 		} else {
-			// If PuLSaR is collocated with SGQC component, it is possible to programmatically call the relevant method
-			// Thus code becomes simpler and faster
 			logger.info("Retrieving service descriptions for category {}", categoryId);
 			eu.brokeratcloud.rest.opt.AuxiliaryService sgqcWS = new eu.brokeratcloud.rest.opt.AuxiliaryService();
 			int spl3 = Stats.get().getOrCreateSplitByName("RM._createNewRecom: getServiceDescriptionsForCategories");
@@ -609,7 +628,12 @@ public class RecommendationManager extends RootObject {
 			String sdId = sd.getId();
 			String sdName = sd.getName();
 			if (sdId==null || sdId.trim().isEmpty()) { logger.error("Service category {} contains service description(s) with no Id", categoryId); hasErrors = true; continue; }
-			if (sdName==null || sdName.trim().isEmpty()) { logger.error("Service category {} contains service description(s) with no Name", categoryId); hasErrors = true; continue; }
+			// Don't terminate recommendation when SDs are missing service name. Instead set name to service URI and issue a warning
+			//if (sdName==null || sdName.trim().isEmpty()) { logger.error("Service category {} contains service description(s) with no Name", categoryId); hasErrors = true; continue; }
+			if (sdName==null || sdName.trim().isEmpty()) {
+				logger.warn("Service description with no Name. Setting name to Id: {}", sd.getId());
+				sd.setName( sd.getId() );
+			}
 			logger.debug("\tService: uri={}, name={}", sdId, sdName);
 		}
 		if (hasErrors) {
@@ -719,7 +743,7 @@ public class RecommendationManager extends RootObject {
 		AhpHelper helper = new AhpHelper();
 		int spl6 = Stats.get().getOrCreateSplitByName("RM._createNewRecom: helper.rank");
 		Stats.get().startSplit(spl6);
-		List<AhpHelper.RankedItem> rankedSDs = helper.rank(this /*2014-11-21: Addition*/, topLevelGoal, criteria, SDs);
+		List<AhpHelper.RankedItem> rankedSDs = helper.rank(this, topLevelGoal, criteria, SDs);
 		Stats.get().endSplit(spl6);
 		logger.debug("Ranked list of service descriptions:\n{}", rankedSDs);
 		
@@ -741,19 +765,37 @@ public class RecommendationManager extends RootObject {
 			if (!forceCreation) {
 				rv1 = _checkIfAlreadyRecommended(consumerId, profileId, item, periodOfLastRecom, relevanceThreshold);
 				rv2 = _checkIfIgnored(consumerId, profileId, item, periodOfIgnores, ignoresThreshold);
-				rv3 = _checkIfAlreadyRecommendedByFailurePreventionAndRecoveryComponent(item, periodOfLastRecomOfFPRC, relevanceThresholdForFRPC);
+				rv3 = _checkIfAlreadyRecommendedByFailurePreventionAndRecoveryComponent(consumerId, item, fprcQueryWsUrlTemplate, periodOfLastRecomOfFPRC, relevanceThresholdForFRPC);
 			}
 			if (rv1 || rv2 || rv3) {
-				logger.debug("Service was filtered-out: Reason: already recommended={}, ignored={}, recommended by Failure Prevention & Recovery Component={}", rv1, rv2, rv3);
+				String sdId = item.item.getId();
+				logger.warn("Service was filtered-out: service-id={}  Reason: already recommended={}, ignored={}, recommended by Failure Prevention & Recovery Component={}", sdId, rv1, rv2, rv3);
 			} else {
 				RecommendationItem rit = new RecommendationItem();
 				rit.setId( "RECOM-ITEM-"+recomId+"-"+(cntItems++) );
 				rit.setCreateTimestamp( createTm );
 				rit.setOwner( consumerId );
 				rit.setServiceDescription( item.item.getId() );
-				rit.setSuggestion( String.format("Use service: <i>%s</i><br/>Creator: <i>%s</i>&nbsp;&nbsp;&nbsp;Profile: <i>%s</i>", 
-													item.item.getName(), item.item.getOwner(), item.item.getServiceAttributeValue(".SERVICE-LEVEL-PROFILE-ID")) );
 				rit.setWeight( item.relevance );
+				String srvUri = item.item.getId();		// contains URI
+				int pa = srvUri.lastIndexOf("#"), pb = srvUri.lastIndexOf("/"); pa = (pa>pb) ? pa : pb; 
+				String srvId = (pa>-1 && pa+1<srvUri.length()) ? srvUri.substring(pa+1) : srvUri;
+				//
+				String smUri = ""+item.item.getServiceModelUri();
+				int p1 = smUri.lastIndexOf("#"), p2 = smUri.lastIndexOf("/"); p1 = (p1>p2) ? p1 : p2; 
+				String smName = (p1>-1 && p1+1<smUri.length()) ? smUri.substring(p1+1) : smUri;
+				//
+				rit.setSuggestion( recomItemSuggestion
+										.replace( "{{SERVICE-ID}}", srvId )
+										.replace( "{{SERVICE-URI}}", item.item.getId() )
+										.replace( "{{SERVICE-NAME}}", item.item.getName() )
+										.replace( "{{SERVICE-OWNER}}", item.item.getOwner() )
+										.replace( "{{SERVICE-DESCRIPTION}}", item.item.getDescription() )
+										.replace( "{{SERVICE-LEVEL-PROFILE-ID}}", ""+item.item.getServiceAttributeValue(".SERVICE-LEVEL-PROFILE-ID") )
+										.replace( "{{SERVICE-LEVEL-PROFILE-URI}}", ""+item.item.getServiceAttributeValue(".SERVICE-LEVEL-PROFILE-URI") )
+										.replace( "{{SERVICE-MODEL-URI}}", smUri )
+										.replace( "{{SERVICE-MODEL-NAME}}", smName )
+								);
 				
 				Map<String,Object> attrs = item.item.getServiceAttributes();
 				if (attrs!=null) {
@@ -761,6 +803,7 @@ public class RecommendationManager extends RootObject {
 					int i=0;
 					for (String at : attrs.keySet()) {
 						Object val = attrs.get(at);
+						if (at.indexOf('#')>0) at = at.substring(at.indexOf('#'));
 						attrsArr[i][0] = at;
 						attrsArr[i][1] = val!=null ? val.toString() : "";
 						i++;
@@ -1413,10 +1456,99 @@ public class RecommendationManager extends RootObject {
 		return false;
 	}
 	
-	protected boolean _checkIfAlreadyRecommendedByFailurePreventionAndRecoveryComponent(AhpHelper.RankedItem item, long period, double relevanceDiffThreshold) {
+	protected HashMap<String,String[]> fprRecomCache;
+	
+	protected boolean _checkIfAlreadyRecommendedByFailurePreventionAndRecoveryComponent(String owner, AhpHelper.RankedItem item, String fprcQueryWsUrlTemplate, long period, double relevanceDiffThreshold) {
 		// period: 0=only active/most recent recommendation should be considered
 		// relevanceDiffThreshold: used in order to recommend item even if already recommended but with lower relevance
+		
+		// check if an FPR query URL is available (from configuration)
+		if (fprcQueryWsUrlTemplate==null || fprcQueryWsUrlTemplate.trim().isEmpty()) return false;
+		
+		// query FPR if have already recommended service
+		logger.trace("_checkIfAlreadyRecommendedByFailurePreventionAndRecoveryComponent: BEGIN: item={}, period={}, threshold={}", item, period, relevanceDiffThreshold);
+		try {
+			if (pm==null) pm = RdfPersistenceManagerFactory.createRdfPersistenceManager();
+			if (client==null) client = SparqlServiceClientFactory.getClientInstance();
+			
+			// service URI
+			String sdUri = item.item.getId();
+			String sdEnc = java.net.URLEncoder.encode(sdUri);
+			
+			// prepare threshold timestamp
+			if (period<0) period = 0;
+			java.util.Date dt = new java.util.Date( System.currentTimeMillis() - period );
+			String dtStr = DateParser.formatW3CDateTime(dt);
+			
+			// check if an FPR recommendation has already been requested and cached
+			if (fprRecomCache==null) fprRecomCache = new HashMap<String,String[]>();
+			String[] users = fprRecomCache.get(sdUri);
+			if (users!=null) {
+				if (_findUser(owner, users)) {
+					// owner found in cached recommended users list from FPR
+					// check if cached data has expired
+					String[] tmStr = fprRecomCache.get(".timestamp");
+					if (tmStr!=null && tmStr.length>0 && tmStr[0]!=null) {
+						try {
+							Date dt2 = DateParser.parseW3CDateTime(tmStr[0].trim());
+							if (dt2.getTime() > dt.getTime()) return true;		// owner in the cached, non-expired recommended users list (for service)
+						} catch (Exception e) {}
+					}
+				}
+			}
+			
+			// prepare FPR query URL
+			String fprWsUrl = String.format(fprcQueryWsUrlTemplate, sdEnc, dtStr);
+			
+			// query FPR
+			logger.trace("_checkIfAlreadyRecommendedByFailurePreventionAndRecoveryComponent: Querying FPR for previous recommendations for service: {}, in period: {}, from url: {}", sdUri, period, fprWsUrl);
+			long callStartTm = System.currentTimeMillis();
+			FprRecommendation fprRecom = (FprRecommendation)_callBrokerRestWS(fprWsUrl, "GET", FprRecommendation.class, null);
+			long callEndTm = System.currentTimeMillis();
+			
+			// log FPR response
+			logger.trace("_checkIfAlreadyRecommendedByFailurePreventionAndRecoveryComponent: FPR replied: #items={}", fprRecom.getRecommended().size());
+			logger.trace("_checkIfAlreadyRecommendedByFailurePreventionAndRecoveryComponent: Users in FPR recommendation: {}", fprRecom.getRecommended());
+			
+			// cache FPR response for future use
+			String[] fprRecomToUsers = fprRecom.getRecommended().toArray(new String[0]);
+			synchronized (fprRecomCache) {
+				String[] tmp = new String[1];
+				tmp[0] = DateParser.formatW3CDateTime(new java.util.Date());
+				fprRecomCache.put(".timestamp", tmp);
+				fprRecomCache.put(sdUri, fprRecomToUsers);
+			}
+			
+			// check if the specified 'owner' is in user list returned by FPR
+			boolean found = _findUser(owner, fprRecomToUsers);
+			logger.trace("_checkIfAlreadyRecommendedByFailurePreventionAndRecoveryComponent: END: service={}, period={}, result={}", sdUri, period, found);
+			return found;
+			
+		} catch (Exception e) {
+			logger.error("_checkIfAlreadyRecommendedByFailurePreventionAndRecoveryComponent: EXCEPTION THROWN: {}", e);
+		}
 		return false;
+	}
+	
+	protected boolean _findUser(String owner, String[] users) {
+		if (users!=null) {
+			for (int i=0; i<users.length; i++) {
+				//logger.trace("_findUser: checking if owner:{} = {}...", owner, users[i]);
+				if (users[i].trim().equals(owner)) return true;
+			}
+		}
+		//logger.trace("_findUser: owner {} is not in the recommended users list returned by FPR", owner);
+		return false;
+	}
+	
+	@XmlRootElement
+	@XmlAccessorType(XmlAccessType.FIELD)
+	protected static class FprRecommendation {
+		@XmlAttribute
+		protected Collection<String> recommended;
+		//
+		public Collection<String> getRecommended() { return recommended; }
+		public void setRecommended(Collection<String> c) { recommended = c; }
 	}
 	
 	protected boolean _checkIfIgnored(String owner, String profile, AhpHelper.RankedItem item, long period, int ignoresThreshold) {

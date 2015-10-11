@@ -56,6 +56,7 @@ public class AhpHelper extends RootObject {
 		}
 	}
 	
+	// Stats Counters
 	protected static int spl1 = Stats.get().nextSplit("AhpHelper.rank(): getLeafNodes");
 	protected static int spl2 = Stats.get().nextSplit("AhpHelper.rank(): Leafs FOR-LOOP: total");
 	protected static int spl2a = Stats.get().nextSplit("AhpHelper.rank(): Leafs FOR-LOOP: getServiceCategoryAttributeFromPreference");
@@ -85,7 +86,7 @@ public class AhpHelper extends RootObject {
 			ConsumerPreference pref = criteria.get(attrId);
 			// get ServiceCategoryAttribute
 			Stats.get().startSplit(spl2a);
-			ServiceCategoryAttribute sca = eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW.getServiceCategoryAttributeFromPreference(pref);
+			ServiceCategoryAttribute sca = eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementService.getServiceCategoryAttributeFromPreference(pref);
 			Stats.get().endSplit(spl2a);
 
 			double weight = pref.getWeight();
@@ -153,6 +154,7 @@ public class AhpHelper extends RootObject {
 		return list;
 	}
 	
+	// Stats Counters
 	protected static int splC1 = Stats.get().nextSplit("AhpHelper._calculateItemWeightsForAttribute(): IF-ELSE's");
 	protected static int splC2 = Stats.get().nextSplit("AhpHelper._calculateItemWeightsForAttribute(): Extend Analysis");
 	
@@ -288,6 +290,7 @@ public class AhpHelper extends RootObject {
 		return eigenvector;
 	}
 	
+	//Stats Counters
 	protected static int splFEE1 = Stats.get().nextSplit("AhpHelper._forEveryElement(): Inner FOR-LOOP");
 	protected static int splFEE2a = Stats.get().nextSplit("AhpHelper._forEveryElement(): getServiceAttributeValue");
 	protected static int splFEE2 = Stats.get().nextSplit("AhpHelper._forEveryElement(): INVOCATION");
@@ -333,9 +336,9 @@ public class AhpHelper extends RootObject {
 		String str;
 		if (val1!=null && !(str=val1.toString().trim()).isEmpty()) d1 = Double.valueOf(str);
 		if (val2!=null && !(str=val2.toString().trim()).isEmpty()) d2 = Double.valueOf(str);
-		if (d1!=null && d2!=null) return new TFN(d1.doubleValue()/d2.doubleValue());
-		else if (d1!=null && d2==null) return new TFN(1/weight);
-		else if (d1==null && d2!=null) return new TFN(weight);
+		if (d1!=null && d2!=null && d2.doubleValue()!=0) return new TFN(d1.doubleValue()/d2.doubleValue());
+		else if (d1!=null && d2==null && d1.doubleValue()!=0) return new TFN(1/weight);
+		else if (d1==null && d2!=null && d2.doubleValue()!=0) return new TFN(weight);
 		else return TFN.one();
 	}
 	protected TFN _calcNumericDecRelativeImportance(Object val1, Object val2, Object valReq, double weight, boolean mandatory, Object allowed) {
@@ -343,9 +346,9 @@ public class AhpHelper extends RootObject {
 		String str;
 		if (val1!=null && !(str=val1.toString().trim()).isEmpty()) d1 = Double.valueOf(str);
 		if (val2!=null && !(str=val2.toString().trim()).isEmpty()) d2 = Double.valueOf(str);
-		if (d1!=null && d2!=null) return new TFN(d2.doubleValue()/d1.doubleValue());
-		else if (d1!=null && d2==null) return new TFN(1/weight);
-		else if (d1==null && d2!=null) return new TFN(weight);
+		if (d1!=null && d2!=null && d1.doubleValue()!=0) return new TFN(d2.doubleValue()/d1.doubleValue());
+		else if (d1!=null && d2==null && d1.doubleValue()!=0) return new TFN(1/weight);
+		else if (d1==null && d2!=null && d2.doubleValue()!=0) return new TFN(weight);
 		else return TFN.one();
 	}
 	protected TFN _calcNumericRangeRelativeImportance(Object val1, Object val2, Object valReq, double weight, boolean mandatory, Object allowed, boolean higherIsBetter) {

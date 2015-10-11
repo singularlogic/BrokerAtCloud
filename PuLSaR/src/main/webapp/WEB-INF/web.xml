@@ -15,7 +15,7 @@
 			eu.brokeratcloud.rest.opt.AuxiliaryService,
 			eu.brokeratcloud.rest.gui.Auth,
 			eu.brokeratcloud.rest.opt.AttributeManagementService,
-			eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW,
+			eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementService,
 			eu.brokeratcloud.rest.opt.ProfileManagementService,
 			eu.brokeratcloud.rest.opt.RecommendationManagementService,
 			eu.brokeratcloud.rest.opt.NotificationManagementService,

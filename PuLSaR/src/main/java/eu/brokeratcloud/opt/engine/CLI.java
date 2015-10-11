@@ -24,8 +24,8 @@ import javax.xml.namespace.QName;
  *	The command-line interface of PuLSaR system
  */
 public class CLI {
-	protected static String version = "v1.0 prototype";
-	protected static String dates = "Apr 2014-Feb 2015";
+	protected static String version = "v1.1 prototype";
+	protected static String dates = "Apr 2014-Oct 2015";
 	protected static String banner = "PuLSaR:  Optimisation engine of Broker@Cloud platform\n"+
 									 "Version: "+version+", "+dates+"\n"+
 									 "Copyright 2014-2015, Institute of Communication and Computer Systems (ICCS)\n"+
@@ -102,8 +102,8 @@ public class CLI {
 			}
 			
 			// Print config information
-//			out().println(config);
-//			out().println();
+			//out().println(config);
+			//out().println();
 		} catch (Exception ex) {
 			err().println("CLI: Could not read configuration file. Reason:\n  "+ex.getMessage());
 			return false;
@@ -153,7 +153,7 @@ public class CLI {
 			else if (cmd.equals("reload") || cmd.equals("r")) { reload = true; break; }
 			else if (cmd.equals("event") || cmd.equals("e")) { ok=doEventCmd(line, eventManager); helpId = "event"; }
 			else if (cmd.equals("recommendation") || cmd.equals("recom") || cmd.equals("m")) { ok=doRecomCmd(part); helpId = "recom"; }
-			else if (cmd.equals("feedback") || cmd.equals("f")) { ok=doFeedbackCmd(part); helpId = "feedback"; }
+			else if (cmd.equals("feedback") || cmd.equals("f")) { ok=doFeedbackCmd(part, eventManager); helpId = "feedback"; }
 			else if (cmd.equals("simulation") || cmd.equals("sim") || cmd.equals("s")) { ok=doSimulationCmd(part, eventManager); helpId = "simulation"; }
 			if (!ok) {
 				out().println("CLI: Invalid or unknown command: "+cmd);
@@ -210,6 +210,7 @@ public class CLI {
 				"\n             recom set-active <RECOM-ID>    Set as the active profile recom"+
 				"\n             recom clear-active <RECOM-ID>  Unsets from active profile recom"+
 				"\n             recom delete <RECOM-ID>        Deletes recommendation"+
+				"\n             recom clear <USER>             Delete all user's recommendations"+
 				"\n             recom threads SHOW|<#threads>  Get/Set thread pool size (>=1)";
 	}
 	protected static String feedbackReporterHelp() {
@@ -218,7 +219,8 @@ public class CLI {
 	}
 	protected static String simulationHelp() {
 		return	"\n             simulate gen-events <period-usec> <iterations> <event-templ-file>"+
-				"\n             simulate iterate <delay-usec> <iterations> <event-templ-file>";
+				"\n             simulate iterate <delay-usec> <iterations> <event-templ-file>"+
+				"\n             simulate iterate2 <thread-pool-size> <delay-usec> <iterations> <event-templ-file>" ;
 	}
 	protected static void printContextHelp(String help) {
 		String prepend = "  or   ";
@@ -474,6 +476,39 @@ public class CLI {
 				int status = recomMgntWs.deleteRecommendation(recomId).getStatus();
 				if (status<299) out().println("Recommendation deleted"); else err().println("An error occurred. Recommendation was not deleted");
 			} else
+			if (rmCmd.equals("clear")) {
+				if (part.length<3) return false;
+				boolean clearProfile = (part.length>3);
+				String sc = part[2].trim();						// user
+				
+				if (recomMgntWs==null) recomMgntWs = new eu.brokeratcloud.rest.opt.RecommendationManagementService();
+				if (recomManager==null) recomManager = RecommendationManager.getInstance();
+				recomManager.setEventManager(eventManager);
+				int cntSucc = 0;
+				int cntFail = 0;
+				Recommendation[] list;
+				if (clearProfile) {
+					if (part.length<4) return false;
+					String id = part[3].trim();					// profile id
+					list = recomMgntWs.getRecommendations(sc, id, true);
+				} else {
+					list = recomMgntWs.getAllRecommendations(sc, true);
+				}
+				if (list==null || list.length==0) out().println("No recommendations found");
+				else {
+					out().println( String.format("Deleting %d recommendations", list.length) );
+					for (int i=0; i<list.length; i++) {
+						String recomId = list[i].getId();
+						out().print( String.format("%3d. %s... ", i, recomId) );
+						int status = recomMgntWs.deleteRecommendation(recomId).getStatus();
+						String outcome = (status<299) ? "Deleted" : "An error occurred. Recommendation was not deleted";
+						out().println( outcome );
+						if (status<299) cntSucc++; else cntFail++;
+					}
+					String err = (cntFail>0) ? " and "+cntFail+" error(s) occurred" : "";
+					out().println(cntSucc+" recommendations deleted"+err);
+				}
+			} else
 			if (rmCmd.equals("threads")) {
 				if (recomManager==null) recomManager = RecommendationManager.getInstance();
 				recomManager.setEventManager(eventManager);
@@ -509,7 +544,7 @@ public class CLI {
 	protected static long fbReporterPeriod;
 	protected static Timer scheduler;
 	
-	protected static boolean doFeedbackCmd(String[] part) {
+	protected static boolean doFeedbackCmd(String[] part, EventManager eventManager) {
 		try {
 			if (part.length<2) return false;
 			String fbCmd = part[1].trim().toLowerCase();
@@ -521,6 +556,9 @@ public class CLI {
 				} else {
 					fbReporter = FeedbackReporter.getInstance(file);
 				}
+				
+				// Set event manager
+				fbReporter.setEventManager(eventManager);
 				
 				// Run feedback reports generation engine immediately
 				fbReporter.generateFeedbackReports();
@@ -575,6 +613,7 @@ public class CLI {
 			public void run() {
 				out().println("Scheduler: Starting feedback report generation...");
 				if (fbReporter==null) fbReporter = FeedbackReporter.getInstance();
+				fbReporter.setEventManager(CLI.eventManager);
 				fbReporter.generateFeedbackReports();
 			}
 		}, fbReporterPeriod, fbReporterPeriod);
@@ -616,6 +655,25 @@ public class CLI {
 					String evtTpl = readFile( part[4] );
 				
 					// Run feedback reports generation engine immediately
+					EventGenerator evtGen = new EventGenerator(delay, iterations, evtTpl, evtMgr, EventGenerator.GEN_MODE.DELAY, out());
+					evtGen.start();
+					evtGen.waitToComplete();
+				} catch (Exception e) {
+					err().println("Invalid parameter: "+e);
+					simulationHelp();
+					return true;
+				}
+			} else
+			if (simCmd.equals("iterate2")) {
+				try {
+					int psize = Integer.parseInt( part[2] );
+					long delay = Long.parseLong( part[3] );
+					long iterations = Long.parseLong( part[4] );
+					String evtTpl = readFile( part[5] );
+				
+					// Run feedback reports generation engine immediately
+					if (CLI.eventManager instanceof LocalLoopEventManager)
+						((LocalLoopEventManager)CLI.eventManager).getRecommendationManager().setThreadPoolSize(psize);
 					EventGenerator evtGen = new EventGenerator(delay, iterations, evtTpl, evtMgr, EventGenerator.GEN_MODE.DELAY, out());
 					evtGen.start();
 					evtGen.waitToComplete();

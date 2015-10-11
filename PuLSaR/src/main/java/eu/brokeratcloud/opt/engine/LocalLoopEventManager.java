@@ -13,6 +13,7 @@ class LocalLoopEventManager extends EventManager {
 		recomMgr = RecommendationManager.getInstance();
 	}
 	
+	// Used in simulations to set recom. manager thread pool size
 	public RecommendationManager getRecommendationManager() { return recomMgr; }
 	
 	public Configuration getConfiguration() { return config; }
@@ -33,7 +34,6 @@ class LocalLoopEventManager extends EventManager {
 	}
 	
 	public void eventReceived(SLMEvent evt) {
-		//System.out.println("Event received: "+evt.getId());
 		if (evt.getType()==null || evt.getType().trim().isEmpty()) {
 			System.err.println( String.format("LocalLoopEventManager.eventReceived: Missing event type: Event-Id: %s", evt.getId()) );
 			return;

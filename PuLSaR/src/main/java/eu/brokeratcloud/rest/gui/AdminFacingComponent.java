@@ -394,7 +394,7 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 		StringBuilder sb = new StringBuilder("[");
 		boolean first = true;
 		String[] types = { "NUMERIC_INC", "NUMERIC_DEC", "NUMERIC_RANGE", "BOOLEAN", "UNORDERED_SET", "FUZZY_INC", "FUZZY_DEC", "FUZZY_RANGE", "LINGUISTIC" };
-		String fmtCommon = "{ \"rownum\" : \"%d\", \"id\" : \"%s\", \"aid\" : \"%s\", \"name\" : \"%s\", \"type\" : \"%s\", \"unit\" : \"%s\", \"mandatory\" : %s, \"labelEn\" : \"%s\", \"labelDe\" : \"%s\", \"comment\" : \"%s\", \"measuredBy\" : \"%s\", ";
+		String fmtCommon = "{ \"rownum\" : \"%d\", \"id\" : \"%s\", \"bppName\" : \"%s\", \"aid\" : \"%s\", \"name\" : \"%s\", \"type\" : \"%s\", \"unit\" : \"%s\", \"mandatory\" : %s, \"labelEn\" : \"%s\", \"labelDe\" : \"%s\", \"comment\" : \"%s\", \"measuredBy\" : \"%s\", ";
 		String fmtNum = " \"from\" : \"%s\", \"to\" : \"%s\" }";
 		String fmtFuzzy = " \"fromL\" : \"%s\", \"from\" : \"%s\", \"fromU\" : \"%s\", \"toL\" : \"%s\", \"to\" : \"%s\", \"toU\" : \"%s\" }";
 		String fmtText = " \"from\" : \"%s\" }";
@@ -408,6 +408,7 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 			String typ = sca.getType();
 			
 			String id = sca.getId();
+			String bppName = sca.getBppName();
 			String attrId = sca.getAttribute();
 			String attrName = sca.getName();	// Note: As a convenience we use 'ServiceCategoryAttribute.name' to convey the 'OptimisationAtttibute.name' of the referenced opt. attribute
 			String unit = sca.getUnit();
@@ -424,7 +425,7 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 			if (comment==null) comment = "";
 			if (measuredBy==null) measuredBy = "";
 			
-			sb.append( String.format(fmtCommon, row++, java.net.URLEncoder.encode(_jsonVal(id)), _jsonVal(attrId), _jsonVal(attrName), _jsonVal(typ), _jsonVal(unit), 
+			sb.append( String.format(fmtCommon, row++, java.net.URLEncoder.encode(_jsonVal(id)), _jsonVal(bppName), _jsonVal(attrId), _jsonVal(attrName), _jsonVal(typ), _jsonVal(unit), 
 												(!mandatory ? "false" : "true"), _jsonVal(labelEn), _jsonVal(labelDe), _jsonVal(comment), _jsonVal(measuredBy)) );
 			if (ServiceCategoryAttribute.isNumericType(typ)) {
 				double m = sca.getMin();

@@ -72,7 +72,35 @@ public class RecommendationManagementService extends AbstractManagementService {
 			logger.debug("getRecommendations: Retrieving Recommendations for profile = {}", profileId);
 			List<Object> list = pm.findByQuery( String.format(queryStr, profileId, scId) );
 			logger.debug("{} recommendations found", list.size());
-			return list.toArray(new Recommendation[list.size()]);
+			
+			Recommendation[] recomList = list.toArray(new Recommendation[list.size()]);
+			
+			logger.debug("getRecommendations: Enriching recommendation items with service attribute info");
+			eu.brokeratcloud.rest.opt.AuxiliaryService auxWS = new eu.brokeratcloud.rest.opt.AuxiliaryService();
+			for (Recommendation recom : recomList) {
+				logger.debug("getRecommendations:     Enriching items of recommendation {}", recom.getId());
+				for (RecommendationItem item : recom.getItems()) {
+					String srvId = item.getServiceDescription();
+					logger.debug("getRecommendations:         Fetching info for service {}", srvId);
+					eu.brokeratcloud.common.ServiceDescription sd = auxWS.getServiceDescription(srvId);
+					Map<String,Object> attrs = sd.getServiceAttributes();
+					if (attrs!=null) {
+						String[][] attrsArr = new String[attrs.size()][2];
+						int i=0;
+						for (String at : attrs.keySet()) {
+							Object val = attrs.get(at);
+							if (at.indexOf('#')>0) at = at.substring(at.indexOf('#'));
+							attrsArr[i][0] = at;
+							attrsArr[i][1] = val!=null ? val.toString() : "";
+							i++;
+						}
+						item.setExtra(attrsArr);
+					}
+				}
+			}
+			logger.debug("getRecommendations: Done enriching recommendation items with service attribute info");
+			
+			return recomList;
 		} catch (Exception e) {
 			logger.error("getRecommendations: EXCEPTION THROWN: {}", e);
 			logger.debug("getRecommendations: Returning an empty array of {}", Recommendation.class);

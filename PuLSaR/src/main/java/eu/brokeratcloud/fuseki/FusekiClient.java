@@ -51,8 +51,8 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 	
 	protected void debug(String mesg) {
 		if (!debugOn) return;
-		System.err.println(getClass()+": "+mesg);
 		if (logger!=null) { logger.println(mesg); logger.flush(); }
+		else { System.err.println(getClass()+": "+mesg); }
 	}
 	
 	public String getSelectEndpoint() { return queryService; }
@@ -123,7 +123,6 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 			List<Map<String,RDFNode>> resultsList = new LinkedList<Map<String,RDFNode>>();
 			while (results.hasNext()) {
 				QuerySolution soln = results.nextSolution();
-				//System.out.println(soln.toString());
 				HashMap<String,RDFNode> row = new HashMap<String,RDFNode>();
 				Iterator<String> it = soln.varNames();
 				while (it.hasNext()) {
@@ -175,7 +174,7 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 	}
 	
 	protected QueryExecution _query(String selectQuery, boolean updateStats) {
-			return QueryExecutionFactory.sparqlService(queryService, selectQuery);
+		return QueryExecutionFactory.sparqlService(queryService, selectQuery);
 	} // end method
 	
 	public Object queryValue(String selectQuery) {

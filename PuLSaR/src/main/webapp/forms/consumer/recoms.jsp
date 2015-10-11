@@ -13,9 +13,11 @@
         <td width="*" align="center" valign="top">--><center>
 			<div id="splitter">
 				<div style="overflow: hidden;">
-					<div style="border: none;" id="listbox"></div>
+					<div style="overflow:auto; border: none;" id="listbox"></div>
 				</div>
-				<div style="overflow: hidden; padding:10px;" id="ContentPanel"></div>
+				<div style="overflow: auto;">
+					<div style="overflow: auto; padding:10px" id="ContentPanel"></div>
+				</div>
 			</div>
 		</center><!--</td>
 	  </tr>
@@ -45,7 +47,12 @@
 		$(document).ready(function () {
 				
 			$("#splitter").jqxSplitter({  width: 700, height: 400, panels: [{ size: '40%'}] });
-			$('#splitter').resizable();
+			$('#splitter').resizable({
+				stop: function( event, ui ) {
+					$("#splitter").jqxSplitter('collapse');
+					$("#splitter").jqxSplitter('expand');
+				}
+			});
 			
 			// prepare the data
 			var url = "/gui/recommendations/list";

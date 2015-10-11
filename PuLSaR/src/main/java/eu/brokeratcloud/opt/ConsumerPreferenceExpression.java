@@ -5,7 +5,7 @@ import eu.brokeratcloud.common.policy.*;
 import eu.brokeratcloud.opt.policy.*;
 import eu.brokeratcloud.opt.type.*;
 import eu.brokeratcloud.persistence.annotations.*;
-import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW;
+import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementService;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -28,7 +28,7 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 	@XmlAttribute
 	@RdfPredicate
 	protected String expression;
-//	@XmlAttribute	//SOS:  @XmlAttribute  MUST NOT BE SET FOR THIS FIELD IN ORDER TO AVOID INFINITE RECURSION DURING "JSON SERIALIZATION"
+//SOS:  @XmlAttribute  MUST NOT BE SET FOR THIS FIELD IN ORDER TO AVOID INFINITE RECURSION DURING "JSON SERIALIZATION"
 	@RdfPredicate
 	protected ConsumerPreference consumerPreference;
 	
@@ -105,7 +105,7 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 				if (consumerPreference.getPrefVariable()==null) return;
 				
 				String pvUri = consumerPreference.getPrefVariable();
-				ServiceCategoryAttributeManagementServiceNEW.PolicyObjects po = ServiceCategoryAttributeManagementServiceNEW.getBrokerPolicyObjects(pvUri, false);
+				ServiceCategoryAttributeManagementService.PolicyObjects po = ServiceCategoryAttributeManagementService.getBrokerPolicyObjects(pvUri, false);
 				logger.trace("_parseExpression: policy objects={}", po);
 				if (po==null) return;
 				PreferenceVariable pv = po.pv;
@@ -340,7 +340,7 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 		if (!_isValid) throw new IllegalStateException("Constraint expression is not valid: "+expression+"\nPreference: "+consumerPreference.getId());
 		
 		String pvUri = consumerPreference.getPrefVariable();
-		ServiceCategoryAttributeManagementServiceNEW.PolicyObjects po = ServiceCategoryAttributeManagementServiceNEW.getBrokerPolicyObjects(pvUri, false);
+		ServiceCategoryAttributeManagementService.PolicyObjects po = ServiceCategoryAttributeManagementService.getBrokerPolicyObjects(pvUri, false);
 		logger.trace("evaluate: policy objects={}", po);
 		if (po==null) throw new IllegalArgumentException("Policy objects NOT FOUND for pref.var. uri="+pvUri+"\nPreference: "+consumerPreference.getId());
 		PreferenceVariable pv = po.pv;
@@ -557,7 +557,7 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 				}
 				if (errMsg==null) errMsg = "Not allowed attribute value: "+valStr+"\nAllowed values: "+java.util.Arrays.toString(terms);
 			} else {	// linguistic terms set is empty (in PV)
-				errMsg = "EVAL: Linguistic terms set has not been set. Check service category attribute: "+pv.getId()+"  of attribute: "+pv.getRefToServiceAttribute()+"  and service category: "+pv.getBelongsTo().getTitle();
+				errMsg = "Linguistic terms set has not been set. Check service category attribute: "+pv.getId()+"  of attribute: "+pv.getRefToServiceAttribute()+"  and service category: "+pv.getBelongsTo().getTitle();
 			}
 		} else {
 			errMsg = "Invalid constraint type: "+pv.getClass().getName();
@@ -571,16 +571,6 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 	@JsonIgnore
 	public String[] getVariableNames() {
 		throw new RuntimeException("Method NOT IMPLEMENTED : ConsumerPreferenceExpression.getVariableNames()");
-	}
-	
-	public boolean evaluate(Object[] values) {
-		// Extended version of evaluate() for multi-variable expressions...
-		throw new RuntimeException("Method NOT IMPLEMENTED : ConsumerPreferenceExpression.evaluate(Object[])");
-	}
-	
-	public boolean evaluate(Map<String,Object> values) {
-		// Extended version of evaluate() for multi-variable expressions...
-		throw new RuntimeException("Method NOT IMPLEMENTED : ConsumerPreferenceExpression.evaluate(Map[])");
 	}
 	
 	public String toString() {

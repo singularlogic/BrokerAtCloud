@@ -70,7 +70,7 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 		// Prepare JSON to retrurn to page
 		StringBuilder sb = new StringBuilder("[");
 		String rowHead = "{ \"id\":\"%s\", \"createTimestamp\":%d, \"profile-name\":\"%s\", \"profile\":\"%s\", \"items\":[";
-		String rowItem = "{ \"id\":\"%s\", \"suggestion\":\"%s\", \"relevance\":%.2f, \"order\":%d, \"response\":\"%s\" }";
+		String rowItem = "{ \"id\":\"%s\", \"suggestion\":\"%s\", \"relevance\":%.2f, \"order\":%d, \"response\":\"%s\", \"extra\":%s }";
 		String rowTail = "] }";
 		boolean first = true;
 		for (int i=0; i<recomList.length; i++) {
@@ -101,8 +101,9 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 					String suggestion = item.getSuggestion();
 					double relevance = 100*item.getWeight();
 					String response = item.getResponse();
+					String extra = extra2str( item.getExtra() );
 					
-					sb.append( String.format(Locale.US, rowItem, iid, suggestion, relevance, ord++, response) );
+					sb.append( String.format(Locale.US, rowItem, iid, suggestion, relevance, ord++, response, extra) );
 				}
 			}
 			sb.append( rowTail );
@@ -241,7 +242,7 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 		if (o instanceof java.util.List) {
 			List attrs = (List)o;
 			StringBuilder sb = new StringBuilder("[");
-			String tpl = "{'attribute':'%s', 'value':'%s'}";
+			String tpl = "{\"attribute\":\"%s\", \"value\":\"%s\"}";
 			boolean first = true;
 			for (Object el : attrs) {
 				if (el instanceof java.util.List) {
