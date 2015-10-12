@@ -3,7 +3,7 @@
 set curdir=%~dp0
 set BASEDIR=%curdir:~0,-1%\..
 set RDF_FILE="%BASEDIR%\var\TTL files\UC CAS - review\2015-01-21-export-FINAL.ttl"
-set CURL="%BASEDIR%\evaluation\curl\curl.exe"
+set CURL="%BASEDIR%\bin\curl\curl.exe"
 
 echo Previous Fuseki contents will be discarded...
 echo Loading %RDF_FILE%...

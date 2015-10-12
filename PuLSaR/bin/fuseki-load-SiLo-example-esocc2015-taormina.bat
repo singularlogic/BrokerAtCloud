@@ -2,7 +2,7 @@
 
 set curdir=%~dp0
 set BASEDIR=%curdir:~0,-1%\..
-set CURL="%BASEDIR%\evaluation\curl\curl.exe"
+set CURL="%BASEDIR%\bin\curl\curl.exe"
 
 echo Appending to previous Fuseki contents...
 
