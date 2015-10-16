@@ -1,0 +1,15 @@
+// ------------------------------------------------------------------
+// Transitive dependencies of this project determined from the
+// maven pom organized by organization.
+// ------------------------------------------------------------------
+
+WSO2 CEP - Styles Features
+
+
+From: 'WSO2 Inc' (http://wso2.com)
+  - WSO2 CEP - Styles (http://wso2.org) org.wso2.cep:org.wso2.cep.styles:bundle:4.0.0
+    License: Apache License Version 2.0  (http://www.apache.org/licenses/LICENSE-2.0)
+
+
+
+

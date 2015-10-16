@@ -15,11 +15,9 @@
  */
 package diva;
 
-
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Rule</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '
+ * <em><b>Rule</b></em>'. <!-- end-user-doc -->
  *
  *
  * @see diva.DivaPackage#getRule()

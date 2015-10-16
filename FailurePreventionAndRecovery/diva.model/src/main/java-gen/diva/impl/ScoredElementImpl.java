@@ -31,14 +31,14 @@ import diva.Score;
 import diva.ScoredElement;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Scored Element</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Scored Element</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.ScoredElementImpl#getTotalScore <em>Total Score</em>}</li>
- *   <li>{@link diva.impl.ScoredElementImpl#getScore <em>Score</em>}</li>
+ * <li>{@link diva.impl.ScoredElementImpl#getTotalScore <em>Total Score</em>}
+ * </li>
+ * <li>{@link diva.impl.ScoredElementImpl#getScore <em>Score</em>}</li>
  * </ul>
  * </p>
  *
@@ -46,9 +46,9 @@ import diva.ScoredElement;
  */
 public abstract class ScoredElementImpl extends DiVAModelElementImpl implements ScoredElement {
 	/**
-	 * The default value of the '{@link #getTotalScore() <em>Total Score</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The default value of the '{@link #getTotalScore() <em>Total Score</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getTotalScore()
 	 * @generated
 	 * @ordered
@@ -56,9 +56,9 @@ public abstract class ScoredElementImpl extends DiVAModelElementImpl implements 
 	protected static final int TOTAL_SCORE_EDEFAULT = 0;
 
 	/**
-	 * The cached value of the '{@link #getTotalScore() <em>Total Score</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getTotalScore() <em>Total Score</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getTotalScore()
 	 * @generated
 	 * @ordered
@@ -66,9 +66,9 @@ public abstract class ScoredElementImpl extends DiVAModelElementImpl implements 
 	protected int totalScore = TOTAL_SCORE_EDEFAULT;
 
 	/**
-	 * The cached value of the '{@link #getScore() <em>Score</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getScore() <em>Score</em>}' containment
+	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getScore()
 	 * @generated
 	 * @ordered
@@ -76,8 +76,8 @@ public abstract class ScoredElementImpl extends DiVAModelElementImpl implements 
 	protected EList<Score> score;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScoredElementImpl() {
@@ -85,8 +85,8 @@ public abstract class ScoredElementImpl extends DiVAModelElementImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -95,8 +95,8 @@ public abstract class ScoredElementImpl extends DiVAModelElementImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public int getTotalScore() {
@@ -104,20 +104,21 @@ public abstract class ScoredElementImpl extends DiVAModelElementImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setTotalScore(int newTotalScore) {
 		int oldTotalScore = totalScore;
 		totalScore = newTotalScore;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.SCORED_ELEMENT__TOTAL_SCORE, oldTotalScore, totalScore));
+			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.SCORED_ELEMENT__TOTAL_SCORE,
+					oldTotalScore, totalScore));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<Score> getScore() {
@@ -128,97 +129,98 @@ public abstract class ScoredElementImpl extends DiVAModelElementImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case DivaPackage.SCORED_ELEMENT__SCORE:
-				return ((InternalEList<?>)getScore()).basicRemove(otherEnd, msgs);
+		case DivaPackage.SCORED_ELEMENT__SCORE:
+			return ((InternalEList<?>) getScore()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.SCORED_ELEMENT__TOTAL_SCORE:
-				return getTotalScore();
-			case DivaPackage.SCORED_ELEMENT__SCORE:
-				return getScore();
+		case DivaPackage.SCORED_ELEMENT__TOTAL_SCORE:
+			return getTotalScore();
+		case DivaPackage.SCORED_ELEMENT__SCORE:
+			return getScore();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.SCORED_ELEMENT__TOTAL_SCORE:
-				setTotalScore((Integer)newValue);
-				return;
-			case DivaPackage.SCORED_ELEMENT__SCORE:
-				getScore().clear();
-				getScore().addAll((Collection<? extends Score>)newValue);
-				return;
+		case DivaPackage.SCORED_ELEMENT__TOTAL_SCORE:
+			setTotalScore((Integer) newValue);
+			return;
+		case DivaPackage.SCORED_ELEMENT__SCORE:
+			getScore().clear();
+			getScore().addAll((Collection<? extends Score>) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.SCORED_ELEMENT__TOTAL_SCORE:
-				setTotalScore(TOTAL_SCORE_EDEFAULT);
-				return;
-			case DivaPackage.SCORED_ELEMENT__SCORE:
-				getScore().clear();
-				return;
+		case DivaPackage.SCORED_ELEMENT__TOTAL_SCORE:
+			setTotalScore(TOTAL_SCORE_EDEFAULT);
+			return;
+		case DivaPackage.SCORED_ELEMENT__SCORE:
+			getScore().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.SCORED_ELEMENT__TOTAL_SCORE:
-				return totalScore != TOTAL_SCORE_EDEFAULT;
-			case DivaPackage.SCORED_ELEMENT__SCORE:
-				return score != null && !score.isEmpty();
+		case DivaPackage.SCORED_ELEMENT__TOTAL_SCORE:
+			return totalScore != TOTAL_SCORE_EDEFAULT;
+		case DivaPackage.SCORED_ELEMENT__SCORE:
+			return score != null && !score.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (totalScore: ");
@@ -227,4 +229,4 @@ public abstract class ScoredElementImpl extends DiVAModelElementImpl implements 
 		return result.toString();
 	}
 
-} //ScoredElementImpl
+} // ScoredElementImpl

@@ -1,20 +1,19 @@
 <!--
-  ~  Licensed to the Apache Software Foundation (ASF) under one
-  ~  or more contributor license agreements.  See the NOTICE file
-  ~  distributed with this work for additional information
-  ~  regarding copyright ownership.  The ASF licenses this file
-  ~  to you under the Apache License, Version 2.0 (the
-  ~  "License"); you may not use this file except in compliance
-  ~  with the License.  You may obtain a copy of the License at
+  ~ Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
-  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
-  ~  Unless required by applicable law or agreed to in writing,
-  ~  software distributed under the License is distributed on an
-  ~   * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~  KIND, either express or implied.  See the License for the
-  ~  specific language governing permissions and limitations
-  ~  under the License.
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
   -->
 
 <project default="run">
@@ -26,26 +25,31 @@
     <property name="temp.dir" value="temp"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
 
-    <property name="host" value="localhost"/>
+    <property name="protocol" value="thrift"/>
+    <property name="host" value="0.0.0.0"/>
     <property name="port" value="7661"/>
+    <property name="sn" value=""/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
         <fileset dir="${cep.home}/repository/components/plugins/">
             <include name="org.wso2.carbon.logging_*.jar"/>
             <include name="com.google.gson_*.jar"/>
-            <include name="guava_*.jar"/>
+            <include name="com.google.guava_*.jar"/>
             <include name="libthrift_*.jar"/>
-            <include name="slf4j.log4j*.jar"/>
-            <include name="slf4j.api_*.jar"/>
+            <include name="slf4j.log4j12_1.7.12.jar"/>
+            <include name="slf4j.api_1.7.12.jar"/>
             <include name="json_*.jar"/>
             <include name="org.wso2.carbon.databridge.commons.thrift_*.jar"/>
+            <include name="org.wso2.carbon.databridge.commons.binary_*.jar"/>
             <include name="org.wso2.carbon.user.core_*.jar"/>
             <include name="org.wso2.carbon.user.api_*.jar"/>
             <include name="org.wso2.carbon.databridge.commons_*.jar"/>
             <include name="org.wso2.carbon.databridge.core_*.jar"/>
             <include name="org.wso2.carbon.databridge.receiver.thrift_*.jar"/>
+            <include name="org.wso2.carbon.databridge.receiver.binary_*.jar"/>
             <include name="org.wso2.carbon.base_*.jar"/>
+            <include name="org.wso2.carbon.identity.authentication_*.jar"/>
         </fileset>
     </path>
 
@@ -62,7 +66,7 @@
     </target>
 
     <target name="compile" depends="init">
-        <javac srcdir="${src.dir}" destdir="${class.dir}">
+        <javac srcdir="${src.dir}" destdir="${class.dir}" compiler="modern">
             <include name="**/*"/>
             <classpath refid="javac.classpath"/>
         </javac>
@@ -74,12 +78,13 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>To configure host, port and events use -Dhost=xxxx -Dport=xxx -Devents=xx</echo>
-        <echo>Sending to : http://${host}:${port}</echo>
+        <echo>To configure host, port and events use -Dhost=xxxx -Dport=xxx -Dprotocol=thrift/binary -Dsn=sampleNumber</echo>
         <java classname="org.wso2.carbon.sample.server.TestWso2EventServer"
               classpathref="javac.classpath" fork="true">
             <arg value="${host}"/>
             <arg value="${port}"/>
+            <arg value="${protocol}"/>
+            <arg value="${sn}"/>
         </java>
     </target>
 

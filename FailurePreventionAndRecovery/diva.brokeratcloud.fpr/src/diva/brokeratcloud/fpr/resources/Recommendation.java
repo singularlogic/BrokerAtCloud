@@ -43,10 +43,10 @@ import diva.brokeratcloud.fpr.model.Repository;
 @Produces(MediaType.APPLICATION_JSON)
 public class Recommendation {
 	@GET
-	public Object getRoot(){
+	public Object getRoot() {
 		return Arrays.asList("hello", "world");
 	}
-	
+
 	/**
 	 * curl http://127.0.0.1:8089/fpr/recommendations/sc/abc/profile/001
 	 * 
@@ -56,168 +56,160 @@ public class Recommendation {
 	 */
 	@Path("sc/{scId}/profile/{profileId}/")
 	@GET
-	public List<String> getRecommList(
-			@PathParam("scId") String scId, 
-			@PathParam("profileId") String profileId
-	){
+	public List<String> getRecommList(@PathParam("scId") String scId, @PathParam("profileId") String profileId) {
 
-			String combinedId = scId+"-"+profileId;
-			DivaRoot root = Repository.mainRoot.fork();
-			root.updateOnRequest(scId, profileId);
-			Repository.registerRoot(combinedId, root);
-			root.runSimulation();
-			try{
-				//This is odd: without this sleep, curl gets a "empty result", even if res is not null
-				Thread.sleep(10);
-			}catch(Exception e){
-				//This sleep seems to be interrupted every time (by whom I don't know).
-			}
-			List<String> res = root.getConfigurationPool().queryScProfile(scId, profileId);
-		
-			return res;
+		String combinedId = scId + "-" + profileId;
+		DivaRoot root = Repository.mainRoot.fork();
+		root.updateOnRequest(scId, profileId);
+		Repository.registerRoot(combinedId, root);
+		root.runSimulation();
+		try {
+			// This is odd: without this sleep, curl gets a "empty result", even
+			// if res is not null
+			Thread.sleep(10);
+		} catch (Exception e) {
+			// This sleep seems to be interrupted every time (by whom I don't
+			// know).
+		}
+		List<String> res = root.getConfigurationPool().queryScProfile(scId, profileId);
+
+		return res;
 	}
-	
+
 	/**
 	 * curl http://127.0.0.1:8089/fpr/recommendations/sc/abc/profile/001/full
+	 * 
 	 * @param scId
 	 * @param profileId
 	 * @return
 	 */
 	@Path("sc/{scId}/profile/{profileId}/full")
 	@GET
-	public Map getRecommListFull(
-			@PathParam("scId") String scId, 
-			@PathParam("profileId") String profileId
-	){
+	public Map getRecommListFull(@PathParam("scId") String scId, @PathParam("profileId") String profileId) {
 		Map<String, Object> res = new TreeMap<String, Object>();
 		List<String> lst = this.getRecommList(scId, profileId);
-		for(String s : lst){
+		for (String s : lst) {
 			Object singleConfig = getRecommConfig(s);
-			if(!res.containsValue(singleConfig))
+			if (!res.containsValue(singleConfig))
 				res.put(s, getRecommConfig(s));
 		}
 		return res;
 	}
-	
+
 	/**
-	 * curl http://127.0.0.1:8089/fpr/recommendations/sc/abc/profile/001/provider
+	 * curl
+	 * http://127.0.0.1:8089/fpr/recommendations/sc/abc/profile/001/provider
+	 * 
 	 * @param scId
 	 * @param profileId
 	 * @return
 	 */
 	@Path("sc/{scId}/profile/{profileId}/provider")
 	@GET
-	public Object getRecommListForProvider(
-			@PathParam("scId") String scId, 
-			@PathParam("profileId") String profileId
-	){
-		try{
-		Map<String, Object> res = new TreeMap<String, Object>();
+	public Object getRecommListForProvider(@PathParam("scId") String scId, @PathParam("profileId") String profileId) {
+		try {
+			Map<String, Object> res = new TreeMap<String, Object>();
 
-		String combinedId = scId+"-"+profileId;
-		DivaRoot root = Repository.mainRoot.fork();
-		root.updateOnRequest(scId, profileId);
-		Repository.registerRoot(combinedId, root);
-		root.runSimulation(true);
-		try{
-			//This is odd: without this sleep, curl gets a "empty result", even if res is not null
-			Thread.sleep(10);
-		}catch(Exception e){
-			//This sleep seems to be interrupted every time (by whom I don't know).
-		}
-		List<String> lst = root.getConfigurationPool().queryScProfile(scId, profileId);
+			String combinedId = scId + "-" + profileId;
+			DivaRoot root = Repository.mainRoot.fork();
+			root.updateOnRequest(scId, profileId);
+			Repository.registerRoot(combinedId, root);
+			root.runSimulation(true);
+			try {
+				// This is odd: without this sleep, curl gets a "empty result",
+				// even if res is not null
+				Thread.sleep(10);
+			} catch (Exception e) {
+				// This sleep seems to be interrupted every time (by whom I
+				// don't know).
+			}
+			List<String> lst = root.getConfigurationPool().queryScProfile(scId, profileId);
 
-		for(String s : lst){
-			res.put(s, getRecommConfig(s));
-		}
-		return res;
-		}
-		catch(Exception e){
+			for (String s : lst) {
+				res.put(s, getRecommConfig(s));
+			}
+			return res;
+		} catch (Exception e) {
 			e.printStackTrace();
 			return "wrong";
 		}
 	}
-	
+
 	/*
-	 * curl http://127.0.0.1:8089/fpr/recommendations/abc-001--0/config
-	 * This query should be invoked after one {@link #getRecommList} invocation, otherwise
-	 * there is no "abc-001--0" id.
+	 * curl http://127.0.0.1:8089/fpr/recommendations/abc-001--0/config This
+	 * query should be invoked after one {@link #getRecommList} invocation,
+	 * otherwise there is no "abc-001--0" id.
 	 * 
 	 */
 	@Path("{recommId}/config")
 	@GET
-	public Object getRecommConfig(
-			@PathParam("recommId") String recommId
-	){
-		try{
+	public Object getRecommConfig(@PathParam("recommId") String recommId) {
+		try {
 			List<String> res = new ArrayList<String>();
-			
+
 			ConfigurationsPool pool = this.getConfigPool(recommId);
-			
+
 			Collection<String> configured = pool.getConfNames(recommId);
 			Collection<String> used = ConsumerProfile.INSTANCE.getCurrentServices(this.getUserProfileId(recommId));
-			
+
 			Set<String> toAdd = new HashSet<String>(configured);
 			Set<String> toRemove = new HashSet<String>(used);
-			
+
 			toAdd.removeAll(used);
 			toRemove.removeAll(configured);
-			
-			for(String s : toAdd){
+
+			for (String s : toAdd) {
 				res.add("+" + s);
 			}
-			
-			for(String s : toRemove){
+
+			for (String s : toRemove) {
 				res.add("-" + s);
 			}
-			
+
 			Map<String, Object> finalRes = new HashMap<String, Object>();
 			finalRes.put("recommendation", res);
-//			List<String> allReasons = Arrays.asList("cpuOverload", "memoryOverload");
-//			List<String> reasons = new ArrayList<String>();
-//			for(String i : allReasons){
-//				if(Boolean.TRUE.equals(ConsumerProfileJson.INSTANCE.publicStatus.get(i)))
-//						reasons.add(i);
-//			}
+			// List<String> allReasons = Arrays.asList("cpuOverload",
+			// "memoryOverload");
+			// List<String> reasons = new ArrayList<String>();
+			// for(String i : allReasons){
+			// if(Boolean.TRUE.equals(ConsumerProfileJson.INSTANCE.publicStatus.get(i)))
+			// reasons.add(i);
+			// }
 			finalRes.put("reasons", PubSub.latestReasons);
-			
-			//res.add("Score: "+pool.getConf(recommId).getTotalScore());
-			pool.addQueriedString(recommId+" - "+finalRes.toString());
-			
-			
+
+			// res.add("Score: "+pool.getConf(recommId).getTotalScore());
+			pool.addQueriedString(recommId + " - " + finalRes.toString());
+
 			return finalRes;
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	/**
 	 * curl http://127.0.0.1:8089/fpr/recommendations/abc-001--0/reason
+	 * 
 	 * @param recommId
 	 * @return
 	 */
 	@Path("{recommID}/reason")
 	@GET
-	public Object getRecommReason(
-			@PathParam("recommID") String recommId
-	){
-		try{
+	public Object getRecommReason(@PathParam("recommID") String recommId) {
+		try {
 			List<String> res = new ArrayList<String>();
 			Configuration config = this.getConfigPool(recommId).getConf(recommId);
 			res.add("Total: " + String.valueOf(config.getTotalScore()));
-			for(Score score : config.getScore()){
+			for (Score score : config.getScore()) {
 				res.add(score.toString());
 			}
 			return res;
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	/**
 	 * curl http://127.0.0.1:8089/fpr/recommendations/abc-001--0/response
 	 * 
@@ -226,61 +218,54 @@ public class Recommendation {
 	 */
 	@Path("{recommID}/response")
 	@GET
-	public Object getResponse(
-			@PathParam("recommID") String recommId
-	){
+	public Object getResponse(@PathParam("recommID") String recommId) {
 		System.out.println("here " + "recommID");
 		return this.getConfigPool(recommId).getResponse(recommId);
 	}
-	
+
 	/**
-	 * curl -X PUT -d "yes" http://127.0.0.1:8089/fpr/recommendations/abc-001--0/response
+	 * curl -X PUT -d "yes"
+	 * http://127.0.0.1:8089/fpr/recommendations/abc-001--0/response
+	 * 
 	 * @param recommId
 	 * @param accepted
 	 */
 	@Path("{recommID}/response/")
 	@PUT
-	public void putResponse(
-			@PathParam("recommID") String recommId,
-			String accepted
-	){
-		System.out.println("here "+recommId+accepted);
-		this.getConfigPool(recommId).setResponse(recommId, "yes".equals(accepted));	
+	public void putResponse(@PathParam("recommID") String recommId, String accepted) {
+		System.out.println("here " + recommId + accepted);
+		this.getConfigPool(recommId).setResponse(recommId, "yes".equals(accepted));
 	}
-	
+
 	@Path("history")
 	@GET
-	public Object getHistory(){
+	public Object getHistory() {
 		List<Object> res = new LinkedList<Object>();
-		
-		for(DivaRoot root : Repository.historyRoots){
-		
+
+		for (DivaRoot root : Repository.historyRoots) {
+
 			Map<String, Object> item = new LinkedHashMap<String, Object>();
-		
+
 			item.put("request", root.getCombinedId());
 			List<String> configs = new LinkedList<String>();
 			ConfigurationsPool pool = root.getConfigurationPool();
-			for(String id : pool.listAllQueried()){
+			for (String id : pool.listAllQueried()) {
 				configs.add(id);
 			}
-			
+
 			item.put("configs", configs);
 			item.put("time", root.getTimeQueried().toLocaleString());
 			item.put("responses", pool.getFullResponseRepr());
-			
+
 			res.add(item);
 		}
-		
+
 		return res;
 	}
-	
+
 	@Path("recommended")
 	@GET
-	public Object getRecommended(
-				@QueryParam("service") String service,
-				@QueryParam("timestamp") String timestamp
-			)
-	{
+	public Object getRecommended(@QueryParam("service") String service, @QueryParam("timestamp") String timestamp) {
 		String decodedService = service;
 		try {
 			decodedService = java.net.URLDecoder.decode(service, "UTF-8").trim();
@@ -293,10 +278,9 @@ public class Recommendation {
 		List<String> result = new ArrayList<String>();
 		try {
 			Date date = fmt.parse(timestamp);
-			List<HistoryItem> items = 
-					RecommendationHistory.INSTANCE.after(date);
-			for(HistoryItem item : items){
-				if(item.removed.contains(decodedService) && !result.contains(item.customer))
+			List<HistoryItem> items = RecommendationHistory.INSTANCE.after(date);
+			for (HistoryItem item : items) {
+				if (item.removed.contains(decodedService) && !result.contains(item.customer))
 					result.add(item.customer);
 			}
 			Map<String, List<String>> finalResult = new HashMap<String, List<String>>();
@@ -305,68 +289,68 @@ public class Recommendation {
 		} catch (ParseException e) {
 			return String.format("%s is not a valid W3C datetime representation", timestamp);
 		}
-		
+
 	}
-	
+
 	@Path("query")
 	@GET
-	public Object getRecommendationQuery(
-				@QueryParam("consumer") String consumer,
-				@QueryParam("service") List<String> services
-			){
-		
+	public Object getRecommendationQuery(@QueryParam("consumer") String consumer,
+			@QueryParam("service") List<String> services) {
+
 		Map<String, Object> result = new TreeMap<String, Object>();
 		result.put("consumer", consumer);
 		List<String> add = new ArrayList<String>();
 		List<String> remove = new ArrayList<String>();
-		
+
 		List<String> cleanServices = new ArrayList<String>();
-		for(String srv : services){
-			if(srv.contains(":")){
+		for (String srv : services) {
+			if (srv.contains(":")) {
 				cleanServices.add(srv.split(":")[1]);
 			}
 		}
 		DivaRoot root = Repository.mainRoot.fork();
 		List<String> res = root.getRecommQuery(consumer, cleanServices);
-		//return res.toString();
-		try{
-			//This is odd: without this sleep, curl gets a "empty result", even if res is not null
+		// return res.toString();
+		try {
+			// This is odd: without this sleep, curl gets a "empty result", even
+			// if res is not null
 			Thread.sleep(10);
-		}catch(Exception e){
-			//This sleep seems to be interrupted every time (by whom I don't know).
+		} catch (Exception e) {
+			// This sleep seems to be interrupted every time (by whom I don't
+			// know).
 		}
 
-		for(String s : cleanServices){
-			if(!res.contains(s))
-				remove.add("sp:"+s);
+		for (String s : cleanServices) {
+			if (!res.contains(s))
+				remove.add("sp:" + s);
 		}
-		
-		for(String s : res)
-			if(!cleanServices.contains(s))
-				add.add("sp:"+s);
-		
-//		for(String s : services){
-//			if(s.endsWith("1")){
-//				String newservice = s.substring(0, s.length()-1)+"2";
-//				if(!services.contains(newservice))
-//					add.add(newservice);
-//				remove.add(s);
-//			}
-//		}
+
+		for (String s : res)
+			if (!cleanServices.contains(s))
+				add.add("sp:" + s);
+
+		// for(String s : services){
+		// if(s.endsWith("1")){
+		// String newservice = s.substring(0, s.length()-1)+"2";
+		// if(!services.contains(newservice))
+		// add.add(newservice);
+		// remove.add(s);
+		// }
+		// }
 		result.put("add", add);
 		result.put("remove", remove);
-//		
+		//
 		return result;
 	}
 
-	private ConfigurationsPool getConfigPool(String recommId){
+	private ConfigurationsPool getConfigPool(String recommId) {
 		String prefix = getUserProfileId(recommId);
 		ConfigurationsPool pool = Repository.divaRoots.get(prefix).getConfigurationPool();
 		return pool;
 	}
-	
-	private String getUserProfileId(String recommId){
+
+	private String getUserProfileId(String recommId) {
 		return recommId.split("--")[0];
 	}
-	
+
 }

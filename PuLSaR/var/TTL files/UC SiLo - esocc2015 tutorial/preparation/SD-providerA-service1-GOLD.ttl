@@ -1,0 +1,261 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . 
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> . 
+@prefix dcterms: <http://purl.org/dc/terms/> . 
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> . 
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> . 
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> . 
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> . 
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> . 
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> . 
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> . 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+@prefix ctag: <http://commontag.org/ns#> . 
+@prefix org: <http://www.w3.org/ns/org#> . 
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> . 
+@prefix time: <http://www.w3.org/2006/time#> . 
+@prefix gr: <http://purl.org/goodrelations/v1#> . 
+@prefix doap: <http://usefulinc.com/ns/doap#> . 
+@prefix bp: <http://guide.broker-cloud.eu/esocc2015#> . 
+
+<http://www.provider-A.com/Provider-A> 
+  a gr:BusinessEntity ; 
+  gr:legalName "Provider Alpha" . 
+
+<http://www.provider-A.com/Provider-AEntityInvolvement> 
+  a usdl-core:EntityInvolvement ; 
+  usdl-core:withBusinessRole usdl-business-roles:provider ; 
+  usdl-core:ofBusinessEntity <http://www.provider-A.com/Provider-A> . 
+
+<http://www.provider-A.com/Provider-A-service-1-GOLD> 
+  a usdl-core:Service ; 
+  dcterms:creator <http://www.provider-A.com/Provider-A> ; 
+  dcterms:title "Service #1 of Provider Alpha"^^xsd:string ;
+  dcterms:description "Description of Service #1 of Provider Alpha"^^xsd:string ;
+  usdl-core:hasEntityInvolvement <http://www.provider-A.com/Provider-AEntityInvolvement> ; 
+  usdl-core-cb:hasServiceModel <http://www.provider-A.com/Provider-A-service-1-GOLD-SM> . 
+
+<http://www.provider-A.com/Provider-A-service-1-GOLD-SM> 
+  a bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
+  gr:isVariantOf bp:BrokerAtCloudESOCC2015TutorialBrokerPolicy ; 
+  bp:hasBrokerAtCloudESOCC2015TutorialServiceLevelProfile <http://www.provider-A.com/Provider-A-service-1-GOLD-SLP> ; 
+  usdl-core-cb:hasClassificationDimension <http://www.broker-cloud.eu/service-descriptions/CAS/categories#BankAndCashManagement> , 
+    <http://www.broker-cloud.eu/service-descriptions/CAS/categories#PointOfSales> . 
+
+<http://www.provider-A.com/Provider-A-service-1-GOLD-SLP> 
+  a bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
+  bp:hasSLSecurityLevel <http://www.provider-A.com/SLSecurityLevelInstance> ; 
+  bp:hasSLAuditability <http://www.provider-A.com/SLAuditabilityInstance> ; 
+  bp:hasSLTransportSecurityGuarantees <http://www.provider-A.com/SLTransportSecurityGuaranteesInstance> ; 
+  bp:hasSLLearnability <http://www.provider-A.com/SLLearnabilityInstance> ; 
+  bp:hasSLAccessibility <http://www.provider-A.com/SLAccessibilityInstance> ; 
+  bp:hasSLAmountOfVCPUs <http://www.provider-A.com/SLAmountOfVCPUsInstance> ; 
+  bp:hasSLAmountOfConcurrentInstances <http://www.provider-A.com/SLAmountOfConcurrentInstancesInstance> ; 
+  bp:hasSLRAM <http://www.provider-A.com/SLRAMInstance> ; 
+  bp:hasSLDisc <http://www.provider-A.com/SLDiscInstance> ; 
+  bp:hasSLFloatingIPs <http://www.provider-A.com/SLFloatingIPsInstance> ; 
+  bp:hasSLEphemeralDisc <http://www.provider-A.com/SLEphemeralDiscInstance> ; 
+  bp:hasSLSwapDisc <http://www.provider-A.com/SLSwapDiscInstance> . 
+
+<http://www.provider-A.com/SLSecurityLevelInstance> 
+  a bp:SLSecurityLevel ; 
+  bp:hasSLESecurityLevel <http://www.provider-A.com/SLESecurityLevelInstance> . 
+
+<http://www.provider-A.com/SLESecurityLevelInstance> 
+  a bp:SLESecurityLevel ; 
+  bp:hasVarSecurityLevel <http://www.provider-A.com/VarSecurityLevelInstance> . 
+
+<http://www.provider-A.com/VarSecurityLevelInstance> 
+  a bp:VarSecurityLevel ; 
+  bp:hasDefaultSecurityLevel bp:High_SecurityLevel . 
+
+<http://www.provider-A.com/SLAuditabilityInstance> 
+  a bp:SLAuditability ; 
+  bp:hasSLEAuditability <http://www.provider-A.com/SLEAuditabilityInstance> . 
+
+<http://www.provider-A.com/SLEAuditabilityInstance> 
+  a bp:SLEAuditability ; 
+  bp:hasVarAuditability <http://www.provider-A.com/VarAuditabilityInstance> . 
+
+<http://www.provider-A.com/VarAuditabilityInstance> 
+  a bp:VarAuditability ; 
+  bp:hasDefaultAuditability bp:High_Auditability . 
+
+<http://www.provider-A.com/SLTransportSecurityGuaranteesInstance> 
+  a bp:SLTransportSecurityGuarantees ; 
+  bp:hasSLETransportSecurityGuarantees <http://www.provider-A.com/SLETransportSecurityGuaranteesInstance> . 
+
+<http://www.provider-A.com/SLETransportSecurityGuaranteesInstance> 
+  a bp:SLETransportSecurityGuarantees ; 
+  bp:hasVarTransportSecurityGuarantees <http://www.provider-A.com/VarTransportSecurityGuaranteesInstance> . 
+
+<http://www.provider-A.com/VarTransportSecurityGuaranteesInstance> 
+  a bp:VarTransportSecurityGuarantees ; 
+  bp:hasDefaultTransportSecurityGuarantees bp:TwoWay_TransportSecurityGuarantees . 
+
+<http://www.provider-A.com/SLLearnabilityInstance> 
+  a bp:SLLearnability ; 
+  bp:hasSLELearnability <http://www.provider-A.com/SLELearnabilityInstance> . 
+
+<http://www.provider-A.com/SLELearnabilityInstance> 
+  a bp:SLELearnability ; 
+  bp:hasVarLearnability <http://www.provider-A.com/VarLearnabilityInstance> . 
+
+<http://www.provider-A.com/VarLearnabilityInstance> 
+  a bp:VarLearnability ; 
+  bp:hasDefaultLearnability bp:Fair_Learnability . 
+
+<http://www.provider-A.com/SLAccessibilityInstance> 
+  a bp:SLAccessibility ; 
+  bp:hasSLEAccessibility <http://www.provider-A.com/SLEAccessibilityInstance> . 
+
+<http://www.provider-A.com/SLEAccessibilityInstance> 
+  a bp:SLEAccessibility ; 
+  bp:hasVarAccessibility <http://www.provider-A.com/VarAccessibilityInstance> . 
+
+<http://www.provider-A.com/VarAccessibilityInstance> 
+  a bp:VarAccessibility ; 
+  bp:hasDefaultAccessibility bp:Adequate_Accessibility . 
+
+<http://www.provider-A.com/SLAmountOfVCPUsInstance> 
+  a bp:SLAmountOfVCPUs ; 
+  bp:hasSLEAmountOfVCPUs <http://www.provider-A.com/SLEAmountOfVCPUsInstance> . 
+
+<http://www.provider-A.com/SLEAmountOfVCPUsInstance> 
+  a bp:SLEAmountOfVCPUs ; 
+  bp:hasVarAmountOfVCPUs <http://www.provider-A.com/VarAmountOfVCPUsInstance> . 
+
+<http://www.provider-A.com/VarAmountOfVCPUsInstance> 
+  a bp:VarAmountOfVCPUs ; 
+  bp:hasDefaultAmountOfVCPUs <http://www.provider-A.com/Provider-A-service-1-GOLD-SL-AmountOfVCPUs> . 
+
+<http://www.provider-A.com/Provider-A-service-1-GOLD-SL-AmountOfVCPUs> 
+  a bp:AmountOfVCPUs ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "core"^^xsd:string ; 
+  gr:valueReference bp:AmountOfVCPUsValueRange ; 
+  gr:hasMinValueInteger "2"^^xsd:integer ; 
+  gr:hasMaxValueInteger "4"^^xsd:integer . 
+
+<http://www.provider-A.com/SLAmountOfConcurrentInstancesInstance> 
+  a bp:SLAmountOfConcurrentInstances ; 
+  bp:hasSLEAmountOfConcurrentInstances <http://www.provider-A.com/SLEAmountOfConcurrentInstancesInstance> . 
+
+<http://www.provider-A.com/SLEAmountOfConcurrentInstancesInstance> 
+  a bp:SLEAmountOfConcurrentInstances ; 
+  bp:hasVarAmountOfConcurrentInstances <http://www.provider-A.com/VarAmountOfConcurrentInstancesInstance> . 
+
+<http://www.provider-A.com/VarAmountOfConcurrentInstancesInstance> 
+  a bp:VarAmountOfConcurrentInstances ; 
+  bp:hasDefaultAmountOfConcurrentInstances <http://www.provider-A.com/Provider-A-service-1-GOLD-SL-AmountOfConcurrentInstances> . 
+
+<http://www.provider-A.com/Provider-A-service-1-GOLD-SL-AmountOfConcurrentInstances> 
+  a bp:AmountOfConcurrentInstances ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "VMinstance"^^xsd:string ; 
+  gr:valueReference bp:AmountOfConcurrentInstancesValueRange ; 
+  gr:hasValueInteger "2"^^xsd:integer ; 
+  gr:hasMinValueInteger "2"^^xsd:integer ; 
+  gr:hasMaxValueInteger "2"^^xsd:integer . 
+
+<http://www.provider-A.com/SLRAMInstance> 
+  a bp:SLRAM ; 
+  bp:hasSLERAM <http://www.provider-A.com/SLERAMInstance> . 
+
+<http://www.provider-A.com/SLERAMInstance> 
+  a bp:SLERAM ; 
+  bp:hasVarRAM <http://www.provider-A.com/VarRAMInstance> . 
+
+<http://www.provider-A.com/VarRAMInstance> 
+  a bp:VarRAM ; 
+  bp:hasDefaultRAM <http://www.provider-A.com/Provider-A-service-1-GOLD-SL-RAM> . 
+
+<http://www.provider-A.com/Provider-A-service-1-GOLD-SL-RAM> 
+  a bp:RAM ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:valueReference bp:RAMValueRange ; 
+  gr:hasMinValueInteger "1024"^^xsd:integer ; 
+  gr:hasMaxValueInteger "4096"^^xsd:integer . 
+
+<http://www.provider-A.com/SLDiscInstance> 
+  a bp:SLDisc ; 
+  bp:hasSLEDisc <http://www.provider-A.com/SLEDiscInstance> . 
+
+<http://www.provider-A.com/SLEDiscInstance> 
+  a bp:SLEDisc ; 
+  bp:hasVarDisc <http://www.provider-A.com/VarDiscInstance> . 
+
+<http://www.provider-A.com/VarDiscInstance> 
+  a bp:VarDisc ; 
+  bp:hasDefaultDisc <http://www.provider-A.com/Provider-A-service-1-GOLD-SL-Disc> . 
+
+<http://www.provider-A.com/Provider-A-service-1-GOLD-SL-Disc> 
+  a bp:Disc ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
+  gr:valueReference bp:DiscValueRange ; 
+  gr:hasMinValueInteger "20"^^xsd:integer ; 
+  gr:hasMaxValueInteger "50"^^xsd:integer . 
+
+<http://www.provider-A.com/SLFloatingIPsInstance> 
+  a bp:SLFloatingIPs ; 
+  bp:hasSLEFloatingIPs <http://www.provider-A.com/SLEFloatingIPsInstance> . 
+
+<http://www.provider-A.com/SLEFloatingIPsInstance> 
+  a bp:SLEFloatingIPs ; 
+  bp:hasVarFloatingIPs <http://www.provider-A.com/VarFloatingIPsInstance> . 
+
+<http://www.provider-A.com/VarFloatingIPsInstance> 
+  a bp:VarFloatingIPs ; 
+  bp:hasDefaultFloatingIPs <http://www.provider-A.com/Provider-A-service-1-GOLD-SL-FloatingIPs> . 
+
+<http://www.provider-A.com/Provider-A-service-1-GOLD-SL-FloatingIPs> 
+  a bp:FloatingIPs ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "IPaddress"^^xsd:string ; 
+  gr:valueReference bp:FloatingIPsValueRange ; 
+  gr:hasValueInteger "2"^^xsd:integer ; 
+  gr:hasMinValueInteger "2"^^xsd:integer ; 
+  gr:hasMaxValueInteger "2"^^xsd:integer . 
+
+<http://www.provider-A.com/SLEphemeralDiscInstance> 
+  a bp:SLEphemeralDisc ; 
+  bp:hasSLEEphemeralDisc <http://www.provider-A.com/SLEEphemeralDiscInstance> . 
+
+<http://www.provider-A.com/SLEEphemeralDiscInstance> 
+  a bp:SLEEphemeralDisc ; 
+  bp:hasVarEphemeralDisc <http://www.provider-A.com/VarEphemeralDiscInstance> . 
+
+<http://www.provider-A.com/VarEphemeralDiscInstance> 
+  a bp:VarEphemeralDisc ; 
+  bp:hasDefaultEphemeralDisc <http://www.provider-A.com/Provider-A-service-1-GOLD-SL-EphemeralDisc> . 
+
+<http://www.provider-A.com/Provider-A-service-1-GOLD-SL-EphemeralDisc> 
+  a bp:EphemeralDisc ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
+  gr:valueReference bp:EphemeralDiscValueRange ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "10"^^xsd:integer . 
+
+<http://www.provider-A.com/SLSwapDiscInstance> 
+  a bp:SLSwapDisc ; 
+  bp:hasSLESwapDisc <http://www.provider-A.com/SLESwapDiscInstance> . 
+
+<http://www.provider-A.com/SLESwapDiscInstance> 
+  a bp:SLESwapDisc ; 
+  bp:hasVarSwapDisc <http://www.provider-A.com/VarSwapDiscInstance> . 
+
+<http://www.provider-A.com/VarSwapDiscInstance> 
+  a bp:VarSwapDisc ; 
+  bp:hasDefaultSwapDisc <http://www.provider-A.com/Provider-A-service-1-GOLD-SL-SwapDisc> . 
+
+<http://www.provider-A.com/Provider-A-service-1-GOLD-SL-SwapDisc> 
+  a bp:SwapDisc ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:valueReference bp:SwapDiscValueRange ; 
+  gr:hasMinValueInteger "1024"^^xsd:integer ; 
+  gr:hasMaxValueInteger "4096"^^xsd:integer . 

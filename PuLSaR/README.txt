@@ -34,11 +34,11 @@ Starting PuLSaR
     Run script bin\fuseki.bat (in Windows) or bin/fuseki.sh (in *nix/Linux).
     Run script bin\pulsar.bat (in Windows) or bin/pulsar.sh (in *nix/Linux).
     Run script bin\cli.bat (in Windows) or bin/cli.sh (in *nix/Linux).
-    When CLI command prompt PULSAR> write give feedback schedule 60000 and press ENTER.
+    When CLI command prompt PULSAR> appers give feedback schedule 60000 and press ENTER.
     The following links should now be available on your system:
         Fuseki Control Panel:  http://localhost:3030/
         PuLSaR:  http://localhost:9090/
-    You can logging using any user listed in file jetty-users.properties.
+    You can log in using any user listed in file jetty-users.properties.
 
 Stopping PuLSaR
 

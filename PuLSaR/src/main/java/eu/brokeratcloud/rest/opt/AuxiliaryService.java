@@ -34,6 +34,7 @@ import eu.brokeratcloud.util.*;
 public class AuxiliaryService extends AbstractManagementService {
 	protected static final Logger logger = LoggerFactory.getLogger("eu.brokeratcloud.rest.opt.AuxiliaryService");
 	
+	// Stats Counters
 	protected static int spl10 = -1;
 	protected static int spl11 = -1;
 	protected static int spl12 = -1;
@@ -120,8 +121,7 @@ public class AuxiliaryService extends AbstractManagementService {
 		}
 	}
 	
-	// Retrieves service descriptions belonging to given category/ies
-	// NOTE: 'cat_id' can be a comma-separated list of classification dimension IDs (e.g. maps,energy,developer)
+	// Retrieves service descriptions belonging to given service provider
 	@GET
 	@Path("/offerings/sp/{sp}/list")
 	@Produces("application/json")
@@ -261,13 +261,26 @@ public class AuxiliaryService extends AbstractManagementService {
 		}
 	}
 	
+//TODO: DELETE AFTER INTEGRATION WITH FPR !!!
+	// Simulates FPR query operation for recommended services
+	@GET
+	@Path("/frp-recommended/service/{serv_id}/timestamp/{timestamp}")
+	@Produces("application/json")
+	public String simulateFprRecomResponse(@PathParam("serv_id") String srvUri, @PathParam("timestamp") String tm) {
+		srvUri = java.net.URLDecoder.decode(srvUri);
+		logger.warn("simulateFprRecomResponse: FPR QUERIED:  service={}, timestamp={}", srvUri, tm);
+		logger.warn("simulateFprRecomResponse: ** REMOVE AFTER INTEGRATING WITH FPRC **");
+		return String.format("{ \"recommended\" : [ \"admin\", \"sc1\", \"sc2\" ] }");
+	}
+	
 	// =============================================================================================================================
 	
 	protected static String serviceBasicInfoQueryTemplate =
-				"SELECT ?title ?creatorName ?creatorLogo ?creatorWeb (group_concat(?cd ; separator = \", \") as ?categories) \n"+
+				"SELECT ?title ?description ?creatorName ?creatorLogo ?creatorWeb (group_concat(?cd ; separator = \", \") as ?categories) \n"+
 				"WHERE { \n"+
 				"	FILTER (?srv = <%s>) . \n"+										// 'srvUri' goes here !!
 				"	?srv <http://purl.org/dc/terms/title> ?title . \n"+
+				"	OPTIONAL { ?srv <http://purl.org/dc/terms/description> ?description } . \n"+
 				"	?srv <http://purl.org/dc/terms/creator> ?creator . \n"+
 				"	OPTIONAL { ?creator <http://purl.org/goodrelations/v1#legalName> ?creatorName } . \n"+
 				"	OPTIONAL { ?creator <http://xmlns.com/foaf/0.1/homepage> ?creatorHomepage } . \n"+
@@ -277,9 +290,9 @@ public class AuxiliaryService extends AbstractManagementService {
 				"		?sm <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasClassificationDimension> ?cd . \n"+
 				"	} \n"+
 				"} \n"+
-				"GROUP BY ?title ?creatorName ?creatorLogo ?creatorWeb \n".intern();
+				"GROUP BY ?title ?description ?creatorName ?creatorLogo ?creatorWeb \n".intern();
 	protected static String serviceLevelProfileQueryTemplate =
-					"SELECT DISTINCT ?typ ?allowedValues ?defVal ?defValLabel ?uom ?oneVal ?minVal ?maxVal ?minSupVal ?maxSupVal ?minKernVal ?maxKernVal ?meanVal \n"+
+					"SELECT DISTINCT ?typ ?allowedValues ?defVal ?defValLabel ?uom ?oneVal ?minVal ?maxVal \n"+
 					"WHERE { \n"+
 					"	# BROKER POLICY \n"+
 					"	BIND ( <%s> as ?slp ). \n"+									// 'slpUri' goes here !!
@@ -307,7 +320,7 @@ public class AuxiliaryService extends AbstractManagementService {
 					"	?varClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-sla#Variable> . \n"+
 					"	?hasDef <http://www.w3.org/2000/01/rdf-schema#range> ?allowedValues . \n"+
 					"	{ \n"+
-					"		?hasDef <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasDefaultQuantitativeValue> . \n"+
+					"		?hasDef <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#hasDefaultQuantitativeValue> . \n"+
 					"		{ \n"+
 					"			?allowedValues <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#isRange> 'true'^^<http://www.w3.org/2001/XMLSchema#boolean> \n"+
 					"				BIND ( 'NUMERIC_RANGE' as ?typ ) \n"+
@@ -326,9 +339,8 @@ public class AuxiliaryService extends AbstractManagementService {
 					"	} \n"+
 					"	UNION \n"+
 					"	{ \n"+
-					"		?hasDef <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasDefaultQualitativeValue> . \n"+
+					"		?hasDef <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#hasDefaultQualitativeValue> . \n"+
 					"		?ind a ?allowedValues . \n"+
-					"		OPTIONAL { \n"+
 					"			{ \n"+
 					"				?dpvv <http://www.w3.org/2000/01/rdf-schema#domain> ?pv . \n"+
 					"				?dpvv <http://www.w3.org/2000/01/rdf-schema#range> ?allowedValues . \n"+
@@ -344,14 +356,14 @@ public class AuxiliaryService extends AbstractManagementService {
 					"				?pv <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.linked-usdl.org/ns/usdl-pref#BooleanVariable> . \n"+
 					"				BIND ( 'BOOLEAN' as ?typ ) . \n"+
 					"			} \n"+
-					"		} \n"+
 					"	} . \n"+
 					"	?var ?hasDef ?defVal . \n"+
 					"	# DEFAULT VALUES \n"+
 					"	OPTIONAL { ?defVal <http://www.w3.org/2000/01/rdf-schema#label> ?defValLabel } . \n"+
 					"	OPTIONAL { ?defVal <http://purl.org/goodrelations/v1#hasUnitOfMeasurement> ?uom } . \n"+
 					"	OPTIONAL { \n"+
-					"		?rel1 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasValue> . \n"+
+					"		?rel1 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasMinValue> . \n"+
+					"		?rel1 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasMaxValue> . \n"+
 					"		?defVal ?rel1 ?oneVal \n"+
 					"	} . \n"+
 					"	OPTIONAL { \n"+
@@ -361,26 +373,6 @@ public class AuxiliaryService extends AbstractManagementService {
 					"	OPTIONAL { \n"+
 					"		?rel3 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasMaxValue> . \n"+
 					"		?defVal ?rel3 ?maxVal \n"+
-					"	} . \n"+
-					"	OPTIONAL { \n"+
-					"		?rel4 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMinSupport> . \n"+
-					"		?defVal ?rel4 ?minSupVal \n"+
-					"	} . \n"+
-					"	OPTIONAL { \n"+
-					"		?rel5 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMaxSupport> . \n"+
-					"		?defVal ?rel5 ?maxSupVal \n"+
-					"	} . \n"+
-					"	OPTIONAL { \n"+
-					"		?rel6 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMinKernel> . \n"+
-					"		?defVal ?rel6 ?minKernVal \n"+
-					"	} . \n"+
-					"	OPTIONAL { \n"+
-					"		?rel7 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMaxKernel> . \n"+
-					"		?defVal ?rel7 ?maxKernVal \n"+
-					"	} . \n"+
-					"	OPTIONAL { \n"+
-					"		?rel8 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasMaxMembershipValue> . \n"+
-					"		?defVal ?rel8 ?meanVal \n"+
 					"	} . \n"+
 					"} \n"+
 					"ORDER BY ?allowedValues \n".intern();
@@ -420,7 +412,6 @@ public class AuxiliaryService extends AbstractManagementService {
 					"	UNION \n"+
 					"	{ ?hasVal <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#qualitativeProductOrServiceProperty> . \n"+
 					"	  ?ind a ?allowedValues . \n"+
-					"	  OPTIONAL { \n"+
 					"		{ \n"+
 					"			?dpvv <http://www.w3.org/2000/01/rdf-schema#domain> ?pv . \n"+
 					"			?dpvv <http://www.w3.org/2000/01/rdf-schema#range> ?allowedValues . \n"+
@@ -436,7 +427,6 @@ public class AuxiliaryService extends AbstractManagementService {
 					"			?pv <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.linked-usdl.org/ns/usdl-pref#BooleanVariable> . \n"+
 					"			BIND ( 'BOOLEAN' as ?typ ) . \n"+
 					"		} \n"+
-					"	  } \n"+
 					"	} \n"+
 					"	UNION \n"+
 					"	{ ?hasVal <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#datatypeProductOrServiceProperty> . \n"+
@@ -445,7 +435,8 @@ public class AuxiliaryService extends AbstractManagementService {
 					"	OPTIONAL { ?val <http://www.w3.org/2000/01/rdf-schema#label> ?valLabel } . \n"+
 					"	OPTIONAL { ?val <http://purl.org/goodrelations/v1#hasUnitOfMeasurement> ?uom } . \n"+
 					"	OPTIONAL { \n"+
-					"		?rel1 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasValue> . \n"+
+					"		?rel1 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasMinValue> . \n"+
+					"		?rel1 <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://purl.org/goodrelations/v1#hasMaxValue> . \n"+
 					"		?val ?rel1 ?oneVal \n"+
 					"	} . \n"+
 					"	OPTIONAL { \n"+
@@ -484,9 +475,10 @@ public class AuxiliaryService extends AbstractManagementService {
 	protected static HashMap<String,HashMap<String,String>> slpCache = new HashMap<String,HashMap<String,String>>();
 	protected static Object slpCacheLock = new Object();
 	
-	// INTERNAL USAGE ONLY!!!
+	// INTERNAL USE ONLY!!!
 	// Retrieves service description for given URI
 	protected ServiceDescription _getServiceDescription(String srvUri, String smUri, String slpUri, String bpi, String bpsmc, SparqlServiceClient client) {
+		//Get Stat Counters
 		if (spl10==-1) spl10 = Stats.get().getOrCreateSplitByName("SOS: AUX._getServiceDescription: QUERY-1");
 		if (spl11==-1) spl11 = Stats.get().getOrCreateSplitByName("SOS: AUX._getServiceDescription: QUERY-2");
 		if (spl12==-1) spl12 = Stats.get().getOrCreateSplitByName("SOS: AUX._getServiceDescription: QUERY-3");
@@ -525,24 +517,26 @@ public class AuxiliaryService extends AbstractManagementService {
 			// create service description object
 			Map<String,RDFNode> soln = results.get(0);
 			String title = val2str( soln.get("title") ).trim();
+			String description = val2str( soln.get("description") ).trim();
 			String creatorName = val2str( soln.get("creatorName") ).trim();
 			String creatorLogo = node2url( soln.get("creatorLogo") ).trim();
 			String creatorWeb  = node2url( soln.get("creatorHomepage") ).trim();
 			String categories  = node2url( soln.get("categories") ).trim();
 			
-			String dscr = (creatorLogo.isEmpty()) ? creatorName : String.format("<img src=\"%s\" /> %s", creatorLogo, creatorName).trim();
-			if (!dscr.isEmpty() && !creatorWeb.isEmpty()) dscr = String.format("<a href=\"%s\">%s</a>", creatorWeb, dscr);
+			String tmp = (creatorLogo.isEmpty()) ? creatorName : String.format("<img src=\"%s\" /> %s", creatorLogo, creatorName).trim();
+			if (!tmp.isEmpty() && !creatorWeb.isEmpty()) tmp = String.format("<a href=\"%s\">%s</a>", creatorWeb, tmp);
+			creatorName = tmp;
 			
-			int p1 = smUri.lastIndexOf("#"), p2 = smUri.lastIndexOf("/"); p1 = (p1>p2) ? p1 : p2; 
-			String smName = (p1>-1) ? smUri.substring(p1) : smUri;
+			//logger.trace("_getServiceDescription(URI): title={}, sm-uri={}, sm={}, descr={}", title, smUri, description);
 			
 			ServiceDescription sd = new ServiceDescription();
-			sd.setId( srvUri );
-			sd.setName( title + " / " + smName );
-			sd.setServiceName( title + " / " + smName );
+			sd.setId( srvUri );			// service id is not really used anywhere else but internally in RecommendationManager. No need to assign a new service id
+			sd.setName( title );
+			sd.setServiceName( title );
 			sd.setOwner( creatorName );
-			sd.setDescription( dscr );
+			sd.setDescription( description );
 			sd.setServiceCategory( categories );
+			sd.setServiceModelUri( smUri );
 			
 			logger.trace("_getServiceDescription(URI): Service description object created: \n{}", sd);
 			
@@ -637,12 +631,13 @@ public class AuxiliaryService extends AbstractManagementService {
 				attrs.put(".SERVICE-LEVEL-PROFILE-URI", slpUri);
 				int p11 = slpUri.lastIndexOf("#"), p22 = slpUri.lastIndexOf("/");
 				p11 = p11>p22 ? p11 : p22;
-				String slpId = (p11>-1) ? slpUri.substring(p11) : slpUri;
+				String slpId = (p11>-1 && p11+1<slpUri.length()) ? slpUri.substring(p11+1) : slpUri;
 				attrs.put(".SERVICE-LEVEL-PROFILE-ID", slpId);
 			}
 			
 			// Query for SERVICE MODEL attribute values
 			String queryStrSM = String.format( serviceModelQueryTemplate, smUri );
+			
 			logger.trace("getServiceDescription(URI): Query-SM: \n{}", queryStrSM);
 			Stats.get().startSplit(spl12);
 			results = client.queryAndProcess(queryStrSM);
@@ -729,7 +724,7 @@ public class AuxiliaryService extends AbstractManagementService {
 		}
 	}
 	
-	// INTERNAL USAGE ONLY!!!
+	// INTERNAL USE ONLY!!!
 	protected String val2str(Object o) {
 		if (o==null) return "";
 		String str = o.toString().trim();
@@ -758,7 +753,7 @@ public class AuxiliaryService extends AbstractManagementService {
 		return str;
 	}
 	
-	// INTERNAL USAGE ONLY!!!
+	// INTERNAL USE ONLY!!!
 	protected String node2url(RDFNode r) {
 		if (r==null) return "";
 		String s = r.toString();

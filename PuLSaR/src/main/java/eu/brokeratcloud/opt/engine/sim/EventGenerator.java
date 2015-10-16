@@ -101,6 +101,8 @@ public class EventGenerator {
 	}
 	
 	public void waitToComplete() {
-		while (isRunning) try { Thread.sleep(100); } catch (Exception e) { System.err.println("XXX: "+e); }
+		//System.err.println("EventGenerator: waitToComplete: BEGIN: isRunning="+isRunning);
+		while (isRunning) try { Thread.sleep(100); } catch (Exception e) { System.err.println("EventGenerator: waitToComplete: EXCEPTION: "+e); }
+		//System.err.println("EventGenerator: waitToComplete: END: isRunning="+isRunning);
 	}
 }

@@ -1,0 +1,1153 @@
+@prefix cas:   <http://www.broker-cloud.eu/service-descriptions/CAS/broker#> .
+@prefix vann:  <http://purl.org/vocab/vann/> .
+@prefix usdl-pref: <http://www.linked-usdl.org/ns/usdl-pref#> .
+@prefix pref-att: <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE/> .
+@prefix org:   <http://www.w3.org/ns/org#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix cpp-fld-profile: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-PROFILE/> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix time:  <http://www.w3.org/2006/time#> .
+@prefix bp:    <http://guide.broker-cloud.eu/esocc2015#> .
+@prefix ctag:  <http://commontag.org/ns#> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker> .
+@prefix cpp-profile: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-PROFILE#> .
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> .
+@prefix dc:    <http://purl.org/dc/elements/1.1/> .
+@prefix cpp-pref: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE#> .
+@prefix foaf:  <http://xmlns.com/foaf/0.1/> .
+@prefix sp:    <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider#> .
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> .
+@prefix att:   <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#> .
+@prefix xml:   <http://www.w3.org/XML/1998/namespace> .
+@prefix attr:  <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#> .
+@prefix vcard: <http://www.w3.org/TR/vcard-rdf/> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix fc:    <http://www.broker-cloud.eu/service-descriptions/CAS/categories#> .
+@prefix cpp-fld-expr: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-EXPRESSION/> .
+@prefix s:     <http://schema.org/> .
+@prefix cpp-fld-pref: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE/> .
+@prefix xsd:   <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl:   <http://www.w3.org/2002/07/owl#> .
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> .
+@prefix pulsar: <http://www.brokeratcloud.eu/persist/types#> .
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> .
+@prefix gr:    <http://purl.org/goodrelations/v1#> .
+@prefix doap:  <http://usefulinc.com/ns/doap#> .
+@prefix skos:  <http://www.w3.org/2004/02/skos/core#> .
+@prefix cpp-expr: <http://www.brokeratcloud.eu/v1/opt/CONSUMER-PREFERENCE-EXPRESSION#> .
+
+attr:null  a                 usdl-pref:ServiceAttribute ;
+        dcterms:created      "1900-01-01T00:00:00+00:00"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "null"^^xsd:string ;
+        dcterms:modified     "1900-01-01T00:00:00+00:00"^^xsd:dateTime ;
+        dcterms:title        "NO_ATTRIBUTE"^^xsd:string .
+
+attr:attr-root  a            usdl-pref:ServiceAttribute ;
+        dcterms:created      "1900-01-01T01:41:48+01:34"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Broker@Cloud Service Attribute Categorization Root"^^xsd:string ;
+        dcterms:identifier   "attr-root"^^xsd:string ;
+        dcterms:modified     "2014-10-15T19:09:08.613+03:00"^^xsd:dateTime ;
+        dcterms:title        "Service Attributes Root (Extended SMI)"^^xsd:string .
+
+attr:attr-reputation-brand-name
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:34:52+03:00"^^xsd:dateTime ;
+        dcterms:description  "It is the linguistic expression of the reputation of the cloud service provider as perceived by its consumers"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-brand-name"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:26:38+03:00"^^xsd:dateTime ;
+        dcterms:title        "Brand Name"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+attr:attr-performance-suitability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:02:58Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "How closely do the capabilities of the service match the needs of the client"^^xsd:string ;
+        dcterms:identifier   "attr-performance-suitability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:02:58Z"^^xsd:dateTime ;
+        dcterms:title        "Suitability"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+attr:attr-assurance-serviceability-documentation
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:30:49+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-serviceability-documentation"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:13:51+03:00"^^xsd:dateTime ;
+        dcterms:title        "Documentation"^^xsd:string ;
+        skos:broader         attr:attr-assurance-serviceability .
+
+attr:attr-reputation-sustainability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:34:01+03:00"^^xsd:dateTime ;
+        dcterms:description  "The impact on the economy, society and the environment of the service provider"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-sustainability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:34:01+03:00"^^xsd:dateTime ;
+        dcterms:title        "Sustainability"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+attr:attr-security-data-geographic-political
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:52:25Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The client's constraints on service location based on geography or politics"^^xsd:string ;
+        dcterms:identifier   "attr-security-data-geographic-political"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:52:25Z"^^xsd:dateTime ;
+        dcterms:title        "Data Geographic/Political"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:attr-accountability-personnel-requirements
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:36:10Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The extent to which service provider personnel have the skills, experience, education, and certifications required to effectively deliver a service"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-personnel-requirements"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:36:10Z"^^xsd:dateTime ;
+        dcterms:title        "Provider Personnel Requirements"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+attr:attr-performance-monitoring-middelware
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:06:19Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-monitoring-middelware"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:06:19Z"^^xsd:dateTime ;
+        dcterms:title        "Monitoring Middelware"^^xsd:string ;
+        skos:broader         attr:attr-performance-monitoring .
+
+attr:attr-accountability-compliance
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:30:22Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "It examines whether or not, standards, processes, and policies committed to by the service provider, are followed"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-compliance"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:30:22Z"^^xsd:dateTime ;
+        dcterms:title        "Compliance"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+attr:attr-accountability-personnel-requirements-technical-competency-of-support
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:36:47Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-accountability-personnel-requirements-technical-competency-of-support"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:36:47Z"^^xsd:dateTime ;
+        dcterms:title        "Technical competency of the support employees"^^xsd:string ;
+        skos:broader         attr:attr-accountability-personnel-requirements .
+
+attr:attr-assurance-availability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:27:57+03:00"^^xsd:dateTime ;
+        dcterms:description  "The amount of time that a client can make use of a service"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-availability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:48:14+03:00"^^xsd:dateTime ;
+        dcterms:title        "Availability"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+attr:attr-reputation-sustainability-societal-impact
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T13:35:01Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-reputation-sustainability-societal-impact"^^xsd:string ;
+        dcterms:modified     "2014-07-18T13:35:01Z"^^xsd:dateTime ;
+        dcterms:title        "Societal impact"^^xsd:string ;
+        skos:broader         attr:attr-reputation-sustainability .
+
+attr:attr-performance-capacity-memory-speed
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:57:47Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-memory-speed"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:57:47Z"^^xsd:dateTime ;
+        dcterms:title        "Memory Speed"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-security-proactive-threat-vulnerability-management-security-level
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2015-09-08T10:41:29.655+03:00"^^xsd:dateTime ;
+        dcterms:description  "Defines the protection level of the virtual machine instance, which is applied by the IaaS networking controller"^^xsd:string ;
+        dcterms:identifier   "attr-security-proactive-threat-vulnerability-management-security-level"^^xsd:string ;
+        dcterms:modified     "2015-09-08T10:41:29.655+03:00"^^xsd:dateTime ;
+        dcterms:title        "Security Level"^^xsd:string ;
+        skos:broader         attr:attr-security-proactive-threat-vulnerability-management .
+
+attr:attr-reputation  a      usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:21:41+03:00"^^xsd:dateTime ;
+        dcterms:description  "It is related to the reputation of the Service provider and of the cloud service offerings that are provided"^^xsd:string ;
+        dcterms:identifier   "attr-reputation"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:26:05+03:00"^^xsd:dateTime ;
+        dcterms:title        "Reputation"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+attr:attr-performance-monitoring
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:05:46Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "It indicates how much the monitoring capability is supported regarding the offered cloud services"^^xsd:string ;
+        dcterms:identifier   "attr-performance-monitoring"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:05:46Z"^^xsd:dateTime ;
+        dcterms:title        "Monitoring"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+attr:attr-assurance-serviceability-type-of-support
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:30:19+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-serviceability-type-of-support"^^xsd:string ;
+        dcterms:modified     "2014-05-23T21:30:19+03:00"^^xsd:dateTime ;
+        dcterms:title        "Type of Support"^^xsd:string ;
+        skos:broader         attr:attr-assurance-serviceability .
+
+attr:attr-assurance-reliability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:53:48Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "It reflects measures of how a service operates without failure under given conditions during a given time period"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-reliability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:53:48Z"^^xsd:dateTime ;
+        dcterms:title        "Reliability"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+attr:attr-performance-capacity-clock-speed
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:56:52Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-clock-speed"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:56:52Z"^^xsd:dateTime ;
+        dcterms:title        "Clock Speed"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-usability-client-personnel-requirements
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:00:27+03:00"^^xsd:dateTime ;
+        dcterms:description  "The minimum number of personnel satisfying roles, skills, experience, education, and certification required of the client to effectively utilize a service"^^xsd:string ;
+        dcterms:identifier   "attr-usability-client-personnel-requirements"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:00:27+03:00"^^xsd:dateTime ;
+        dcterms:title        "Client Personnel Requirements"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+attr:attr-security-management
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:56:50+03:00"^^xsd:dateTime ;
+        dcterms:description  "The capabilities of service providers to ensure application, data, and infrastructure security based on the security requirements of the client"^^xsd:string ;
+        dcterms:identifier   "attr-security-management"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:56:50+03:00"^^xsd:dateTime ;
+        dcterms:title        "Security Management"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:attr-performance-capacity-memory
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:57:29Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-memory"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:57:29Z"^^xsd:dateTime ;
+        dcterms:title        "Memory"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-performance-interoperability-layer
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:03:51Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-interoperability-layer"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:03:51Z"^^xsd:dateTime ;
+        dcterms:title        "Interoperability Layer"^^xsd:string ;
+        skos:broader         attr:attr-performance-interoperability .
+
+attr:attr-security-physical-environmental-security
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:54:37+03:00"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Policies and processes in use by the service provider to protect the provider facilities from unauthorized access, damage or interference"^^xsd:string ;
+        dcterms:identifier   "attr-security-physical-environmental-security"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:54:37+03:00"^^xsd:dateTime ;
+        dcterms:title        "Physical & Environmental Security"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:attr-security-proactive-threat-vulnerability-management-firewall-utm
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:55:50Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-security-proactive-threat-vulnerability-management-firewall-utm"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:55:50Z"^^xsd:dateTime ;
+        dcterms:title        "Firewall (UTM-unified threat management)"^^xsd:string ;
+        skos:broader         attr:attr-security-proactive-threat-vulnerability-management .
+
+attr:attr-assurance-service-stability-cpu
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:29:16+03:00"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-service-stability-cpu"^^xsd:string ;
+        dcterms:modified     "2014-05-23T21:29:16+03:00"^^xsd:dateTime ;
+        dcterms:title        "CPU"^^xsd:string ;
+        skos:broader         attr:attr-assurance-service-stability .
+
+attr:attr-assurance-service-stability-uptime
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:29:02+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-service-stability-uptime"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:55:15+03:00"^^xsd:dateTime ;
+        dcterms:title        "Uptime"^^xsd:string ;
+        skos:broader         attr:attr-assurance-service-stability .
+
+attr:attr-performance-capacity-concurrent-vm-instances
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2015-09-08T10:38:08.505+03:00"^^xsd:dateTime ;
+        dcterms:description  "Amount of working containers able to handle execution load of the service"^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-concurrent-vm-instances"^^xsd:string ;
+        dcterms:modified     "2015-09-08T10:38:08.505+03:00"^^xsd:dateTime ;
+        dcterms:title        "Amount of Concurrent VM Instances"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-assurance-service-stability-memory
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:29:30Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-service-stability-memory"^^xsd:string ;
+        dcterms:modified     "2014-05-23T18:29:30Z"^^xsd:dateTime ;
+        dcterms:title        "Memory"^^xsd:string ;
+        skos:broader         attr:attr-assurance-service-stability .
+
+attr:attr-security-data-privacy-loss
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:53:42Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Client restrictions on access and use of client data are enforced by the service provider. Any failures of these protections are promptly detected and reported to the client"^^xsd:string ;
+        dcterms:identifier   "attr-security-data-privacy-loss"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:53:42Z"^^xsd:dateTime ;
+        dcterms:title        "Data Privacy & Data Loss"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:attr-financial-cost-operation-cost
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:32:03Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-financial-cost-operation-cost"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:25:18Z"^^xsd:dateTime ;
+        dcterms:title        "Operating cost"^^xsd:string ;
+        skos:broader         attr:attr-financial-cost .
+
+attr:attr-performance
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:20:08+03:00"^^xsd:dateTime ;
+        dcterms:description  "It covers the features and functions of the provided services"^^xsd:string ;
+        dcterms:identifier   "attr-performance"^^xsd:string ;
+        dcterms:modified     "2014-07-18T14:41:37+03:00"^^xsd:dateTime ;
+        dcterms:title        "Performance"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+attr:attr-security-management-encrypted-storage
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:57:10+03:00"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-security-management-encrypted-storage"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:57:10+03:00"^^xsd:dateTime ;
+        dcterms:title        "Encrypted Storage"^^xsd:string ;
+        skos:broader         attr:attr-security-management .
+
+attr:attr-performance-capacity-network-throughput
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T14:59:00+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-network-throughput"^^xsd:string ;
+        dcterms:modified     "2014-07-18T14:59:00+03:00"^^xsd:dateTime ;
+        dcterms:title        "Network Throughput"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-reputation-ease-of-doing-business
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T13:32:31Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Client satisfaction with the ability to do business with a service provider"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-ease-of-doing-business"^^xsd:string ;
+        dcterms:modified     "2014-07-18T13:32:31Z"^^xsd:dateTime ;
+        dcterms:title        "Ease of doing business"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+attr:attr-agility-adaptability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:13:04Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of the service provider to adjust to changes in client requirements"^^xsd:string ;
+        dcterms:identifier   "attr-agility-adaptability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:13:04Z"^^xsd:dateTime ;
+        dcterms:title        "Adaptability"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+attr:attr-security-access-control-privilege-management
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:50:58Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Policies and processes in use by the service provider to ensure that only the provider and client personnel with appropriate status/reasons to make use of or modify data/work products may do so"^^xsd:string ;
+        dcterms:identifier   "attr-security-access-control-privilege-management"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:50:58Z"^^xsd:dateTime ;
+        dcterms:title        "Access Control & Privilege Management"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:attr-performance-monitoring-level
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:06:03Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-monitoring-level"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:06:03Z"^^xsd:dateTime ;
+        dcterms:title        "Monitoring Level"^^xsd:string ;
+        skos:broader         attr:attr-performance-monitoring .
+
+attr:attr-usability-installability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:23:17+03:00"^^xsd:dateTime ;
+        dcterms:description  "Installability characterizes the time and effort required to get a service ready for delivery (where applicable)"^^xsd:string ;
+        dcterms:identifier   "attr-usability-installability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:23:17+03:00"^^xsd:dateTime ;
+        dcterms:title        "Installability"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+attr:attr-security-retention-disposition
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:56:25Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The service provider's data retention and disposition processes meet the clients' requirements"^^xsd:string ;
+        dcterms:identifier   "attr-security-retention-disposition"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:56:25Z"^^xsd:dateTime ;
+        dcterms:title        "Retention/Disposition"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:attr-usability-accessibility
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:59:26+03:00"^^xsd:dateTime ;
+        dcterms:description  "The degree to which a service is operable by users with disabilities"^^xsd:string ;
+        dcterms:identifier   "attr-usability-accessibility"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:59:26+03:00"^^xsd:dateTime ;
+        dcterms:title        "Accessibility"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+attr:attr-accountability-governance
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:31:58Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The processes used by the service provider to manage client expectations, issues and service performance"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-governance"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:31:58Z"^^xsd:dateTime ;
+        dcterms:title        "Governance"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+attr:attr-performance-service-response-time-average-value
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:34:16+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-service-response-time-average-value"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:05:21+03:00"^^xsd:dateTime ;
+        dcterms:title        "Average Response time"^^xsd:string ;
+        skos:broader         attr:attr-performance-service-response-time .
+
+attr:attr-reputation-provider-ethicality
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T13:33:42Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Ethicality refers to the manner in which the service provider conducts business; it includes business practices and ethics outside the scope of regulatory compliance. It also includes fair practices with suppliers, customers, and employees"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-provider-ethicality"^^xsd:string ;
+        dcterms:modified     "2014-07-18T13:33:42Z"^^xsd:dateTime ;
+        dcterms:title        "Provider Ethicality"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+attr:attr-performance-capacity-num-of-threads-per-core
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:56:30Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-num-of-threads-per-core"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:56:30Z"^^xsd:dateTime ;
+        dcterms:title        "Number of Threads per Core"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-assurance-serviceability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:28:31Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ease and efficiency of performing maintenance and correcting problems with the service"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-serviceability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:13:22Z"^^xsd:dateTime ;
+        dcterms:title        "Serviceability"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+attr:attr-financial-agility
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T09:41:28Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The flexibility and elasticity of the financial aspects of the CSP's services"^^xsd:string ;
+        dcterms:identifier   "attr-financial-agility"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:41:28Z"^^xsd:dateTime ;
+        dcterms:title        "Financial Agility"^^xsd:string ;
+        skos:broader         attr:attr-financial .
+
+attr:attr-usability-understandability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:25:06+03:00"^^xsd:dateTime ;
+        dcterms:description  "The ease with which users can understand the capabilities and operation of the service"^^xsd:string ;
+        dcterms:identifier   "attr-usability-understandability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:25:06+03:00"^^xsd:dateTime ;
+        dcterms:title        "Understandability"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+attr:attr-performance-service-response-time-minimum
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:05:02Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-service-response-time-minimum"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:05:02Z"^^xsd:dateTime ;
+        dcterms:title        "Minimum Response time"^^xsd:string ;
+        skos:broader         attr:attr-performance-service-response-time .
+
+attr:attr-security  a        usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:21:05+03:00"^^xsd:dateTime ;
+        dcterms:description  "It indicates the effectiveness of a cloud service provider's controls on access to services, service data, and the physical facilities from which services are provided"^^xsd:string ;
+        dcterms:identifier   "attr-security"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:07:41+03:00"^^xsd:dateTime ;
+        dcterms:title        "Security and Privacy"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+attr:attr-assurance  a       usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:16:36Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Indicates how likely it is that the service will be available as specified"^^xsd:string ;
+        dcterms:identifier   "attr-assurance"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:47:41Z"^^xsd:dateTime ;
+        dcterms:title        "Assurance"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+attr:attr-financial  a       usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:22:34+03:00"^^xsd:dateTime ;
+        dcterms:description  "It is related to the amount of money spent on the service by the client"^^xsd:string ;
+        dcterms:identifier   "attr-financial"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:22:34+03:00"^^xsd:dateTime ;
+        dcterms:title        "Financial"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+attr:attr-performance-capacity-storage-capacity
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:58:03Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-storage-capacity"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:58:03Z"^^xsd:dateTime ;
+        dcterms:title        "Storage Capacity"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-reputation-sustainability-economical-impact
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T13:34:41Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-reputation-sustainability-economical-impact"^^xsd:string ;
+        dcterms:modified     "2014-07-18T13:34:41Z"^^xsd:dateTime ;
+        dcterms:title        "Economical impact"^^xsd:string ;
+        skos:broader         attr:attr-reputation-sustainability .
+
+attr:attr-performance-functionality-features
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:02:21Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-functionality-features"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:02:21Z"^^xsd:dateTime ;
+        dcterms:title        "Features"^^xsd:string ;
+        skos:broader         attr:attr-performance-functionality .
+
+attr:attr-performance-interoperability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:03:30Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of a service to easily interact with other services (from the same service provider and from other service providers)"^^xsd:string ;
+        dcterms:identifier   "attr-performance-interoperability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:03:30Z"^^xsd:dateTime ;
+        dcterms:title        "Interoperability"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+attr:attr-financial-structure
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T09:41:49Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "How responsive to the client's needs are the cloud service provider's pricing and billing components"^^xsd:string ;
+        dcterms:identifier   "attr-financial-structure"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:41:49Z"^^xsd:dateTime ;
+        dcterms:title        "Financial Structure"^^xsd:string ;
+        skos:broader         attr:attr-financial .
+
+attr:attr-agility-elasticity-floating-ips
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2015-09-08T10:38:59.630+03:00"^^xsd:dateTime ;
+        dcterms:description  "Number of publically accessable end points"^^xsd:string ;
+        dcterms:identifier   "attr-agility-elasticity-floating-ips"^^xsd:string ;
+        dcterms:modified     "2015-09-08T10:38:59.630+03:00"^^xsd:dateTime ;
+        dcterms:title        "Floating IPs"^^xsd:string ;
+        skos:broader         attr:attr-agility-elasticity .
+
+attr:attr-performance-functionality
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:02:07Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The specific features provided by a service"^^xsd:string ;
+        dcterms:identifier   "attr-performance-functionality"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:02:07Z"^^xsd:dateTime ;
+        dcterms:title        "Functionality"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+attr:attr-reputation-contracting-experience
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T13:31:30Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Indicators of client effort and satisfaction with the process of entering into the agreements required to use a service"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-contracting-experience"^^xsd:string ;
+        dcterms:modified     "2014-07-18T13:31:30Z"^^xsd:dateTime ;
+        dcterms:title        "Contracting Experience"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+attr:attr-assurance-serviceability-support-satisfaction
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:30:36Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-serviceability-support-satisfaction"^^xsd:string ;
+        dcterms:modified     "2014-05-23T18:30:36Z"^^xsd:dateTime ;
+        dcterms:title        "Support satisfaction"^^xsd:string ;
+        skos:broader         attr:attr-assurance-serviceability .
+
+attr:attr-security-management-encryption-type
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:57:28+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-security-management-encryption-type"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:57:28+03:00"^^xsd:dateTime ;
+        dcterms:title        "Encryption Type"^^xsd:string ;
+        skos:broader         attr:attr-security-management .
+
+attr:attr-security-access-control-privilege-management-authentication-schemes
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:51:22Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-security-access-control-privilege-management-authentication-schemes"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:51:22Z"^^xsd:dateTime ;
+        dcterms:title        "Supported authentication schemes"^^xsd:string ;
+        skos:broader         attr:attr-security-access-control-privilege-management .
+
+attr:attr-reputation-service-reputation
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:35:14+03:00"^^xsd:dateTime ;
+        dcterms:description  "It is the linguistic expression of the reputation of the cloud service  as perceived by its clients"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-service-reputation"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:26:51+03:00"^^xsd:dateTime ;
+        dcterms:title        "Service Reputation"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+attr:attr-performance-capacity-turbo-frequency
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:57:11Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-turbo-frequency"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:57:11Z"^^xsd:dateTime ;
+        dcterms:title        "Turbo Frequency"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-usability-operability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:24:11+03:00"^^xsd:dateTime ;
+        dcterms:description  "The ability of a service to be easily operated by users"^^xsd:string ;
+        dcterms:identifier   "attr-usability-operability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:24:11+03:00"^^xsd:dateTime ;
+        dcterms:title        "Operability"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+attr:attr-agility-elasticity
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:24:03Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of a service to adjust its resource consumption to meet demand"^^xsd:string ;
+        dcterms:identifier   "attr-agility-elasticity"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:13:32Z"^^xsd:dateTime ;
+        dcterms:title        "Elasticity"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+attr:attr-accountability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:description  "Measures the properties related to the cloud service provider organization"^^xsd:string ;
+        dcterms:identifier   "attr-accountability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T10:29:44+03:00"^^xsd:dateTime ;
+        dcterms:title        "Accountability"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+attr:attr-performance-functionality-quality-of-features
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:02:40Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-functionality-quality-of-features"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:02:40Z"^^xsd:dateTime ;
+        dcterms:title        "Quality of Features"^^xsd:string ;
+        skos:broader         attr:attr-performance-functionality .
+
+attr:attr-assurance-serviceability-os-support
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T09:14:14Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-serviceability-os-support"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:14:14Z"^^xsd:dateTime ;
+        dcterms:title        "Operating Systems Support"^^xsd:string ;
+        skos:broader         attr:attr-assurance-serviceability .
+
+attr:attr-assurance-resiliency-fault-tolerance
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:54:24Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of a service to continue to operate properly in the event of a failure in one or more of its components"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-resiliency-fault-tolerance"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:54:24Z"^^xsd:dateTime ;
+        dcterms:title        "Resiliency/Fault Tolerance"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+attr:attr-agility-flexibility
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:16:15Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability to add or remove predefined features from a service"^^xsd:string ;
+        dcterms:identifier   "attr-agility-flexibility"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:16:15Z"^^xsd:dateTime ;
+        dcterms:title        "Flexibility"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+attr:attr-agility-portability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:16:33Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of a client to easily move a service from one service provider to another with minimal disruption"^^xsd:string ;
+        dcterms:identifier   "attr-agility-portability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:16:33Z"^^xsd:dateTime ;
+        dcterms:title        "Portability"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+attr:attr-security-management-transport-security-guarantees
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2015-09-08T10:42:33.043+03:00"^^xsd:dateTime ;
+        dcterms:description  "Defines the level of transport security"^^xsd:string ;
+        dcterms:identifier   "attr-security-management-transport-security-guarantees"^^xsd:string ;
+        dcterms:modified     "2015-09-08T10:42:33.043+03:00"^^xsd:dateTime ;
+        dcterms:title        "Transport Security Guarantees"^^xsd:string ;
+        skos:broader         attr:attr-security-management .
+
+attr:attr-financial-cost-data-inbound
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:32:20Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-financial-cost-data-inbound"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:25:29Z"^^xsd:dateTime ;
+        dcterms:title        "Data - Inbound"^^xsd:string ;
+        skos:broader         attr:attr-financial-cost .
+
+attr:attr-reputation-sustainability-carbon-footprint
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T13:35:43Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-reputation-sustainability-carbon-footprint"^^xsd:string ;
+        dcterms:modified     "2014-07-18T13:35:43Z"^^xsd:dateTime ;
+        dcterms:title        "Carbon footprint"^^xsd:string ;
+        skos:broader         attr:attr-reputation-sustainability .
+
+attr:attr-financial-billing-process
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T09:23:02Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The level of integration that is available between the client and cloud service provider's billing systems and the predictability of periodic bills"^^xsd:string ;
+        dcterms:identifier   "attr-financial-billing-process"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:23:02Z"^^xsd:dateTime ;
+        dcterms:title        "Billing Process"^^xsd:string ;
+        skos:broader         attr:attr-financial .
+
+attr:attr-performance-capacity-storage-throughput
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:58:20Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-storage-throughput"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:58:20Z"^^xsd:dateTime ;
+        dcterms:title        "Storage Throughput"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-agility-robustness
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:47:23Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Refers to the extent to which a service keeps working even in the presence of inconsistent or incomplete data"^^xsd:string ;
+        dcterms:identifier   "attr-agility-robustness"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:47:23Z"^^xsd:dateTime ;
+        dcterms:title        "Robustness"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+attr:attr-performance-capacity-ephemeral-disc
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2015-09-08T10:39:50.943+03:00"^^xsd:dateTime ;
+        dcterms:description  "Amount of disc space which is operational only if the VM instance is alive"^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-ephemeral-disc"^^xsd:string ;
+        dcterms:modified     "2015-09-08T10:39:50.943+03:00"^^xsd:dateTime ;
+        dcterms:title        "Ephemeral Disc"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-financial-cost-data-outbound
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:32:35Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-financial-cost-data-outbound"^^xsd:string ;
+        dcterms:modified     "2014-07-18T09:25:36Z"^^xsd:dateTime ;
+        dcterms:title        "Data - Outbound"^^xsd:string ;
+        skos:broader         attr:attr-financial-cost .
+
+attr:attr-performance-capacity-swap-disc
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2015-09-08T10:40:25.768+03:00"^^xsd:dateTime ;
+        dcterms:description  "Amount of space on the hard disc used as a virtual memory extension as computers main memory"^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-swap-disc"^^xsd:string ;
+        dcterms:modified     "2015-09-08T10:40:25.768+03:00"^^xsd:dateTime ;
+        dcterms:title        "Swap Disc"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-assurance-recoverability-recovery-time
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:53:21+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-recoverability-recovery-time"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:53:21+03:00"^^xsd:dateTime ;
+        dcterms:title        "Recovery Time"^^xsd:string ;
+        skos:broader         attr:attr-assurance-recoverability .
+
+attr:attr-usability-reusability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:25:27+03:00"^^xsd:dateTime ;
+        dcterms:description  "How generic the service is and how easy it is to be used in different cloud applications"^^xsd:string ;
+        dcterms:identifier   "attr-usability-reusability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:25:27+03:00"^^xsd:dateTime ;
+        dcterms:title        "Reusability"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+attr:attr-agility-elasticity-time
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:25:30Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-agility-elasticity-time"^^xsd:string ;
+        dcterms:modified     "2014-05-23T18:25:30Z"^^xsd:dateTime ;
+        dcterms:title        "Time"^^xsd:string ;
+        skos:broader         attr:attr-agility-elasticity .
+
+attr:attr-accountability-certifications
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:35:05Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The service provider maintains current certifications for standards relevant to their clients' requirements"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-certifications"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:35:05Z"^^xsd:dateTime ;
+        dcterms:title        "Provider Certifications"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+attr:attr-assurance-maintainability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:48:37Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "It refers to the ability for the service provider to make modifications to the service to keep the service in a condition of good repair"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-maintainability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:48:37Z"^^xsd:dateTime ;
+        dcterms:title        "Maintainability"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+attr:attr-security-proactive-threat-vulnerability-management
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:55:12Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Mechanisms in place to ensure that the service is protected against known recurring threats as well as new evolving vulnerabilities"^^xsd:string ;
+        dcterms:identifier   "attr-security-proactive-threat-vulnerability-management"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:55:12Z"^^xsd:dateTime ;
+        dcterms:title        "Proactive Threat & Vulnerability Management"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:attr-usability-learnability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:23:48+03:00"^^xsd:dateTime ;
+        dcterms:description  "The effort required of users to learn to use the service"^^xsd:string ;
+        dcterms:identifier   "attr-usability-learnability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:23:48+03:00"^^xsd:dateTime ;
+        dcterms:title        "Learnability"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+attr:attr-accountability-contract-sla-verification
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:35:43Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The service provider makes available to clients SLAs adequate to manage the service and mitigate risks of service failure"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-contract-sla-verification"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:35:43Z"^^xsd:dateTime ;
+        dcterms:title        "Provider Contract/SLA Verification"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+attr:attr-performance-capacity-storage-redundancy
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:58:39Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-storage-redundancy"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:58:39Z"^^xsd:dateTime ;
+        dcterms:title        "Storage Redundancy"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-security-data-integrity
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:53:07Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "Keeping the data that is created, used, and stored in its correct form so that clients may be confident that it is accurate and valid"^^xsd:string ;
+        dcterms:identifier   "attr-security-data-integrity"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:53:07Z"^^xsd:dateTime ;
+        dcterms:title        "Data Integrity"^^xsd:string ;
+        skos:broader         attr:attr-security .
+
+attr:attr-reputation-provider-business-stability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:33:22+03:00"^^xsd:dateTime ;
+        dcterms:description  "The likelihood that the service provider will continue to exist throughout the contracted term"^^xsd:string ;
+        dcterms:identifier   "attr-reputation-provider-business-stability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:33:22+03:00"^^xsd:dateTime ;
+        dcterms:title        "Provider business stability"^^xsd:string ;
+        skos:broader         attr:attr-reputation .
+
+attr:attr-assurance-serviceability-free-support
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:29:49+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-assurance-serviceability-free-support"^^xsd:string ;
+        dcterms:modified     "2014-05-23T21:29:49+03:00"^^xsd:dateTime ;
+        dcterms:title        "Free Support"^^xsd:string ;
+        skos:broader         attr:attr-assurance-serviceability .
+
+attr:attr-accountability-auditability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:29:34Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of a client to verify that the service provider is adhering to the standards, processes, and policies that they follow"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-auditability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:29:34Z"^^xsd:dateTime ;
+        dcterms:title        "Auditability"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+attr:attr-security-data-privacy-loss-audit-trailing
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:54:00+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-security-data-privacy-loss-audit-trailing"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:54:00+03:00"^^xsd:dateTime ;
+        dcterms:title        "Audit Trailing"^^xsd:string ;
+        skos:broader         attr:attr-security-data-privacy-loss .
+
+attr:attr-performance-service-response-time
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:33:18Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "An indicator of the time between when a service is requested and when the response is available"^^xsd:string ;
+        dcterms:identifier   "attr-performance-service-response-time"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:04:24Z"^^xsd:dateTime ;
+        dcterms:title        "Service Response Time"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+attr:attr-usability-transparency
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:24:46+03:00"^^xsd:dateTime ;
+        dcterms:description  "The extent to which users are able to determine when changes in a feature or component of the service occur and whether these changes impact usability"^^xsd:string ;
+        dcterms:identifier   "attr-usability-transparency"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:24:46+03:00"^^xsd:dateTime ;
+        dcterms:title        "Transparency"^^xsd:string ;
+        skos:broader         attr:attr-usability .
+
+attr:attr-assurance-service-stability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:28:13Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The degree to which the service is resistant to change, deterioration, or displacement"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-service-stability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:54:41Z"^^xsd:dateTime ;
+        dcterms:title        "Service Stability"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+attr:attr-financial-cost-storage
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T18:32:46Z"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-financial-cost-storage"^^xsd:string ;
+        dcterms:modified     "2014-05-23T18:32:46Z"^^xsd:dateTime ;
+        dcterms:title        "Storage"^^xsd:string ;
+        skos:broader         attr:attr-financial-cost .
+
+attr:attr-accountability-ownership
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T07:34:26Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The level of rights a client has over client data, software licenses, and intellectual property associated with a service"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-ownership"^^xsd:string ;
+        dcterms:modified     "2014-07-18T07:34:26Z"^^xsd:dateTime ;
+        dcterms:title        "Ownership"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+attr:attr-performance-monitoring-analytics-framework
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:06:31Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-monitoring-analytics-framework"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:06:31Z"^^xsd:dateTime ;
+        dcterms:title        "Analytics framework"^^xsd:string ;
+        skos:broader         attr:attr-performance-monitoring .
+
+attr:attr-security-access-control-privilege-management-rbac
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:51:44Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-security-access-control-privilege-management-rbac"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:51:44Z"^^xsd:dateTime ;
+        dcterms:title        "Role based Access Control (RBAC)"^^xsd:string ;
+        skos:broader         attr:attr-security-access-control-privilege-management .
+
+attr:attr-performance-service-response-time-maximum
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:04:46+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-service-response-time-maximum"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:04:46+03:00"^^xsd:dateTime ;
+        dcterms:title        "Maximum Response time"^^xsd:string ;
+        skos:broader         attr:attr-performance-service-response-time .
+
+attr:attr-performance-interoperability-level
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T12:04:06Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-interoperability-level"^^xsd:string ;
+        dcterms:modified     "2014-07-18T12:04:06Z"^^xsd:dateTime ;
+        dcterms:title        "Interoperability level"^^xsd:string ;
+        skos:broader         attr:attr-performance-interoperability .
+
+attr:attr-accountability-supply-chain
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:10:41Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The service provider ensures that any SLAs that must be supported by its suppliers are supported"^^xsd:string ;
+        dcterms:identifier   "attr-accountability-supply-chain"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:10:41Z"^^xsd:dateTime ;
+        dcterms:title        "Provider Supply Chain"^^xsd:string ;
+        skos:broader         attr:attr-accountability .
+
+attr:attr-assurance-recoverability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:48:56Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "It is the degree to which a service is able to quickly resume a normal state of operation after an unplanned disruption"^^xsd:string ;
+        dcterms:identifier   "attr-assurance-recoverability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:48:56Z"^^xsd:dateTime ;
+        dcterms:title        "Recoverability"^^xsd:string ;
+        skos:broader         attr:attr-assurance .
+
+attr:attr-agility  a         usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:20:44+03:00"^^xsd:dateTime ;
+        dcterms:description  "Indicates the impact of a service upon a client's ability to change direction, strategy, or tactics quickly and with minimal disruption"^^xsd:string ;
+        dcterms:identifier   "attr-agility"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:11:30+03:00"^^xsd:dateTime ;
+        dcterms:title        "Agility"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+attr:attr-reputation-sustainability-energy-consumption
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T16:35:29+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-reputation-sustainability-energy-consumption"^^xsd:string ;
+        dcterms:modified     "2014-07-18T16:35:29+03:00"^^xsd:dateTime ;
+        dcterms:title        "Energy consumption"^^xsd:string ;
+        skos:broader         attr:attr-reputation-sustainability .
+
+attr:attr-performance-capacity-num-of-cores
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:42:21Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity-num-of-cores"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:42:21Z"^^xsd:dateTime ;
+        dcterms:title        "Number of Cores"^^xsd:string ;
+        skos:broader         attr:attr-performance-capacity .
+
+attr:attr-usability  a       usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:58:49+03:00"^^xsd:dateTime ;
+        dcterms:description  "It is related to the ease with which a service can be used"^^xsd:string ;
+        dcterms:identifier   "attr-usability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:58:49+03:00"^^xsd:dateTime ;
+        dcterms:title        "Usability"^^xsd:string ;
+        skos:broader         attr:attr-root .
+
+attr:attr-performance-capacity
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T11:42:01Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The maximum amount of a service that a service provider can deliver while meeting agreed SLAs"^^xsd:string ;
+        dcterms:identifier   "attr-performance-capacity"^^xsd:string ;
+        dcterms:modified     "2014-07-18T11:42:01Z"^^xsd:dateTime ;
+        dcterms:title        "Capacity"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+attr:attr-agility-scalability
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:16:59Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability of a service provider to increase or decrease the amount of service available to meet client requirements"^^xsd:string ;
+        dcterms:identifier   "attr-agility-scalability"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:16:59Z"^^xsd:dateTime ;
+        dcterms:title        "Scalability"^^xsd:string ;
+        skos:broader         attr:attr-agility .
+
+attr:attr-performance-accuracy
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T15:01:37+03:00"^^xsd:dateTime ;
+        dcterms:description  "The extent to which a service adheres to its requirements"^^xsd:string ;
+        dcterms:identifier   "attr-performance-accuracy"^^xsd:string ;
+        dcterms:modified     "2014-07-18T15:01:37+03:00"^^xsd:dateTime ;
+        dcterms:title        "Accuracy"^^xsd:string ;
+        skos:broader         attr:attr-performance .
+
+attr:attr-financial-cost
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-05-23T21:19:47+03:00"^^xsd:dateTime ;
+        dcterms:description  ""^^xsd:string ;
+        dcterms:identifier   "attr-financial-cost"^^xsd:string ;
+        dcterms:modified     "2014-05-23T21:19:47+03:00"^^xsd:dateTime ;
+        dcterms:title        "Cost"^^xsd:string ;
+        skos:broader         attr:attr-financial .
+
+attr:attr-agility-extensibility
+        a                    usdl-pref:ServiceAttribute ;
+        dcterms:created      "2014-07-18T08:13:55Z"^^xsd:dateTime ;
+        dcterms:creator      ""^^xsd:string ;
+        dcterms:description  "The ability to add new features or services to existing services"^^xsd:string ;
+        dcterms:identifier   "attr-agility-extensibility"^^xsd:string ;
+        dcterms:modified     "2014-07-18T08:13:55Z"^^xsd:dateTime ;
+        dcterms:title        "Extensibility"^^xsd:string ;
+        skos:broader         attr:attr-agility .

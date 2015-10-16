@@ -4,7 +4,6 @@ import java.util.List;
 
 import diva.brokeratcloud.fpr.input.abstracts.ServiceCategory;
 
-
 public class ServiceCategoryRest extends ServiceCategory {
 
 	@Override

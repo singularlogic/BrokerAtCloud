@@ -26,16 +26,16 @@ public class URIDialogCellEditor extends DialogCellEditor {
 
 	protected Shell shell;
 	protected String title;
-	
+
 	public URIDialogCellEditor(Composite parent, String title) {
 		super(parent);
 		this.shell = parent.getShell();
 		this.title = title;
 	}
-	
+
 	@Override
 	protected Object openDialogBox(Control cellEditorWindow) {
-		ResourceDialog d = new ResourceDialog(shell, title, SWT.OPEN | SWT.SINGLE );
+		ResourceDialog d = new ResourceDialog(shell, title, SWT.OPEN | SWT.SINGLE);
 		d.setBlockOnOpen(true);
 		if (d.open() == ResourceDialog.OK) {
 			return d.getURIText();

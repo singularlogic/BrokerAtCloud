@@ -21,9 +21,8 @@ import diva.Constraint;
 import diva.DivaPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Constraint</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Constraint</b></em>'. <!-- end-user-doc -->
  * <p>
  * </p>
  *
@@ -31,8 +30,8 @@ import diva.DivaPackage;
  */
 public abstract class ConstraintImpl extends NamedElementImpl implements Constraint {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ConstraintImpl() {
@@ -40,8 +39,8 @@ public abstract class ConstraintImpl extends NamedElementImpl implements Constra
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -49,4 +48,4 @@ public abstract class ConstraintImpl extends NamedElementImpl implements Constra
 		return DivaPackage.Literals.CONSTRAINT;
 	}
 
-} //ConstraintImpl
+} // ConstraintImpl

@@ -22,37 +22,37 @@ import java.util.List;
 import org.eclipse.emf.common.util.Enumerator;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the literals of the enumeration '<em><b>Verdict</b></em>',
- * and utility methods for working with them.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the literals of the enumeration '
+ * <em><b>Verdict</b></em>', and utility methods for working with them. <!--
+ * end-user-doc -->
+ * 
  * @see diva.DivaPackage#getVerdict()
  * @model
  * @generated
  */
 public enum Verdict implements Enumerator {
 	/**
-	 * The '<em><b>None</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>None</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #NONE_VALUE
 	 * @generated
 	 * @ordered
 	 */
 	NONE(0, "none", "none"), /**
-	 * The '<em><b>Pass</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #PASS_VALUE
-	 * @generated
-	 * @ordered
-	 */
+								 * The '<em><b>Pass</b></em>' literal object.
+								 * <!-- begin-user-doc --> <!-- end-user-doc -->
+								 * 
+								 * @see #PASS_VALUE
+								 * @generated
+								 * @ordered
+								 */
 	PASS(1, "pass", "pass"),
 
 	/**
-	 * The '<em><b>Fail</b></em>' literal object.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The '<em><b>Fail</b></em>' literal object. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @see #FAIL_VALUE
 	 * @generated
 	 * @ordered
@@ -60,13 +60,13 @@ public enum Verdict implements Enumerator {
 	FAIL(2, "fail", "fail");
 
 	/**
-	 * The '<em><b>None</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>None</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>None</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #NONE
 	 * @model name="none"
 	 * @generated
@@ -75,13 +75,13 @@ public enum Verdict implements Enumerator {
 	public static final int NONE_VALUE = 0;
 
 	/**
-	 * The '<em><b>Pass</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>Pass</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>Pass</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #PASS
 	 * @model name="pass"
 	 * @generated
@@ -90,13 +90,13 @@ public enum Verdict implements Enumerator {
 	public static final int PASS_VALUE = 1;
 
 	/**
-	 * The '<em><b>Fail</b></em>' literal value.
-	 * <!-- begin-user-doc -->
+	 * The '<em><b>Fail</b></em>' literal value. <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of '<em><b>Fail</b></em>' literal object isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @see #FAIL
 	 * @model name="fail"
 	 * @generated
@@ -105,30 +105,25 @@ public enum Verdict implements Enumerator {
 	public static final int FAIL_VALUE = 2;
 
 	/**
-	 * An array of all the '<em><b>Verdict</b></em>' enumerators.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * An array of all the '<em><b>Verdict</b></em>' enumerators. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
-	private static final Verdict[] VALUES_ARRAY =
-		new Verdict[] {
-			NONE,
-			PASS,
-			FAIL,
-		};
+	private static final Verdict[] VALUES_ARRAY = new Verdict[] { NONE, PASS, FAIL, };
 
 	/**
 	 * A public read-only list of all the '<em><b>Verdict</b></em>' enumerators.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static final List<Verdict> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
 	/**
-	 * Returns the '<em><b>Verdict</b></em>' literal with the specified literal value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the '<em><b>Verdict</b></em>' literal with the specified literal
+	 * value. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static Verdict get(String literal) {
@@ -143,8 +138,8 @@ public enum Verdict implements Enumerator {
 
 	/**
 	 * Returns the '<em><b>Verdict</b></em>' literal with the specified name.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static Verdict getByName(String name) {
@@ -158,45 +153,48 @@ public enum Verdict implements Enumerator {
 	}
 
 	/**
-	 * Returns the '<em><b>Verdict</b></em>' literal with the specified integer value.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the '<em><b>Verdict</b></em>' literal with the specified integer
+	 * value. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static Verdict get(int value) {
 		switch (value) {
-			case NONE_VALUE: return NONE;
-			case PASS_VALUE: return PASS;
-			case FAIL_VALUE: return FAIL;
+		case NONE_VALUE:
+			return NONE;
+		case PASS_VALUE:
+			return PASS;
+		case FAIL_VALUE:
+			return FAIL;
 		}
 		return null;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final int value;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final String name;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private final String literal;
 
 	/**
-	 * Only this class can construct instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Only this class can construct instances. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private Verdict(int value, String name, String literal) {
@@ -206,41 +204,41 @@ public enum Verdict implements Enumerator {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public int getValue() {
-	  return value;
+		return value;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getName() {
-	  return name;
+		return name;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getLiteral() {
-	  return literal;
+		return literal;
 	}
 
 	/**
-	 * Returns the literal value of the enumerator, which is its string representation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Returns the literal value of the enumerator, which is its string
+	 * representation. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
 		return literal;
 	}
-	
-} //Verdict
+
+} // Verdict

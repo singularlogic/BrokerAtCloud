@@ -1,0 +1,35 @@
+<%
+var dbRoot;
+var dest;
+(function () {
+    var log = new Log();
+
+    var unauthorizedError;
+    var carbon = require('carbon');
+    var anonRole = String(carbon.user.anonRole);
+    var permissions = dashboard.permissions;
+    var anonymous = permissions.viewers.indexOf(anonRole) !== -1;
+
+    if (!anonymous) {
+        if (!user) {
+            sendLogin();
+            return;
+        }
+
+        unauthorizedError = 'dashboard access not authorized';
+
+        if (userDomain !== (urlDomain || superDomain)) {
+            response.sendError(401, unauthorizedError);
+            return;
+        }
+
+        if (!utils.allowed(user.roles, permissions.editors) && !utils.allowed(user.roles, permissions.viewers)) {
+            response.sendError(401, unauthorizedError);
+            return;
+        }
+    }
+
+    dbRoot = tenantedUrlPrefix + 'dashboards/' + dashboard.id + '/';
+
+    include(utils.resolvePath('templates/dashboard.jag'));
+}()); %>

@@ -25,35 +25,35 @@ import diva.visitors.VisitorsFactory;
 import diva.visitors.VisitorsPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Factory</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class VisitorsFactoryImpl extends EFactoryImpl implements VisitorsFactory {
 	/**
-	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates the default factory implementation. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public static VisitorsFactory init() {
 		try {
-			VisitorsFactory theVisitorsFactory = (VisitorsFactory)EPackage.Registry.INSTANCE.getEFactory(VisitorsPackage.eNS_URI);
+			VisitorsFactory theVisitorsFactory = (VisitorsFactory) EPackage.Registry.INSTANCE
+					.getEFactory(VisitorsPackage.eNS_URI);
 			if (theVisitorsFactory != null) {
 				return theVisitorsFactory;
 			}
-		}
-		catch (Exception exception) {
+		} catch (Exception exception) {
 			EcorePlugin.INSTANCE.log(exception);
 		}
 		return new VisitorsFactoryImpl();
 	}
 
 	/**
-	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Creates an instance of the factory. <!-- begin-user-doc --> <!--
+	 * end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VisitorsFactoryImpl() {
@@ -61,30 +61,30 @@ public class VisitorsFactoryImpl extends EFactoryImpl implements VisitorsFactory
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
-			default:
-				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
+		default:
+			throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VisitorsPackage getVisitorsPackage() {
-		return (VisitorsPackage)getEPackage();
+		return (VisitorsPackage) getEPackage();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @deprecated
 	 * @generated
 	 */
@@ -93,4 +93,4 @@ public class VisitorsFactoryImpl extends EFactoryImpl implements VisitorsFactory
 		return VisitorsPackage.eINSTANCE;
 	}
 
-} //VisitorsFactoryImpl
+} // VisitorsFactoryImpl

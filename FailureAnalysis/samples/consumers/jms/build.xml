@@ -1,20 +1,19 @@
 <!--
-  ~  Licensed to the Apache Software Foundation (ASF) under one
-  ~  or more contributor license agreements.  See the NOTICE file
-  ~  distributed with this work for additional information
-  ~  regarding copyright ownership.  The ASF licenses this file
-  ~  to you under the Apache License, Version 2.0 (the
-  ~  "License"); you may not use this file except in compliance
-  ~  with the License.  You may obtain a copy of the License at
+  ~ Copyright (c) 2015, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
   ~
-  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~ WSO2 Inc. licenses this file to you under the Apache License,
+  ~ Version 2.0 (the "License"); you may not use this file except
+  ~ in compliance with the License.
+  ~ You may obtain a copy of the License at
   ~
-  ~  Unless required by applicable law or agreed to in writing,
-  ~  software distributed under the License is distributed on an
-  ~   * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-  ~  KIND, either express or implied.  See the License for the
-  ~  specific language governing permissions and limitations
-  ~  under the License.
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  ~ KIND, either express or implied.  See the License for the
+  ~ specific language governing permissions and limitations
+  ~ under the License.
   -->
 
 <project default="run">
@@ -23,32 +22,26 @@
     <property name="src.dir" value="src/main/java"/>
     <property name="resources.dir" value="src/main/resources"/>
     <property name="temp.dir" value="temp"/>
-    <property name="lib.dir" value="../../lib"/>
     <property name="class.dir" value="${temp.dir}/classes"/>
+    <property name="main-class" value="org.wso2.carbon.sample.consumer.JMSClient"/>
+    <property name="lib.dir" value="../../lib"/>
 
-    <property name="topic" value="BasicStockQuotes"/>
-    <property name="queue" value="DelayedFlightStats"/>
+
+    <property name="broker" value=""/>
+    <property name="topicName" value=""/>
+    <property name="queue" value=""/>
 
     <path id="javac.classpath">
         <pathelement path="${class.dir}"/>
         <fileset dir="${lib.dir}"/>
-        <!--<fileset dir="${carbon.home}/repository/components/plugins/">-->
-        <!--<include name="org.wso2.carbon.logging_*.jar"/>-->
-        <!--<include name="commons-pool_*.jar"/>-->
-        <!--<include name="com.google.gson_*.jar"/>-->
-        <!--<include name="httpclient_*.jar"/>-->
-        <!--<include name="libthrift_*.jar"/>-->
-        <!--<include name="slf4j.log4j12_*.jar"/>-->
-        <!--<include name="slf4j.api_*.jar"/>-->
-        <!--<include name="org.wso2.carbon.databridge.agent.thrift_*.jar"/>-->
-        <!--<include name="org.wso2.carbon.databridge.commons.thrift_*.jar"/>-->
-        <!--<include name="org.wso2.carbon.databridge.commons_*.jar"/>-->
-        <!--</fileset>-->
+        <fileset dir="${carbon.home}/repository/components/plugins/">
+            <include name="org.wso2.carbon.logging_*.jar"/>
+            <include name="slf4j.log4j12_1.7.12.jar"/>
+            <include name="slf4j.api_1.7.12.jar"/>
+        </fileset>
     </path>
 
-
     <target name="clean">
-        <!--<delete dir="target" quiet="true"/>-->
         <delete dir="${class.dir}" quiet="true"/>
         <delete dir="${temp.dir}"/>
     </target>
@@ -59,7 +52,7 @@
     </target>
 
     <target name="compile" depends="init">
-        <javac srcdir="${src.dir}" destdir="${class.dir}">
+        <javac srcdir="${src.dir}" destdir="${class.dir}" compiler="modern">
             <include name="*/**"/>
             <classpath refid="javac.classpath"/>
         </javac>
@@ -71,28 +64,11 @@
     </target>
 
     <target name="run" depends="compile">
-        <echo>To configure topic use -Dtopic=xxxx</echo>
-        <echo>Subscribing to : ${topic}</echo>
-        <java classname="org.wso2.carbon.sample.consumer.JMSTopicMessageConsumer"
+        <echo>Configure -Dbroker and (-DtopicName=xxxx or -DqueueName)</echo>
+        <java classname="${main-class}"
               classpathref="javac.classpath" fork="true">
-            <arg value="${topic}"/>
-        </java>
-    </target>
-
-    <target name="topicConsumer" depends="compile">
-        <echo>To configure topic use -Dtopic=xxxx</echo>
-        <echo>Subscribing to : ${topic}</echo>
-        <java classname="org.wso2.carbon.sample.consumer.JMSTopicMessageConsumer"
-              classpathref="javac.classpath" fork="true">
-            <arg value="${topic}"/>
-        </java>
-    </target>
-
-    <target name="queueConsumer" depends="compile">
-        <echo>To configure queue use -Dqueue=xxxx</echo>
-        <echo>Subscribing to : ${queue}</echo>
-        <java classname="org.wso2.carbon.sample.consumer.JMSQueueMessageConsumer"
-              classpathref="javac.classpath" fork="true">
+            <arg value="${broker}"/>
+            <arg value="${topicName}"/>
             <arg value="${queue}"/>
         </java>
     </target>

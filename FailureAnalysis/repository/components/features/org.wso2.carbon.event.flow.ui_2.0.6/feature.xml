@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.event.flow.ui" label="WSO2 Carbon - Event Flow UI Feature" provider-name="%providerName" version="2.0.6">
+  <description>This feature contains the bundles required for Front-end Event Flow
+        functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="org.wso2.carbon.event.flow.ui" unpack="false" version="2.0.6"/>
+  <plugin id="org.wso2.carbon.event.flow.stub" unpack="false" version="2.0.6"/>
+</feature>

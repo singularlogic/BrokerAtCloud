@@ -1,9 +1,5 @@
-This sample uses
-InputEventAdaptor:  wso2event
-EventBuilder:           wso2event
-EventFormatter:         wso2event
-OutputEventAdaptor: wso2event
+This sample uses 
+EventPublisher: logger
 
-Producers:  login-info
-
-Consumers: wso2-event
+Producers:     event simulator
+Consumers:     console

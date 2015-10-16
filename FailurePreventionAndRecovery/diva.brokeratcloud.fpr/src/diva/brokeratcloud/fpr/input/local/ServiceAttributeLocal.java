@@ -27,13 +27,13 @@ import diva.brokeratcloud.fpr.input.abstracts.ServiceAttribute;
 public class ServiceAttributeLocal extends ServiceAttribute {
 
 	public static ServiceAttributeLocal INSTANCE = new ServiceAttributeLocal();
-	
+
 	Random random = new Random();
-	
+
 	private Map<String, Object> fakedRepo = new HashMap<String, Object>();
-	
-	private void initFake(){
-		//MonolithicDBServiceLevelProfile
+
+	private void initFake() {
+		// MonolithicDBServiceLevelProfile
 
 		fakedRepo.put("SmallMonolithicDBServiceLevelProfile-VarAmountOfDBAllocatedVCPUs", 0);
 		fakedRepo.put("MediumMonolithicDBServiceLevelProfile-VarAmountOfDBAllocatedVCPUs", 1);
@@ -55,7 +55,7 @@ public class ServiceAttributeLocal extends ServiceAttribute {
 		fakedRepo.put("MediumMonolithicDBServiceLevelProfile-VarMaxTPSSupported", 0);
 		fakedRepo.put("LargeMonolithicDBServiceLevelProfile-VarMaxTPSSupported", 0);
 
-		//ClusteredDBServiceLevelProfile
+		// ClusteredDBServiceLevelProfile
 
 		fakedRepo.put("SmallClusteredDBServiceLevelProfile-VarAmountOfDBAllocatedVCPUsPerNode", 0);
 		fakedRepo.put("MediumClusteredDBServiceLevelProfile-VarAmountOfDBAllocatedVCPUsPerNode", 1);
@@ -85,7 +85,7 @@ public class ServiceAttributeLocal extends ServiceAttribute {
 		fakedRepo.put("MediumClusteredDBServiceLevelProfile-VarReplicationRatio", 2);
 		fakedRepo.put("LargeClusteredDBServiceLevelProfile-VarReplicationRatio", 4);
 
-		//ElasticDBServiceLevelProfile
+		// ElasticDBServiceLevelProfile
 
 		fakedRepo.put("SmallElasticDBServiceLevelProfile-VarAmountOfDBAllocatedVCPUsPerNode", 0);
 		fakedRepo.put("MediumElasticDBServiceLevelProfile-VarAmountOfDBAllocatedVCPUsPerNode", 1);
@@ -115,7 +115,7 @@ public class ServiceAttributeLocal extends ServiceAttribute {
 		fakedRepo.put("MediumElasticDBServiceLevelProfile-VarDBScaleUpFactor", 4);
 		fakedRepo.put("LargeElasticDBServiceLevelProfile-VarDBScaleUpFactor", 8);
 
-		//SingleInstanceASServiceLevelProfile
+		// SingleInstanceASServiceLevelProfile
 
 		fakedRepo.put("SmallSingleInstanceASServiceLevelProfile-VarAmountOfASAllocatedVCPUs", 0);
 		fakedRepo.put("MediumSingleInstanceASServiceLevelProfile-VarAmountOfASAllocatedVCPUs", 1);
@@ -133,7 +133,7 @@ public class ServiceAttributeLocal extends ServiceAttribute {
 		fakedRepo.put("MediumSingleInstanceASServiceLevelProfile-VarMaxRequestsPerSecond", 1);
 		fakedRepo.put("LargeSingleInstanceASServiceLevelProfile-VarMaxRequestsPerSecond", 2);
 
-		//ClusteredASServiceLevelProfile
+		// ClusteredASServiceLevelProfile
 
 		fakedRepo.put("SmallClusteredASServiceLevelProfile-VarAmountOfASAllocatedVCPUs", 0);
 		fakedRepo.put("MediumClusteredASServiceLevelProfile-VarAmountOfASAllocatedVCPUs", 1);
@@ -155,7 +155,7 @@ public class ServiceAttributeLocal extends ServiceAttribute {
 		fakedRepo.put("MediumClusteredASServiceLevelProfile-VarAmountOfWebBalancingNodes", 4);
 		fakedRepo.put("LargeClusteredASServiceLevelProfile-VarAmountOfWebBalancingNodes", 8);
 
-		//ElasticASServiceLevelProfile
+		// ElasticASServiceLevelProfile
 
 		fakedRepo.put("SmallElasticASServiceLevelProfile-VarAmountOfASAllocatedVCPUs", 0);
 		fakedRepo.put("MediumElasticASServiceLevelProfile-VarAmountOfASAllocatedVCPUs", 1);
@@ -181,7 +181,7 @@ public class ServiceAttributeLocal extends ServiceAttribute {
 		fakedRepo.put("MediumElasticASServiceLevelProfile-VarASScaleUpFactor", 4);
 		fakedRepo.put("LargeElasticASServiceLevelProfile-VarASScaleUpFactor", 8);
 
-		//MeteredServiceLevelProfile
+		// MeteredServiceLevelProfile
 
 		fakedRepo.put("SmallMeteredServiceLevelProfile-VarMaxUplinkBandwidth", 0);
 		fakedRepo.put("MediumMeteredServiceLevelProfile-VarMaxUplinkBandwidth", 0);
@@ -195,7 +195,7 @@ public class ServiceAttributeLocal extends ServiceAttribute {
 		fakedRepo.put("MediumMeteredServiceLevelProfile-VarMaxAmountOfTrafficPermitted", 3);
 		fakedRepo.put("LargeMeteredServiceLevelProfile-VarMaxAmountOfTrafficPermitted", 5);
 
-		//UnmeteredServiceLevelProfile
+		// UnmeteredServiceLevelProfile
 
 		fakedRepo.put("SmallUnmeteredServiceLevelProfile-VarMaxUplinkBandwidth", 0);
 		fakedRepo.put("MediumUnmeteredServiceLevelProfile-VarMaxUplinkBandwidth", 0);
@@ -205,7 +205,7 @@ public class ServiceAttributeLocal extends ServiceAttribute {
 		fakedRepo.put("MediumUnmeteredServiceLevelProfile-VarMaxDownlinkBandwidth", 1);
 		fakedRepo.put("LargeUnmeteredServiceLevelProfile-VarMaxDownlinkBandwidth", 2);
 
-		//OrbiServiceLevelProfile
+		// OrbiServiceLevelProfile
 
 		fakedRepo.put("SmallOrbiServiceLevelProfile-VarAmountOfConcurrentUsers", 0);
 		fakedRepo.put("MediumOrbiServiceLevelProfile-VarAmountOfConcurrentUsers", 0);
@@ -218,62 +218,38 @@ public class ServiceAttributeLocal extends ServiceAttribute {
 		fakedRepo.put("SmallOrbiServiceLevelProfile-VarUpTimePercentage", 0);
 		fakedRepo.put("MediumOrbiServiceLevelProfile-VarUpTimePercentage", 0);
 		fakedRepo.put("LargeOrbiServiceLevelProfile-VarUpTimePercentage", 0);
-		
-		
+
 	}
-	
-	public ServiceAttributeLocal(){
+
+	public ServiceAttributeLocal() {
 		initFake();
 	}
-	
+
 	@Override
-	public List<String> listAttributes(String service){
+	public List<String> listAttributes(String service) {
 		return Collections.EMPTY_LIST;
 	}
-	
-	@Override
-	public List<String> listCommonAttributes(){
-		return Arrays.asList(
-				"VarMaxDownlinkBandwidth",
-				"VarMaxRequestsPerSecond",
-				"VarAmountOfDBAllocatedMemory",
-				"VarMaxTPSSupported",
-				"VarAmountOfDBAllocatedMemoryPerNode",
-				"VarAmountOfASAllocatedMemory",
-				"VarAmountOfWebBalancingNodes",
-				"VarMaxAmountOfUsers",
-				"VarSpeedOfDBAllocatedVCPUs",
-				"VarAmountOfClusterNodes",
-				"VarSpeedOfDBAllocatedVCPUsPerNode",
-				"VarMaxUplinkBandwidth",
-				"VarSpeedOfASAllocatedVCPUs",
-				"VarAmountOfDBAllocatedVCPUsPerNode",
-				"VarDBScaleUpFactor",
-				"VarAmountOfDBAllocatedVCPUs",
-				"VarUpTimePercentage",
-				"VarMaxQPSSupported",
-				"VarMaxAmountOfTrafficPermitted",
-				"VarAmountOfConcurrentUsers",
-				"VarAmountOfASAllocatedVCPUs",
-				"VarASScaleUpFactor",
-				"VarReplicationRatio"
-			);
-	}
-	
 
-	
-	
 	@Override
-	public Object get(String service, String attribute){
-		
-		if(fakedRepo.containsKey(service+"-"+attribute))
-			return fakedRepo.get(service+"-"+attribute);
+	public List<String> listCommonAttributes() {
+		return Arrays.asList("VarMaxDownlinkBandwidth", "VarMaxRequestsPerSecond", "VarAmountOfDBAllocatedMemory",
+				"VarMaxTPSSupported", "VarAmountOfDBAllocatedMemoryPerNode", "VarAmountOfASAllocatedMemory",
+				"VarAmountOfWebBalancingNodes", "VarMaxAmountOfUsers", "VarSpeedOfDBAllocatedVCPUs",
+				"VarAmountOfClusterNodes", "VarSpeedOfDBAllocatedVCPUsPerNode", "VarMaxUplinkBandwidth",
+				"VarSpeedOfASAllocatedVCPUs", "VarAmountOfDBAllocatedVCPUsPerNode", "VarDBScaleUpFactor",
+				"VarAmountOfDBAllocatedVCPUs", "VarUpTimePercentage", "VarMaxQPSSupported",
+				"VarMaxAmountOfTrafficPermitted", "VarAmountOfConcurrentUsers", "VarAmountOfASAllocatedVCPUs",
+				"VarASScaleUpFactor", "VarReplicationRatio");
+	}
+
+	@Override
+	public Object get(String service, String attribute) {
+
+		if (fakedRepo.containsKey(service + "-" + attribute))
+			return fakedRepo.get(service + "-" + attribute);
 		else
 			return 0;
-		
+
 	}
-	
-	
+
 }
-
-

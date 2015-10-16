@@ -25,16 +25,15 @@ import org.eclipse.ui.IActionDelegate;
 import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
-
 public class RunPopulateVerdicts implements IObjectActionDelegate, Runnable {
 
 	protected StructuredSelection currentSelection;
-    protected IFile file;
-	
+	protected IFile file;
+
 	public RunPopulateVerdicts() {
 		super();
 	}
-	
+
 	public void run() {
 		String file_uri = file.getLocation().toOSString();
 		diva.reasoning.Reasoner.populateVerdicts(file_uri);
@@ -57,18 +56,17 @@ public class RunPopulateVerdicts implements IObjectActionDelegate, Runnable {
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
-		
-		if (selection instanceof StructuredSelection)
-		{
-			currentSelection = (StructuredSelection)selection;
+
+		if (selection instanceof StructuredSelection) {
+			currentSelection = (StructuredSelection) selection;
 			Iterator it = currentSelection.iterator();
 
-			while(it.hasNext()) {
-				file = (IFile)it.next();
+			while (it.hasNext()) {
+				file = (IFile) it.next();
 			}
 
 		}
-		
+
 	}
 
 }

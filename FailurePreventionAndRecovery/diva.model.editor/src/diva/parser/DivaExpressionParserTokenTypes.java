@@ -15,9 +15,7 @@
  */
 // $ANTLR : "expression.g" -> "DivaExpressionParser.java"$
 
-
-package diva.parser; 
-
+package diva.parser;
 
 public interface DivaExpressionParserTokenTypes {
 	int EOF = 1;

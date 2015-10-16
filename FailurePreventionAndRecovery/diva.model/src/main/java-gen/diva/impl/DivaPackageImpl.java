@@ -79,365 +79,365 @@ import diva.visitors.VisitorsPackage;
 import diva.visitors.impl.VisitorsPackageImpl;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Package</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass variabilityModelEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass invariantEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass variableEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass enumVariableEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass booleanVariableEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass termEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass andTermEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass orTermEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass notTermEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass naryTermEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass variantTermEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass variableTermEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass enumTermEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass booleanTermEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass ruleEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass enumLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass namedElementEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass constraintEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass variantEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass dimensionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass expressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass contextExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass variantExpressionEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass priorityRuleEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass propertyEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass propertyLiteralEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass propertyValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass propertyPriorityEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass multiplicityConstraintEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass annotationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass diVAModelElementEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass simulationModelEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass contextEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass configurationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass configVariantEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass scenarioEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass scoredElementEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass scoreEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass priorityEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass variableValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass boolVariableValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass enumVariableValueEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass configurationModelEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass suitableConfigurationEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass contextModelEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass cePableEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EEnum verdictEEnum = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EDataType stringEDataType = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EDataType integerEDataType = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
-	 * package URI value.
-	 * <p>Note: the correct way to create the package is via the static
-	 * factory method {@link #init init()}, which also performs
-	 * initialization of the package, or returns the registered package,
-	 * if one already exists.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the
+	 * package package URI value.
+	 * <p>
+	 * Note: the correct way to create the package is via the static factory
+	 * method {@link #init init()}, which also performs initialization of the
+	 * package, or returns the registered package, if one already exists. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see diva.DivaPackage#eNS_URI
 	 * @see #init()
@@ -448,34 +448,42 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private static boolean isInited = false;
 
 	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+	 * Creates, registers, and initializes the <b>Package</b> for this model,
+	 * and for any others upon which it depends.
 	 * 
-	 * <p>This method is used to initialize {@link DivaPackage#eINSTANCE} when that field is accessed.
-	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <p>
+	 * This method is used to initialize {@link DivaPackage#eINSTANCE} when that
+	 * field is accessed. Clients should not invoke it directly. Instead, they
+	 * should simply access that field to obtain the package. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
 	 * @generated
 	 */
 	public static DivaPackage init() {
-		if (isInited) return (DivaPackage)EPackage.Registry.INSTANCE.getEPackage(DivaPackage.eNS_URI);
+		if (isInited)
+			return (DivaPackage) EPackage.Registry.INSTANCE.getEPackage(DivaPackage.eNS_URI);
 
 		// Obtain or create and register package
-		DivaPackageImpl theDivaPackage = (DivaPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof DivaPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new DivaPackageImpl());
+		DivaPackageImpl theDivaPackage = (DivaPackageImpl) (EPackage.Registry.INSTANCE
+				.get(eNS_URI) instanceof DivaPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI)
+						: new DivaPackageImpl());
 
 		isInited = true;
 
 		// Obtain or create and register interdependencies
-		VisitorsPackageImpl theVisitorsPackage = (VisitorsPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(VisitorsPackage.eNS_URI) instanceof VisitorsPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(VisitorsPackage.eNS_URI) : VisitorsPackage.eINSTANCE);
+		VisitorsPackageImpl theVisitorsPackage = (VisitorsPackageImpl) (EPackage.Registry.INSTANCE
+				.getEPackage(VisitorsPackage.eNS_URI) instanceof VisitorsPackageImpl
+						? EPackage.Registry.INSTANCE.getEPackage(VisitorsPackage.eNS_URI) : VisitorsPackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theDivaPackage.createPackageContents();
@@ -488,15 +496,14 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		// Mark meta-data to indicate it can't be changed
 		theDivaPackage.freeze();
 
-  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(DivaPackage.eNS_URI, theDivaPackage);
 		return theDivaPackage;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getVariabilityModel() {
@@ -504,62 +511,62 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariabilityModel_Context() {
-		return (EReference)variabilityModelEClass.getEStructuralFeatures().get(0);
+		return (EReference) variabilityModelEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariabilityModel_Property() {
-		return (EReference)variabilityModelEClass.getEStructuralFeatures().get(1);
+		return (EReference) variabilityModelEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariabilityModel_Dimension() {
-		return (EReference)variabilityModelEClass.getEStructuralFeatures().get(2);
+		return (EReference) variabilityModelEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariabilityModel_Rule() {
-		return (EReference)variabilityModelEClass.getEStructuralFeatures().get(3);
+		return (EReference) variabilityModelEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariabilityModel_Constraint() {
-		return (EReference)variabilityModelEClass.getEStructuralFeatures().get(4);
+		return (EReference) variabilityModelEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariabilityModel_Simulation() {
-		return (EReference)variabilityModelEClass.getEStructuralFeatures().get(5);
+		return (EReference) variabilityModelEClass.getEStructuralFeatures().get(5);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getInvariant() {
@@ -567,17 +574,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getInvariant_Expression() {
-		return (EReference)invariantEClass.getEStructuralFeatures().get(0);
+		return (EReference) invariantEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getVariable() {
@@ -585,8 +592,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getEnumVariable() {
@@ -594,17 +601,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEnumVariable_Literal() {
-		return (EReference)enumVariableEClass.getEStructuralFeatures().get(0);
+		return (EReference) enumVariableEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getBooleanVariable() {
@@ -612,8 +619,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getTerm() {
@@ -621,8 +628,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getAndTerm() {
@@ -630,8 +637,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getOrTerm() {
@@ -639,8 +646,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getNotTerm() {
@@ -648,17 +655,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getNotTerm_Term() {
-		return (EReference)notTermEClass.getEStructuralFeatures().get(0);
+		return (EReference) notTermEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getNaryTerm() {
@@ -666,17 +673,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getNaryTerm_Term() {
-		return (EReference)naryTermEClass.getEStructuralFeatures().get(0);
+		return (EReference) naryTermEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getVariantTerm() {
@@ -684,17 +691,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariantTerm_Variant() {
-		return (EReference)variantTermEClass.getEStructuralFeatures().get(0);
+		return (EReference) variantTermEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getVariableTerm() {
@@ -702,17 +709,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariableTerm_Variable() {
-		return (EReference)variableTermEClass.getEStructuralFeatures().get(0);
+		return (EReference) variableTermEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getEnumTerm() {
@@ -720,17 +727,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEnumTerm_Value() {
-		return (EReference)enumTermEClass.getEStructuralFeatures().get(0);
+		return (EReference) enumTermEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getBooleanTerm() {
@@ -738,8 +745,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getRule() {
@@ -747,8 +754,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getEnumLiteral() {
@@ -756,8 +763,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getNamedElement() {
@@ -765,26 +772,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getNamedElement_Name() {
-		return (EAttribute)namedElementEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) namedElementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getNamedElement_Id() {
-		return (EAttribute)namedElementEClass.getEStructuralFeatures().get(1);
+		return (EAttribute) namedElementEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getConstraint() {
@@ -792,8 +799,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getVariant() {
@@ -801,53 +808,53 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariant_Type() {
-		return (EReference)variantEClass.getEStructuralFeatures().get(0);
+		return (EReference) variantEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariant_PropertyValue() {
-		return (EReference)variantEClass.getEStructuralFeatures().get(1);
+		return (EReference) variantEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariant_Dependency() {
-		return (EReference)variantEClass.getEStructuralFeatures().get(2);
+		return (EReference) variantEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariant_Available() {
-		return (EReference)variantEClass.getEStructuralFeatures().get(3);
+		return (EReference) variantEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariant_Required() {
-		return (EReference)variantEClass.getEStructuralFeatures().get(4);
+		return (EReference) variantEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getDimension() {
@@ -855,53 +862,53 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getDimension_Variant() {
-		return (EReference)dimensionEClass.getEStructuralFeatures().get(0);
+		return (EReference) dimensionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getDimension_Property() {
-		return (EReference)dimensionEClass.getEStructuralFeatures().get(1);
+		return (EReference) dimensionEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getDimension_Upper() {
-		return (EAttribute)dimensionEClass.getEStructuralFeatures().get(2);
+		return (EAttribute) dimensionEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getDimension_Lower() {
-		return (EAttribute)dimensionEClass.getEStructuralFeatures().get(3);
+		return (EAttribute) dimensionEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getDimension_Constraints() {
-		return (EReference)dimensionEClass.getEStructuralFeatures().get(4);
+		return (EReference) dimensionEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getExpression() {
@@ -909,26 +916,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getExpression_Term() {
-		return (EReference)expressionEClass.getEStructuralFeatures().get(0);
+		return (EReference) expressionEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getExpression_Text() {
-		return (EAttribute)expressionEClass.getEStructuralFeatures().get(1);
+		return (EAttribute) expressionEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getContextExpression() {
@@ -936,8 +943,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getVariantExpression() {
@@ -945,8 +952,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getPriorityRule() {
@@ -954,26 +961,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPriorityRule_Context() {
-		return (EReference)priorityRuleEClass.getEStructuralFeatures().get(0);
+		return (EReference) priorityRuleEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPriorityRule_Priority() {
-		return (EReference)priorityRuleEClass.getEStructuralFeatures().get(1);
+		return (EReference) priorityRuleEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getProperty() {
@@ -981,26 +988,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getProperty_Direction() {
-		return (EAttribute)propertyEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) propertyEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getProperty_Literal() {
-		return (EReference)propertyEClass.getEStructuralFeatures().get(1);
+		return (EReference) propertyEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getPropertyLiteral() {
@@ -1008,17 +1015,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getPropertyLiteral_Value() {
-		return (EAttribute)propertyLiteralEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) propertyLiteralEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getPropertyValue() {
@@ -1026,26 +1033,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPropertyValue_Property() {
-		return (EReference)propertyValueEClass.getEStructuralFeatures().get(0);
+		return (EReference) propertyValueEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getPropertyValue_Value() {
-		return (EAttribute)propertyValueEClass.getEStructuralFeatures().get(1);
+		return (EAttribute) propertyValueEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getPropertyPriority() {
@@ -1053,26 +1060,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPropertyPriority_Property() {
-		return (EReference)propertyPriorityEClass.getEStructuralFeatures().get(0);
+		return (EReference) propertyPriorityEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getPropertyPriority_Priority() {
-		return (EAttribute)propertyPriorityEClass.getEStructuralFeatures().get(1);
+		return (EAttribute) propertyPriorityEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getMultiplicityConstraint() {
@@ -1080,35 +1087,35 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getMultiplicityConstraint_Available() {
-		return (EReference)multiplicityConstraintEClass.getEStructuralFeatures().get(0);
+		return (EReference) multiplicityConstraintEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getMultiplicityConstraint_Upper() {
-		return (EAttribute)multiplicityConstraintEClass.getEStructuralFeatures().get(1);
+		return (EAttribute) multiplicityConstraintEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getMultiplicityConstraint_Lower() {
-		return (EAttribute)multiplicityConstraintEClass.getEStructuralFeatures().get(2);
+		return (EAttribute) multiplicityConstraintEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getAnnotation() {
@@ -1116,26 +1123,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getAnnotation_Key() {
-		return (EAttribute)annotationEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) annotationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getAnnotation_Value() {
-		return (EAttribute)annotationEClass.getEStructuralFeatures().get(1);
+		return (EAttribute) annotationEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getDiVAModelElement() {
@@ -1143,17 +1150,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getDiVAModelElement_Annotation() {
-		return (EReference)diVAModelElementEClass.getEStructuralFeatures().get(0);
+		return (EReference) diVAModelElementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getSimulationModel() {
@@ -1161,26 +1168,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getSimulationModel_Scenario() {
-		return (EReference)simulationModelEClass.getEStructuralFeatures().get(0);
+		return (EReference) simulationModelEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getSimulationModel_Model() {
-		return (EReference)simulationModelEClass.getEStructuralFeatures().get(1);
+		return (EReference) simulationModelEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getContext() {
@@ -1188,53 +1195,53 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContext_Variable() {
-		return (EReference)contextEClass.getEStructuralFeatures().get(0);
+		return (EReference) contextEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContext_Configuration() {
-		return (EReference)contextEClass.getEStructuralFeatures().get(1);
+		return (EReference) contextEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContext_Oracle() {
-		return (EReference)contextEClass.getEStructuralFeatures().get(2);
+		return (EReference) contextEClass.getEStructuralFeatures().get(2);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getContext_Verdict() {
-		return (EAttribute)contextEClass.getEStructuralFeatures().get(3);
+		return (EAttribute) contextEClass.getEStructuralFeatures().get(3);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContext_Priority() {
-		return (EReference)contextEClass.getEStructuralFeatures().get(4);
+		return (EReference) contextEClass.getEStructuralFeatures().get(4);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getConfiguration() {
@@ -1242,26 +1249,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getConfiguration_Variant() {
-		return (EReference)configurationEClass.getEStructuralFeatures().get(0);
+		return (EReference) configurationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getConfiguration_Verdict() {
-		return (EAttribute)configurationEClass.getEStructuralFeatures().get(1);
+		return (EAttribute) configurationEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getConfigVariant() {
@@ -1269,17 +1276,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getConfigVariant_Variant() {
-		return (EReference)configVariantEClass.getEStructuralFeatures().get(0);
+		return (EReference) configVariantEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getScenario() {
@@ -1287,17 +1294,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getScenario_Context() {
-		return (EReference)scenarioEClass.getEStructuralFeatures().get(0);
+		return (EReference) scenarioEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getScoredElement() {
@@ -1305,26 +1312,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getScoredElement_TotalScore() {
-		return (EAttribute)scoredElementEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) scoredElementEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getScoredElement_Score() {
-		return (EReference)scoredElementEClass.getEStructuralFeatures().get(1);
+		return (EReference) scoredElementEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getScore() {
@@ -1332,26 +1339,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getScore_Score() {
-		return (EAttribute)scoreEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) scoreEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getScore_Property() {
-		return (EReference)scoreEClass.getEStructuralFeatures().get(1);
+		return (EReference) scoreEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getPriority() {
@@ -1359,26 +1366,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getPriority_Property() {
-		return (EReference)priorityEClass.getEStructuralFeatures().get(0);
+		return (EReference) priorityEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getPriority_Priority() {
-		return (EAttribute)priorityEClass.getEStructuralFeatures().get(1);
+		return (EAttribute) priorityEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getVariableValue() {
@@ -1386,17 +1393,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getVariableValue_Variable() {
-		return (EReference)variableValueEClass.getEStructuralFeatures().get(0);
+		return (EReference) variableValueEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getBoolVariableValue() {
@@ -1404,17 +1411,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getBoolVariableValue_Bool() {
-		return (EAttribute)boolVariableValueEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) boolVariableValueEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getEnumVariableValue() {
@@ -1422,17 +1429,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getEnumVariableValue_Literal() {
-		return (EReference)enumVariableValueEClass.getEStructuralFeatures().get(0);
+		return (EReference) enumVariableValueEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getConfigurationModel() {
@@ -1440,17 +1447,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getConfigurationModel_Configurations() {
-		return (EReference)configurationModelEClass.getEStructuralFeatures().get(0);
+		return (EReference) configurationModelEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getSuitableConfiguration() {
@@ -1458,26 +1465,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getSuitableConfiguration_Score() {
-		return (EAttribute)suitableConfigurationEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) suitableConfigurationEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getSuitableConfiguration_Variant() {
-		return (EReference)suitableConfigurationEClass.getEStructuralFeatures().get(1);
+		return (EReference) suitableConfigurationEClass.getEStructuralFeatures().get(1);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getContextModel() {
@@ -1485,17 +1492,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EReference getContextModel_Variable() {
-		return (EReference)contextModelEClass.getEStructuralFeatures().get(0);
+		return (EReference) contextModelEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getCEPable() {
@@ -1503,17 +1510,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EAttribute getCEPable_Query() {
-		return (EAttribute)cePableEClass.getEStructuralFeatures().get(0);
+		return (EAttribute) cePableEClass.getEStructuralFeatures().get(0);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EEnum getVerdict() {
@@ -1521,8 +1528,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EDataType getString() {
@@ -1530,8 +1537,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EDataType getInteger() {
@@ -1539,30 +1546,31 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public DivaFactory getDivaFactory() {
-		return (DivaFactory)getEFactoryInstance();
+		return (DivaFactory) getEFactoryInstance();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private boolean isCreated = false;
 
 	/**
-	 * Creates the meta-model objects for the package.  This method is
-	 * guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
+	 * Creates the meta-model objects for the package. This method is guarded to
+	 * have no affect on any invocation but its first. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void createPackageContents() {
-		if (isCreated) return;
+		if (isCreated)
+			return;
 		isCreated = true;
 
 		// Create classes and their features
@@ -1734,21 +1742,22 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private boolean isInitialized = false;
 
 	/**
-	 * Complete the initialization of the package and its meta-model.  This
-	 * method is guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Complete the initialization of the package and its meta-model. This
+	 * method is guarded to have no affect on any invocation but its first. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void initializePackageContents() {
-		if (isInitialized) return;
+		if (isInitialized)
+			return;
 		isInitialized = true;
 
 		// Initialize package
@@ -1757,7 +1766,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		VisitorsPackage theVisitorsPackage = (VisitorsPackage)EPackage.Registry.INSTANCE.getEPackage(VisitorsPackage.eNS_URI);
+		VisitorsPackage theVisitorsPackage = (VisitorsPackage) EPackage.Registry.INSTANCE
+				.getEPackage(VisitorsPackage.eNS_URI);
 
 		// Add subpackages
 		getESubpackages().add(theVisitorsPackage);
@@ -1815,13 +1825,26 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		contextModelEClass.getESuperTypes().add(theVisitorsPackage.getVisitable());
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(variabilityModelEClass, VariabilityModel.class, "VariabilityModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getVariabilityModel_Context(), this.getVariable(), null, "context", null, 0, -1, VariabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getVariabilityModel_Property(), this.getProperty(), null, "property", null, 0, -1, VariabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getVariabilityModel_Dimension(), this.getDimension(), null, "dimension", null, 0, -1, VariabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getVariabilityModel_Rule(), this.getRule(), null, "rule", null, 0, -1, VariabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getVariabilityModel_Constraint(), this.getConstraint(), null, "constraint", null, 0, -1, VariabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getVariabilityModel_Simulation(), this.getSimulationModel(), this.getSimulationModel_Model(), "simulation", null, 0, 1, VariabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(variabilityModelEClass, VariabilityModel.class, "VariabilityModel", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getVariabilityModel_Context(), this.getVariable(), null, "context", null, 0, -1,
+				VariabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariabilityModel_Property(), this.getProperty(), null, "property", null, 0, -1,
+				VariabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariabilityModel_Dimension(), this.getDimension(), null, "dimension", null, 0, -1,
+				VariabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariabilityModel_Rule(), this.getRule(), null, "rule", null, 0, -1, VariabilityModel.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariabilityModel_Constraint(), this.getConstraint(), null, "constraint", null, 0, -1,
+				VariabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariabilityModel_Simulation(), this.getSimulationModel(), this.getSimulationModel_Model(),
+				"simulation", null, 0, 1, VariabilityModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+				IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		EOperation op = addEOperation(variabilityModelEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		ETypeParameter t1 = addETypeParameter(op, "C");
@@ -1837,8 +1860,11 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(invariantEClass, Invariant.class, "Invariant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getInvariant_Expression(), this.getExpression(), null, "expression", null, 1, 1, Invariant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(invariantEClass, Invariant.class, "Invariant", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getInvariant_Expression(), this.getExpression(), null, "expression", null, 1, 1, Invariant.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(invariantEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -1856,8 +1882,11 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 
 		initEClass(variableEClass, Variable.class, "Variable", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(enumVariableEClass, EnumVariable.class, "EnumVariable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEnumVariable_Literal(), this.getEnumLiteral(), null, "literal", null, 1, -1, EnumVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(enumVariableEClass, EnumVariable.class, "EnumVariable", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEnumVariable_Literal(), this.getEnumLiteral(), null, "literal", null, 1, -1,
+				EnumVariable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(enumVariableEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -1873,7 +1902,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(booleanVariableEClass, BooleanVariable.class, "BooleanVariable", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(booleanVariableEClass, BooleanVariable.class, "BooleanVariable", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		op = addEOperation(booleanVariableEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -1924,7 +1954,9 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		initEOperation(op, g1);
 
 		initEClass(notTermEClass, NotTerm.class, "NotTerm", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getNotTerm_Term(), this.getTerm(), null, "term", null, 1, 1, NotTerm.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNotTerm_Term(), this.getTerm(), null, "term", null, 1, 1, NotTerm.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
 
 		op = addEOperation(notTermEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -1941,10 +1973,15 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		initEOperation(op, g1);
 
 		initEClass(naryTermEClass, NaryTerm.class, "NaryTerm", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getNaryTerm_Term(), this.getTerm(), null, "term", null, 1, -1, NaryTerm.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getNaryTerm_Term(), this.getTerm(), null, "term", null, 1, -1, NaryTerm.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
 
-		initEClass(variantTermEClass, VariantTerm.class, "VariantTerm", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getVariantTerm_Variant(), this.getVariant(), null, "variant", null, 1, 1, VariantTerm.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(variantTermEClass, VariantTerm.class, "VariantTerm", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getVariantTerm_Variant(), this.getVariant(), null, "variant", null, 1, 1, VariantTerm.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(variantTermEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -1960,11 +1997,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(variableTermEClass, VariableTerm.class, "VariableTerm", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getVariableTerm_Variable(), this.getVariable(), null, "variable", null, 1, 1, VariableTerm.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(variableTermEClass, VariableTerm.class, "VariableTerm", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getVariableTerm_Variable(), this.getVariable(), null, "variable", null, 1, 1, VariableTerm.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(enumTermEClass, EnumTerm.class, "EnumTerm", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEnumTerm_Value(), this.getEnumLiteral(), null, "value", null, 1, 1, EnumTerm.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(enumTermEClass, EnumTerm.class, "EnumTerm", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEnumTerm_Value(), this.getEnumLiteral(), null, "value", null, 1, 1, EnumTerm.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(enumTermEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -1980,7 +2023,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(booleanTermEClass, BooleanTerm.class, "BooleanTerm", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(booleanTermEClass, BooleanTerm.class, "BooleanTerm", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		op = addEOperation(booleanTermEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -1998,7 +2042,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 
 		initEClass(ruleEClass, Rule.class, "Rule", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-		initEClass(enumLiteralEClass, EnumLiteral.class, "EnumLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(enumLiteralEClass, EnumLiteral.class, "EnumLiteral", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		op = addEOperation(enumLiteralEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2014,18 +2059,32 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(namedElementEClass, NamedElement.class, "NamedElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getNamedElement_Name(), this.getString(), "name", null, 0, 1, NamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getNamedElement_Id(), this.getString(), "id", null, 0, 1, NamedElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(namedElementEClass, NamedElement.class, "NamedElement", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getNamedElement_Name(), this.getString(), "name", null, 0, 1, NamedElement.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getNamedElement_Id(), this.getString(), "id", null, 0, 1, NamedElement.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(constraintEClass, Constraint.class, "Constraint", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(constraintEClass, Constraint.class, "Constraint", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		initEClass(variantEClass, Variant.class, "Variant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getVariant_Type(), this.getDimension(), this.getDimension_Variant(), "type", null, 1, 1, Variant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getVariant_PropertyValue(), this.getPropertyValue(), null, "propertyValue", null, 0, -1, Variant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getVariant_Dependency(), this.getVariantExpression(), null, "dependency", null, 0, 1, Variant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getVariant_Available(), this.getContextExpression(), null, "available", null, 0, 1, Variant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getVariant_Required(), this.getContextExpression(), null, "required", null, 0, 1, Variant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariant_Type(), this.getDimension(), this.getDimension_Variant(), "type", null, 1, 1,
+				Variant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariant_PropertyValue(), this.getPropertyValue(), null, "propertyValue", null, 0, -1,
+				Variant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariant_Dependency(), this.getVariantExpression(), null, "dependency", null, 0, 1,
+				Variant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariant_Available(), this.getContextExpression(), null, "available", null, 0, 1,
+				Variant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getVariant_Required(), this.getContextExpression(), null, "required", null, 0, 1, Variant.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(variantEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2041,12 +2100,21 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(dimensionEClass, Dimension.class, "Dimension", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getDimension_Variant(), this.getVariant(), this.getVariant_Type(), "variant", null, 0, -1, Dimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDimension_Property(), this.getProperty(), null, "property", null, 0, -1, Dimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDimension_Upper(), this.getInteger(), "upper", null, 0, 1, Dimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getDimension_Lower(), this.getInteger(), "lower", null, 0, 1, Dimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getDimension_Constraints(), this.getMultiplicityConstraint(), null, "constraints", null, 0, -1, Dimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(dimensionEClass, Dimension.class, "Dimension", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getDimension_Variant(), this.getVariant(), this.getVariant_Type(), "variant", null, 0, -1,
+				Dimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDimension_Property(), this.getProperty(), null, "property", null, 0, -1, Dimension.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDimension_Upper(), this.getInteger(), "upper", null, 0, 1, Dimension.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getDimension_Lower(), this.getInteger(), "lower", null, 0, 1, Dimension.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getDimension_Constraints(), this.getMultiplicityConstraint(), null, "constraints", null, 0, -1,
+				Dimension.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(dimensionEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2062,9 +2130,13 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(expressionEClass, Expression.class, "Expression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getExpression_Term(), this.getTerm(), null, "term", null, 1, 1, Expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getExpression_Text(), this.getString(), "text", null, 0, 1, Expression.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(expressionEClass, Expression.class, "Expression", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getExpression_Term(), this.getTerm(), null, "term", null, 1, 1, Expression.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+				IS_ORDERED);
+		initEAttribute(getExpression_Text(), this.getString(), "text", null, 0, 1, Expression.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(expressionEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2080,7 +2152,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(contextExpressionEClass, ContextExpression.class, "ContextExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(contextExpressionEClass, ContextExpression.class, "ContextExpression", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		op = addEOperation(contextExpressionEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2096,7 +2169,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(variantExpressionEClass, VariantExpression.class, "VariantExpression", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(variantExpressionEClass, VariantExpression.class, "VariantExpression", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		op = addEOperation(variantExpressionEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2112,9 +2186,14 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(priorityRuleEClass, PriorityRule.class, "PriorityRule", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPriorityRule_Context(), this.getContextExpression(), null, "context", null, 1, 1, PriorityRule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getPriorityRule_Priority(), this.getPropertyPriority(), null, "priority", null, 0, -1, PriorityRule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(priorityRuleEClass, PriorityRule.class, "PriorityRule", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPriorityRule_Context(), this.getContextExpression(), null, "context", null, 1, 1,
+				PriorityRule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getPriorityRule_Priority(), this.getPropertyPriority(), null, "priority", null, 0, -1,
+				PriorityRule.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(priorityRuleEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2130,9 +2209,13 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(propertyEClass, Property.class, "Property", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getProperty_Direction(), this.getInteger(), "direction", null, 0, 1, Property.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getProperty_Literal(), this.getPropertyLiteral(), null, "literal", null, 0, -1, Property.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(propertyEClass, Property.class, "Property", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getProperty_Direction(), this.getInteger(), "direction", null, 0, 1, Property.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getProperty_Literal(), this.getPropertyLiteral(), null, "literal", null, 0, -1, Property.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(propertyEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2148,8 +2231,10 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(propertyLiteralEClass, PropertyLiteral.class, "PropertyLiteral", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getPropertyLiteral_Value(), this.getInteger(), "value", null, 0, 1, PropertyLiteral.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(propertyLiteralEClass, PropertyLiteral.class, "PropertyLiteral", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getPropertyLiteral_Value(), this.getInteger(), "value", null, 0, 1, PropertyLiteral.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(propertyLiteralEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2165,9 +2250,13 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(propertyValueEClass, PropertyValue.class, "PropertyValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPropertyValue_Property(), this.getProperty(), null, "property", null, 1, 1, PropertyValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPropertyValue_Value(), this.getInteger(), "value", null, 0, 1, PropertyValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(propertyValueEClass, PropertyValue.class, "PropertyValue", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPropertyValue_Property(), this.getProperty(), null, "property", null, 1, 1,
+				PropertyValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPropertyValue_Value(), this.getInteger(), "value", null, 0, 1, PropertyValue.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(propertyValueEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2183,9 +2272,14 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(propertyPriorityEClass, PropertyPriority.class, "PropertyPriority", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPropertyPriority_Property(), this.getProperty(), null, "property", null, 1, 1, PropertyPriority.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPropertyPriority_Priority(), this.getInteger(), "priority", null, 0, 1, PropertyPriority.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(propertyPriorityEClass, PropertyPriority.class, "PropertyPriority", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPropertyPriority_Property(), this.getProperty(), null, "property", null, 1, 1,
+				PropertyPriority.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPropertyPriority_Priority(), this.getInteger(), "priority", null, 0, 1,
+				PropertyPriority.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(propertyPriorityEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2201,10 +2295,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(multiplicityConstraintEClass, MultiplicityConstraint.class, "MultiplicityConstraint", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getMultiplicityConstraint_Available(), this.getContextExpression(), null, "available", null, 1, 1, MultiplicityConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMultiplicityConstraint_Upper(), this.getInteger(), "upper", null, 0, 1, MultiplicityConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getMultiplicityConstraint_Lower(), this.getInteger(), "lower", null, 0, 1, MultiplicityConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(multiplicityConstraintEClass, MultiplicityConstraint.class, "MultiplicityConstraint", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getMultiplicityConstraint_Available(), this.getContextExpression(), null, "available", null, 1,
+				1, MultiplicityConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMultiplicityConstraint_Upper(), this.getInteger(), "upper", null, 0, 1,
+				MultiplicityConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getMultiplicityConstraint_Lower(), this.getInteger(), "lower", null, 0, 1,
+				MultiplicityConstraint.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(multiplicityConstraintEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2220,9 +2321,12 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(annotationEClass, Annotation.class, "Annotation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getAnnotation_Key(), this.getString(), "key", null, 0, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getAnnotation_Value(), this.getString(), "value", null, 0, 1, Annotation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(annotationEClass, Annotation.class, "Annotation", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getAnnotation_Key(), this.getString(), "key", null, 0, 1, Annotation.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getAnnotation_Value(), this.getString(), "value", null, 0, 1, Annotation.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(annotationEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2238,12 +2342,20 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(diVAModelElementEClass, DiVAModelElement.class, "DiVAModelElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getDiVAModelElement_Annotation(), this.getAnnotation(), null, "annotation", null, 0, -1, DiVAModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(diVAModelElementEClass, DiVAModelElement.class, "DiVAModelElement", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getDiVAModelElement_Annotation(), this.getAnnotation(), null, "annotation", null, 0, -1,
+				DiVAModelElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(simulationModelEClass, SimulationModel.class, "SimulationModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getSimulationModel_Scenario(), this.getScenario(), null, "scenario", null, 0, -1, SimulationModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getSimulationModel_Model(), this.getVariabilityModel(), this.getVariabilityModel_Simulation(), "model", null, 1, 1, SimulationModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(simulationModelEClass, SimulationModel.class, "SimulationModel", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getSimulationModel_Scenario(), this.getScenario(), null, "scenario", null, 0, -1,
+				SimulationModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSimulationModel_Model(), this.getVariabilityModel(), this.getVariabilityModel_Simulation(),
+				"model", null, 1, 1, SimulationModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(simulationModelEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2260,11 +2372,20 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		initEOperation(op, g1);
 
 		initEClass(contextEClass, Context.class, "Context", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getContext_Variable(), this.getVariableValue(), null, "variable", null, 0, -1, Context.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getContext_Configuration(), this.getConfiguration(), null, "configuration", null, 0, -1, Context.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getContext_Oracle(), this.getVariantExpression(), null, "oracle", null, 0, 1, Context.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getContext_Verdict(), this.getVerdict(), "verdict", null, 0, 1, Context.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getContext_Priority(), this.getPriority(), null, "priority", null, 0, -1, Context.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContext_Variable(), this.getVariableValue(), null, "variable", null, 0, -1, Context.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContext_Configuration(), this.getConfiguration(), null, "configuration", null, 0, -1,
+				Context.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContext_Oracle(), this.getVariantExpression(), null, "oracle", null, 0, 1, Context.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getContext_Verdict(), this.getVerdict(), "verdict", null, 0, 1, Context.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getContext_Priority(), this.getPriority(), null, "priority", null, 0, -1, Context.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(contextEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2280,9 +2401,13 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(configurationEClass, Configuration.class, "Configuration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getConfiguration_Variant(), this.getConfigVariant(), null, "variant", null, 0, -1, Configuration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getConfiguration_Verdict(), this.getVerdict(), "verdict", null, 0, 1, Configuration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(configurationEClass, Configuration.class, "Configuration", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getConfiguration_Variant(), this.getConfigVariant(), null, "variant", null, 0, -1,
+				Configuration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getConfiguration_Verdict(), this.getVerdict(), "verdict", null, 0, 1, Configuration.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(configurationEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2298,8 +2423,11 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(configVariantEClass, ConfigVariant.class, "ConfigVariant", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getConfigVariant_Variant(), this.getVariant(), null, "variant", null, 1, 1, ConfigVariant.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(configVariantEClass, ConfigVariant.class, "ConfigVariant", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getConfigVariant_Variant(), this.getVariant(), null, "variant", null, 1, 1, ConfigVariant.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(configVariantEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2315,8 +2443,11 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(scenarioEClass, Scenario.class, "Scenario", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getScenario_Context(), this.getContext(), null, "context", null, 0, -1, Scenario.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(scenarioEClass, Scenario.class, "Scenario", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getScenario_Context(), this.getContext(), null, "context", null, 0, -1, Scenario.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scenarioEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2332,13 +2463,21 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(scoredElementEClass, ScoredElement.class, "ScoredElement", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getScoredElement_TotalScore(), ecorePackage.getEInt(), "totalScore", null, 0, 1, ScoredElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getScoredElement_Score(), this.getScore(), null, "score", null, 0, -1, ScoredElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(scoredElementEClass, ScoredElement.class, "ScoredElement", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getScoredElement_TotalScore(), ecorePackage.getEInt(), "totalScore", null, 0, 1,
+				ScoredElement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
+		initEReference(getScoredElement_Score(), this.getScore(), null, "score", null, 0, -1, ScoredElement.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(scoreEClass, Score.class, "Score", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getScore_Score(), ecorePackage.getEInt(), "score", null, 0, 1, Score.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getScore_Property(), this.getProperty(), null, "property", null, 1, 1, Score.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getScore_Score(), ecorePackage.getEInt(), "score", null, 0, 1, Score.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getScore_Property(), this.getProperty(), null, "property", null, 1, 1, Score.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(scoreEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2354,9 +2493,13 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(priorityEClass, Priority.class, "Priority", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getPriority_Property(), this.getProperty(), null, "property", null, 1, 1, Priority.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getPriority_Priority(), ecorePackage.getEInt(), "priority", null, 0, 1, Priority.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(priorityEClass, Priority.class, "Priority", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getPriority_Property(), this.getProperty(), null, "property", null, 1, 1, Priority.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getPriority_Priority(), ecorePackage.getEInt(), "priority", null, 0, 1, Priority.class,
+				!IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(priorityEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2372,11 +2515,17 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(variableValueEClass, VariableValue.class, "VariableValue", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getVariableValue_Variable(), this.getVariable(), null, "variable", null, 1, 1, VariableValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(variableValueEClass, VariableValue.class, "VariableValue", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getVariableValue_Variable(), this.getVariable(), null, "variable", null, 1, 1,
+				VariableValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(boolVariableValueEClass, BoolVariableValue.class, "BoolVariableValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getBoolVariableValue_Bool(), ecorePackage.getEBoolean(), "bool", null, 0, 1, BoolVariableValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(boolVariableValueEClass, BoolVariableValue.class, "BoolVariableValue", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getBoolVariableValue_Bool(), ecorePackage.getEBoolean(), "bool", null, 0, 1,
+				BoolVariableValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+				!IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(boolVariableValueEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2392,8 +2541,11 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(enumVariableValueEClass, EnumVariableValue.class, "EnumVariableValue", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getEnumVariableValue_Literal(), this.getEnumLiteral(), null, "literal", null, 1, 1, EnumVariableValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(enumVariableValueEClass, EnumVariableValue.class, "EnumVariableValue", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getEnumVariableValue_Literal(), this.getEnumLiteral(), null, "literal", null, 1, 1,
+				EnumVariableValue.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(enumVariableValueEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2409,8 +2561,11 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(configurationModelEClass, ConfigurationModel.class, "ConfigurationModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getConfigurationModel_Configurations(), this.getSuitableConfiguration(), null, "configurations", null, 0, -1, ConfigurationModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(configurationModelEClass, ConfigurationModel.class, "ConfigurationModel", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getConfigurationModel_Configurations(), this.getSuitableConfiguration(), null, "configurations",
+				null, 0, -1, ConfigurationModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(configurationModelEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2426,9 +2581,14 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(suitableConfigurationEClass, SuitableConfiguration.class, "SuitableConfiguration", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getSuitableConfiguration_Score(), ecorePackage.getEInt(), "score", null, 0, 1, SuitableConfiguration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getSuitableConfiguration_Variant(), this.getConfigVariant(), null, "variant", null, 0, -1, SuitableConfiguration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(suitableConfigurationEClass, SuitableConfiguration.class, "SuitableConfiguration", !IS_ABSTRACT,
+				!IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getSuitableConfiguration_Score(), ecorePackage.getEInt(), "score", null, 0, 1,
+				SuitableConfiguration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+				IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getSuitableConfiguration_Variant(), this.getConfigVariant(), null, "variant", null, 0, -1,
+				SuitableConfiguration.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE,
+				!IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(suitableConfigurationEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2444,8 +2604,11 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		g1 = createEGenericType(t2);
 		initEOperation(op, g1);
 
-		initEClass(contextModelEClass, ContextModel.class, "ContextModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getContextModel_Variable(), this.getVariableValue(), null, "variable", null, 0, -1, ContextModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEClass(contextModelEClass, ContextModel.class, "ContextModel", !IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
+		initEReference(getContextModel_Variable(), this.getVariableValue(), null, "variable", null, 0, -1,
+				ContextModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+				!IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		op = addEOperation(contextModelEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		t1 = addETypeParameter(op, "C");
@@ -2462,7 +2625,8 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 		initEOperation(op, g1);
 
 		initEClass(cePableEClass, CEPable.class, "CEPable", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEAttribute(getCEPable_Query(), this.getString(), "query", null, 0, 1, CEPable.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getCEPable_Query(), this.getString(), "query", null, 0, 1, CEPable.class, !IS_TRANSIENT,
+				!IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		// Initialize enums and add enum literals
 		initEEnum(verdictEEnum, Verdict.class, "Verdict");
@@ -2483,258 +2647,83 @@ public class DivaPackageImpl extends EPackageImpl implements DivaPackage {
 	}
 
 	/**
-	 * Initializes the annotations for <b>kermeta</b>.
-	 * <!-- begin-user-doc -->
+	 * Initializes the annotations for <b>kermeta</b>. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void createKermetaAnnotations() {
-		String source = "kermeta";			
-		addAnnotation
-		  (variabilityModelEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitVariabilityModel(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (invariantEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitInvariant(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (enumVariableEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitEnumVariable(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (booleanVariableEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitBooleanVariable(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (andTermEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitAndTerm(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (orTermEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitOrTerm(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (notTermEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitNotTerm(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (variantTermEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitVariantTerm(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (enumTermEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitEnumTerm(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (booleanTermEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitBooleanTerm(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (enumLiteralEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitEnumLiteral(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (variantEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitVariant(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (dimensionEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitDimension(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (expressionEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitExpression(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (contextExpressionEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitContextExpression(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (variantExpressionEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitVariantExpression(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (priorityRuleEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitPriorityRule(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (propertyEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitProperty(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (propertyLiteralEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitPropertyLiteral(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (propertyValueEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitPropertyValue(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (propertyPriorityEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitPropertyPriority(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (multiplicityConstraintEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitMultiplicityConstraint(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (annotationEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitAnnotation(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (simulationModelEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitSimulationModel(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (contextEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitContext(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (configurationEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitConfiguration(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (configVariantEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitConfigVariant(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (scenarioEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitScenario(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (scoreEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitScore(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (priorityEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitPriority(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (boolVariableValueEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitBoolVariableValue(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (enumVariableValueEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitEnumVariableValue(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (configurationModelEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitConfigurationModel(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (suitableConfigurationEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitSuitableConfiguration(self, context)\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (contextModelEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nresult := visitor.visitContextModel(self, context)\nend",
-			 "isAbstract", "false"
-		   });
+		String source = "kermeta";
+		addAnnotation(variabilityModelEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitVariabilityModel(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(invariantEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitInvariant(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(enumVariableEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitEnumVariable(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(booleanVariableEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitBooleanVariable(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(andTermEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitAndTerm(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(orTermEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitOrTerm(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(notTermEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitNotTerm(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(variantTermEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitVariantTerm(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(enumTermEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitEnumTerm(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(booleanTermEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitBooleanTerm(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(enumLiteralEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitEnumLiteral(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(variantEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitVariant(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(dimensionEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitDimension(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(expressionEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitExpression(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(contextExpressionEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitContextExpression(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(variantExpressionEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitVariantExpression(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(priorityRuleEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitPriorityRule(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(propertyEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitProperty(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(propertyLiteralEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitPropertyLiteral(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(propertyValueEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitPropertyValue(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(propertyPriorityEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitPropertyPriority(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(multiplicityConstraintEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitMultiplicityConstraint(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(annotationEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitAnnotation(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(simulationModelEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitSimulationModel(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(contextEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitContext(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(configurationEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitConfiguration(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(configVariantEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitConfigVariant(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(scenarioEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitScenario(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(scoreEClass.getEOperations().get(0), source,
+				new String[] { "body", "do\nresult := visitor.visitScore(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(priorityEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitPriority(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(boolVariableValueEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitBoolVariableValue(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(enumVariableValueEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitEnumVariableValue(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(configurationModelEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitConfigurationModel(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(suitableConfigurationEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitSuitableConfiguration(self, context)\nend", "isAbstract", "false" });
+		addAnnotation(contextModelEClass.getEOperations().get(0), source, new String[] { "body",
+				"do\nresult := visitor.visitContextModel(self, context)\nend", "isAbstract", "false" });
 	}
 
-} //DivaPackageImpl
+} // DivaPackageImpl

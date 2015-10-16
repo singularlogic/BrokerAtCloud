@@ -30,29 +30,29 @@ import diva.editor.DiVATableEditor;
 public class CreateDefaultLiterals implements IObjectActionDelegate, Runnable {
 
 	protected StructuredSelection currentSelection;
-    protected Property prop;
-	
+	protected Property prop;
+
 	public CreateDefaultLiterals() {
 		super();
 	}
-	
+
 	public void run() {
-		
-		if( editor != null && prop != null) {
+
+		if (editor != null && prop != null) {
 			editor.createDefaultProperties(prop);
 		}
-		
+
 	}
-	
+
 	DiVATableEditor editor;
 
 	/**
 	 * @see IObjectActionDelegate#setActivePart(IAction, IWorkbenchPart)
 	 */
 	public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-		
+
 		if (targetPart instanceof DiVATableEditor) {
-			editor = (DiVATableEditor)targetPart;
+			editor = (DiVATableEditor) targetPart;
 		}
 	}
 
@@ -67,21 +67,20 @@ public class CreateDefaultLiterals implements IObjectActionDelegate, Runnable {
 	 * @see IActionDelegate#selectionChanged(IAction, ISelection)
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
-		
-		if (selection instanceof StructuredSelection)
-		{
-			currentSelection = (StructuredSelection)selection;
+
+		if (selection instanceof StructuredSelection) {
+			currentSelection = (StructuredSelection) selection;
 			Iterator it = currentSelection.iterator();
 
-			while(it.hasNext()) {
+			while (it.hasNext()) {
 				Object obj = it.next();
 				if (obj instanceof Property) {
-					prop = (Property)obj;
+					prop = (Property) obj;
 				}
 			}
 
 		}
-		
+
 	}
-	
+
 }

@@ -29,10 +29,11 @@ import diva.brokeratcloud.fpr.model.DivaRoot;
 public class Demo {
 	private static int count = 0;
 	private static DivaRoot root = null;
+
 	@GET
 	@Produces(MediaType.TEXT_PLAIN)
-	public String getIt(@PathParam("username") String user){
-		if(root == null){
+	public String getIt(@PathParam("username") String user) {
+		if (root == null) {
 			root = new DivaRoot(URI.createPlatformResourceURI("org.diva.samples/model/flood/flood.diva"));
 		}
 		count += 1;

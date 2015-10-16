@@ -24,28 +24,28 @@ import java.util.Map;
 import diva.brokeratcloud.fpr.input.abstracts.ServiceDependency;
 
 public class ServiceDependencyJson extends ServiceDependency {
-	
+
 	public static ServiceDependencyJson INSTANCE = new ServiceDependencyJson();
-	
+
 	private Map<String, List<String>> fakeRepo = new HashMap<String, List<String>>();
-	
-	private void initFake(){
-		
+
+	private void initFake() {
+
 	}
-	
-	public ServiceDependencyJson(){
+
+	public ServiceDependencyJson() {
 		initFake();
 	}
-	
+
 	@Override
-	public List<String> getDependency(String srv){
+	public List<String> getDependency(String srv) {
 		List<String> result = new ArrayList<String>();
 		Map<String, Object> offering = JsonRoot.INSTANCE.getOffering(srv);
-		
-		List<Map<String,Object>> deps = (List<Map<String, Object>>) offering.get(JsonRoot.ServiceDependencies);
-		if(deps == null)
+
+		List<Map<String, Object>> deps = (List<Map<String, Object>>) offering.get(JsonRoot.ServiceDependencies);
+		if (deps == null)
 			return result;
-		for(Map<String, Object> dep : deps){
+		for (Map<String, Object> dep : deps) {
 			result.add(dep.get(JsonRoot.ServiceInstanceReferenceName).toString());
 		}
 		return result;

@@ -35,13 +35,12 @@ import diva.VariableValue;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Enum Variable</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Enum Variable</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.EnumVariableImpl#getLiteral <em>Literal</em>}</li>
+ * <li>{@link diva.impl.EnumVariableImpl#getLiteral <em>Literal</em>}</li>
  * </ul>
  * </p>
  *
@@ -49,9 +48,9 @@ import diva.visitors.Visitor;
  */
 public class EnumVariableImpl extends VariableImpl implements EnumVariable {
 	/**
-	 * The cached value of the '{@link #getLiteral() <em>Literal</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getLiteral() <em>Literal</em>}'
+	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getLiteral()
 	 * @generated
 	 * @ordered
@@ -59,8 +58,8 @@ public class EnumVariableImpl extends VariableImpl implements EnumVariable {
 	protected EList<EnumLiteral> literal;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected EnumVariableImpl() {
@@ -68,8 +67,8 @@ public class EnumVariableImpl extends VariableImpl implements EnumVariable {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -78,20 +77,21 @@ public class EnumVariableImpl extends VariableImpl implements EnumVariable {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<EnumLiteral> getLiteral() {
 		if (literal == null) {
-			literal = new EObjectContainmentEList<EnumLiteral>(EnumLiteral.class, this, DivaPackage.ENUM_VARIABLE__LITERAL);
+			literal = new EObjectContainmentEList<EnumLiteral>(EnumLiteral.class, this,
+					DivaPackage.ENUM_VARIABLE__LITERAL);
 		}
 		return literal;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -99,103 +99,103 @@ public class EnumVariableImpl extends VariableImpl implements EnumVariable {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case DivaPackage.ENUM_VARIABLE__LITERAL:
-				return ((InternalEList<?>)getLiteral()).basicRemove(otherEnd, msgs);
+		case DivaPackage.ENUM_VARIABLE__LITERAL:
+			return ((InternalEList<?>) getLiteral()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.ENUM_VARIABLE__LITERAL:
-				return getLiteral();
+		case DivaPackage.ENUM_VARIABLE__LITERAL:
+			return getLiteral();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.ENUM_VARIABLE__LITERAL:
-				getLiteral().clear();
-				getLiteral().addAll((Collection<? extends EnumLiteral>)newValue);
-				return;
+		case DivaPackage.ENUM_VARIABLE__LITERAL:
+			getLiteral().clear();
+			getLiteral().addAll((Collection<? extends EnumLiteral>) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.ENUM_VARIABLE__LITERAL:
-				getLiteral().clear();
-				return;
+		case DivaPackage.ENUM_VARIABLE__LITERAL:
+			getLiteral().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.ENUM_VARIABLE__LITERAL:
-				return literal != null && !literal.isEmpty();
+		case DivaPackage.ENUM_VARIABLE__LITERAL:
+			return literal != null && !literal.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
 	public void toAlloy(StringBuilder builder) {
 		builder.append("one abstract sig " + getId() + "  extends Context {}\n");
-		for(EnumLiteral l : getLiteral()) {
+		for (EnumLiteral l : getLiteral()) {
 			l.toAlloy(builder);
 		}
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
 	@Override
 	public List<VariableValue> allValue() {
 		List<VariableValue> vals = new ArrayList<VariableValue>();
-		
-		for(EnumLiteral l : getLiteral()) {
+
+		for (EnumLiteral l : getLiteral()) {
 			EnumVariableValue evv = DivaFactory.eINSTANCE.createEnumVariableValue();
 			evv.setLiteral(l);
 			evv.setVariable(this);
 			vals.add(evv);
 		}
-		
+
 		return vals;
 	}
-} //EnumVariableImpl
+} // EnumVariableImpl

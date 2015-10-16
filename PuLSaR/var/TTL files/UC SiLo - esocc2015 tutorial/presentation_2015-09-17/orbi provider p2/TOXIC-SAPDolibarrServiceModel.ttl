@@ -1,0 +1,258 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . 
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> . 
+@prefix dcterms: <http://purl.org/dc/terms/> . 
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> . 
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> . 
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> . 
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> . 
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> . 
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> . 
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> . 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+@prefix ctag: <http://commontag.org/ns#> . 
+@prefix org: <http://www.w3.org/ns/org#> . 
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> . 
+@prefix time: <http://www.w3.org/2006/time#> . 
+@prefix gr: <http://purl.org/goodrelations/v1#> . 
+@prefix doap: <http://usefulinc.com/ns/doap#> . 
+@prefix bp: <http://guide.broker-cloud.eu/esocc2015#> . 
+
+<http://sap.com/SAP> 
+  a gr:BusinessEntity ; 
+  gr:legalName "SAP SE" . 
+
+<http://sap.com/SAPEntityInvolvement> 
+  a usdl-core:EntityInvolvement ; 
+  usdl-core:withBusinessRole usdl-business-roles:provider ; 
+  usdl-core:ofBusinessEntity <http://sap.com/SAP> . 
+
+<http://sap.com/SAPDolibarrService> 
+  a usdl-core:Service ; 
+  dcterms:creator <http://sap.com/SAP> ; 
+  usdl-core:hasEntityInvolvement <http://sap.com/SAPEntityInvolvement> ; 
+  usdl-core-cb:hasServiceModel <http://sap.com/SAPDolibarrServiceModel> . 
+
+<http://sap.com/SAPDolibarrServiceModel> 
+  a bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
+  gr:isVariantOf bp:BrokerAtCloudESOCC2015TutorialBrokerPolicy ; 
+  bp:hasBrokerAtCloudESOCC2015TutorialServiceLevelProfile <http://sap.com/SAPDolibarrServiceProfile> ; 
+  usdl-core-cb:hasClassificationDimension <http://www.broker-cloud.eu/service-descriptions/CAS/categories#Shipment> . 
+
+<http://sap.com/SAPDolibarrServiceProfile> 
+  a bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
+  bp:hasSLSecurityLevel <http://sap.com/SLSecurityLevelInstance> ; 
+  bp:hasSLAuditability <http://sap.com/SLAuditabilityInstance> ; 
+  bp:hasSLTransportSecurityGuarantees <http://sap.com/SLTransportSecurityGuaranteesInstance> ; 
+  bp:hasSLLearnability <http://sap.com/SLLearnabilityInstance> ; 
+  bp:hasSLAccessibility <http://sap.com/SLAccessibilityInstance> ; 
+  bp:hasSLAmountOfVCPUs <http://sap.com/SLAmountOfVCPUsInstance> ; 
+  bp:hasSLAmountOfConcurrentInstances <http://sap.com/SLAmountOfConcurrentInstancesInstance> ; 
+  bp:hasSLRAM <http://sap.com/SLRAMInstance> ; 
+  bp:hasSLDisc <http://sap.com/SLDiscInstance> ; 
+  bp:hasSLFloatingIPs <http://sap.com/SLFloatingIPsInstance> ; 
+  bp:hasSLEphemeralDisc <http://sap.com/SLEphemeralDiscInstance> ; 
+  bp:hasSLSwapDisc <http://sap.com/SLSwapDiscInstance> . 
+
+<http://sap.com/SLSecurityLevelInstance> 
+  a bp:SLSecurityLevel ; 
+  bp:hasSLESecurityLevel <http://sap.com/SLESecurityLevelInstance> . 
+
+<http://sap.com/SLESecurityLevelInstance> 
+  a bp:SLESecurityLevel ; 
+  bp:hasVarSecurityLevel <http://sap.com/VarSecurityLevelInstance> . 
+
+<http://sap.com/VarSecurityLevelInstance> 
+  a bp:VarSecurityLevel ; 
+  bp:hasDefaultSecurityLevel bp:Low_SecurityLevel . 
+
+<http://sap.com/SLAuditabilityInstance> 
+  a bp:SLAuditability ; 
+  bp:hasSLEAuditability <http://sap.com/SLEAuditabilityInstance> . 
+
+<http://sap.com/SLEAuditabilityInstance> 
+  a bp:SLEAuditability ; 
+  bp:hasVarAuditability <http://sap.com/VarAuditabilityInstance> . 
+
+<http://sap.com/VarAuditabilityInstance> 
+  a bp:VarAuditability ; 
+  bp:hasDefaultAuditability bp:Low_Auditability . 
+
+<http://sap.com/SLTransportSecurityGuaranteesInstance> 
+  a bp:SLTransportSecurityGuarantees ; 
+  bp:hasSLETransportSecurityGuarantees <http://sap.com/SLETransportSecurityGuaranteesInstance> . 
+
+<http://sap.com/SLETransportSecurityGuaranteesInstance> 
+  a bp:SLETransportSecurityGuarantees ; 
+  bp:hasVarTransportSecurityGuarantees <http://sap.com/VarTransportSecurityGuaranteesInstance> . 
+
+<http://sap.com/VarTransportSecurityGuaranteesInstance> 
+  a bp:VarTransportSecurityGuarantees ; 
+  bp:hasDefaultTransportSecurityGuarantees bp:No_TransportSecurityGuarantees . 
+
+<http://sap.com/SLLearnabilityInstance> 
+  a bp:SLLearnability ; 
+  bp:hasSLELearnability <http://sap.com/SLELearnabilityInstance> . 
+
+<http://sap.com/SLELearnabilityInstance> 
+  a bp:SLELearnability ; 
+  bp:hasVarLearnability <http://sap.com/VarLearnabilityInstance> . 
+
+<http://sap.com/VarLearnabilityInstance> 
+  a bp:VarLearnability ; 
+  bp:hasDefaultLearnability bp:Easy_Learnability . 
+
+<http://sap.com/SLAccessibilityInstance> 
+  a bp:SLAccessibility ; 
+  bp:hasSLEAccessibility <http://sap.com/SLEAccessibilityInstance> . 
+
+<http://sap.com/SLEAccessibilityInstance> 
+  a bp:SLEAccessibility ; 
+  bp:hasVarAccessibility <http://sap.com/VarAccessibilityInstance> . 
+
+<http://sap.com/VarAccessibilityInstance> 
+  a bp:VarAccessibility ; 
+  bp:hasDefaultAccessibility bp:Low_Accessibility . 
+
+<http://sap.com/SLAmountOfVCPUsInstance> 
+  a bp:SLAmountOfVCPUs ; 
+  bp:hasSLEAmountOfVCPUs <http://sap.com/SLEAmountOfVCPUsInstance> . 
+
+<http://sap.com/SLEAmountOfVCPUsInstance> 
+  a bp:SLEAmountOfVCPUs ; 
+  bp:hasVarAmountOfVCPUs <http://sap.com/VarAmountOfVCPUsInstance> . 
+
+<http://sap.com/VarAmountOfVCPUsInstance> 
+  a bp:VarAmountOfVCPUs ; 
+  bp:hasDefaultAmountOfVCPUs <http://sap.com/AVCPUs> . 
+
+<http://sap.com/AVCPUs> 
+  a bp:AmountOfVCPUs ; 
+  rdfs:label "fdfsdfdsf"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "core"^^xsd:string ; 
+  gr:valueReference bp:AmountOfVCPUsValueRange ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "4"^^xsd:integer . 
+
+<http://sap.com/SLAmountOfConcurrentInstancesInstance> 
+  a bp:SLAmountOfConcurrentInstances ; 
+  bp:hasSLEAmountOfConcurrentInstances <http://sap.com/SLEAmountOfConcurrentInstancesInstance> . 
+
+<http://sap.com/SLEAmountOfConcurrentInstancesInstance> 
+  a bp:SLEAmountOfConcurrentInstances ; 
+  bp:hasVarAmountOfConcurrentInstances <http://sap.com/VarAmountOfConcurrentInstancesInstance> . 
+
+<http://sap.com/VarAmountOfConcurrentInstancesInstance> 
+  a bp:VarAmountOfConcurrentInstances ; 
+  bp:hasDefaultAmountOfConcurrentInstances <http://sap.com/ConcurentInst> . 
+
+<http://sap.com/ConcurentInst> 
+  a bp:AmountOfConcurrentInstances ; 
+  rdfs:label "vdfvfdvv"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "VMinstance"^^xsd:string ; 
+  gr:valueReference bp:AmountOfConcurrentInstancesValueRange ; 
+  gr:hasValueInteger "0"^^xsd:integer ; 
+  gr:hasMinValueInteger "0"^^xsd:integer ; 
+  gr:hasMaxValueInteger "0"^^xsd:integer . 
+
+<http://sap.com/SLRAMInstance> 
+  a bp:SLRAM ; 
+  bp:hasSLERAM <http://sap.com/SLERAMInstance> . 
+
+<http://sap.com/SLERAMInstance> 
+  a bp:SLERAM ; 
+  bp:hasVarRAM <http://sap.com/VarRAMInstance> . 
+
+<http://sap.com/VarRAMInstance> 
+  a bp:VarRAM ; 
+  bp:hasDefaultRAM <http://sap.com/MainMemory> . 
+
+<http://sap.com/MainMemory> 
+  a bp:RAM ; 
+  rdfs:label "dvdvdsvd"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:valueReference bp:RAMValueRange ; 
+  gr:hasMinValueInteger "512"^^xsd:integer ; 
+  gr:hasMaxValueInteger "1024"^^xsd:integer . 
+
+<http://sap.com/SLDiscInstance> 
+  a bp:SLDisc ; 
+  bp:hasSLEDisc <http://sap.com/SLEDiscInstance> . 
+
+<http://sap.com/SLEDiscInstance> 
+  a bp:SLEDisc ; 
+  bp:hasVarDisc <http://sap.com/VarDiscInstance> . 
+
+<http://sap.com/VarDiscInstance> 
+  a bp:VarDisc ; 
+  bp:hasDefaultDisc <http://sap.com/HD> . 
+
+<http://sap.com/HD> 
+  a bp:Disc ; 
+  rdfs:label "nlnloinlin"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
+  gr:valueReference bp:DiscValueRange ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "10"^^xsd:integer . 
+
+<http://sap.com/SLFloatingIPsInstance> 
+  a bp:SLFloatingIPs ; 
+  bp:hasSLEFloatingIPs <http://sap.com/SLEFloatingIPsInstance> . 
+
+<http://sap.com/SLEFloatingIPsInstance> 
+  a bp:SLEFloatingIPs ; 
+  bp:hasVarFloatingIPs <http://sap.com/VarFloatingIPsInstance> . 
+
+<http://sap.com/VarFloatingIPsInstance> 
+  a bp:VarFloatingIPs ; 
+  bp:hasDefaultFloatingIPs <http://sap.com/FloatIPs> . 
+
+<http://sap.com/FloatIPs> 
+  a bp:FloatingIPs ; 
+  rdfs:label "dcdscsdcds"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "IPaddress"^^xsd:string ; 
+  gr:valueReference bp:FloatingIPsValueRange ; 
+  gr:hasValueInteger "1"^^xsd:integer ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "1"^^xsd:integer . 
+
+<http://sap.com/SLEphemeralDiscInstance> 
+  a bp:SLEphemeralDisc ; 
+  bp:hasSLEEphemeralDisc <http://sap.com/SLEEphemeralDiscInstance> . 
+
+<http://sap.com/SLEEphemeralDiscInstance> 
+  a bp:SLEEphemeralDisc ; 
+  bp:hasVarEphemeralDisc <http://sap.com/VarEphemeralDiscInstance> . 
+
+<http://sap.com/VarEphemeralDiscInstance> 
+  a bp:VarEphemeralDisc ; 
+  bp:hasDefaultEphemeralDisc <http://sap.com/EDisc> . 
+
+<http://sap.com/EDisc> 
+  a bp:EphemeralDisc ; 
+  rdfs:label "sadsdsad"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
+  gr:valueReference bp:EphemeralDiscValueRange ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "2"^^xsd:integer . 
+
+<http://sap.com/SLSwapDiscInstance> 
+  a bp:SLSwapDisc ; 
+  bp:hasSLESwapDisc <http://sap.com/SLESwapDiscInstance> . 
+
+<http://sap.com/SLESwapDiscInstance> 
+  a bp:SLESwapDisc ; 
+  bp:hasVarSwapDisc <http://sap.com/VarSwapDiscInstance> . 
+
+<http://sap.com/VarSwapDiscInstance> 
+  a bp:VarSwapDisc ; 
+  bp:hasDefaultSwapDisc <http://sap.com/Swap> . 
+
+<http://sap.com/Swap> 
+  a bp:SwapDisc ; 
+  rdfs:label "mlnmlkinl"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:valueReference bp:SwapDiscValueRange ; 
+  gr:hasMinValueInteger "0"^^xsd:integer ; 
+  gr:hasMaxValueInteger "1024"^^xsd:integer . 

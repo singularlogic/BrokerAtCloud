@@ -32,7 +32,7 @@ public class CallbackEndpointServer extends AbstractHandler {
 	protected Thread runner2;		// event dispatch thread
 	protected LinkedBlockingQueue<SLMEvent> queue;	// event dispatch queue
 	
-	public CallbackEndpointServer(PubsubEventManager mgr, HashMap<String,String[][]> t) { manager = mgr; /*topics = t; initializeTopics();*/ }
+	public CallbackEndpointServer(PubsubEventManager mgr, HashMap<String,String[][]> t) { manager = mgr; }
 	public CallbackEndpointServer(PubsubEventManager mgr, HashMap<String,String[][]> t, String host, int port) { this(mgr,t); this.host = host; this.port = port; }
 	
 	public void startEndpoint() throws Exception {
@@ -114,11 +114,9 @@ public class CallbackEndpointServer extends AbstractHandler {
 		// Extract information from HTTP request
 		String method = request.getMethod();
 		String contentType = request.getContentType();
-		//String params = request.getParameters().toString();
 		java.io.BufferedReader br = request.getReader();
 		java.util.Scanner s = new java.util.Scanner(br).useDelimiter("\\A");
 		String content = s.hasNext() ? s.next() : "";
-		//System.out.println( String.format("CallbackEndpointServer: Method: %s\nContent-type: %s\nContent: %s", method, contentType, content) );
 		
 		// Get operation from path (target)
 		String operation = null;
@@ -133,7 +131,6 @@ public class CallbackEndpointServer extends AbstractHandler {
 			String srvUri = extractServiceUri(content);
 			if (srvUri!=null && !srvUri.isEmpty()) {
 				eventText = String.format(eventTpl, new java.util.Date().toString(), target, operation, srvUri);
-				//System.out.println("CallbackEndpointServer: EVENT-DEFINITION: \n"+eventText);
 			} else System.err.println("CallbackEndpointServer: Invalid event message: \n"+content);
 		}
 		else System.err.println("CallbackEndpointServer: No operation specified");

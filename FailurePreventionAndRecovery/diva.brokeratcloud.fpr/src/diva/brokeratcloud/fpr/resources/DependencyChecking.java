@@ -24,115 +24,88 @@ import org.codehaus.jackson.type.TypeReference;
 import diva.brokeratcloud.fpr.model.DcSession;
 
 /**
- * The Rest command framework for Dependency checking. 
+ * The Rest command framework for Dependency checking.
+ * 
  * @author Hui Song
  *
  */
 @Path("/fpr/dc/")
 @Produces(MediaType.APPLICATION_JSON)
 public class DependencyChecking {
-	
+
 	ObjectMapper mapper = new ObjectMapper();
-	
+
 	private static Map<String, DcSession> sessions = new HashMap<String, DcSession>();
-	
-//	@GET
-//	@Path("/")
-//	public Object query(){
-//		return "Hello";
-//	}
-	
+
+	// @GET
+	// @Path("/")
+	// public Object query(){
+	// return "Hello";
+	// }
+
 	@Path("/")
 	@GET
-	public Object queryAllRequired(
-			@QueryParam("service") List<String> service
-	){
-		try{
-		Collection<String> res = DcSession.getAllRequired(service);
-		System.out.println(res);
-		return res;
-		}
-		catch(Exception e){
+	public Object queryAllRequired(@QueryParam("service") List<String> service) {
+		try {
+			Collection<String> res = DcSession.getAllRequired(service);
+			System.out.println(res);
+			return res;
+		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
-	
+
 	/**
-	 * curl -X PUT -d "[\"song::hui\", \"morin::brice\"]" http://127.0.0.1:8089/fpr/dc/id
+	 * curl -X PUT -d "[\"song::hui\", \"morin::brice\"]"
+	 * http://127.0.0.1:8089/fpr/dc/id
+	 * 
 	 * @param requestId
 	 * @param services
 	 * @return
 	 */
 	@Path("/{requestId}/")
 	@PUT
-	public Object putRequest(
-			@PathParam("requestId") String requestId,
-			String services
-		
-	){
+	public Object putRequest(@PathParam("requestId") String requestId, String services
+
+	) {
 		try {
-			List<String> serviceIds = mapper.readValue(services, new TypeReference<List<String>>() {});
-			
+			List<String> serviceIds = mapper.readValue(services, new TypeReference<List<String>>() {
+			});
+
 			System.out.println(serviceIds.size());
-			
-			if(sessions.containsKey(requestId))
+
+			if (sessions.containsKey(requestId))
 				return String.format("Request named %s exists", requestId);
 			DcSession session = new DcSession(requestId);
 			sessions.put(requestId, session);
 			session.addServices(serviceIds);
 			return session.getMissed();
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return "Error: " + e.getMessage();
 		}
 	}
-	
+
 	/**
-	 * curl -X POST -d "[\"chauvel::franck\"]" http://127.0.0.1:8089/fpr/dc/id  
+	 * curl -X POST -d "[\"chauvel::franck\"]" http://127.0.0.1:8089/fpr/dc/id
+	 * 
 	 * @param requestId
 	 * @param services
 	 * @return
 	 */
 	@Path("/{requestId}/")
 	@POST
-	public Object postRequest(
-			@PathParam("requestId") String requestId,
-			String services
-	){
+	public Object postRequest(@PathParam("requestId") String requestId, String services) {
 		List<String> serviceIds;
 		try {
-			serviceIds = mapper.readValue(services, new TypeReference<List<String>>() {});
+			serviceIds = mapper.readValue(services, new TypeReference<List<String>>() {
+			});
 			DcSession session = sessions.get(requestId);
 			session.addServices(serviceIds);
-			if(session == null)
-				return "request does not exist";
-			return session.getMissed();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return "Error: " + e.getMessage();
-		}
-		
-	}
-	
-	/**
-	 * curl http://127.0.0.1:8089/fpr/dc/id
-	 * @param requestId
-	 * @return
-	 */
-	@Path("/{requestId}")
-	@GET
-	public Object getRequest(
-			@PathParam("requestId") String requestId
-	){
-		
-		try {
-			
-			DcSession session = sessions.get(requestId);
-			if(session == null)
+			if (session == null)
 				return "request does not exist";
 			return session.getMissed();
 		} catch (Exception e) {
@@ -142,18 +115,40 @@ public class DependencyChecking {
 		}
 
 	}
-	
+
+	/**
+	 * curl http://127.0.0.1:8089/fpr/dc/id
+	 * 
+	 * @param requestId
+	 * @return
+	 */
+	@Path("/{requestId}")
+	@GET
+	public Object getRequest(@PathParam("requestId") String requestId) {
+
+		try {
+
+			DcSession session = sessions.get(requestId);
+			if (session == null)
+				return "request does not exist";
+			return session.getMissed();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return "Error: " + e.getMessage();
+		}
+
+	}
+
 	/**
 	 * curl -X DELETE http://127.0.0.1:8089/fpr/dc/id
+	 * 
 	 * @param requestId
 	 */
 	@Path("/{requestId}")
 	@DELETE
-	public void deleteRequest(
-			@PathParam("requestId") String requestId
-	){
+	public void deleteRequest(@PathParam("requestId") String requestId) {
 		sessions.remove(requestId);
 	}
-	
-	
+
 }

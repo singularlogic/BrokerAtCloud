@@ -1,0 +1,49 @@
+@Plan:name('avgLoad')
+
+@Plan:statistics('true')
+
+@Plan:trace('true')
+
+@Import('cpuLoadStream:1.0.0')
+define stream cpuLoadStream (service string, cpuLoad int);
+
+@Import('memoryLoadStream:1.0.0')
+define stream memoryLoadStream (service string, memoryLoad int);
+
+@Import('storageLoadStream:1.0.0')
+define stream storageLoadStream (service string, storageLoad int);
+
+@Import('queryTimeStream:1.0.0')
+define stream queryTimeStream (service string, queryTime int);
+
+@Export('avgCpuLoadStream:1.0.0')
+define stream avgCpuLoadStream (service string, avgCpuLoad double);
+
+@Export('avgMemoryLoadStream:1.0.0')
+define stream avgMemoryLoadStream (service string, avgMemoryLoad double);
+
+@Export('avgStorageLoadStream:1.0.0')
+define stream avgStorageLoadStream (service string, avgStorageLoad double);
+
+@Export('avgQueryTimeStream:1.0.0')
+define stream avgQueryTimeStream (service string, avgQueryTime double);
+
+from cpuLoadStream#window.time(15 minutes)
+select service, avg(cpuLoad) as avgCpuLoad
+group by service
+insert into avgCpuLoadStream;
+
+from memoryLoadStream#window.time(15 minutes)
+select service, avg(memoryLoad) as avgMemoryLoad
+group by service
+insert into avgMemoryLoadStream;
+
+from storageLoadStream#window.time(15 minutes)
+select service, avg(storageLoad) as avgStorageLoad
+group by service
+insert into avgStorageLoadStream;
+
+from queryTimeStream#window.time(15 minutes)
+select service, avg(queryTime) as avgQueryTime
+group by service
+insert into avgQueryTimeStream;

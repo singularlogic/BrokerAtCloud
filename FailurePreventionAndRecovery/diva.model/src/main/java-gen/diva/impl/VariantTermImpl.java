@@ -29,13 +29,12 @@ import diva.VariantTerm;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Variant Term</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Variant Term</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.VariantTermImpl#getVariant <em>Variant</em>}</li>
+ * <li>{@link diva.impl.VariantTermImpl#getVariant <em>Variant</em>}</li>
  * </ul>
  * </p>
  *
@@ -43,9 +42,9 @@ import diva.visitors.Visitor;
  */
 public class VariantTermImpl extends TermImpl implements VariantTerm {
 	/**
-	 * The cached value of the '{@link #getVariant() <em>Variant</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getVariant() <em>Variant</em>}'
+	 * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getVariant()
 	 * @generated
 	 * @ordered
@@ -53,8 +52,8 @@ public class VariantTermImpl extends TermImpl implements VariantTerm {
 	protected Variant variant;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected VariantTermImpl() {
@@ -62,8 +61,8 @@ public class VariantTermImpl extends TermImpl implements VariantTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -72,25 +71,26 @@ public class VariantTermImpl extends TermImpl implements VariantTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Variant getVariant() {
 		if (variant != null && variant.eIsProxy()) {
-			InternalEObject oldVariant = (InternalEObject)variant;
-			variant = (Variant)eResolveProxy(oldVariant);
+			InternalEObject oldVariant = (InternalEObject) variant;
+			variant = (Variant) eResolveProxy(oldVariant);
 			if (variant != oldVariant) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DivaPackage.VARIANT_TERM__VARIANT, oldVariant, variant));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DivaPackage.VARIANT_TERM__VARIANT,
+							oldVariant, variant));
 			}
 		}
 		return variant;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public Variant basicGetVariant() {
@@ -98,20 +98,21 @@ public class VariantTermImpl extends TermImpl implements VariantTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setVariant(Variant newVariant) {
 		Variant oldVariant = variant;
 		variant = newVariant;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.VARIANT_TERM__VARIANT, oldVariant, variant));
+			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.VARIANT_TERM__VARIANT, oldVariant,
+					variant));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -119,64 +120,65 @@ public class VariantTermImpl extends TermImpl implements VariantTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.VARIANT_TERM__VARIANT:
-				if (resolve) return getVariant();
-				return basicGetVariant();
+		case DivaPackage.VARIANT_TERM__VARIANT:
+			if (resolve)
+				return getVariant();
+			return basicGetVariant();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.VARIANT_TERM__VARIANT:
-				setVariant((Variant)newValue);
-				return;
+		case DivaPackage.VARIANT_TERM__VARIANT:
+			setVariant((Variant) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.VARIANT_TERM__VARIANT:
-				setVariant((Variant)null);
-				return;
+		case DivaPackage.VARIANT_TERM__VARIANT:
+			setVariant((Variant) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.VARIANT_TERM__VARIANT:
-				return variant != null;
+		case DivaPackage.VARIANT_TERM__VARIANT:
+			return variant != null;
 		}
 		return super.eIsSet(featureID);
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -189,13 +191,14 @@ public class VariantTermImpl extends TermImpl implements VariantTerm {
 	 */
 	public boolean eval(Context ctx, Configuration cfg) {
 		if (cfg != null) {
-			for(ConfigVariant v : cfg.getVariant()) {
+			for (ConfigVariant v : cfg.getVariant()) {
 				if (v.getVariant() == getVariant())
 					return true;
 			}
 		} else {
-			System.out.println("WARNING: VariantTerm.eval for an expression which should prabably have no VariantTerm (cfg is void)");
+			System.out.println(
+					"WARNING: VariantTerm.eval for an expression which should prabably have no VariantTerm (cfg is void)");
 		}
 		return false;
 	}
-} //VariantTermImpl
+} // VariantTermImpl

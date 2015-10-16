@@ -2,18 +2,21 @@ package eu.brokeratcloud.opt;
 
 import eu.brokeratcloud.common.RootObject;
 import eu.brokeratcloud.common.ServiceDescription;
+import eu.brokeratcloud.common.SLMEvent;
+import eu.brokeratcloud.opt.ServiceCategoryAttribute;
+import eu.brokeratcloud.opt.engine.EventManager;
+import eu.brokeratcloud.opt.type.TFN;
 import eu.brokeratcloud.rest.opt.AttributeManagementService;
 import eu.brokeratcloud.rest.opt.AuxiliaryService;
 import eu.brokeratcloud.rest.opt.FeedbackManagementService;
-import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW;
-import eu.brokeratcloud.opt.ServiceCategoryAttribute;
-import eu.brokeratcloud.opt.type.TFN;
+import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementService;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.Vector;
 
 import org.slf4j.Logger;
@@ -126,6 +129,7 @@ public class FeedbackReporter extends RootObject {
 			long RECENT_THRESHOLD = Long.parseLong( settings.getProperty("qry.RECENT_THRESHOLD") );
 			int MIN_COUNT = Integer.parseInt( settings.getProperty("qry.MIN_COUNT") );
 			boolean DELETE_PREVIOUS = Boolean.parseBoolean( settings.getProperty("qry.DELETE_PREVIOUS", "false") );
+			String notificationsTopic = settings.getProperty("pubsub.notifications-topic");
 			
 			// Connect to local datastore
 			fbMgntWs.connectActiveJdbc();
@@ -161,7 +165,7 @@ public class FeedbackReporter extends RootObject {
 			for (String atId : attributes) {
 				// retrieve sca object for attribute
 				logger.trace("generateFeedbackReports: retrieving attribute info: pv-uri={}", atId);
-				eu.brokeratcloud.opt.ServiceCategoryAttribute sca = eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW._getServiceCategoryAttribute( atId );
+				eu.brokeratcloud.opt.ServiceCategoryAttribute sca = eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementService._getServiceCategoryAttribute( atId );
 				logger.trace("generateFeedbackReports: attribute info: \n{}", sca);
 				
 				if (sca==null) continue;
@@ -325,14 +329,14 @@ public class FeedbackReporter extends RootObject {
 					Object fbAttrValue = attrStats.get(atId);
 					if (fbAttrValue==null) continue;
 					logger.trace("generateFeedbackReports: getting attribute's allowed values uri: pv-uri={}", atId);
-					String avAtId = ServiceCategoryAttributeManagementServiceNEW._getAllowedValueFromPV(atId);	// atId contains attribute's pref. var. uri, since this uri is stored in local datastore
+					String avAtId = ServiceCategoryAttributeManagementService._getAllowedValueFromPV(atId);	// atId contains attribute's pref. var. uri, since this uri is stored in local datastore
 					
 					// Retrieve attribute name
 					String atName = null;
 					if (attrNames.containsKey(atId)) {
 						atName = attrNames.get(atId);
 					} else {
-						atName = ServiceCategoryAttributeManagementServiceNEW._getAttributeNameFromPV(atId);	// atId contains attribute's pref. var. uri, since this uri is stored in local datastore
+						atName = ServiceCategoryAttributeManagementService._getAttributeNameFromPV(atId);	// atId contains attribute's pref. var. uri, since this uri is stored in local datastore
 						if (atName==null || atName.trim().isEmpty()) atName = atId;
 						attrNames.put(atId, atName);
 					}
@@ -372,6 +376,7 @@ public class FeedbackReporter extends RootObject {
 			// Store notifications to local datastore
 			logger.trace("generateFeedbackReports: Storing notifications to local datastore...");
 			logger.trace("generateFeedbackReports: Delete previous notifications: {}", DELETE_PREVIOUS);
+			Vector<FeedbackNotification> fnCache = new Vector<FeedbackNotification>();
 			for (String srvId : notifSrv.keySet()) {
 				// Clear previous notifications for service from local datastore
 				if (DELETE_PREVIOUS) {
@@ -387,12 +392,52 @@ public class FeedbackReporter extends RootObject {
 					fb.setString("attributeId", atId);
 					fb.setString("message", notifText);
 					fb.saveIt();
+					
+					fnCache.add(fb);
 				}
 			}
 			logger.trace("generateFeedbackReports: Storing notifications to local datastore... done");
 			
 			// Disconnect from local datastore
 			fbMgntWs.disconnectActiveJdbc();
+			
+			// Send feedback notification events
+			// publish feedback notification events (if an event topic has been specified)
+			if (eventManager!=null && notificationsTopic!=null && !notificationsTopic.isEmpty() && fnCache.size()>0) {
+				logger.debug("generateFeedbackReports: Publishing new notifications as events to topic {}...", notificationsTopic);
+				int cntSucc = 0;
+				int cntFail = 0;
+				for (java.util.Enumeration<FeedbackNotification> en=fnCache.elements(); en.hasMoreElements();) {
+					// prepare feedback event message
+					String srvId, atId;
+					FeedbackNotification fn = en.nextElement();
+					String fnMesg = String.format("{ \"service\"=\"%s\", \"attribute\"=\"%s\", \"message\"=\"%s\" }", 
+											srvId=fn.getString("serviceId"), atId=fn.getString("attributeId"), fn.getString("message"));
+					try {
+						// prepare feedback event
+						Properties p = new Properties();
+						p.setProperty(".EVENT-CONTENT", fnMesg);
+						SLMEvent feedbackEvent = new SLMEvent(UUID.randomUUID().toString(), new Date(), notificationsTopic, "-", p);
+						logger.debug("generateFeedbackReports: Notification event to publish: {}", feedbackEvent);
+						
+						// publish feedback event
+						boolean pubStatus = eventManager.publish(feedbackEvent);
+						logger.debug("generateFeedbackReports: New feedback notification for service '{}' and attribute '{}' published in topic '{}': status = {}", srvId, atId, notificationsTopic, pubStatus?"SUCCESS":"FAIL");
+						if (pubStatus) cntSucc++; else cntFail++;
+					} catch (Exception e) {
+						logger.error("generateFeedbackReports: Event publishing... CAUSED EXCEPTION: {}", e);
+						cntFail++;
+					}
+				}
+				logger.debug("generateFeedbackReports: Publishing new notifications as events... done");
+				logger.info("generateFeedbackReports: {} notifications published successfully", cntSucc);
+				if (cntFail>0) logger.warn("generateFeedbackReports: {} notifications failed to publish", cntFail);
+			} else {
+				if (fnCache.size()==0) logger.debug("generateFeedbackReports: No new notifications were generated");
+				//else logger.debug("generateFeedbackReports: New notifications will NOT be published as events");
+				if (eventManager==null) logger.error("generateFeedbackReports: No Event Manager was set: ** INTERNAL ERROR **");
+				if (notificationsTopic==null || notificationsTopic.isEmpty()) logger.debug("generateFeedbackReports: No notifications topic was configured in file feedback.properties");
+			}
 			
 			logger.debug("generateFeedbackReports: END");
 			
@@ -402,6 +447,12 @@ public class FeedbackReporter extends RootObject {
 			fbMgntWs.disconnectActiveJdbc();
 		}
 	}
+	
+	// Event Manager methods
+	protected EventManager eventManager;
+	//
+	public EventManager getEventManager() { return eventManager; }
+	public void setEventManager(EventManager em) { eventManager = em; }
 	
 	@Table("feedback_notifications") 
 	public static class FeedbackNotification extends Model {}

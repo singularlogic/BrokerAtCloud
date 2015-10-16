@@ -18,9 +18,8 @@ package diva.visitors;
 import org.eclipse.emf.ecore.EObject;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Visitable</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '
+ * <em><b>Visitable</b></em>'. <!-- end-user-doc -->
  *
  *
  * @see diva.visitors.VisitorsPackage#getVisitable()
@@ -29,8 +28,8 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface Visitable extends EObject {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @model
 	 * @generated
 	 */

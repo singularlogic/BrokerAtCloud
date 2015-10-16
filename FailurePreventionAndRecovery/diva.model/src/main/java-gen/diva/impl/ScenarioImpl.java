@@ -30,13 +30,12 @@ import diva.Scenario;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Scenario</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Scenario</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.ScenarioImpl#getContext <em>Context</em>}</li>
+ * <li>{@link diva.impl.ScenarioImpl#getContext <em>Context</em>}</li>
  * </ul>
  * </p>
  *
@@ -44,9 +43,9 @@ import diva.visitors.Visitor;
  */
 public class ScenarioImpl extends NamedElementImpl implements Scenario {
 	/**
-	 * The cached value of the '{@link #getContext() <em>Context</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getContext() <em>Context</em>}'
+	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getContext()
 	 * @generated
 	 * @ordered
@@ -54,8 +53,8 @@ public class ScenarioImpl extends NamedElementImpl implements Scenario {
 	protected EList<Context> context;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected ScenarioImpl() {
@@ -63,8 +62,8 @@ public class ScenarioImpl extends NamedElementImpl implements Scenario {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -73,8 +72,8 @@ public class ScenarioImpl extends NamedElementImpl implements Scenario {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<Context> getContext() {
@@ -85,8 +84,8 @@ public class ScenarioImpl extends NamedElementImpl implements Scenario {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -94,77 +93,77 @@ public class ScenarioImpl extends NamedElementImpl implements Scenario {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case DivaPackage.SCENARIO__CONTEXT:
-				return ((InternalEList<?>)getContext()).basicRemove(otherEnd, msgs);
+		case DivaPackage.SCENARIO__CONTEXT:
+			return ((InternalEList<?>) getContext()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.SCENARIO__CONTEXT:
-				return getContext();
+		case DivaPackage.SCENARIO__CONTEXT:
+			return getContext();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.SCENARIO__CONTEXT:
-				getContext().clear();
-				getContext().addAll((Collection<? extends Context>)newValue);
-				return;
+		case DivaPackage.SCENARIO__CONTEXT:
+			getContext().clear();
+			getContext().addAll((Collection<? extends Context>) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.SCENARIO__CONTEXT:
-				getContext().clear();
-				return;
+		case DivaPackage.SCENARIO__CONTEXT:
+			getContext().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.SCENARIO__CONTEXT:
-				return context != null && !context.isEmpty();
+		case DivaPackage.SCENARIO__CONTEXT:
+			return context != null && !context.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //ScenarioImpl
+} // ScenarioImpl

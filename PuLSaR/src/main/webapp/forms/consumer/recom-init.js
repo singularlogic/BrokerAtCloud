@@ -3,7 +3,7 @@
  */
 
 var recommendationDisplayPanel = "#RecommendationsPanel";
-var recommendationAcceptButtonVisible = "true";
+var recommendationAcceptButtonVisible = "false";
 
 function requestRecommendation(profileId, requestNewRecom) {
 	if (!profileId || profileId===null || profileId.trim()==='') {

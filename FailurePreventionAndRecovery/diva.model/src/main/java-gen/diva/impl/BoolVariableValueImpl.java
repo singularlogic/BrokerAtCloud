@@ -25,13 +25,12 @@ import diva.VariableValue;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Bool Variable Value</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Bool Variable Value</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.BoolVariableValueImpl#isBool <em>Bool</em>}</li>
+ * <li>{@link diva.impl.BoolVariableValueImpl#isBool <em>Bool</em>}</li>
  * </ul>
  * </p>
  *
@@ -40,8 +39,8 @@ import diva.visitors.Visitor;
 public class BoolVariableValueImpl extends VariableValueImpl implements BoolVariableValue {
 	/**
 	 * The default value of the '{@link #isBool() <em>Bool</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isBool()
 	 * @generated
 	 * @ordered
@@ -49,9 +48,9 @@ public class BoolVariableValueImpl extends VariableValueImpl implements BoolVari
 	protected static final boolean BOOL_EDEFAULT = false;
 
 	/**
-	 * The cached value of the '{@link #isBool() <em>Bool</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #isBool() <em>Bool</em>}' attribute. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #isBool()
 	 * @generated
 	 * @ordered
@@ -59,8 +58,8 @@ public class BoolVariableValueImpl extends VariableValueImpl implements BoolVari
 	protected boolean bool = BOOL_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected BoolVariableValueImpl() {
@@ -68,8 +67,8 @@ public class BoolVariableValueImpl extends VariableValueImpl implements BoolVari
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -78,8 +77,8 @@ public class BoolVariableValueImpl extends VariableValueImpl implements BoolVari
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public boolean isBool() {
@@ -87,20 +86,21 @@ public class BoolVariableValueImpl extends VariableValueImpl implements BoolVari
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setBool(boolean newBool) {
 		boolean oldBool = bool;
 		bool = newBool;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.BOOL_VARIABLE_VALUE__BOOL, oldBool, bool));
+			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.BOOL_VARIABLE_VALUE__BOOL, oldBool,
+					bool));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -108,71 +108,72 @@ public class BoolVariableValueImpl extends VariableValueImpl implements BoolVari
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.BOOL_VARIABLE_VALUE__BOOL:
-				return isBool();
+		case DivaPackage.BOOL_VARIABLE_VALUE__BOOL:
+			return isBool();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.BOOL_VARIABLE_VALUE__BOOL:
-				setBool((Boolean)newValue);
-				return;
+		case DivaPackage.BOOL_VARIABLE_VALUE__BOOL:
+			setBool((Boolean) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.BOOL_VARIABLE_VALUE__BOOL:
-				setBool(BOOL_EDEFAULT);
-				return;
+		case DivaPackage.BOOL_VARIABLE_VALUE__BOOL:
+			setBool(BOOL_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.BOOL_VARIABLE_VALUE__BOOL:
-				return bool != BOOL_EDEFAULT;
+		case DivaPackage.BOOL_VARIABLE_VALUE__BOOL:
+			return bool != BOOL_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (bool: ");
@@ -180,7 +181,7 @@ public class BoolVariableValueImpl extends VariableValueImpl implements BoolVari
 		result.append(')');
 		return result.toString();
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -198,9 +199,9 @@ public class BoolVariableValueImpl extends VariableValueImpl implements BoolVari
 	 */
 	public boolean hasSameValue(VariableValue vv) {
 		if (vv instanceof BoolVariableValue) {
-			return ((BoolVariableValue)vv).isBool() == isBool();
+			return ((BoolVariableValue) vv).isBool() == isBool();
 		}
 		return false;
 	}
 
-} //BoolVariableValueImpl
+} // BoolVariableValueImpl

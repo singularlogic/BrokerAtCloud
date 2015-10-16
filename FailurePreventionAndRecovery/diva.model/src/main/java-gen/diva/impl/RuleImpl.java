@@ -21,9 +21,8 @@ import diva.DivaPackage;
 import diva.Rule;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Rule</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Rule</b></em>'. <!-- end-user-doc -->
  * <p>
  * </p>
  *
@@ -31,8 +30,8 @@ import diva.Rule;
  */
 public abstract class RuleImpl extends NamedElementImpl implements Rule {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected RuleImpl() {
@@ -40,8 +39,8 @@ public abstract class RuleImpl extends NamedElementImpl implements Rule {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -49,4 +48,4 @@ public abstract class RuleImpl extends NamedElementImpl implements Rule {
 		return DivaPackage.Literals.RULE;
 	}
 
-} //RuleImpl
+} // RuleImpl

@@ -25,9 +25,8 @@ import diva.Term;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Or Term</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Or Term</b></em>'. <!-- end-user-doc -->
  * <p>
  * </p>
  *
@@ -35,8 +34,8 @@ import diva.visitors.Visitor;
  */
 public class OrTermImpl extends NaryTermImpl implements OrTerm {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected OrTermImpl() {
@@ -44,8 +43,8 @@ public class OrTermImpl extends NaryTermImpl implements OrTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -54,8 +53,8 @@ public class OrTermImpl extends NaryTermImpl implements OrTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -68,7 +67,7 @@ public class OrTermImpl extends NaryTermImpl implements OrTerm {
 	public void toAlloy(StringBuilder builder) {
 		builder.append("(");
 		int i = 0;
-		for(Term t : getTerm()) {
+		for (Term t : getTerm()) {
 			if (i > 0)
 				builder.append(" or ");
 			t.toAlloy(builder);
@@ -76,16 +75,16 @@ public class OrTermImpl extends NaryTermImpl implements OrTerm {
 		}
 		builder.append(")");
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
 	public boolean eval(Context ctx, Configuration cfg) {
 		boolean result = true;
-		for(Term t : getTerm()){
+		for (Term t : getTerm()) {
 			result |= t.eval(ctx, cfg);
 		}
 		return result;
 	}
-	
-} //OrTermImpl
+
+} // OrTermImpl

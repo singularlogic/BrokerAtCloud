@@ -26,13 +26,12 @@ import diva.CEPable;
 import diva.DivaPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>CE Pable</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>CE Pable</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.CEPableImpl#getQuery <em>Query</em>}</li>
+ * <li>{@link diva.impl.CEPableImpl#getQuery <em>Query</em>}</li>
  * </ul>
  * </p>
  *
@@ -41,8 +40,8 @@ import diva.DivaPackage;
 public abstract class CEPableImpl extends EObjectImpl implements CEPable {
 	/**
 	 * The default value of the '{@link #getQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getQuery()
 	 * @generated
 	 * @ordered
@@ -51,8 +50,8 @@ public abstract class CEPableImpl extends EObjectImpl implements CEPable {
 
 	/**
 	 * The cached value of the '{@link #getQuery() <em>Query</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getQuery()
 	 * @generated
 	 * @ordered
@@ -60,8 +59,8 @@ public abstract class CEPableImpl extends EObjectImpl implements CEPable {
 	protected String query = QUERY_EDEFAULT;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected CEPableImpl() {
@@ -69,8 +68,8 @@ public abstract class CEPableImpl extends EObjectImpl implements CEPable {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -79,8 +78,8 @@ public abstract class CEPableImpl extends EObjectImpl implements CEPable {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public String getQuery() {
@@ -88,8 +87,8 @@ public abstract class CEPableImpl extends EObjectImpl implements CEPable {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setQuery(String newQuery) {
@@ -100,71 +99,72 @@ public abstract class CEPableImpl extends EObjectImpl implements CEPable {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.CE_PABLE__QUERY:
-				return getQuery();
+		case DivaPackage.CE_PABLE__QUERY:
+			return getQuery();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.CE_PABLE__QUERY:
-				setQuery((String)newValue);
-				return;
+		case DivaPackage.CE_PABLE__QUERY:
+			setQuery((String) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.CE_PABLE__QUERY:
-				setQuery(QUERY_EDEFAULT);
-				return;
+		case DivaPackage.CE_PABLE__QUERY:
+			setQuery(QUERY_EDEFAULT);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.CE_PABLE__QUERY:
-				return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
+		case DivaPackage.CE_PABLE__QUERY:
+			return QUERY_EDEFAULT == null ? query != null : !QUERY_EDEFAULT.equals(query);
 		}
 		return super.eIsSet(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public String toString() {
-		if (eIsProxy()) return super.toString();
+		if (eIsProxy())
+			return super.toString();
 
 		StringBuffer result = new StringBuffer(super.toString());
 		result.append(" (query: ");
@@ -173,4 +173,4 @@ public abstract class CEPableImpl extends EObjectImpl implements CEPable {
 		return result.toString();
 	}
 
-} //CEPableImpl
+} // CEPableImpl

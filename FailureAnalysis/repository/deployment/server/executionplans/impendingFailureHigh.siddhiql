@@ -1,0 +1,56 @@
+@Plan:name('impendingFailureHigh')
+
+@Plan:statistics('true')
+
+@Plan:trace('true')
+
+@Import('avgCpuLoadStream:1.0.0')
+define stream avgCpuLoadStream (service string, avgCpuLoad double);
+
+@Import('avgMemoryLoadStream:1.0.0')
+define stream avgMemoryLoadStream (service string, avgMemoryLoad double);
+
+@Import('avgStorageLoadStream:1.0.0')
+define stream avgStorageLoadStream (service string, avgStorageLoad double);
+
+@Import('avgQueryTimeStream:1.0.0')
+define stream avgQueryTimeStream (service string, avgQueryTime double);
+
+@Import('processesStream:1.0.0')
+define stream processesStream (service string, processes int);
+
+@Import('requestsStream:1.0.0')
+define stream requestsStream (service string, requests int);
+
+@Export('impendingFailureHighStream:1.0.0')
+define stream impendingFailureHighStream (service string, cause string);
+
+from avgCpuLoadStream[avgCpuLoad >= 99]#window.time(15 min) as c
+join avgMemoryLoadStream[avgMemoryLoad >= 99]#window.time(15 min) as m
+on c.service == m.service
+select c.service, 'cpuOverload, memoryOverload' as cause
+insert into impendingFailureHighStream;
+
+from avgCpuLoadStream[avgCpuLoad >= 99]#window.time(15 min) as c
+join avgStorageLoadStream[avgStorageLoad >= 99]#window.time(15 min) as s
+on c.service == s.service
+select c.service, 'cpuOverload, storageOverload' as cause
+insert into impendingFailureHighStream;
+
+from avgMemoryLoadStream[avgMemoryLoad >= 99]#window.time(15 min) as m
+join avgStorageLoadStream[avgStorageLoad >= 99]#window.time(15 min) as s
+on m.service == s.service
+select m.service, 'memoryOverload, storageOverload' as cause
+insert into impendingFailureHighStream;
+
+from avgQueryTimeStream[avgQueryTime >= 5000]
+select service, 'longQueryTime' as cause
+insert into impendingFailureHighStream;
+
+from processesStream[processes >= 1000]
+select service, 'processesOverload' as cause
+insert into impendingFailureHighStream;
+
+from requestsStream[requests >= 1000]
+select service, 'requestsOverload' as cause
+insert into impendingFailureHighStream;

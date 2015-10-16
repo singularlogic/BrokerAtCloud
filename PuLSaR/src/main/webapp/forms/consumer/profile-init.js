@@ -680,7 +680,7 @@ function initPage4Grid(data) {
 		}
 	});
 	
-	//weights sum
+	// weights sum
 	page4grid.onHeaderRowCellRendered.subscribe(function(e, args) {
 		$(args.node).empty();
 		if (args.column.id==="weight") {
@@ -709,7 +709,7 @@ function initPage4Grid(data) {
 	});
 	page4grid_dataView.endUpdate();
 	
-	//normalize weights
+	// normalize weights
 	normalizeWeights(); normalizeWeights(); normalizeWeights();
 	refreshGrandTotals();
 }

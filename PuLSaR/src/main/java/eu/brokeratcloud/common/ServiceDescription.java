@@ -27,6 +27,10 @@ public class ServiceDescription extends BrokerObject {
 	// NOT persisted in RDF repository
 	@XmlAttribute
 	protected Date lastUsedTimestamp;
+	// Used in recommendation component 
+	// NOT persisted in RDF repository
+	@XmlAttribute
+	protected String serviceModelUri;
 	
 	public ServiceDescription() { serviceAttributes = new HashMap<String,Object>(); }
 	
@@ -52,6 +56,8 @@ public class ServiceDescription extends BrokerObject {
 	
 	public Date getLastUsedTimestamp() { return lastUsedTimestamp; }
 	public void setLastUsedTimestamp(Date d) { lastUsedTimestamp = d; }
+	public String getServiceModelUri() { return serviceModelUri; }
+	public void setServiceModelUri(String s) { serviceModelUri = s; }
 	
 	public String toString() {
 		return "ServiceDescription: {\n"+super.toString()+
@@ -59,6 +65,7 @@ public class ServiceDescription extends BrokerObject {
 				"\n\tcategory = "+serviceCategory+
 				"\n\tattributes = "+serviceAttributes+
 				"\n\tlast used timestamp = "+lastUsedTimestamp+
+				"\n\tsm-uri = "+serviceModelUri+
 				"}\n";
 	}
 }

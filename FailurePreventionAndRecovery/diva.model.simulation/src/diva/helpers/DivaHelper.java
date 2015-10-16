@@ -76,8 +76,8 @@ public class DivaHelper {
 
 		// Register the default resource factory -- only needed for stand-alone!
 		// this tells EMF to use XML to save the model
-		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap().put(
-				Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
+		resourceSet.getResourceFactoryRegistry().getExtensionToFactoryMap()
+				.put(Resource.Factory.Registry.DEFAULT_EXTENSION, new XMIResourceFactoryImpl());
 
 		// Get the URI of the model file.
 		URI fileURI = URI.createFileURI(new File(uri).getAbsolutePath());
@@ -89,9 +89,10 @@ public class DivaHelper {
 		resource.getContents().add(model);
 
 		// Save the contents of the resource to the file system.
-		try
-		{
-			resource.save(Collections.EMPTY_MAP); // the map can pass special saving options to the operation
+		try {
+			resource.save(Collections.EMPTY_MAP); // the map can pass special
+													// saving options to the
+													// operation
 		} catch (IOException e) {
 			e.printStackTrace();
 			/* error handling */
@@ -101,13 +102,14 @@ public class DivaHelper {
 	public static void computeSuitableConfigurations(VariabilityModel model, int attempt) {
 
 		if (attempt >= 10) {
-			System.out.println("Simulation has been interrupted/re-started 10 times. Please re-start your whole JVM and re-start the simulation from the last stored partial configuration");
+			System.out.println(
+					"Simulation has been interrupted/re-started 10 times. Please re-start your whole JVM and re-start the simulation from the last stored partial configuration");
 			return;
 		}
 
 		final Map<String, Variant> variants = new HashMap<String, Variant>();
-		for(Dimension d : model.getDimension()) {
-			for(Variant v : d.getVariant()) {
+		for (Dimension d : model.getDimension()) {
+			for (Variant v : d.getVariant()) {
 				variants.put(v.getId(), v);
 			}
 		}
@@ -118,22 +120,27 @@ public class DivaHelper {
 
 		int size = 0;
 		int processedContext = 0;
-		for(Scenario scn : model.getSimulation().getScenario()) {
+		for (Scenario scn : model.getSimulation().getScenario()) {
 			size += scn.getContext().size();
 		}
-		//System.out.println("#cpu: " + Runtime.getRuntime().availableProcessors());
-		final int threadNumber = Math.min(Runtime.getRuntime().availableProcessors()-1, size);
+		// System.out.println("#cpu: " +
+		// Runtime.getRuntime().availableProcessors());
+		final int threadNumber = Math.min(Runtime.getRuntime().availableProcessors() - 1, size);
 		final ExecutorService executor = Executors.newFixedThreadPool(threadNumber);
 		final List<AlloyWrapper> tasks = new LinkedList<AlloyWrapper>();
-		//final BlockingQueue<Future<Entry<Context, List<Configuration>>>> done = new LinkedBlockingDeque<Future<Entry<Context, List<Configuration>>>>();
+		// final BlockingQueue<Future<Entry<Context, List<Configuration>>>> done
+		// = new LinkedBlockingDeque<Future<Entry<Context,
+		// List<Configuration>>>>();
 
-		final ExecutorCompletionService<Entry<Context, List<Configuration>>> ecs = new ExecutorCompletionService<Entry<Context, List<Configuration>>>(executor/*, done*/);
+		final ExecutorCompletionService<Entry<Context, List<Configuration>>> ecs = new ExecutorCompletionService<Entry<Context, List<Configuration>>>(
+				executor/* , done */);
 
-
-		for(Scenario scn : model.getSimulation().getScenario()) {
-			for(Context ctx : scn.getContext()) {	
-				if(ctx.getConfiguration().size() == 0) {//to enable incremental checking
-					AlloyWrapper worker = new AlloyWrapper(model2Alloy, ctx, new  HashMap<>(variants));
+		for (Scenario scn : model.getSimulation().getScenario()) {
+			for (Context ctx : scn.getContext()) {
+				if (ctx.getConfiguration().size() == 0) {// to enable
+															// incremental
+															// checking
+					AlloyWrapper worker = new AlloyWrapper(model2Alloy, ctx, new HashMap<>(variants));
 					tasks.add(worker);
 					ecs.submit(worker);
 				} else {
@@ -147,9 +154,9 @@ public class DivaHelper {
 			int last = 0;
 			int nullCounter = 0;
 			while (processedContext < size && nullCounter < 5) {
-				final long sleepTime = 2*Math.max(125, (size-processedContext)/threadNumber);
+				final long sleepTime = 2 * Math.max(125, (size - processedContext) / threadNumber);
 				Future<Entry<Context, List<Configuration>>> entry = ecs.poll();
-				while(entry != null) {
+				while (entry != null) {
 					if (entry.get() != null) {
 						Context ctx = entry.get().getKey();
 						if (entry.get().getValue() != null) {
@@ -168,14 +175,17 @@ public class DivaHelper {
 				if (processedContext != last) {
 					nullCounter = 0;
 					last = processedContext;
-					//DivaHelper.save(model, tempFile.getAbsolutePath());
-					//System.out.println("Partial Simulation with " + processedContext + " out of " + size + " contexts has been stored:\n\t" + tempFile.getAbsolutePath());
+					// DivaHelper.save(model, tempFile.getAbsolutePath());
+					// System.out.println("Partial Simulation with " +
+					// processedContext + " out of " + size + " contexts has
+					// been stored:\n\t" + tempFile.getAbsolutePath());
 					System.out.println("Main (aggregator) thread will sleep " + sleepTime + " ms");
 					Thread.currentThread().sleep(sleepTime);
 				} else {
 					nullCounter++;
-					System.out.println("No context has been processed, yet.\nMain (aggregator) thread will sleep " + Math.min(10000, nullCounter*sleepTime) + " ms");
-					Thread.currentThread().sleep(Math.min(10000, nullCounter*sleepTime));
+					System.out.println("No context has been processed, yet.\nMain (aggregator) thread will sleep "
+							+ Math.min(10000, nullCounter * sleepTime) + " ms");
+					Thread.currentThread().sleep(Math.min(10000, nullCounter * sleepTime));
 				}
 			}
 
@@ -184,26 +194,26 @@ public class DivaHelper {
 				final File tempFile = File.createTempFile("PartialSimulation", ".diva");
 				DivaHelper.save(model, tempFile.getAbsolutePath());
 				System.out.println("Let's re-launch it!");
-				System.out.println("Partial Simulation with " + processedContext + " out of " + size + " contexts has been stored here:\n\t" + tempFile.getAbsolutePath());
+				System.out.println("Partial Simulation with " + processedContext + " out of " + size
+						+ " contexts has been stored here:\n\t" + tempFile.getAbsolutePath());
 				executor.shutdownNow();
 				executor.awaitTermination(5, TimeUnit.SECONDS);
 				computeSuitableConfigurations(model, ++attempt);
 			}
 
-
-
 		} catch (InterruptedException | IOException | ExecutionException e) {
 			e.printStackTrace();
 		} finally {
 			executor.shutdownNow();
-			for(AlloyWrapper w : tasks) {
+			for (AlloyWrapper w : tasks) {
 				w.kill();
 			}
 			tasks.clear();
 			try {
 				final File tempFile = File.createTempFile("PartialSimulation", ".diva");
 				DivaHelper.save(model, tempFile.getAbsolutePath());
-				System.out.println("Partial Simulation with " + processedContext + " out of " + size + " contexts has been stored here:\n\t" + tempFile.getAbsolutePath());
+				System.out.println("Partial Simulation with " + processedContext + " out of " + size
+						+ " contexts has been stored here:\n\t" + tempFile.getAbsolutePath());
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -217,7 +227,7 @@ public class DivaHelper {
 		Scenario scn = null;
 
 		if (model.getSimulation() != null) {
-			for(Scenario s : model.getSimulation().getScenario()) {
+			for (Scenario s : model.getSimulation().getScenario()) {
 				if ("EXHAUSTIVE".equals(s.getName())) {
 					scn = s;
 					break;
@@ -225,26 +235,26 @@ public class DivaHelper {
 			}
 			if (scn != null) {
 				StringBuilder builder = new StringBuilder();
-				builder.append("datatype Boolean\n");	
+				builder.append("datatype Boolean\n");
 				builder.append("@c_type \"uint8_t\"\n");
 				builder.append("@java_type \"Boolean\";\n\n");
 
-				for(Variable v : model.getContext()) {
+				for (Variable v : model.getContext()) {
 					if (v instanceof EnumVariable) {
-						builder.append("enumeration Enum" + v.getNameNoSpace() + "\n"); 
+						builder.append("enumeration Enum" + v.getNameNoSpace() + "\n");
 						builder.append("@java_type \"Byte\"\n");
 						builder.append("@c_type \"uint8_t\"\n");
 						builder.append("{\n");
 						int i = 0;
-						for(EnumLiteral l : ((EnumVariable)v).getLiteral()) {
-							builder.append(l.getNameNoSpace() + " @enum_val \""+ (i++) +"\"\n");
+						for (EnumLiteral l : ((EnumVariable) v).getLiteral()) {
+							builder.append(l.getNameNoSpace() + " @enum_val \"" + (i++) + "\"\n");
 						}
 						builder.append("}\n\n");
 					}
 				}
 
 				builder.append("thing fragment ContextMsgs {\n");
-				for(Variable v : model.getContext()) {
+				for (Variable v : model.getContext()) {
 					builder.append("message " + v.getNameNoSpace() + "(");
 					if (v instanceof EnumVariable) {
 						builder.append("value : Enum" + v.getNameNoSpace());
@@ -257,16 +267,16 @@ public class DivaHelper {
 
 				builder.append("thing Adaptation includes ContextMsgs {\n\n");
 				builder.append("provided port contextEvents {\n");
-				for(Variable v : model.getContext()) {
+				for (Variable v : model.getContext()) {
 					builder.append("receives " + v.getNameNoSpace() + "\n");
-				}				
+				}
 				builder.append("}\n\n");
 
-				for(Context ctx : scn.getContext()) {
+				for (Context ctx : scn.getContext()) {
 					Configuration cfg = ctx.bestConfiguration();
 					if (cfg != null) {
 						final StringBuilder descB = new StringBuilder();
-						for(ConfigVariant cv : cfg.getVariant()) {
+						for (ConfigVariant cv : cfg.getVariant()) {
 							descB.append(cv.getVariant().getName());
 							descB.append(" ");
 						}
@@ -275,13 +285,15 @@ public class DivaHelper {
 					}
 				}
 
-				builder.append("statechart logic init " + ((states.size()>0) ? ((State) states.values().toArray()[0]).name : "XXX") + " {//TODO: change initial state\n");
+				builder.append("statechart logic init "
+						+ ((states.size() > 0) ? ((State) states.values().toArray()[0]).name : "XXX")
+						+ " {//TODO: change initial state\n");
 
-				for(Context ctx : scn.getContext()) {
+				for (Context ctx : scn.getContext()) {
 					final Configuration cfg = ctx.bestConfiguration();
 					if (cfg != null) {
 						final State source = states.get(cfg.id(model));
-						for(Context ctx2 : scn.getContext()) {
+						for (Context ctx2 : scn.getContext()) {
 							final Set<VariableValue> diff = ctx.changes_from(ctx2);
 							if (diff.size() == 1) {
 								final Configuration cfg2 = ctx2.bestConfiguration();
@@ -291,7 +303,12 @@ public class DivaHelper {
 									final VariableValue vv = diff.iterator().next();
 
 									final String event = vv.getVariable().getNameNoSpace();
-									final String guard = (vv instanceof EnumVariableValue) ? "ce.value == Enum" + ((EnumVariableValue) vv).getVariable().getNameNoSpace() + ":" + ((EnumVariableValue) vv).getLiteral().getNameNoSpace() : "ce.status == " + ((((BoolVariableValue) vv).isBool()) ? "true" : "false");
+									final String guard = (vv instanceof EnumVariableValue)
+											? "ce.value == Enum"
+													+ ((EnumVariableValue) vv).getVariable().getNameNoSpace() + ":"
+													+ ((EnumVariableValue) vv).getLiteral().getNameNoSpace()
+											: "ce.status == "
+													+ ((((BoolVariableValue) vv).isBool()) ? "true" : "false");
 									final Transition t = new Transition(target, event, guard);
 
 									source.targets.add(t);
@@ -301,7 +318,7 @@ public class DivaHelper {
 					}
 				}
 
-				for(Entry<String, State> e : states.entrySet()) {
+				for (Entry<String, State> e : states.entrySet()) {
 					builder.append("state " + e.getKey() + "{\n");
 					builder.append(e.getValue().toString());
 					builder.append("}\n\n");
@@ -313,9 +330,9 @@ public class DivaHelper {
 				builder.append("thing AdaptationGUI includes ContextMsgs\n");
 				builder.append("@mock \"true\"\n{\n\n");
 				builder.append("required port contextEvents {\n");
-				for(Variable v : model.getContext()) {
+				for (Variable v : model.getContext()) {
 					builder.append("sends " + v.getNameNoSpace() + "\n");
-				}				
+				}
 				builder.append("}\n\n");
 				builder.append("}\n\n");
 
@@ -326,7 +343,7 @@ public class DivaHelper {
 				builder.append("connector gui.contextEvents => adapt.contextEvents\n");
 				builder.append("}\n");
 
-				//System.out.println(builder.toString());
+				// System.out.println(builder.toString());
 
 				PrintWriter writer = null;
 				try {
@@ -335,8 +352,7 @@ public class DivaHelper {
 				} catch (FileNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
-				finally {
+				} finally {
 					if (writer != null)
 						writer.close();
 				}

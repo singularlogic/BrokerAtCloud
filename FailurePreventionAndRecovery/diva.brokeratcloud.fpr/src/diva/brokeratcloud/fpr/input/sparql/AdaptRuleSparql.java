@@ -10,10 +10,10 @@ import diva.brokeratcloud.fpr.input.abstracts.AdaptRule;
 
 public class AdaptRuleSparql extends AdaptRule {
 	private Map<String, Map<String, String>> fakedRepo = new HashMap<String, Map<String, String>>();
-	
-	private void initFake(){
+
+	private void initFake() {
 		Map<String, String> ms = new HashMap<String, String>();
-		
+
 		ms.put("rule", "ForCustomer");
 		ms.put("hasExtensibility", "0");
 		ms.put("hasAdaptability", "1");
@@ -26,7 +26,7 @@ public class AdaptRuleSparql extends AdaptRule {
 		ms.put("hasOperability", "1");
 		ms.put("Failure", "1");
 		fakedRepo.put("RuleForCustomer", ms);
-		
+
 		ms = new HashMap<String, String>();
 		ms.put("rule", "ForDeveloper");
 		ms.put("hasExtensibility", "3");
@@ -40,7 +40,7 @@ public class AdaptRuleSparql extends AdaptRule {
 		ms.put("hasOperability", "5");
 		ms.put("Failure", "1");
 		fakedRepo.put("RuleForDeveloper", ms);
-		
+
 		ms = new HashMap<String, String>();
 		ms.put("rule", "ForAdministrator");
 		ms.put("hasExtensibility", "1");
@@ -54,7 +54,7 @@ public class AdaptRuleSparql extends AdaptRule {
 		ms.put("hasOperability", "1");
 		ms.put("Failure", "1");
 		fakedRepo.put("ForAdministrator", ms);
-		
+
 		ms = new HashMap<String, String>();
 		ms.put("rule", "ForPotenial");
 		ms.put("hasExtensibility", "5");
@@ -69,29 +69,30 @@ public class AdaptRuleSparql extends AdaptRule {
 		ms.put("Failure", "1");
 		fakedRepo.put("ForPotenial", ms);
 	}
+
 	@Override
-	public List<String> involvedContext(){
+	public List<String> involvedContext() {
 		return Arrays.asList("ForCustomer", "ForDeveloper", "ForAdministrator", "ForPotenial");
 	}
-	
-	public AdaptRuleSparql(){
+
+	public AdaptRuleSparql() {
 		initFake();
 	}
-	
+
 	@Override
-	public Collection<String> allRuleNames(){
+	public Collection<String> allRuleNames() {
 		return fakedRepo.keySet();
 	}
-	
+
 	@Override
-	public String getRule(String name){
+	public String getRule(String name) {
 		return fakedRepo.get(name).get("rule");
 	}
-	
+
 	@Override
-	public int getPriority(String name, String property){
+	public int getPriority(String name, String property) {
 		String res = fakedRepo.get(name).get(property);
-		if(res == null)
+		if (res == null)
 			return 1;
 		return Integer.parseInt(res);
 	}

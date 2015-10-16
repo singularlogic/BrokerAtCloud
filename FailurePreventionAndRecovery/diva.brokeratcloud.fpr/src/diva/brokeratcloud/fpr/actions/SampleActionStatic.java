@@ -46,15 +46,16 @@ import diva.brokeratcloud.fpr.resources.Recommendation;
 import diva.helpers.DivaHelper;
 
 /**
- * Our sample action implements workbench action delegate.
- * The action proxy will be created by the workbench and
- * shown in the UI. When the user tries to use the action,
- * this delegate will be created and execution will be 
- * delegated to it.
+ * Our sample action implements workbench action delegate. The action proxy will
+ * be created by the workbench and shown in the UI. When the user tries to use
+ * the action, this delegate will be created and execution will be delegated to
+ * it.
+ * 
  * @see IWorkbenchWindowActionDelegate
  */
 public class SampleActionStatic implements IWorkbenchWindowActionDelegate {
 	private IWorkbenchWindow window;
+
 	/**
 	 * The constructor.
 	 */
@@ -62,32 +63,31 @@ public class SampleActionStatic implements IWorkbenchWindowActionDelegate {
 	}
 
 	/**
-	 * The action has been activated. The argument of the
-	 * method represents the 'real' action sitting
-	 * in the workbench UI.
+	 * The action has been activated. The argument of the method represents the
+	 * 'real' action sitting in the workbench UI.
+	 * 
 	 * @see IWorkbenchWindowActionDelegate#run
 	 */
 	public void run(IAction action) {
-		
-		//doit("Orbi-ref");
+
+		// doit("Orbi-ref");
 		doit("Orbi-comp");
-		
+
 	}
 
 	private void doit(String file) {
 		VariabilityModel root = null;
 		ResourceSet rs = new ResourceSetImpl();
-		Resource res = rs.createResource(org.eclipse.emf.common.util.URI
-				.createPlatformResourceURI("BrokerAtCloud/model/"+file+".diva"));
-		try{
+		Resource res = rs.createResource(
+				org.eclipse.emf.common.util.URI.createPlatformResourceURI("BrokerAtCloud/model/" + file + ".diva"));
+		try {
 			res.load(Collections.EMPTY_MAP);
-			root = (VariabilityModel) res.getContents().get(0);			
-		}
-		catch(Exception e){
+			root = (VariabilityModel) res.getContents().get(0);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		if(root.getSimulation()==null)
+
+		if (root.getSimulation() == null)
 			return;
 		root.getSimulation().populatePriorities();
 		root.getSimulation().populateScores();
@@ -95,10 +95,10 @@ public class SampleActionStatic implements IWorkbenchWindowActionDelegate {
 		DivaHelper.computeSuitableConfigurations(root, 0);
 		root.getSimulation().populateScores();
 		root.getSimulation().populateVerdicts();
-		
-		Resource res2 = rs.createResource(org.eclipse.emf.common.util.URI.createPlatformResourceURI(
-				"BrokerAtCloud/model/"+file+"-gen.diva"));
-		
+
+		Resource res2 = rs.createResource(
+				org.eclipse.emf.common.util.URI.createPlatformResourceURI("BrokerAtCloud/model/" + file + "-gen.diva"));
+
 		res2.getContents().add(root);
 		try {
 			res2.save(Collections.EMPTY_MAP);
@@ -109,37 +109,39 @@ public class SampleActionStatic implements IWorkbenchWindowActionDelegate {
 	}
 
 	/**
-	 * Selection in the workbench has been changed. We 
-	 * can change the state of the 'real' action here
-	 * if we want, but this can only happen after 
-	 * the delegate has been created.
+	 * Selection in the workbench has been changed. We can change the state of
+	 * the 'real' action here if we want, but this can only happen after the
+	 * delegate has been created.
+	 * 
 	 * @see IWorkbenchWindowActionDelegate#selectionChanged
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 	}
 
 	/**
-	 * We can use this method to dispose of any system
-	 * resources we previously allocated.
+	 * We can use this method to dispose of any system resources we previously
+	 * allocated.
+	 * 
 	 * @see IWorkbenchWindowActionDelegate#dispose
 	 */
 	public void dispose() {
 	}
 
 	/**
-	 * We will cache window object in order to
-	 * be able to provide parent shell for the message dialog.
+	 * We will cache window object in order to be able to provide parent shell
+	 * for the message dialog.
+	 * 
 	 * @see IWorkbenchWindowActionDelegate#init
 	 */
 	public void init(IWorkbenchWindow window) {
 		this.window = window;
 	}
-	
-	public void updateAndSave(){
+
+	public void updateAndSave() {
 		DivaRoot d = Repository.mainRoot.fork();
 		d.updateModel();
 		d.updateOnRequest("broker", "cloud");
-		d.saveModel(org.eclipse.emf.common.util.URI
-				.createPlatformResourceURI("BrokerAtCloud/model/Orbi-generated.diva"));
+		d.saveModel(
+				org.eclipse.emf.common.util.URI.createPlatformResourceURI("BrokerAtCloud/model/Orbi-generated.diva"));
 	}
 }

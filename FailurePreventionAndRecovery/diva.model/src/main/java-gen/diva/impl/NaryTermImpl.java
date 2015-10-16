@@ -29,13 +29,12 @@ import diva.NaryTerm;
 import diva.Term;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Nary Term</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Nary Term</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.NaryTermImpl#getTerm <em>Term</em>}</li>
+ * <li>{@link diva.impl.NaryTermImpl#getTerm <em>Term</em>}</li>
  * </ul>
  * </p>
  *
@@ -43,9 +42,9 @@ import diva.Term;
  */
 public abstract class NaryTermImpl extends TermImpl implements NaryTerm {
 	/**
-	 * The cached value of the '{@link #getTerm() <em>Term</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getTerm() <em>Term</em>}' containment
+	 * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getTerm()
 	 * @generated
 	 * @ordered
@@ -53,8 +52,8 @@ public abstract class NaryTermImpl extends TermImpl implements NaryTerm {
 	protected EList<Term> term;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected NaryTermImpl() {
@@ -62,8 +61,8 @@ public abstract class NaryTermImpl extends TermImpl implements NaryTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -72,8 +71,8 @@ public abstract class NaryTermImpl extends TermImpl implements NaryTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<Term> getTerm() {
@@ -84,77 +83,77 @@ public abstract class NaryTermImpl extends TermImpl implements NaryTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case DivaPackage.NARY_TERM__TERM:
-				return ((InternalEList<?>)getTerm()).basicRemove(otherEnd, msgs);
+		case DivaPackage.NARY_TERM__TERM:
+			return ((InternalEList<?>) getTerm()).basicRemove(otherEnd, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.NARY_TERM__TERM:
-				return getTerm();
+		case DivaPackage.NARY_TERM__TERM:
+			return getTerm();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.NARY_TERM__TERM:
-				getTerm().clear();
-				getTerm().addAll((Collection<? extends Term>)newValue);
-				return;
+		case DivaPackage.NARY_TERM__TERM:
+			getTerm().clear();
+			getTerm().addAll((Collection<? extends Term>) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.NARY_TERM__TERM:
-				getTerm().clear();
-				return;
+		case DivaPackage.NARY_TERM__TERM:
+			getTerm().clear();
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.NARY_TERM__TERM:
-				return term != null && !term.isEmpty();
+		case DivaPackage.NARY_TERM__TERM:
+			return term != null && !term.isEmpty();
 		}
 		return super.eIsSet(featureID);
 	}
 
-} //NaryTermImpl
+} // NaryTermImpl

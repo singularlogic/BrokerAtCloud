@@ -18,15 +18,14 @@ package diva;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Expression</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '
+ * <em><b>Expression</b></em>'. <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link diva.Expression#getTerm <em>Term</em>}</li>
- *   <li>{@link diva.Expression#getText <em>Text</em>}</li>
+ * <li>{@link diva.Expression#getTerm <em>Term</em>}</li>
+ * <li>{@link diva.Expression#getText <em>Text</em>}</li>
  * </ul>
  * </p>
  *
@@ -43,6 +42,7 @@ public interface Expression extends DiVAModelElement {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Term</em>' containment reference.
 	 * @see #setTerm(Term)
 	 * @see diva.DivaPackage#getExpression_Term()
@@ -52,23 +52,25 @@ public interface Expression extends DiVAModelElement {
 	Term getTerm();
 
 	/**
-	 * Sets the value of the '{@link diva.Expression#getTerm <em>Term</em>}' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Term</em>' containment reference.
+	 * Sets the value of the '{@link diva.Expression#getTerm <em>Term</em>}'
+	 * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Term</em>' containment reference.
 	 * @see #getTerm()
 	 * @generated
 	 */
 	void setTerm(Term value);
 
 	/**
-	 * Returns the value of the '<em><b>Text</b></em>' attribute.
-	 * <!-- begin-user-doc -->
+	 * Returns the value of the '<em><b>Text</b></em>' attribute. <!--
+	 * begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Text</em>' attribute isn't clear,
-	 * there really should be more of a description here...
+	 * If the meaning of the '<em>Text</em>' attribute isn't clear, there really
+	 * should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
+	 * 
 	 * @return the value of the '<em>Text</em>' attribute.
 	 * @see #setText(String)
 	 * @see diva.DivaPackage#getExpression_Text()
@@ -78,24 +80,27 @@ public interface Expression extends DiVAModelElement {
 	String getText();
 
 	/**
-	 * Sets the value of the '{@link diva.Expression#getText <em>Text</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Text</em>' attribute.
+	 * Sets the value of the '{@link diva.Expression#getText <em>Text</em>}'
+	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @param value
+	 *            the new value of the '<em>Text</em>' attribute.
 	 * @see #getText()
 	 * @generated
 	 */
 	void setText(String value);
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @model annotation="http://www.eclipse.org/emf/2002/GenModel body='return visitor.visitExpression(this, context);'"
-	 *        annotation="kermeta body='do\nresult := visitor.visitExpression(self, context)\nend' isAbstract='false'"
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
+	 * @model annotation=
+	 *        "http://www.eclipse.org/emf/2002/GenModel body='return visitor.visitExpression(this, context);'"
+	 *        annotation=
+	 *        "kermeta body='do\nresult := visitor.visitExpression(self, context)\nend' isAbstract='false'"
 	 * @generated
 	 */
 	<C, R> R accept(Visitor<C, R> visitor, C context);
-	
+
 	/**
 	 * @generated NOT
 	 */

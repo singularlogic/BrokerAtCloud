@@ -45,7 +45,7 @@ import eu.brokeratcloud.opt.policy.PreferenceVariable;
 import eu.brokeratcloud.opt.type.TFN;
 import eu.brokeratcloud.persistence.annotations.RdfSubject;
 import eu.brokeratcloud.rest.opt.ProfileManagementService;
-import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW;
+import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementService;
 
 
 @Path("/gui/consumer")
@@ -349,42 +349,10 @@ public class ConsumerFacingComponent extends AbstractFacingComponent {
 		long startTm = System.currentTimeMillis();
 		logger.info("-------------- getCategoryTree: INPUT: n/a");
 		
-		long callStartTm=0, callEndTm=0;
-		String str = "";
-		try {
-				// Get service classification dimensions
-				eu.brokeratcloud.persistence.RdfPersistenceManager pm = eu.brokeratcloud.persistence.RdfPersistenceManagerFactory.createRdfPersistenceManager();
-				List<Object> list = null;
-				callStartTm=System.currentTimeMillis();
-				list = pm.findAll(ClassificationDimension.class);
-				//list = pm.findByQuery("SELECT ?s WHERE { ?s a <http://www.linked-usdl.org/ns/usdl-core/cloud-brokerClassificationDimension> }");
-				callEndTm=System.currentTimeMillis();
-				logger.debug("{} service classification dimensions found", list.size());
-				
-				// Process service classification dimensions - group by classification dimension scheme
-				boolean first = true;
-				StringBuilder sb = new StringBuilder("[ ");
-				if (list!=null) {
-					// Process classification dimensions
-					List<ClassificationDimensionScheme> dimList = new LinkedList<ClassificationDimensionScheme>();
-					for (Object o : list) {
-						ClassificationDimension sc = (ClassificationDimension)o;
-						String id = sc.getId();
-						if (id==null) { id = pm.getObjectUri(sc); sc.setId(id); }
-						String text = sc.getPrefLabel();
-						String parent;
-						if (sc.getParent()!=null) { parent = sc.getParent().getId(); if (parent==null) { parent = pm.getObjectUri(sc.getParent()); sc.getParent().setId(parent); } }
-						else { parent = "#"; }
-						if (first) first=false; else sb.append(", ");
-						sb.append( String.format("{ 'id':'%s', 'text':'%s', 'parent':'%s' }", id, text, parent) );
-					}
-				}
-				sb.append(" ]");
-				str = sb.toString().replace("'", "\"");
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("{}: Returning an empty array of {}", getClass().getName(), ClassificationDimension.class);
-		}
+		// Call REST service in order to get service categories list
+		long callStartTm = System.currentTimeMillis();
+		String str = (String)_callBrokerRestWS(baseUrl+"/opt/service-category/list", "GET", java.lang.String.class, null);
+		long callEndTm = System.currentTimeMillis();
 		
 		logger.info("-------------- getCategoryTree: OUTPUT: {}", str);
 		long endTm = System.currentTimeMillis();
@@ -618,12 +586,12 @@ public class ConsumerFacingComponent extends AbstractFacingComponent {
 		long callStartTm=0, callStartTm2, callEndTm, callEndTm2=0;
 		
 		try {
-			ConsumerPreferenceProfile profile = null;
-			{
-				eu.brokeratcloud.rest.opt.ProfileManagementService profileMgntWS = new eu.brokeratcloud.rest.opt.ProfileManagementService();
-				logger.debug("savePreferences: HACK to retrieve consumer preference profile: id = {}", profileId);
-				profile = profileMgntWS.getProfile(getUsername(), profileId);
-			}
+			// Call REST service in order to get preference data
+			logger.debug("Retrieving profile: {}", profileId);
+			callStartTm = System.currentTimeMillis();
+			ConsumerPreferenceProfile profile = (ConsumerPreferenceProfile)_callBrokerRestWS(baseUrl+"/opt/profile/sc/"+getUsername()+"/profile/"+profileId, "GET", ConsumerPreferenceProfile.class, null);
+			callEndTm = System.currentTimeMillis();
+			logger.debug("Retrieving profile: {} done", profileId);
 			
 			// Hash current profile preferences
 			ConsumerPreference[] currPreferences = profile.getPreferences();
@@ -698,12 +666,10 @@ public class ConsumerFacingComponent extends AbstractFacingComponent {
 		
 		// Call REST service in order to get preference data
 		logger.debug("Retrieving profile: {}", profileId);
-		ConsumerPreferenceProfile profile = null;
-		{
-			eu.brokeratcloud.rest.opt.ProfileManagementService profileMgntWS = new eu.brokeratcloud.rest.opt.ProfileManagementService();
-			logger.debug("savePreferences: HACK to retrieve consumer preference profile: id = {}", profileId);
-			profile = profileMgntWS.getProfile(getUsername(), profileId);
-		}
+		callStartTm = System.currentTimeMillis();
+		ConsumerPreferenceProfile profile = (ConsumerPreferenceProfile)_callBrokerRestWS(baseUrl+"/opt/profile/sc/"+getUsername()+"/profile/"+profileId, "GET", ConsumerPreferenceProfile.class, null);
+		callEndTm = System.currentTimeMillis();
+		sumDuration = callEndTm-callStartTm;
 		cntCalls++;
 		logger.debug("Retrieving profile: {} done", profileId);
 		
@@ -716,7 +682,7 @@ public class ConsumerFacingComponent extends AbstractFacingComponent {
 		for (ConsumerPreference cp : currPreferences) {
 			// get attribute id from preference
 			String pvUri = cp.getPrefVariable();
-			ServiceCategoryAttributeManagementServiceNEW.PolicyObjects po = ServiceCategoryAttributeManagementServiceNEW.getBrokerPolicyObjects(pvUri, false);
+			ServiceCategoryAttributeManagementService.PolicyObjects po = ServiceCategoryAttributeManagementService.getBrokerPolicyObjects(pvUri, false);
 			logger.trace("getComparisonPairs: policy objects={}", po);
 			if (po==null) continue;
 			PreferenceVariable pv = po.pv;

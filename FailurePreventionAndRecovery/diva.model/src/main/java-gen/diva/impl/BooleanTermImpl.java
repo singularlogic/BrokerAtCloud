@@ -26,9 +26,8 @@ import diva.VariableValue;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Boolean Term</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Boolean Term</b></em>'. <!-- end-user-doc -->
  * <p>
  * </p>
  *
@@ -36,8 +35,8 @@ import diva.visitors.Visitor;
  */
 public class BooleanTermImpl extends VariableTermImpl implements BooleanTerm {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected BooleanTermImpl() {
@@ -45,8 +44,8 @@ public class BooleanTermImpl extends VariableTermImpl implements BooleanTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -55,14 +54,14 @@ public class BooleanTermImpl extends VariableTermImpl implements BooleanTerm {
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
 		return visitor.visitBooleanTerm(this, context);
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
@@ -74,12 +73,12 @@ public class BooleanTermImpl extends VariableTermImpl implements BooleanTerm {
 	 * @generated NOT
 	 */
 	public boolean eval(Context ctx, Configuration cfg) {
-		for(VariableValue vv : ctx.getVariable()) {
+		for (VariableValue vv : ctx.getVariable()) {
 			if (vv.getVariable() == getVariable()) {
-				return ((BoolVariableValue)vv).isBool();
+				return ((BoolVariableValue) vv).isBool();
 			}
 		}
 		return false;
 	}
 
-} //BooleanTermImpl
+} // BooleanTermImpl

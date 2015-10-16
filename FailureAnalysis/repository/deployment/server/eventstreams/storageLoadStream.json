@@ -1,0 +1,14 @@
+{
+  "name": "storageLoadStream",
+  "version": "1.0.0",
+  "payloadData": [
+    {
+      "name": "service",
+      "type": "STRING"
+    },
+    {
+      "name": "storageLoad",
+      "type": "INT"
+    }
+  ]
+}

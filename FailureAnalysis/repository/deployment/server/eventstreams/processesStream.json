@@ -1,0 +1,14 @@
+{
+  "name": "processesStream",
+  "version": "1.0.0",
+  "payloadData": [
+    {
+      "name": "service",
+      "type": "STRING"
+    },
+    {
+      "name": "processes",
+      "type": "INT"
+    }
+  ]
+}

@@ -97,6 +97,7 @@
   var columns = [
 	{id: "sel", name: "#", field: "rownum", behavior: "select", cssClass: "cell-selection", width: 40, selectable: false },
 	//{id: "id", name: "ID", field: "id", behavior: "select", cssClass: "cell-selection", width: 40, selectable: false },
+    {id: "bppName", name: "BP property", field: "bppName", width: 140, cssClass: "cell-title"},
     //{id: "aid", name: "Attr.Id", field: "aid", width: 50, cssClass: "cell-title"},
     {id: "name", name: "Opt. Attribute", field: "name", width: 200, cssClass: "cell-title"},
     {id: "unit", name: "Unit", field: "unit", width: 60, editor: Slick.Editors.Text},
@@ -249,6 +250,7 @@
 		var lines = dataView.getLength();
 		dataView.addItem({
 			'id': '',
+			'bppName': '',
 			'aid': node.id, 
 			'name': node.text,
 			'type': 'NUMERIC_INC',
@@ -467,7 +469,7 @@
 		treeAttributes = $('#attrList').jstree({
 		  "core" : {
 			"animation" : 500,
-			"multiple": true,
+			"multiple": false,
 			"check_callback" : true,
 			"themes" : { "stripes" : true },
 			'data' : {
@@ -557,7 +559,7 @@
 		  },
 		  "checkbox" : {
 			"three_state" : false,
-			"keep_selected_style" : false,
+			"keep_selected_style" : true,
 			"cascade" : ""
 		  },
 		  "plugins" : [

@@ -30,64 +30,56 @@ import diva.brokeratcloud.fpr.input.abstracts.ConsumerProfile;
 public class ConsumerProfileJson extends ConsumerProfile {
 
 	public static ConsumerProfileJson INSTANCE = new ConsumerProfileJson();
-	
+
 	private static final String CURRENT_USED = "CURRENT_USED";
-	
+
 	Random random = new Random();
-	
+
 	public Map<String, Object> fakedRequired = new HashMap<String, Object>();
-	
-	private void initFake(){
+
+	private void initFake() {
 		Map<String, Object> prf = new HashMap<String, Object>();
-		//prf.put("GoogleMapS", "GoogleMapF");
+		// prf.put("GoogleMapS", "GoogleMapF");
 		prf.put("Normal", true);
 		prf.put("DatabaseOfferingServiceModel", true);
 		prf.put("ApplicationServerOfferingServiceModel", true);
 		prf.put("NetworkCapacityOfferingServiceModel", false);
 		prf.put("OrbiOfferingServiceModel", true);
-		//I put currently used services here too, but in practice, it may be obtained from 
-		//a different service
-		prf.put(CURRENT_USED, new HashSet<String>(Arrays.asList(
-					"P11U1O6",
-					"P11U1O6_Database",
-					"P11U1O6_AS"
-				))	
-			);
+		// I put currently used services here too, but in practice, it may be
+		// obtained from
+		// a different service
+		prf.put(CURRENT_USED, new HashSet<String>(Arrays.asList("P11U1O6", "P11U1O6_Database", "P11U1O6_AS")));
 		fakedRequired.put("broker-cloud", prf);
-		
+
 	}
-	
-	public ConsumerProfileJson(){
+
+	public ConsumerProfileJson() {
 		initFake();
 	}
-	
-	
+
 	@Override
-	public Object getRequired(String consumer, String profile){
-		
+	public Object getRequired(String consumer, String profile) {
+
 		return fakedRequired.get(combineIds(consumer, profile));
-		
+
 	}
-	
+
 	@Override
-	protected String combineIds(String consumer, String profile){
-		return consumer+"-"+profile;
+	protected String combineIds(String consumer, String profile) {
+		return consumer + "-" + profile;
 	}
-	
+
 	@Override
-	public Collection<String> getCurrentServices(String consumer, String profile){
+	public Collection<String> getCurrentServices(String consumer, String profile) {
 		return this.getCurrentServices(combineIds(consumer, profile));
 	}
-	
+
 	@Override
-	public Collection<String> getCurrentServices(String consumerProfile){
-		Set<String> current = (Set<String>)((Map)fakedRequired.get(consumerProfile)).get(CURRENT_USED);
-		return new HashSet<String>( current);
+	public Collection<String> getCurrentServices(String consumerProfile) {
+		Set<String> current = (Set<String>) ((Map) fakedRequired.get(consumerProfile)).get(CURRENT_USED);
+		return new HashSet<String>(current);
 	}
-	
+
 	public Map<String, String> publicStatus = new HashMap<String, String>();
-	
-	
+
 }
-
-

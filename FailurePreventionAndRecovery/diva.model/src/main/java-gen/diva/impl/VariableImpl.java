@@ -21,9 +21,8 @@ import diva.DivaPackage;
 import diva.Variable;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Variable</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Variable</b></em>'. <!-- end-user-doc -->
  * <p>
  * </p>
  *
@@ -31,8 +30,8 @@ import diva.Variable;
  */
 public abstract class VariableImpl extends NamedElementImpl implements Variable {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected VariableImpl() {
@@ -40,8 +39,8 @@ public abstract class VariableImpl extends NamedElementImpl implements Variable 
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -49,4 +48,4 @@ public abstract class VariableImpl extends NamedElementImpl implements Variable 
 		return DivaPackage.Literals.VARIABLE;
 	}
 
-} //VariableImpl
+} // VariableImpl

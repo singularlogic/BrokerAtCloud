@@ -30,74 +30,64 @@ import diva.brokeratcloud.fpr.input.abstracts.ConsumerProfile;
 public class ConsumerProfileLocal extends ConsumerProfile {
 
 	public static ConsumerProfileLocal INSTANCE = new ConsumerProfileLocal();
-	
+
 	private static final String CURRENT_USED = "CURRENT_USED";
-	
+
 	Random random = new Random();
-	
+
 	public Map<String, Object> fakedRequired = new HashMap<String, Object>();
-	
-	private void initFake(){
+
+	private void initFake() {
 		Map<String, Object> prf = new HashMap<String, Object>();
-		//prf.put("GoogleMapS", "GoogleMapF");
+		// prf.put("GoogleMapS", "GoogleMapF");
 		prf.put("Normal", true);
 		prf.put("DatabaseOfferingServiceModel", true);
 		prf.put("ApplicationServerOfferingServiceModel", true);
 		prf.put("NetworkCapacityOfferingServiceModel", true);
 		prf.put("OrbiOfferingServiceModel", true);
-		//I put currently used services here too, but in practice, it may be obtained from 
-		//a different service
-		prf.put(CURRENT_USED, new HashSet<String>(Arrays.asList(
-					"GoldenOrbiServiceLevelProfile",
-					"SmallElasticDBServiceLevelProfile",
-					"LargeElasticASServiceLevelProfile",
-					"LargeMeteredServiceLevelProfile"
-				))	
-			);
+		// I put currently used services here too, but in practice, it may be
+		// obtained from
+		// a different service
+		prf.put(CURRENT_USED,
+				new HashSet<String>(Arrays.asList("GoldenOrbiServiceLevelProfile", "SmallElasticDBServiceLevelProfile",
+						"LargeElasticASServiceLevelProfile", "LargeMeteredServiceLevelProfile")));
 		fakedRequired.put("broker-cloud", prf);
-		
+
 		prf = new HashMap<String, Object>();
 		prf.put("Bicycle", false);
 		prf.put("LiveTraffic", true);
 		prf.put("RoutePlan", true);
-		prf.put(CURRENT_USED, new HashSet<String>(Arrays.asList(
-				"BingMap", "FakeRouter", "Metro"
-			))	
-		);
-		fakedRequired.put("abc-002", prf);	
+		prf.put(CURRENT_USED, new HashSet<String>(Arrays.asList("BingMap", "FakeRouter", "Metro")));
+		fakedRequired.put("abc-002", prf);
 	}
-	
-	public ConsumerProfileLocal(){
+
+	public ConsumerProfileLocal() {
 		initFake();
 	}
-	
-	
+
 	@Override
-	public Object getRequired(String consumer, String profile){
-		
+	public Object getRequired(String consumer, String profile) {
+
 		return fakedRequired.get(combineIds(consumer, profile));
-		
+
 	}
-	
+
 	@Override
-	protected String combineIds(String consumer, String profile){
-		return consumer+"-"+profile;
+	protected String combineIds(String consumer, String profile) {
+		return consumer + "-" + profile;
 	}
-	
+
 	@Override
-	public Collection<String> getCurrentServices(String consumer, String profile){
+	public Collection<String> getCurrentServices(String consumer, String profile) {
 		return this.getCurrentServices(combineIds(consumer, profile));
 	}
-	
+
 	@Override
-	public Collection<String> getCurrentServices(String consumerProfile){
-		Set<String> current = (Set<String>)((Map)fakedRequired.get(consumerProfile)).get(CURRENT_USED);
-		return new HashSet<String>( current);
+	public Collection<String> getCurrentServices(String consumerProfile) {
+		Set<String> current = (Set<String>) ((Map) fakedRequired.get(consumerProfile)).get(CURRENT_USED);
+		return new HashSet<String>(current);
 	}
-	
+
 	public Map<String, String> publicStatus = new HashMap<String, String>();
-	
-	
+
 }
-
-

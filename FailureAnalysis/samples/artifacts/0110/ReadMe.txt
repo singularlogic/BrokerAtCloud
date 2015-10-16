@@ -1,8 +1,5 @@
 This sample uses 
-InputEventAdaptor:  kafka
-EventBuilder:           xml
-EventFormatter:         json
-OutputEventAdaptor: kafka
+EventPublisher: logger
 
-Producers:     sensor-stats
-Consumers:     run kafka server consumer (http://kafka.apache.org/documentation.html)
+Producers:     event simulator
+Consumers:     console

@@ -9,7 +9,7 @@ import diva.brokeratcloud.fpr.input.local.AdaptRuleLocal;
 import diva.brokeratcloud.fpr.input.sparql.AdaptRuleSparql;
 
 public abstract class AdaptRule {
-	
+
 	public static AdaptRule INSTANCE = new AdaptRuleSparql();
 
 	public AdaptRule() {
@@ -21,8 +21,8 @@ public abstract class AdaptRule {
 	public abstract String getRule(String name);
 
 	public abstract Collection<String> allRuleNames();
-	
-	public List<String> involvedContext(){
+
+	public List<String> involvedContext() {
 		return Collections.EMPTY_LIST;
 	}
 

@@ -9,7 +9,7 @@ import diva.brokeratcloud.fpr.input.sparql.ConsumerProfileSparql;
 public abstract class ConsumerProfile {
 
 	public static ConsumerProfile INSTANCE = new ConsumerProfileSparql();
-	
+
 	public ConsumerProfile() {
 		super();
 	}

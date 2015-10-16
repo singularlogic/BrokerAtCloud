@@ -49,40 +49,42 @@ import diva.brokeratcloud.fpr.resources.PubSub;
 import diva.brokeratcloud.fpr.resources.Recommendation;
 
 /**
- * Our sample action implements workbench action delegate.
- * The action proxy will be created by the workbench and
- * shown in the UI. When the user tries to use the action,
- * this delegate will be created and execution will be 
- * delegated to it.
+ * Our sample action implements workbench action delegate. The action proxy will
+ * be created by the workbench and shown in the UI. When the user tries to use
+ * the action, this delegate will be created and execution will be delegated to
+ * it.
+ * 
  * @see IWorkbenchWindowActionDelegate
  */
 public class SampleAction implements IWorkbenchWindowActionDelegate {
 	private IWorkbenchWindow window;
+
 	/**
 	 * The constructor.
 	 */
 	public SampleAction() {
 	}
+
 	private String projectName = null;
 
 	/**
-	 * The action has been activated. The argument of the
-	 * method represents the 'real' action sitting
-	 * in the workbench UI.
+	 * The action has been activated. The argument of the method represents the
+	 * 'real' action sitting in the workbench UI.
+	 * 
 	 * @see IWorkbenchWindowActionDelegate#run
 	 */
 	public void run(IAction action) {
-		
-		//TODO: will be removed
+
+		// TODO: will be removed
 		RecommendationHistory.INSTANCE.initSamples();
-		
+
 		IProgressMonitor progressMonitor = new NullProgressMonitor();
 		IProject prj = null;
 		IWorkspaceRoot root = ResourcesPlugin.getWorkspace().getRoot();
-		try{
+		try {
 			prj = root.getProjects()[0];
-		}catch(ArrayIndexOutOfBoundsException e){
-			prj =  root.getProject("DefaultProject");
+		} catch (ArrayIndexOutOfBoundsException e) {
+			prj = root.getProject("DefaultProject");
 			try {
 				prj.create(progressMonitor);
 				prj.open(progressMonitor);
@@ -91,43 +93,43 @@ public class SampleAction implements IWorkbenchWindowActionDelegate {
 				e1.printStackTrace();
 			}
 		}
-		//load a diva model
-		//IFile file = prj.getFile("default.xmi");
+		// load a diva model
+		// IFile file = prj.getFile("default.xmi");
 		this.projectName = prj.getName();
-		Repository.mainRoot = new DivaRoot(
-					org.eclipse.emf.common.util.URI
-						.createPlatformResourceURI(String.format("%s/main.diva", prj.getName())));
-				
-//		Repository.configPool = new ConfigurationsPool(
-//					Repository.mainRoot.getScenarios().iterator().next().getContext().get(0)
-//				);
-		
+		Repository.mainRoot = new DivaRoot(org.eclipse.emf.common.util.URI
+				.createPlatformResourceURI(String.format("%s/main.diva", prj.getName())));
+
+		// Repository.configPool = new ConfigurationsPool(
+		// Repository.mainRoot.getScenarios().iterator().next().getContext().get(0)
+		// );
+
 		updateAndSave();
-		
+
 		URI uri = UriBuilder.fromUri("http://0.0.0.0/").port(8089).build();
 		ResourceConfig resourceConfig = new ResourceConfig(Demo.class);
 		resourceConfig.register(Recommendation.class);
 		resourceConfig.register(DependencyChecking.class);
 		resourceConfig.register(PubSub.class);
-		resourceConfig.register(JacksonJsonProvider.class);  //Using Jackson for JSON wrapping
-		HttpServer server = GrizzlyHttpServerFactory.createHttpServer(uri,resourceConfig);
+		resourceConfig.register(JacksonJsonProvider.class); // Using Jackson for
+															// JSON wrapping
+		HttpServer server = GrizzlyHttpServerFactory.createHttpServer(uri, resourceConfig);
 		try {
 			server.start();
 		} catch (IOException e) {
-			
+
 			e.printStackTrace();
 		}
-		//this.updateAndSave();
-		
-		new Thread(){
+		// this.updateAndSave();
+
+		new Thread() {
 			@Override
-			public void run(){
-				while(true){
+			public void run() {
+				while (true) {
 					Repository.mainRoot.updateModel();
-//					Repository.mainRoot.runSimulation();
-//					Repository.configPool = new ConfigurationsPool(
-//							Repository.mainRoot.getScenarios().iterator().next().getContext().get(0)
-//						);
+					// Repository.mainRoot.runSimulation();
+					// Repository.configPool = new ConfigurationsPool(
+					// Repository.mainRoot.getScenarios().iterator().next().getContext().get(0)
+					// );
 					try {
 						sleep(3600000);
 					} catch (InterruptedException e) {
@@ -137,48 +139,49 @@ public class SampleAction implements IWorkbenchWindowActionDelegate {
 				}
 			}
 		}.start();
-		
+
 		try {
 			Subscriber.startListening();
 		} catch (JMSException e) {
 			// TODO Auto-generated catch block
-			//e.printStackTrace();
-			System.out.println("The pub-sub server is not available at: "+Subscriber.pubsubServer);
+			// e.printStackTrace();
+			System.out.println("The pub-sub server is not available at: " + Subscriber.pubsubServer);
 		}
 	}
 
 	/**
-	 * Selection in the workbench has been changed. We 
-	 * can change the state of the 'real' action here
-	 * if we want, but this can only happen after 
-	 * the delegate has been created.
+	 * Selection in the workbench has been changed. We can change the state of
+	 * the 'real' action here if we want, but this can only happen after the
+	 * delegate has been created.
+	 * 
 	 * @see IWorkbenchWindowActionDelegate#selectionChanged
 	 */
 	public void selectionChanged(IAction action, ISelection selection) {
 	}
 
 	/**
-	 * We can use this method to dispose of any system
-	 * resources we previously allocated.
+	 * We can use this method to dispose of any system resources we previously
+	 * allocated.
+	 * 
 	 * @see IWorkbenchWindowActionDelegate#dispose
 	 */
 	public void dispose() {
 	}
 
 	/**
-	 * We will cache window object in order to
-	 * be able to provide parent shell for the message dialog.
+	 * We will cache window object in order to be able to provide parent shell
+	 * for the message dialog.
+	 * 
 	 * @see IWorkbenchWindowActionDelegate#init
 	 */
 	public void init(IWorkbenchWindow window) {
 		this.window = window;
 	}
-	
-	public void updateAndSave(){
+
+	public void updateAndSave() {
 		DivaRoot d = Repository.mainRoot.fork();
 		d.updateModel();
 		d.updateOnRequest("broker", "cloud");
-		d.saveModel(org.eclipse.emf.common.util.URI
-				.createPlatformResourceURI(projectName+"/main-gen.diva"));
+		d.saveModel(org.eclipse.emf.common.util.URI.createPlatformResourceURI(projectName + "/main-gen.diva"));
 	}
 }

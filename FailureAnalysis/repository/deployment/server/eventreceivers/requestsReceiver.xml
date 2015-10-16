@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eventReceiver name="requestsReceiver" statistics="enable"
+    trace="enable" xmlns="http://wso2.org/carbon/eventreceiver">
+    <from eventAdapterType="jms">
+        <property name="transport.jms.DestinationType">topic</property>
+        <property name="transport.jms.Destination">RequestsPerSec</property>
+        <property name="java.naming.factory.initial">org.wso2.andes.jndi.PropertiesFileInitialContextFactory</property>
+        <property name="java.naming.provider.url">repository/conf/jndi.properties</property>
+        <property name="transport.jms.SubscriptionDurable">false</property>
+        <property name="transport.jms.ConnectionFactoryJNDIName">TopicConnectionFactory</property>
+    </from>
+    <mapping customMapping="enable" type="json">
+        <property>
+            <from jsonPath="Offering"/>
+            <to name="service" type="string"/>
+        </property>
+        <property>
+            <from jsonPath="RequestsPerSec"/>
+            <to name="requests" type="int"/>
+        </property>
+    </mapping>
+    <to streamName="requestsStream" version="1.0.0"/>
+</eventReceiver>

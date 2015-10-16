@@ -8,7 +8,7 @@ import eu.brokeratcloud.common.BrokerObject;
 import eu.brokeratcloud.common.ServiceCategory;
 import eu.brokeratcloud.opt.type.TFN;
 import eu.brokeratcloud.persistence.annotations.*;
-import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW;
+import eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementService;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -37,6 +37,9 @@ public class ServiceCategoryAttribute extends BrokerObject {
 	@XmlAttribute
 	@RdfPredicate
 	protected String measuredBy;
+	
+	@XmlAttribute
+	protected String bppName;
 	
 	//Allowed Value Range constraints
 	@XmlAttribute
@@ -131,6 +134,9 @@ public class ServiceCategoryAttribute extends BrokerObject {
 	public String getMeasuredBy() { return measuredBy; }
 	public void setMeasuredBy(String s) { measuredBy = s; }
 	
+	public String getBppName() { return bppName; }
+	public void setBppName(String s) { bppName = s; }
+	
 	public double getMin() { return min; }
 	public double getMax() { return max; }
 	public TFN getFmin() { return fmin; }
@@ -152,7 +158,7 @@ public class ServiceCategoryAttribute extends BrokerObject {
 	
 	public String toString() {
 		return 	"ServiceCategoryAttribute: {\n"+super.toString()+
-				"\tservice-category = "+serviceCategory+"\n\tattribute = "+attribute+
+				"\tservice-category = "+serviceCategory+"\n\tattribute = "+attribute+"\n\tbpp-name = "+bppName+
 				"\n\ttype = "+type+"\n\tmandatory = "+mandatory+"\n\tunit = "+unit+"\n\tmeasured-by = "+measuredBy+
 				"\n\tmin="+min+", max="+max+", f-min="+fmin+", f-max="+fmax+", members="+Arrays.deepToString(members)+", terms="+Arrays.deepToString(terms)+
 				", higher-is-better="+higherIsBetter+

@@ -66,13 +66,13 @@ public class DiVABackgroundProvider extends EObjectImpl implements Visitor<Strin
 	protected static Color invColor = new org.eclipse.swt.graphics.Color(Display.getCurrent(), 255, 200, 255);
 	protected static Color grey = new org.eclipse.swt.graphics.Color(Display.getCurrent(), 230, 230, 230);
 	protected static Color white = new org.eclipse.swt.graphics.Color(Display.getCurrent(), 255, 255, 255);
-	
+
 	private static DiVABackgroundProvider instance = new DiVABackgroundProvider();
-	
+
 	public static DiVABackgroundProvider getInstance() {
 		return instance;
 	}
-	
+
 	public Color visitAndTerm(AndTerm node, String context) {
 		return expColor;
 	}
@@ -125,93 +125,74 @@ public class DiVABackgroundProvider extends EObjectImpl implements Visitor<Strin
 		return ruleColor;
 	}
 
-	
 	public Color visitProperty(Property node, String context) {
 		return propColor;
 	}
 
-	
 	public Color visitPropertyPriority(PropertyPriority node, String context) {
 		return ruleColor;
 	}
 
-	
 	public Color visitPropertyValue(PropertyValue node, String context) {
 		return propColor;
 	}
 
-	
 	public Color visitVariabilityModel(VariabilityModel node, String context) {
 		return white;
 	}
 
-	
 	public Color visitVariant(Variant node, String context) {
 		return varColor;
 	}
 
-	
 	public Color visitVariantExpression(VariantExpression node, String context) {
 		return expColor;
 	}
 
-	
 	public Color visitVariantTerm(VariantTerm node, String context) {
 		return expColor;
 	}
 
-	
-	public Color visitMultiplicityConstraint(MultiplicityConstraint node,
-			String context) {
+	public Color visitMultiplicityConstraint(MultiplicityConstraint node, String context) {
 		return dvarColor;
 	}
-	
-	
+
 	public Color visitBoolVariableValue(diva.BoolVariableValue node, String context) {
 		return ctxColor;
 	}
 
-	
 	public Color visitConfiguration(Configuration node, String context) {
 		return dvarColor;
 	}
 
-	
 	public Color visitConfigVariant(ConfigVariant node, String context) {
 		return varColor;
 	}
 
-	
 	public Color visitContext(Context node, String context) {
 		return ctxColor;
 	}
 
-	
 	public Color visitEnumVariableValue(EnumVariableValue node, String context) {
 		return ctxColor;
 	}
 
-	
 	public Color visitPriority(Priority node, String context) {
 		return ruleColor;
 	}
 
-	
 	public Color visitScenario(Scenario node, String context) {
 		return ctxColor;
 	}
 
-	
 	public Color visitScore(Score node, String context) {
 		return propColor;
 	}
 
-	
 	public Color visitSimulationModel(SimulationModel node, String context) {
 		return white;
 	}
 
-	
 	public Color visitAnnotation(Annotation node, String context) {
 		return grey;
 	}
@@ -226,8 +207,7 @@ public class DiVABackgroundProvider extends EObjectImpl implements Visitor<Strin
 		return grey;
 	}
 
-	public Color visitSuitableConfiguration(SuitableConfiguration node,
-			String context) {
+	public Color visitSuitableConfiguration(SuitableConfiguration node, String context) {
 		// TODO Auto-generated method stub
 		return grey;
 	}

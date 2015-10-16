@@ -41,14 +41,13 @@ import diva.helpers.ListCombinationGenerator;
 import diva.visitors.Visitor;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Simulation Model</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Simulation Model</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link diva.impl.SimulationModelImpl#getScenario <em>Scenario</em>}</li>
- *   <li>{@link diva.impl.SimulationModelImpl#getModel <em>Model</em>}</li>
+ * <li>{@link diva.impl.SimulationModelImpl#getScenario <em>Scenario</em>}</li>
+ * <li>{@link diva.impl.SimulationModelImpl#getModel <em>Model</em>}</li>
  * </ul>
  * </p>
  *
@@ -56,9 +55,9 @@ import diva.visitors.Visitor;
  */
 public class SimulationModelImpl extends DiVAModelElementImpl implements SimulationModel {
 	/**
-	 * The cached value of the '{@link #getScenario() <em>Scenario</em>}' containment reference list.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * The cached value of the '{@link #getScenario() <em>Scenario</em>}'
+	 * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #getScenario()
 	 * @generated
 	 * @ordered
@@ -66,8 +65,8 @@ public class SimulationModelImpl extends DiVAModelElementImpl implements Simulat
 	protected EList<Scenario> scenario;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected SimulationModelImpl() {
@@ -75,8 +74,8 @@ public class SimulationModelImpl extends DiVAModelElementImpl implements Simulat
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
@@ -85,61 +84,66 @@ public class SimulationModelImpl extends DiVAModelElementImpl implements Simulat
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EList<Scenario> getScenario() {
 		if (scenario == null) {
-			scenario = new EObjectContainmentEList<Scenario>(Scenario.class, this, DivaPackage.SIMULATION_MODEL__SCENARIO);
+			scenario = new EObjectContainmentEList<Scenario>(Scenario.class, this,
+					DivaPackage.SIMULATION_MODEL__SCENARIO);
 		}
 		return scenario;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VariabilityModel getModel() {
-		if (eContainerFeatureID() != DivaPackage.SIMULATION_MODEL__MODEL) return null;
-		return (VariabilityModel)eInternalContainer();
+		if (eContainerFeatureID() != DivaPackage.SIMULATION_MODEL__MODEL)
+			return null;
+		return (VariabilityModel) eInternalContainer();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public NotificationChain basicSetModel(VariabilityModel newModel, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject)newModel, DivaPackage.SIMULATION_MODEL__MODEL, msgs);
+		msgs = eBasicSetContainer((InternalEObject) newModel, DivaPackage.SIMULATION_MODEL__MODEL, msgs);
 		return msgs;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void setModel(VariabilityModel newModel) {
-		if (newModel != eInternalContainer() || (eContainerFeatureID() != DivaPackage.SIMULATION_MODEL__MODEL && newModel != null)) {
+		if (newModel != eInternalContainer()
+				|| (eContainerFeatureID() != DivaPackage.SIMULATION_MODEL__MODEL && newModel != null)) {
 			if (EcoreUtil.isAncestor(this, newModel))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
 			NotificationChain msgs = null;
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
 			if (newModel != null)
-				msgs = ((InternalEObject)newModel).eInverseAdd(this, DivaPackage.VARIABILITY_MODEL__SIMULATION, VariabilityModel.class, msgs);
+				msgs = ((InternalEObject) newModel).eInverseAdd(this, DivaPackage.VARIABILITY_MODEL__SIMULATION,
+						VariabilityModel.class, msgs);
 			msgs = basicSetModel(newModel, msgs);
-			if (msgs != null) msgs.dispatch();
-		}
-		else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.SIMULATION_MODEL__MODEL, newModel, newModel));
+			if (msgs != null)
+				msgs.dispatch();
+		} else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DivaPackage.SIMULATION_MODEL__MODEL, newModel,
+					newModel));
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public <C, R> R accept(final Visitor<C, R> visitor, final C context) {
@@ -147,117 +151,118 @@ public class SimulationModelImpl extends DiVAModelElementImpl implements Simulat
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case DivaPackage.SIMULATION_MODEL__MODEL:
-				if (eInternalContainer() != null)
-					msgs = eBasicRemoveFromContainer(msgs);
-				return basicSetModel((VariabilityModel)otherEnd, msgs);
+		case DivaPackage.SIMULATION_MODEL__MODEL:
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			return basicSetModel((VariabilityModel) otherEnd, msgs);
 		}
 		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-			case DivaPackage.SIMULATION_MODEL__SCENARIO:
-				return ((InternalEList<?>)getScenario()).basicRemove(otherEnd, msgs);
-			case DivaPackage.SIMULATION_MODEL__MODEL:
-				return basicSetModel(null, msgs);
+		case DivaPackage.SIMULATION_MODEL__SCENARIO:
+			return ((InternalEList<?>) getScenario()).basicRemove(otherEnd, msgs);
+		case DivaPackage.SIMULATION_MODEL__MODEL:
+			return basicSetModel(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-			case DivaPackage.SIMULATION_MODEL__MODEL:
-				return eInternalContainer().eInverseRemove(this, DivaPackage.VARIABILITY_MODEL__SIMULATION, VariabilityModel.class, msgs);
+		case DivaPackage.SIMULATION_MODEL__MODEL:
+			return eInternalContainer().eInverseRemove(this, DivaPackage.VARIABILITY_MODEL__SIMULATION,
+					VariabilityModel.class, msgs);
 		}
 		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
-			case DivaPackage.SIMULATION_MODEL__SCENARIO:
-				return getScenario();
-			case DivaPackage.SIMULATION_MODEL__MODEL:
-				return getModel();
+		case DivaPackage.SIMULATION_MODEL__SCENARIO:
+			return getScenario();
+		case DivaPackage.SIMULATION_MODEL__MODEL:
+			return getModel();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
-			case DivaPackage.SIMULATION_MODEL__SCENARIO:
-				getScenario().clear();
-				getScenario().addAll((Collection<? extends Scenario>)newValue);
-				return;
-			case DivaPackage.SIMULATION_MODEL__MODEL:
-				setModel((VariabilityModel)newValue);
-				return;
+		case DivaPackage.SIMULATION_MODEL__SCENARIO:
+			getScenario().clear();
+			getScenario().addAll((Collection<? extends Scenario>) newValue);
+			return;
+		case DivaPackage.SIMULATION_MODEL__MODEL:
+			setModel((VariabilityModel) newValue);
+			return;
 		}
 		super.eSet(featureID, newValue);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public void eUnset(int featureID) {
 		switch (featureID) {
-			case DivaPackage.SIMULATION_MODEL__SCENARIO:
-				getScenario().clear();
-				return;
-			case DivaPackage.SIMULATION_MODEL__MODEL:
-				setModel((VariabilityModel)null);
-				return;
+		case DivaPackage.SIMULATION_MODEL__SCENARIO:
+			getScenario().clear();
+			return;
+		case DivaPackage.SIMULATION_MODEL__MODEL:
+			setModel((VariabilityModel) null);
+			return;
 		}
 		super.eUnset(featureID);
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	@Override
 	public boolean eIsSet(int featureID) {
 		switch (featureID) {
-			case DivaPackage.SIMULATION_MODEL__SCENARIO:
-				return scenario != null && !scenario.isEmpty();
-			case DivaPackage.SIMULATION_MODEL__MODEL:
-				return getModel() != null;
+		case DivaPackage.SIMULATION_MODEL__SCENARIO:
+			return scenario != null && !scenario.isEmpty();
+		case DivaPackage.SIMULATION_MODEL__MODEL:
+			return getModel() != null;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -265,34 +270,37 @@ public class SimulationModelImpl extends DiVAModelElementImpl implements Simulat
 	/**
 	 * @generated NOT
 	 */
-	public void populatePriorities() { 
-		for(Scenario s : getScenario()) {
-			for(Context ctx : s.getContext()) {
-				//System.out.println("Processing context " + ctx.getName()  + "...");
+	public void populatePriorities() {
+		for (Scenario s : getScenario()) {
+			for (Context ctx : s.getContext()) {
+				// System.out.println("Processing context " + ctx.getName() +
+				// "...");
 				ctx.computePriorities(this);
 			}
 		}
 	}
-	
+
 	/**
 	 * @generated NOT
-	 */	
+	 */
 	public void populateScores() {
-		for(Scenario s : getScenario()) {
-			for(Context ctx : s.getContext()) {
-				//System.out.println("Processing context " + ctx.getName()  + "...");
+		for (Scenario s : getScenario()) {
+			for (Context ctx : s.getContext()) {
+				// System.out.println("Processing context " + ctx.getName() +
+				// "...");
 				ctx.computeScores(this);
 			}
 		}
 	}
-	
+
 	/**
 	 * @generated NOT
 	 */
 	public void populateVerdicts() {
-		for(Scenario s : getScenario()) {
-			for(Context ctx : s.getContext()) {
-				//System.out.println("Processing context " + ctx.getName()  + "...");
+		for (Scenario s : getScenario()) {
+			for (Context ctx : s.getContext()) {
+				// System.out.println("Processing context " + ctx.getName() +
+				// "...");
 				ctx.computeVerdicts();
 			}
 		}
@@ -304,55 +312,53 @@ public class SimulationModelImpl extends DiVAModelElementImpl implements Simulat
 	@Override
 	public void createExhaustiveSimulation() {
 		Scenario s = null;
-		for(Scenario scn : getScenario())
-			if(scn.getName().equals("EXHAUSTIVE"))
+		for (Scenario scn : getScenario())
+			if (scn.getName().equals("EXHAUSTIVE"))
 				s = scn;
-		
-		if (s == null) {	
+
+		if (s == null) {
 			s = DivaFactory.eINSTANCE.createScenario();
 			s.setName("EXHAUSTIVE");
 			getScenario().add(s);
-		}
-		else {
+		} else {
 			s.getContext().clear();
 		}
-			
+
 		int i = 0;
-		for(List<VariableValue> vvs : allCombinations(getModel().getContext())) {
+		for (List<VariableValue> vvs : allCombinations(getModel().getContext())) {
 			Context c = DivaFactory.eINSTANCE.createContext();
 			c.setName("Context " + i);
-			c.setId("CTX_"+ (i++));
-			for(VariableValue vv : vvs) {
+			c.setId("CTX_" + (i++));
+			for (VariableValue vv : vvs) {
 				c.getVariable().add(EcoreUtil.copy(vv));
 			}
 			s.getContext().add(c);
 		}
 	}
-	
-	
+
 	/**
 	 * @generated NOT
 	 */
 	private List<List<VariableValue>> allCombinations(List<Variable> vars) {
-		
-		
+
 		List<List<VariableValue>> result = new ArrayList<List<VariableValue>>();
 		List<List<VariableValue>> ll = new ArrayList<List<VariableValue>>();
-		for(Variable v : vars) {
+		for (Variable v : vars) {
 			ll.add(v.allValue());
 		}
-		
+
 		ListCombinationGenerator<VariableValue> lcg = new ListCombinationGenerator<VariableValue>(ll);
-		//long before = System.nanoTime();
-		while(lcg.hasMoreCombinations()){  
+		// long before = System.nanoTime();
+		while (lcg.hasMoreCombinations()) {
 			List<VariableValue> currentTupel = lcg.getNextCombination();
-			//System.out.println("currentTupel: " + currentTupel+ "hasMoreCombinations: "  + lcg.hasMoreCombinations());
+			// System.out.println("currentTupel: " + currentTupel+
+			// "hasMoreCombinations: " + lcg.hasMoreCombinations());
 			result.add(currentTupel);
 		}
-		//long after = System.nanoTime();
-		//System.out.println("Nanosconds: " + (after-before) );
-		
+		// long after = System.nanoTime();
+		// System.out.println("Nanosconds: " + (after-before) );
+
 		return result;
 	}
-	
-} //SimulationModelImpl
+
+} // SimulationModelImpl

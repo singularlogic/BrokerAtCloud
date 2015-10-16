@@ -31,43 +31,43 @@ import diva.visitors.VisitorsFactory;
 import diva.visitors.VisitorsPackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model <b>Package</b>.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!--
+ * end-user-doc -->
+ * 
  * @generated
  */
 public class VisitorsPackageImpl extends EPackageImpl implements VisitorsPackage {
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass visitableEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass visitorEClass = null;
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private EClass topDownVisitorEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
-	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the package
-	 * package URI value.
-	 * <p>Note: the correct way to create the package is via the static
-	 * factory method {@link #init init()}, which also performs
-	 * initialization of the package, or returns the registered package,
-	 * if one already exists.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * {@link org.eclipse.emf.ecore.EPackage.Registry EPackage.Registry} by the
+	 * package package URI value.
+	 * <p>
+	 * Note: the correct way to create the package is via the static factory
+	 * method {@link #init init()}, which also performs initialization of the
+	 * package, or returns the registered package, if one already exists. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see diva.visitors.VisitorsPackage#eNS_URI
 	 * @see #init()
@@ -78,34 +78,42 @@ public class VisitorsPackageImpl extends EPackageImpl implements VisitorsPackage
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private static boolean isInited = false;
 
 	/**
-	 * Creates, registers, and initializes the <b>Package</b> for this model, and for any others upon which it depends.
+	 * Creates, registers, and initializes the <b>Package</b> for this model,
+	 * and for any others upon which it depends.
 	 * 
-	 * <p>This method is used to initialize {@link VisitorsPackage#eINSTANCE} when that field is accessed.
-	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <p>
+	 * This method is used to initialize {@link VisitorsPackage#eINSTANCE} when
+	 * that field is accessed. Clients should not invoke it directly. Instead,
+	 * they should simply access that field to obtain the package. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
 	 * @generated
 	 */
 	public static VisitorsPackage init() {
-		if (isInited) return (VisitorsPackage)EPackage.Registry.INSTANCE.getEPackage(VisitorsPackage.eNS_URI);
+		if (isInited)
+			return (VisitorsPackage) EPackage.Registry.INSTANCE.getEPackage(VisitorsPackage.eNS_URI);
 
 		// Obtain or create and register package
-		VisitorsPackageImpl theVisitorsPackage = (VisitorsPackageImpl)(EPackage.Registry.INSTANCE.get(eNS_URI) instanceof VisitorsPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI) : new VisitorsPackageImpl());
+		VisitorsPackageImpl theVisitorsPackage = (VisitorsPackageImpl) (EPackage.Registry.INSTANCE
+				.get(eNS_URI) instanceof VisitorsPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI)
+						: new VisitorsPackageImpl());
 
 		isInited = true;
 
 		// Obtain or create and register interdependencies
-		DivaPackageImpl theDivaPackage = (DivaPackageImpl)(EPackage.Registry.INSTANCE.getEPackage(DivaPackage.eNS_URI) instanceof DivaPackageImpl ? EPackage.Registry.INSTANCE.getEPackage(DivaPackage.eNS_URI) : DivaPackage.eINSTANCE);
+		DivaPackageImpl theDivaPackage = (DivaPackageImpl) (EPackage.Registry.INSTANCE
+				.getEPackage(DivaPackage.eNS_URI) instanceof DivaPackageImpl
+						? EPackage.Registry.INSTANCE.getEPackage(DivaPackage.eNS_URI) : DivaPackage.eINSTANCE);
 
 		// Create package meta-data objects
 		theVisitorsPackage.createPackageContents();
@@ -118,15 +126,14 @@ public class VisitorsPackageImpl extends EPackageImpl implements VisitorsPackage
 		// Mark meta-data to indicate it can't be changed
 		theVisitorsPackage.freeze();
 
-  
 		// Update the registry and return the package
 		EPackage.Registry.INSTANCE.put(VisitorsPackage.eNS_URI, theVisitorsPackage);
 		return theVisitorsPackage;
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getVisitable() {
@@ -134,8 +141,8 @@ public class VisitorsPackageImpl extends EPackageImpl implements VisitorsPackage
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getVisitor() {
@@ -143,8 +150,8 @@ public class VisitorsPackageImpl extends EPackageImpl implements VisitorsPackage
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public EClass getTopDownVisitor() {
@@ -152,30 +159,31 @@ public class VisitorsPackageImpl extends EPackageImpl implements VisitorsPackage
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public VisitorsFactory getVisitorsFactory() {
-		return (VisitorsFactory)getEFactoryInstance();
+		return (VisitorsFactory) getEFactoryInstance();
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private boolean isCreated = false;
 
 	/**
-	 * Creates the meta-model objects for the package.  This method is
-	 * guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
+	 * Creates the meta-model objects for the package. This method is guarded to
+	 * have no affect on any invocation but its first. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void createPackageContents() {
-		if (isCreated) return;
+		if (isCreated)
+			return;
 		isCreated = true;
 
 		// Create classes and their features
@@ -187,21 +195,22 @@ public class VisitorsPackageImpl extends EPackageImpl implements VisitorsPackage
 	}
 
 	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	private boolean isInitialized = false;
 
 	/**
-	 * Complete the initialization of the package and its meta-model.  This
-	 * method is guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
+	 * Complete the initialization of the package and its meta-model. This
+	 * method is guarded to have no affect on any invocation but its first. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	public void initializePackageContents() {
-		if (isInitialized) return;
+		if (isInitialized)
+			return;
 		isInitialized = true;
 
 		// Initialize package
@@ -210,7 +219,7 @@ public class VisitorsPackageImpl extends EPackageImpl implements VisitorsPackage
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		DivaPackage theDivaPackage = (DivaPackage)EPackage.Registry.INSTANCE.getEPackage(DivaPackage.eNS_URI);
+		DivaPackage theDivaPackage = (DivaPackage) EPackage.Registry.INSTANCE.getEPackage(DivaPackage.eNS_URI);
 
 		// Create type parameters
 		ETypeParameter visitorEClass_ContextType = addETypeParameter(visitorEClass, "ContextType");
@@ -229,7 +238,8 @@ public class VisitorsPackageImpl extends EPackageImpl implements VisitorsPackage
 		topDownVisitorEClass.getEGenericSuperTypes().add(g1);
 
 		// Initialize classes and features; add operations and parameters
-		initEClass(visitableEClass, Visitable.class, "Visitable", IS_ABSTRACT, IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(visitableEClass, Visitable.class, "Visitable", IS_ABSTRACT, IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		EOperation op = addEOperation(visitableEClass, null, "accept", 0, 1, IS_UNIQUE, IS_ORDERED);
 		ETypeParameter t1 = addETypeParameter(op, "C");
@@ -492,7 +502,8 @@ public class VisitorsPackageImpl extends EPackageImpl implements VisitorsPackage
 		g1 = createEGenericType(visitorEClass_ResultType);
 		initEOperation(op, g1);
 
-		initEClass(topDownVisitorEClass, TopDownVisitor.class, "TopDownVisitor", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(topDownVisitorEClass, TopDownVisitor.class, "TopDownVisitor", IS_ABSTRACT, !IS_INTERFACE,
+				IS_GENERATED_INSTANCE_CLASS);
 
 		op = addEOperation(topDownVisitorEClass, null, "visitVariabilityModel", 0, 1, IS_UNIQUE, IS_ORDERED);
 		addEParameter(op, theDivaPackage.getVariabilityModel(), "node", 0, 1, IS_UNIQUE, IS_ORDERED);
@@ -745,258 +756,121 @@ public class VisitorsPackageImpl extends EPackageImpl implements VisitorsPackage
 	}
 
 	/**
-	 * Initializes the annotations for <b>kermeta</b>.
-	 * <!-- begin-user-doc -->
+	 * Initializes the annotations for <b>kermeta</b>. <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
+	 * 
 	 * @generated
 	 */
 	protected void createKermetaAnnotations() {
-		String source = "kermeta";		
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(0), 
-		   source, 
-		   new String[] {
-			 "body", "do\nif node.model != void then node.model.accept(self, context) end\nnode.context.each{ e | e.accept(self, context) }\nnode.~property.each{ e | e.accept(self, context) }\nnode.dimension.each{ e | e.accept(self, context) }\nnode.rule.each{ e | e.accept(self, context) }\nnode.constraint.each{ e | e.accept(self, context) }\nif node.simulation != void then node.simulation.accept(self, context) end\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(1), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nif node.expression != void then node.expression.accept(self, context) end\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(2), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nnode.literal.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(3), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(4), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.term.each{ e | e.accept(self, context) }\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(5), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.term.each{ e | e.accept(self, context) }\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(6), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nif node.term != void then node.term.accept(self, context) end\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(7), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(8), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(9), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(10), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(11), 
-		   source, 
-		   new String[] {
-			 "body", "do\nif node.model != void then node.model.accept(self, context) end\nnode.annotation.each{ e | e.accept(self, context) }\nnode.propertyValue.each{ e | e.accept(self, context) }\nif node.dependency != void then node.dependency.accept(self, context) end\nif node.available != void then node.available.accept(self, context) end\nif node.required != void then node.required.accept(self, context) end\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(12), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nnode.variant.each{ e | e.accept(self, context) }\nnode.constraints.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(13), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nif node.term != void then node.term.accept(self, context) end\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(14), 
-		   source, 
-		   new String[] {
-			 "body", "do\nif node.term != void then node.term.accept(self, context) end\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(15), 
-		   source, 
-		   new String[] {
-			 "body", "do\nif node.term != void then node.term.accept(self, context) end\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(16), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nif node.context != void then node.context.accept(self, context) end\nnode.priority.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(17), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nnode.literal.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(18), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(19), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(20), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(21), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nif node.available != void then node.available.accept(self, context) end\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(22), 
-		   source, 
-		   new String[] {
-			 "body", "do\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(23), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nnode.scenario.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(24), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nnode.variable.each{ e | e.accept(self, context) }\nnode.configuration.each{ e | e.accept(self, context) }\nif node.oracle != void then node.oracle.accept(self, context) end\nnode.priority.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(25), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.score.each{ e | e.accept(self, context) }\nnode.annotation.each{ e | e.accept(self, context) }\nnode.variant.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(26), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.score.each{ e | e.accept(self, context) }\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(27), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nnode.context.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(28), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(29), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(30), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(31), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.annotation.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(32), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.configurations.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(33), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.variant.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });			
-		addAnnotation
-		  (topDownVisitorEClass.getEOperations().get(34), 
-		   source, 
-		   new String[] {
-			 "body", "do\nnode.variable.each{ e | e.accept(self, context) }\nend",
-			 "isAbstract", "false"
-		   });	
+		String source = "kermeta";
+		addAnnotation(topDownVisitorEClass.getEOperations().get(0), source,
+				new String[] { "body",
+						"do\nif node.model != void then node.model.accept(self, context) end\nnode.context.each{ e | e.accept(self, context) }\nnode.~property.each{ e | e.accept(self, context) }\nnode.dimension.each{ e | e.accept(self, context) }\nnode.rule.each{ e | e.accept(self, context) }\nnode.constraint.each{ e | e.accept(self, context) }\nif node.simulation != void then node.simulation.accept(self, context) end\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(1), source,
+				new String[] { "body",
+						"do\nnode.annotation.each{ e | e.accept(self, context) }\nif node.expression != void then node.expression.accept(self, context) end\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(2), source,
+				new String[] { "body",
+						"do\nnode.annotation.each{ e | e.accept(self, context) }\nnode.literal.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(3), source, new String[] { "body",
+				"do\nnode.annotation.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(4), source,
+				new String[] { "body",
+						"do\nnode.term.each{ e | e.accept(self, context) }\nnode.annotation.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(5), source,
+				new String[] { "body",
+						"do\nnode.term.each{ e | e.accept(self, context) }\nnode.annotation.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(6), source,
+				new String[] { "body",
+						"do\nnode.annotation.each{ e | e.accept(self, context) }\nif node.term != void then node.term.accept(self, context) end\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(7), source, new String[] { "body",
+				"do\nnode.annotation.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(8), source, new String[] { "body",
+				"do\nnode.annotation.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(9), source, new String[] { "body",
+				"do\nnode.annotation.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(10), source, new String[] { "body",
+				"do\nnode.annotation.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(11), source,
+				new String[] { "body",
+						"do\nif node.model != void then node.model.accept(self, context) end\nnode.annotation.each{ e | e.accept(self, context) }\nnode.propertyValue.each{ e | e.accept(self, context) }\nif node.dependency != void then node.dependency.accept(self, context) end\nif node.available != void then node.available.accept(self, context) end\nif node.required != void then node.required.accept(self, context) end\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(12), source,
+				new String[] { "body",
+						"do\nnode.annotation.each{ e | e.accept(self, context) }\nnode.variant.each{ e | e.accept(self, context) }\nnode.constraints.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(13), source,
+				new String[] { "body",
+						"do\nnode.annotation.each{ e | e.accept(self, context) }\nif node.term != void then node.term.accept(self, context) end\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(14), source,
+				new String[] { "body",
+						"do\nif node.term != void then node.term.accept(self, context) end\nnode.annotation.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(15), source,
+				new String[] { "body",
+						"do\nif node.term != void then node.term.accept(self, context) end\nnode.annotation.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(16), source,
+				new String[] { "body",
+						"do\nnode.annotation.each{ e | e.accept(self, context) }\nif node.context != void then node.context.accept(self, context) end\nnode.priority.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(17), source,
+				new String[] { "body",
+						"do\nnode.annotation.each{ e | e.accept(self, context) }\nnode.literal.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(18), source, new String[] { "body",
+				"do\nnode.annotation.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(19), source, new String[] { "body",
+				"do\nnode.annotation.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(20), source, new String[] { "body",
+				"do\nnode.annotation.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(21), source,
+				new String[] { "body",
+						"do\nnode.annotation.each{ e | e.accept(self, context) }\nif node.available != void then node.available.accept(self, context) end\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(22), source,
+				new String[] { "body", "do\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(23), source,
+				new String[] { "body",
+						"do\nnode.annotation.each{ e | e.accept(self, context) }\nnode.scenario.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(24), source,
+				new String[] { "body",
+						"do\nnode.annotation.each{ e | e.accept(self, context) }\nnode.variable.each{ e | e.accept(self, context) }\nnode.configuration.each{ e | e.accept(self, context) }\nif node.oracle != void then node.oracle.accept(self, context) end\nnode.priority.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(25), source,
+				new String[] { "body",
+						"do\nnode.score.each{ e | e.accept(self, context) }\nnode.annotation.each{ e | e.accept(self, context) }\nnode.variant.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(26), source,
+				new String[] { "body",
+						"do\nnode.score.each{ e | e.accept(self, context) }\nnode.annotation.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(27), source,
+				new String[] { "body",
+						"do\nnode.annotation.each{ e | e.accept(self, context) }\nnode.context.each{ e | e.accept(self, context) }\nend",
+						"isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(28), source, new String[] { "body",
+				"do\nnode.annotation.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(29), source, new String[] { "body",
+				"do\nnode.annotation.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(30), source, new String[] { "body",
+				"do\nnode.annotation.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(31), source, new String[] { "body",
+				"do\nnode.annotation.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(32), source, new String[] { "body",
+				"do\nnode.configurations.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(33), source, new String[] { "body",
+				"do\nnode.variant.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
+		addAnnotation(topDownVisitorEClass.getEOperations().get(34), source, new String[] { "body",
+				"do\nnode.variable.each{ e | e.accept(self, context) }\nend", "isAbstract", "false" });
 	}
 
-} //VisitorsPackageImpl
+} // VisitorsPackageImpl

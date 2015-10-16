@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<feature id="org.wso2.carbon.event.receiver.server" label="WSO2 Carbon - Event Receiver Server Feature" provider-name="%providerName" version="5.0.3">
+  <description>This feature contains the core bundles required for Back-end Event Receiver functionality</description>
+  <copyright>%copyright</copyright>
+  <license url="%licenseURL">%license</license>
+  <plugin id="net.minidev.json-smart" unpack="false" version="1.2.0"/>
+  <plugin id="com.jayway.jsonpath.json-path" unpack="false" version="0.9.1"/>
+  <plugin id="org.wso2.carbon.event.receiver.core" unpack="false" version="5.0.3"/>
+  <plugin id="slf4j.api" unpack="false" version="1.7.12"/>
+  <plugin id="org.wso2.carbon.event.receiver.admin" unpack="false" version="5.0.3"/>
+  <require>
+    <import feature="org.wso2.carbon.event.input.adapter.server" match="equivalent" version="5.0.3"/>
+    <import feature="org.wso2.carbon.event.stream.server" match="equivalent" version="5.0.3"/>
+    <import feature="org.wso2.carbon.core.server" match="equivalent" version="4.4.1"/>
+  </require>
+</feature>

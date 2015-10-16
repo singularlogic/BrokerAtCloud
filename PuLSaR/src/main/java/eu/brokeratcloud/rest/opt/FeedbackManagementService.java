@@ -351,12 +351,12 @@ public class FeedbackManagementService extends AbstractManagementService {
 				Object val = attrs.get(aid);
 				if (aid.startsWith(".")) continue;
 				logger.trace("getServiceDescriptionImpreciseAttributes: getting pref. var. uri for attribute: av-uri={}", aid);
-				String pvUri = eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW._getPrefVarFromAV(aid);
+				String pvUri = eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementService._getPrefVarFromAV(aid);
 				if (pvUri==null || pvUri.trim().isEmpty()) continue;
 				
 				logger.trace("getServiceDescriptionImpreciseAttributes: attribute pref. var.: pv-uri={}", pvUri);
 				logger.trace("getServiceDescriptionImpreciseAttributes: retrieving attribute info: pv-uri={}", pvUri);
-				eu.brokeratcloud.opt.ServiceCategoryAttribute sca = eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementServiceNEW._getServiceCategoryAttribute( pvUri );
+				eu.brokeratcloud.opt.ServiceCategoryAttribute sca = eu.brokeratcloud.rest.opt.ServiceCategoryAttributeManagementService._getServiceCategoryAttribute( pvUri );
 				logger.trace("getServiceDescriptionImpreciseAttributes: attribute info: \n{}", sca);
 				
 				if (sca==null) continue;
