@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Broker@Cloud User Guides</title>
+
+    <!-- Bootstrap -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap theme -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="bower_components/ekko-lightbox/dist/ekko-lightbox.min.css" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="template.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+</head>
+
+<body data-spy="scroll" data-target=".scrollspy">
+    <div class="jumbotron">
+        <div class="container">
+            <div class="col-md-3">
+                <a href="http://www.broker-cloud.eu/">
+                    <img src="images/BrokerAtCloud_medium.png" alt="Broker@Cloud Logo" style="width:100%">
+                </a>
+            </div>
+            <div class="col-md-9">
+                <h1> Broker@Cloud Cloud Service APIs</h1>
+                <p>Specification of interfaces for enabling brokerage in enterprise cloud service delivery platforms</p>
+            </div>
+        </div>
+    </div>
+    <div class="container" role="main">
+        <div>
+            <section id="intro">
+                <h1>Introduction</h1>
+                <p> The APIs of all mechanisms for quality assurance and optimization to be implemented within the frame of the project are specified as groups of methods following the REST style.
+                    <br/> This document focuses on the interfaces of the Broker@Cloud framework and documents all provided and required APIs necessary to get mechanisms for continuous quality assurance and optimization operational on a brokerage platform.
+                </p>
+                <ul>
+                    <li><a href="#installation">Installation and configuration of Broker@Cloud framework components and mechanisms </a></li>
+                    <li><a href="#policy">Development, verification, and installation of a broker policy  </a></li>
+                    <li><a href="#integration">Integration of a cloud service brokerage platform with the Broker@Cloud mechanisms </a></li>
+                </ul>
+            </section>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                <section id="basicManagement">
+                    <h1>Basic Management APIs</h1>
+                    <section id="basic-genericCRUD">
+                        <h2>Generic Governance Registry mechanism</h2>
+                        <p>A generic API offered to the potential adopter of the Broker@Cloud framework for the CRUD-like manipulation of any kind of resource in WSO<sub>2</sub> GReg’s persistence storage. The only input parameter required by this API is the path to the target resource.</p>
+                        <div>
+                            <p>The full API is specified here:
+                                <a class="btn btn-default" href="api-console-dist/GovernanceRegistry.html" target="_blank" role="button">Display Governance Registry API</a></p>
+                        </div>
+                    </section>
+                    <section id="basicSD">
+                        <h2>Service Description retrieval</h2>
+                        <p>A dedicated API specifically for the retrieval of Service Descriptions (SDs) on the basis of the service instances to which they correspond. This API does not take as argument the actual path to an SD stored in the WSO<sub>2</sub> GReg, but rather the service instance URI declared in an SD. It returns the SD in which that service instance is declared (note that there is an one-to-one mapping between SDs and service instances). This functionality is required for retrieving SDs from the Fuseki triple store implemented as part of the Broker@Cloud framework.</p>
+                        <div>
+                            <p>The full API is specified here:
+                                <a class="btn btn-default" href="api-console-dist/ServiceDescriptionRetrieval.html" target="_blank" role="button">Display Service Description retrieval API</a></p>
+                        </div>
+                    </section>
+                    <section id="basicDurableSubscriptions">
+                        <h2>Durable subscriptions mechanism</h2>
+                        <p>In addition to the generic pub/sub system management API, a durable subscription API has also been defined which allows subscribers to retrieve messages published to the topics of the pub/sub system during periods in which they were offline. These messages are cached in the pub/sub system and delivered to the subscribers once they are online again. </p>
+                        <div>
+                            <p>The full API is specified here:
+                                <a class="btn btn-default" href="api-console-dist/MessageBroker.html" target="_blank" role="button">Display Message Broker API</a></p>
+                        </div>
+                    </section>
+
+                </section>
+                <section id="serviceGovQuality">
+                    <h1>Service Governance and Quality Control APIs</h1>
+                    <h2>Service Description Management</h2>
+                    <section id="gqcSDvalidation">
+                        <h3>Service Description Validation</h3>
+                        <p>The SD validation API takes as input the contents of an SD and passes it over to the SD validation mechanism provided by the Broker@Cloud framework . In response, it returns a report containing an <code>OK</code>, if the validation is successful, or a description of the problem, otherwise This API is potentially used by the creator of an SD in order to check the validity of an SD without actually submitting it to WSO<sub>2</sub> GReg.</p>
+                    </section>
+                    <section id="gqcSDsubmission">
+                        <h3>Service Description Submission</h3>
+                        <p>The submission of an SD takes place through the pub/sub system and therefore uses the generic API. It is to be noted here that an SD needs to be validated against the corresponding BP before being accepted on the Broker@Cloud platform (only valid SDs are accepted). More specifically, the entity interested in submitting an SD first subscribes to the <code>SDReport</code> topic in order to receive a submission report. It then publishes the SD to the <code>SD</code> topic which passes it over to the SD validation mechanism provided by the Broker@Cloud framework. A submission report is then published on the <code>SDReport</code> topic which incorporates the URI of the service instance to which the SD corresponds and which also comprises a completeness report and a compliance report. The former contains information about whether the SD is complete (comprises all required artifacts according to the BP); the latter contains information about whether the values that these artefacts attain in the SD are compliant with the corresponding values specified in the BP.</p>
+                    </section>
+                    <div>
+                        <p>The full API is specified here:
+                            <a class="btn btn-default" href="api-console-dist/ServiceDescriptionRetrieval.html" target="_blank" role="button">Display Service Description API</a></p>
+                    </div>
+                    <h2>Broker Policy Management</h2>
+                    <section id="qgcBPValidation">
+                        <h2>Broker Policy Validation</h2>
+                        <p>This API allows the entity interested in validating the correctness of a BP to push the contents of a BP to the corresponding BP validation mechanism and receive, as a response, a report. This report contains an <code>OK</code>, if the validation is successful, or a description of the problem, otherwise. It is to be noted that this API merely evaluates a BP without submitting it to the Broker@Cloud platform. It is of potential use to the creator of a BP who wants to check the validity of a BP without actually submitting it to WSO<sub>2</sub> GReg.</p>
+                    </section>
+                    <section id="gqcBPSubmission">
+                        <h2>Broker Policy Submission</h2>
+                        <p>The BP submission process uses a dedicated API as opposed to, for example, making use of the pub/sub system . This API allows an entity to submit a BP to the Broker@Cloud platform. It is to be noted here that the correctness of a BP needs to be evaluated before being accepted on the Broker@Cloud platform (only valid BPs are accepted). The API therefore emits a report containing an <code>OK</code>, if the validation is successful, or a description of the problem, otherwise. Once a BP is successfully submitted, SDs can be validated against it.</p>
+                    </section>
+                    <div>
+                        <p>The full API is specified here:
+                            <a class="btn btn-default" href="api-console-dist/BrokerPolicy.html" target="_blank" role="button">Display Broker Policy Management API</a></p>
+                    </div>
+                    <section id="gqcTesting">
+                        <h2>Functional Testing Management</h2>
+                        <p>The Broker@Cloud platform offers an API for service validation, verification and test generation. These three procedures have been implemented using the generic pub/sub system management API. As an example, for the service validation mechanism any interested party initially needs to subscribe to the <code>vttsValidationReport</code> topic in order to later receive the service validation report. Then, it publishes the service specification document to the <code>vttsValidation</code> topic. Upon validation completion, a relevant report is published on the <code>vttsValidationReport</code> topic. In an analogous manner, for the cases of service verification and test generation any interested party needs to use the <code>vttsVerificationReport</code>/<code>vttsVerification</code> and <code>vttsGenerationReport</code>/<code>vttsGeneration</code> topics respectively.</p>
+                    </section>
+                    <section id="gqcMonitoring">
+                        <h2>Monitoring API</h2>
+                        <p>Monitoring data are published to designated topics of the pub/sub system. In this respect, this API forms a special case of the generic pub/sub system management API. The only difference is that data are now transferred in the form of text messages instead of byte messages. This restriction is imposed by the integration of the WSO<sub>2</sub> pub/sub system with the WSO<sub>2</sub> CEP engine.</p>
+                    </section>
+                    <section id="gqcSLM">
+                        <h2>Service Lifecycle Management</h2>
+                        <p>The Service Lifecycle Management API utilises the generic pub/sub system management API. It supports emitting events about service onboarding, update and deprecation. In particular, whenever a service gets onboarded, a message containing the service instance URI declared in the corresponding SD document is published to the <code>serviceOnboarded</code> topic. Similarly, the service update and service deprecation events are emitted to the <code>serviceUpdated</code> and <code>serviceDeprecated</code> topics respectively.</p>
+                    </section>
+                </section>
+                <section id="optimization">
+                    <h1>Optimization APIs</h1>
+                    <p>The Broker@Cloud optimization component (called PuLSaR) enables service consumers to create preference profiles for service selection and based on them generate service recommendations matching each profile. It also collects feedback from service consumers and generates notifications to service providers about the opinion consumers regarding their services.</p>
+                    <h2>Consumer Preferences Management API</h2>
+                    <p>The API for the creation and management of consumer preference profiles offers SCRUD-like manipulation of preference profiles as well as operations useful to the graphical user-facing environment. Consumer preference management refers to the creation and maintenance of consumer preference profiles, where service consumers capture the relevant service selection criteria and the ranking preferences that should be used when PuLSaR generates recommendations.</p>
+
+                    <h2>Recommendations Management API</h2>
+                    <p>The Recommendations Management API offers SCRUD-like manipulation of recommendations. Graphical user-facing environment uses only the search, retrieve and update operations, whereas the batch mode agent uses all operations offered. This API is used to request new recommendations and manage the existing (stored) recommendations. Recommendations can be requested either through the user-facing environment or they can be generated automatically in batch mode. Moreover, every time a service is being recommended a relevant notification is sent to the corresponding service provider.</p>
+
+                    <h2>Consumer Feedback Management API</h2>
+                    <p>The Consumer feedback API offers SCRUD-like manipulation of consumer feedback through graphical user-facing environment and the batch mode agent. Feedback refers only to the imprecise attributes of services, which cannot be accurately or objectively measured by a software agent (e.g. service reputation). Feedback reflects the perceived value of a service according to the opinion of a cloud consumer who used it. Through this API the collected feedback can be used to calculate the average perceived value (of an imprecise service attribute), and when this is substantially different than the value stated in service description, a notification is generated and sent to the corresponding service provider.</p>
+
+                    <h2>Notifications API</h2>
+                    <p>The Notification API offers notifications retrieval capability to the graphical user-facing environment. Notifications are generated (i) either when a provider’s service is being recommended to a consumer, or (ii) when feedback collected from consumers who have used a provider’s service, average to an (imprecise) attribute value substantially different than that stated in service description.</p>
+
+                    <h2>Optimization Attribute Management API</h2>
+                    <p>The Optimization MAttribute Management API offers SCRUD-like manipulation of optimization attributes through the graphical user-facing environment. This API is meant to be used by users with administrative role. Through this API administrators can modify and maintain the optimization attribute hierarchy and also map optimization attributes onto broker policy services properties.</p>
+
+                    <h2>Optimization Attribute Mappings Management API</h2>
+                    <p>The Optimization Attribute Mappings Management API offers SCRUD-like manipulation of the mappings through the graphical user-facing environment. This API is meant to be used by users with administrative role. Through this API administrators can create, modify and remove the mappings of optimization attributes and service classification dimensions of the broker policy.</p>
+
+                    <h2>Axuiliary API</h2>
+                    <p>The Auxiliary API offers search and retrieve operations to the other sub-components and is primarily used for internal consumption.</p>
+
+                    <div>
+                        <p>The full Optimization API is specified here:
+                            <a class="btn btn-default" href="api-console-dist/optimization-api.html" target="_blank" role="button">Display Optimization API</a></p>
+                    </div>
+
+
+                </section>
+                <section id="failurePrev">
+                    <h1>Failure Prevention and Recovery APIs</h1>
+                    <p>The API of the Failure Prevention and Recovery mechanism consists of three parts: Adaptation Information, Adaptation History and Dependency Checking.</p>
+
+                    <h2>Adaptation Info API</h2>
+                    <p>The Adaptation Info API is used by consumers and providers to get recommendations of substitution of critical services with alternative services, in order to prevent impending failures or recover from occurred ones. The API broadcasts such recommendations as events through the pub/sub system API. Moreover, the API is used by consumers and providers to query the recommendations for a single service or set of services. The request consists of a set of services, and the response consists of a set of services to remove, a set of services to add, and the reason for the recommendation.</p>
+                    <h2>Adaptation History API</h2>
+                    <p>The recommendation history API is used by the optimisation mechanism PuLSaR to check if a service has been recommended to be removed within a specific timeframe. The request consists of a service and a timestamp, and the response consists of a set of consumer or provider names, who have been recommended to remove the service after the timestamp.</p>
+
+                    <h2>Dependency Checking API</h2>
+                    <p>The dependency checking API is used to complete a set of services based on their dependencies. The request consists of a set of services, and the response consists of another set of services, which need to be added to satisfy the dependencies. In other words, the union of the input and output services form a self-contained set, where no service in this set depends on any service outside this set.</p>
+                    <div>
+                        <p>The full API is specified here:
+                            <a class="btn btn-default" href="api-console-dist/fpr-api.html" target="_blank" role="button">Display Failure Prevention and Recovery API</a></p>
+                    </div>
+
+
+                </section>
+                <!--section id="pubsub">
+                    <h1>Pub/Sub messaging system</h1>
+                    <p>The topic-based pub/sub messaging paradigm allows subscribers to express their interest in an event topic. These subscribers are then notified of any event, generated by a publisher, that matches their registered interest. Publishers do not route their messages directly to specific subscribers. In fact, publishers do not have any prior knowledge of which these particular subscribers, if any, might be. Similarly, subscribers subscribe to one or more topics in a publisher-agnostic manner. Each subscription maintains its own queue; as messages pertaining to a particular topic are published, a copy of each message is placed on each relevant queue.</p>
+                    <a href="api-console-dist/pubsubapi.html">Pub-Sub-Api</a>
+
+
+                    <section id="instPre ">
+
+                        <h2>Prerequisites</h2>
+                        <ol>
+                            <li>You have Java 7 JDK installed on your system</li>
+                            <li>The <code>JAVA_HOME</code> environmental variable is pointing to the Java 7 installation</li>
+                            <li>The locations where you extract the various software artifacts do not contain whitespaces in their path</li>
+                            <li>You have Eclipse Luna (version 4.4.0) installed</li>
+                        </ol>
+
+                    </section>
+                </section-->
+
+            </div>
+            <!-- end of main panel -->
+            <div class="col-md-3 scrollspy ">
+                <ul id="nav" class="nav affix-top " data-spy="affix">
+                    <li><a href="#intro ">Introduction</a>
+
+                    </li>
+                    <li><a href="#basicManagement">Basic Management APIs</a>
+                    </li>
+                    <li><a href="#serviceGovQuality">Service Governance and Quality Control</a>
+                    </li>
+                    <li><a href="#optimization">Optimization API</a>
+                    </li>
+                    <li><a href="#failurePrev">Failure Prevention and Revocery API</a></li>
+                </ul>
+            </div>
+            <!-- end of side panel -->
+        </div>
+        <!-- end of row -->
+    </div>
+    <!-- /.container -->
+
+    <section></section>
+    <footer class="text-center ">
+        <p>
+            <a href="index.html ">Broker@Cloud User Guides</a> &copy; 2015 <a href="http://www.broker-cloud.eu/ ">EU Project Broker@Cloud</a>
+        </p>
+    </footer>
+    <script src="bower_components/jquery/dist/jquery.min.js "></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js "></script>
+    <script src="bower_components/ekko-lightbox/dist/ekko-lightbox.min.js "></script>
+
+    <script src="js/index.js "></script>
+</body>
+
+</html>

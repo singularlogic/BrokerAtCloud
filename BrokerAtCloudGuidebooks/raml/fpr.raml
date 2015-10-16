@@ -1,0 +1,76 @@
+#%RAML 0.8
+title: Broker@Cloud Failure Prevetion and Recovery API
+baseUri: http://example.com
+documentation:
+ - title: Failure Prevetion and Recovery API
+   content: |
+     
+/fpr:
+  /recommendations:
+    /query:
+      get: 
+        description: |
+          Adaptation Info 
+          
+          The Adaptation Info API is used by consumers and providers to get recommendations of substitution of critical services with alternative services, in order to prevent impending failures or recover from occurred ones. The API broadcasts such recommendations as events through the pub/sub system API (see Section 5.2.3). Moreover, the API is used by consumers and providers to query the recommendations for a single service or set of services. The request consists of a set of services, and the response consists of a set of services to remove, a set of services to add, and the reason for the recommendation (see D30.3 for more detailed information about this API). 
+        queryParameters:
+          consumer:
+            description: Name of the Consumer
+            required: true
+          service: 
+            description: Name of the Service. Can be provided more than once.
+            example: sp:CASAddressApp
+            required: true
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {
+                    "add": [
+                      "sp:CASCalenderApp1",
+                      "sp:CASAddressApp1"
+                    ],
+                    "consumer": "Consumer1",
+                    "reason":["Long response time"],
+                    "remove": ["sp:CASCalenderApp1" ]
+                  }
+    /recommended:
+      get:
+        description: |
+          Recommendation history
+          
+          The recommendation history API is used by the optimisation mechanism PuLSaR to check if a service has been recommended to be removed within a specific timeframe. The request consists of a service and a timestamp, and the response consists of a set of consumer or provider names, who have been recommended to remove the service after the timestamp (see D30.3 for more detailed information about this API).
+        queryParameters:
+          service:
+            description: Service Name
+            example: sp:CASAddressApp
+          timestamp:
+            description: Timestamp
+            example: |
+              2015-05-01T00:00:00Z
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  {"recommended":["consumer1","consumer2"]}
+  /dc:
+      get:
+        description: |
+          Dependency checking
+          
+          The dependency checking API is used to complete a set of services based on their dependencies. The request consists of a set of services, and the response consists of another set of services, which need to be added to satisfy the dependencies. In other words, the union of the input and output services form a self-contained set, where no service in this set depends on any service outside this set (see D30.3 for more detailed information about this API).
+        queryParameters:
+          service: 
+            description: Name of the Service. Can be provided more than once.
+            example: sp:CASAddressApp
+            required: true
+        responses:
+          200:
+            body:
+              application/json:
+                example: |
+                  ["sp:CASAdressApp1","sp:CASAdressApp2”]
+              
+    

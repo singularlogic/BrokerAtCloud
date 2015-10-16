@@ -1,0 +1,32 @@
+#%RAML 0.8
+title: Events Monitoring API
+baseUri: http://example.com
+documentation:
+  - title: Events Monitoring API
+    content: Hey
+/subscriptions/monitoring/{eventName}/{clientId}:
+  uriParameters:
+    eventName:
+      description: Name of the event that client needs to subscribe to.
+    clientId:
+      description: An identifier of the client that is subscribing.
+  put:
+    description: Monitoring events subscription
+    queryParameters:
+      wsCallbackEndpoint:
+        description: A valid WS endpoint which will receive a POST request when new data arrive for the subscribed event. 
+    responses:
+      204:
+        description: No content.
+/topics/monitoring/{eventName}/{clientId}:
+  uriParameters:
+    eventName:
+      description: Name of the event that client needs to publish to.
+    clientId:
+      description: An identifier of the client that is publishing.
+  post:
+    description: Monitoring events Publication. The request payload is the content of the event to be published.
+    body:
+      text/plain:
+    responses:
+      200:

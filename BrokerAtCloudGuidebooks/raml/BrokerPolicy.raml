@@ -1,0 +1,26 @@
+#%RAML 0.8
+title: Broker Policy API
+baseUri: http://example.com
+documentation:
+  - title: My API
+    content: Hey
+/brokerPolicy/validate:
+  post:
+    description: Validate a Broker Policy.
+    body:
+      plain/text:
+    responses:
+      200:
+        body:
+          plain/text:
+        description: The validation outcome
+/brokerPolicy/upload:
+  post:
+    description: Submit a Broker Policy.
+    body:
+      plain/text:
+    responses:
+      200:
+        body:
+          plain/text:
+        description: The validation outcome.

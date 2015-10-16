@@ -1,0 +1,54 @@
+#%RAML 0.8
+title: Message Broker API
+baseUri: http://example.com
+documentation:
+  - title: My API
+    content: Hey
+/subscriptions/evaluation/{topicName}/{clientId}:
+  uriParameters:
+    topicName:
+      description: Name of the topic that client needs to subscribe to.
+    clientId:
+      description: An identifier of the client that is subscribing.
+  put:
+    description: Topic Subscription
+    queryParameters:
+      wsCallbackEndpoint:
+        description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+    responses:
+      204:
+/topics/evaluation/{topicName}/{clientId}:
+  uriParameters:
+    topicName:
+      description: Name of the topic that client needs to subscribe to.
+    clientId:
+      description: An identifier of the client that is subscribing.
+  post:
+    description: Topic Publication. The request payload is the content of the message to be published.
+    body:
+      text/plain:
+    responses:
+      200:
+/subscriptions/durable/{topicName}/{clientId}:
+  uriParameters:
+    topicName:
+      description: Name of the topic that client needs to subscribe to.
+    clientId:
+      description: An identifier of the client that is subscribing.
+  put:
+    description: Durable Topic Subscription
+    queryParameters:
+      wsCallbackEndpoint:
+        description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+    responses:
+      204:
+/subscriptions/durable/{topicName}/{clientId}/unsubscribe:
+  uriParameters:
+    topicName:
+      description: Name of the topic that client needs to subscribe to.
+    clientId:
+      description: An identifier of the client that is subscribing.
+  put:
+    description: Durable Topic unsubscription
+    responses:
+      204:

@@ -1,0 +1,54 @@
+#%RAML 0.8
+title: Service Description API
+baseUri: http://example.com
+documentation:
+  - title: Service Description API
+    content: Hey
+/getServiceDescription:
+  get:
+    description: Get servcie description by Service Instance URI
+    queryParameters:
+      serviceInstanceUri:
+        description: URI of Service Instance declared in Service Description in URL-encoded form.
+    responses:
+      200:
+        description: Content of the requested Service Description
+        body:
+          text/plain:
+/serviceDescription/validate:
+  post:
+    description: Validate a Service Description. The request payload contains the content of the Service Description resource.
+    body:
+      text/plain:
+    responses:
+      200:
+        description: The validation outcome.
+        body:
+          text/plain:
+/subscriptions/evaluation/SDReport/{clientId}:
+  uriParameters:
+      clientId:
+        description: An identifier of the client that is subscribing.
+  put:
+    description: Subscribe to Service Description Validation reports.
+    queryParameters:
+      wsCallbackEndpoint:
+        description: A valid WS endpoint which will receive a POST request with the validation report. 
+    responses:
+      204:
+        description: No content.
+/topics/evaluation/SD/{clientId}:
+  uriParameters:
+    clientId:
+      description: An identifier of the client that is submitting the SD.
+  post:
+    description: Submit a Service Description. The payload is the content of the Service Description that will be published.
+    body:
+      text/plain:
+    responses:
+      200:
+        description: "OK"
+      
+  
+        
+    

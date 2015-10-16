@@ -1,0 +1,79 @@
+#%RAML 0.8
+title: Broker@Cloud pub sub API
+baseUri: https://broker.cloud/pubsub
+documentation:
+ - title: Pub Sub API
+   content: |
+     This API is provided to other components (e.g., the SC-Facing component) to 
+     obtain the recommended service reconfigurations computed by the 
+     Failure Prevention and Recovery component.
+/topics:
+  description: all operations regarding topics are grouped here
+  get:
+    description: List all available topics
+    queryParameters:
+      filter:
+        type: string
+      index:
+        type: integer
+      limit: 
+        type: integer
+  /{path}:
+    uriParameters: 
+      path:
+        description: specifies a topic
+    put:
+      description: Creates a new topic specified by path.
+    /:
+      post:
+        description: |
+          Publishes a message on the topic specified by path. An identifier for the
+          new message is returned in the response.
+        body:
+          text/xml: !!null
+          application/json: !!null
+/queues/{path}/{queue_i}/{msg_id}:
+      uriParameters:
+        path:
+          description: specifies a topic
+        queue_i:
+          description: Queue for a subscriber to a topic.
+        msg_id:
+          description: identifies a specific message.
+      post:
+        description: |
+          Pulls a specific message published on queuei of the topic 
+          determined by path (note the use of POST instead of GET: 
+          the artifact is removed (pulled) rather than simply read – 
+          this is clearly an unsafe and non-idempotent operation 
+          that cannot be expressed in terms of an HTTP GET)
+/subscription/{path}:
+  uriParameters:
+    path:
+      description: specifies a topic
+  get:
+    description: List all subscribers to the topic determined by path.
+    queryParameters:
+      filter:
+        type: string
+      index:
+        type: integer
+      limit: 
+        type: integer     
+  /{subscriber_id}:
+    uriParameters:
+      subscriber_id:
+        type: integer
+        description: Identifies a subscriber.
+    put:
+      description: Creates a new subscriber to the topic determined by path.
+    delete:
+      description: Removes a subscriber from the topic determined by path.
+  /{queue_i}:
+    uriParameters:
+      queue_i:
+        description: a subscriber queue_i
+    post:
+      description: |
+        Creates a notification to the subscriber that consumes messages 
+        from the queuei of the topic determined by path.

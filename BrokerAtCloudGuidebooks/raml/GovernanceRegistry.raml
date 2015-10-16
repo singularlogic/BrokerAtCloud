@@ -1,0 +1,27 @@
+#%RAML 0.8
+title: Governance Registry API
+baseUri: http://Governance-Registry
+documentation:
+  - title: Governance Registry API
+    content: |
+      Governance Registry API
+/{resourcePath}:
+  uriParameters:
+    resourcePath:
+      description: Path of the resource that is adressed.
+  get:
+    description: Get the Content of a Resource
+    responses:
+      200:
+        body:
+          text/plain:
+  put:
+    description: Add or update a resource
+    responses:
+      204:
+        body:
+          application/x-www-form-urlencoded:
+  delete:
+    description: Delete a Resource.
+    responses:
+      204:

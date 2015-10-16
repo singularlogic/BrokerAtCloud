@@ -1,0 +1,683 @@
+#%RAML 0.8
+title: pulsar-webapp
+baseUri: http://example.com
+documentation:
+ - title: Broker@Cloud Optimization API
+   content: |
+     Broker@Cloud Optimization API
+/auth/menu: 
+  get: 
+    responses: 
+      200: 
+        body: 
+          text/html: 
+  post: 
+    responses: 
+      200: 
+        body: 
+          text/html: 
+/gui:
+  /admin:
+    description: These are the administration requests
+    /get-attribute/{attr_id}: 
+      uriParameters:
+        attr_id:
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      post: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /save-attribute: 
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /exportBrokerPolicy: 
+      get: 
+        responses: 
+          200: 
+            body: 
+              text/turtle;charset=utf-8: 
+    /get-all-attributes: 
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      post: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /category-attribute-mappings/{cat_id}: 
+      uriParameters:
+        cat_id:
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /create-attribute: 
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /delete-attribute/{attr_id}: 
+      uriParameters:
+        attr_id:
+      get: 
+        responses: 
+          200: 
+    /category-attribute-mappings/{id}: 
+      uriParameters: 
+        id:
+      delete: 
+        responses: 
+          200: 
+            body: 
+              text/plain: 
+    /importBrokerPolicy: 
+      post: 
+        body: 
+          multipart/form-data: 
+        responses: 
+          200: 
+  /consumer:
+    /profile-create: 
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /profile-data/{profile_id}: 
+      uriParameters:
+        profile_id:
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      post: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /profile-save: 
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /preference-attributes/category/{cat_id}/profile/{profile_id}: 
+      uriParameters:
+        cat_id:
+        profile_id:
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      post: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      /selected: 
+        get: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+        post: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+    /category-list: 
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      post: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /profile-list: 
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      post: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /preference-attributes/pairs/profile/{profile_id}: 
+      uriParameters:
+        profile_id:
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      post: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /profile-delete/{profile_id}: 
+      uriParameters:
+        profile_id:
+      get: 
+        responses: 
+          200: 
+    /preference-attributes/profile/{profile_id}/calculate-weights: 
+      uriParameters:
+        profile_id:
+      post: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /preference-attributes/profile/{profile_id}/preferences/save: 
+      uriParameters:
+        profile_id:
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /preference-attributes/profile/{profile_id}/save:
+      uriParameters:
+        profile_id: 
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+  /feedback:
+    /sd/{sd_id}: 
+      uriParameters:
+        sd_id:
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      delete: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /used-services-list: 
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+  /notifications:
+    /sd/{sd_id}/list: 
+      uriParameters:
+        sd_id:
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /list-services: 
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+  /recommendations:
+    /{recom_id}: 
+      uriParameters:
+        recom_id:
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /list: 
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /{profile_id}/list: 
+      uriParameters:
+        profile_id:
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /profile/{profileId}/make-permenent/{recomId}: 
+      uriParameters:
+        profileId:
+        recomId:
+      get: 
+        responses: 
+          200: 
+            body: 
+              text/html: 
+    /{profile_id}/request: 
+      uriParameters:
+        profile_id:
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /{item_id}/{response}: 
+      uriParameters:
+        item_id:
+        response:
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+/opt:
+  /attributes: 
+    description: Optimization Attribute Management API
+    displayName: Optimization Attribute Management API
+    get: 
+      description: |
+        Get a list of top-level optimization attributes
+      responses: 
+        200: 
+          body: 
+            application/json: 
+    /:
+      put:
+        description: Create a new optimisation attribute
+        body: 
+          application/json: 
+        responses: 
+          200: 
+    /{attr_id}: 
+      uriParameters:
+        attr_id:
+      get: 
+        description: |
+          Get attribute description (name, order, parent attribute, functional category, source etc)
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      delete: 
+        description: Delete an optimisation attribute 
+        responses: 
+          200: 
+      post: 
+        description: Update an optimisation attribute's description
+        body: 
+          application/json: 
+        responses: 
+          200: 
+      /subattributes: 
+        get: 
+          description: Get a list of the attribute´s  sub-attributes 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+    /all: 
+      get:
+        description: Create a new optimisation attribute
+        responses: 
+          200: 
+            body: 
+              application/json: 
+  /aux/offerings:
+    description: Auxiliary API
+    /{srv_id}:
+      uriParameters:
+        srv_id:
+          description: Id of a service URI.
+      get:
+        description: Retrieves service descriptions belonging to the given category
+        responses: 
+            200: 
+              body: 
+                application/json: 
+    /category/{cat_id}:
+      uriParameters:
+        cat_id: 
+          description: Id of category.
+      /services/{serv_id}:
+        uriParameters:
+          serv_id: 
+            description: Id of service URI.
+        get: 
+          description: Retrieves service descriptions belonging to the given category.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /specifications: 
+        get:
+          description: |
+            Retrieves service descriptions belonging to the given category.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+    /sp/{sp}/list: 
+      uriParameters:
+        sp: 
+          description: Id of service provider
+      get: 
+        description: Retrieves service descriptions belonging to the given category
+        responses: 
+          200: 
+            body: 
+              application/json: 
+  /feedback:
+    description: Consumer Feedback Management API
+    /sc/{sc_id}:
+      uriParameters:
+        sc_id: 
+          description: Id of service customer.
+      /list-used-services/period/{period}: 
+        uriParameters: 
+          period: 
+            type: integer
+            required: true
+        get: 
+          description: Retrieves service descriptions in use by the specified user.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /sd/{sd_id}: 
+        uriParameters:
+          sd_id: 
+            description: Id of the service.
+        get: 
+          description: Gets service consumer feedback for a specified service.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+        delete: 
+          description: Deletes service consumer feedback for a specific service. 
+          body: 
+            application/json: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+        post: 
+          description: Updates service consumer feedback for a specific service.
+          body: 
+            application/json: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+    /sd/{sd_id}:
+      uriParameters:
+        sd_id:
+          description: Id of the service description.
+      /notifications/period/{period}: 
+        uriParameters: 
+          period: 
+            type: integer
+            required: true
+        get: 
+          description: Retrieves feedback notifications for service
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /imprecise-attributes: 
+        get: 
+          description: Retrieves the given service description’s imprecise attributes (Fuzzy and Linguistic attributes).
+          responses: 
+            200: 
+              body: 
+                application/json: 
+  /notification:
+    description: Notifications API
+    /sd/{sdId}: 
+      uriParameters:
+        sdId:
+          description: Id of the service description.
+      get: 
+        description: Gets notifications list for the specified service description
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      /period/{period}/list: 
+        uriParameters:
+          period:
+        get: 
+          description: Get a list of notifications for the specified service description in the specified period.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+  /profile:
+    description: Consumer Preferences Management API
+    /sc/{sc_id}:
+      uriParameters:
+        sc_id:
+          description: service consumer.
+      /profile/{profile_id}:
+        uriParameters:
+          profile_id:
+            description: service consumer preference profile
+        get: 
+          description: Returns the service consumer preferences profile (e.g. name, order, notes etc).
+          responses: 
+            200: 
+              body: 
+                application/json: 
+        delete: 
+          description: Deletes a service consumer preferences profile.
+          responses: 
+            200: 
+        post: 
+          description: Updates a service consumer preferences profile.
+          body: 
+            application/json: 
+          responses: 
+            200: 
+      /profile/{profile_name}: 
+        uriParameters:
+          profile_name:
+            description: name of the service consumer profile.
+        put: 
+          description: Creates a new service consumer profile named as in profileName. Returns back profileid.
+          body: 
+            application/json: 
+          responses: 
+            200:      
+      /detailed-list: 
+        get: 
+          description: Get a list of all service consumer stored profiles along with their descriptions, preferences, weights etc.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /list: 
+        get: 
+          description: Get a list of stored profile id’s and names.
+          responses: 
+            200: 
+              body: 
+                application/json:            
+    /category/{cat_id}/profiles: 
+      uriParameters:
+        cat_id:
+          description: Classification dimension
+      get: 
+        description: Returns a list of service consumer preference profiles belonging to the specified classification dimension.
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /{profile_id}/criteria/weights: 
+      uriParameters:
+        profile_id:
+          description: profile
+      post: 
+        description: Stores a list of criteria weights in profile specified
+        body: 
+          application/json: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+  /recommendation:
+    description: Recommendations Management API
+    /{recom_id}: 
+      uriParameters:
+        recom_id:
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      put: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+      delete: 
+        responses: 
+          200: 
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+    /sc/{scId}/profile/{profileId}:
+      uriParameters:
+        scId:
+        profileId:
+      /period/{period_spec}/list: 
+        uriParameters:
+          period_spec:
+        get: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /request: 
+        get: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /clear-recommendations: 
+        post: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+    /item/{item_id}/{response}: 
+      uriParameters:
+        item_id:
+        response:
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+  /service-category:
+    description: Optimisation Attribute Mappings Management API
+    /list:
+      get:
+        description: Get a list of all service categories.
+        responses:
+          200:
+            body:
+              application/json:
+    /{cat_id}:
+      uriParameters:
+        cat_id:
+          description: Service category.
+      /attributes: 
+        get: 
+          description: Get a list of service category attributes for the specified service category.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /attributes-all: 
+        get: 
+          description: Get a list of service category attributes for the specified service category  as well as the attributes of its parent categories.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+    /attributes: 
+      put: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+      /{id}: 
+        uriParameters:
+          id:
+        get: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /{sca_id}:
+        uriParameters:
+          sca_id: 
+        delete: 
+          responses: 
+            200: 

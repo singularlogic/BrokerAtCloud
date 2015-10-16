@@ -1,0 +1,369 @@
+#%RAML 0.8
+title: Broker@Cloud Optimization API
+baseUri: http://example.com
+documentation:
+ - title: Broker@Cloud Optimization API
+   content: |
+     Broker@Cloud optimization component (called PuLSaR) enables service consumers to create preference profiles for service selection and based on them generate service recommendations matching each profile. It also collects feedback from service consumers and generates notifications to service providers about the opinion consumers regarding their services.
+/opt:
+  /attributes: 
+    description: Optimization Attribute Management API
+    displayName: Optimization Attribute Management API
+    get: 
+      description: |
+        Get a list of top-level optimization attributes
+      responses: 
+        200: 
+          body: 
+            application/json: 
+    /:
+      put:
+        description: Create a new optimisation attribute
+        body: 
+          application/json: 
+        responses: 
+          200: 
+    /{attr_id}: 
+      uriParameters:
+        attr_id:
+      get: 
+        description: |
+          Get attribute description (name, order, parent attribute, functional category, source etc)
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      delete: 
+        description: Delete an optimisation attribute 
+        responses: 
+          200: 
+      post: 
+        description: Update an optimisation attribute's description
+        body: 
+          application/json: 
+        responses: 
+          200: 
+      /subattributes: 
+        get: 
+          description: Get a list of the attribute´s  sub-attributes 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+    /all: 
+      get:
+        description: Create a new optimisation attribute
+        responses: 
+          200: 
+            body: 
+              application/json: 
+  /aux/offerings:
+    description: Auxiliary API
+    /{srv_id}:
+      uriParameters:
+        srv_id:
+          description: Id of a service URI.
+      get:
+        description: Retrieves service descriptions belonging to the given category
+        responses: 
+            200: 
+              body: 
+                application/json: 
+    /category/{cat_id}:
+      uriParameters:
+        cat_id: 
+          description: Id of category.
+      /services/{serv_id}:
+        uriParameters:
+          serv_id: 
+            description: Id of service URI.
+        get: 
+          description: Retrieves service descriptions belonging to the given category.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /specifications: 
+        get:
+          description: |
+            Retrieves service descriptions belonging to the given category.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+    /sp/{sp}/list: 
+      uriParameters:
+        sp: 
+          description: Id of service provider
+      get: 
+        description: Retrieves service descriptions belonging to the given category
+        responses: 
+          200: 
+            body: 
+              application/json: 
+  /feedback:
+    description: Consumer Feedback Management API
+    /sc/{sc_id}:
+      uriParameters:
+        sc_id: 
+          description: Id of service customer.
+      /list-used-services/period/{period}: 
+        uriParameters: 
+          period: 
+            type: integer
+            required: true
+        get: 
+          description: Retrieves service descriptions in use by the specified user.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /sd/{sd_id}: 
+        uriParameters:
+          sd_id: 
+            description: Id of the service.
+        get: 
+          description: Gets service consumer feedback for a specified service.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+        delete: 
+          description: Deletes service consumer feedback for a specific service. 
+          body: 
+            application/json: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+        post: 
+          description: Updates service consumer feedback for a specific service.
+          body: 
+            application/json: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+    /sd/{sd_id}:
+      uriParameters:
+        sd_id:
+          description: Id of the service description.
+      /notifications/period/{period}: 
+        uriParameters: 
+          period: 
+            type: integer
+            required: true
+        get: 
+          description: Retrieves feedback notifications for service
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /imprecise-attributes: 
+        get: 
+          description: Retrieves the given service description’s imprecise attributes (Fuzzy and Linguistic attributes).
+          responses: 
+            200: 
+              body: 
+                application/json: 
+  /notification:
+    description: Notifications API
+    /sd/{sdId}: 
+      uriParameters:
+        sdId:
+          description: Id of the service description.
+      get: 
+        description: Gets notifications list for the specified service description
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      /period/{period}/list: 
+        uriParameters:
+          period:
+        get: 
+          description: Get a list of notifications for the specified service description in the specified period.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+  /profile:
+    description: Consumer Preferences Management API
+    /sc/{sc_id}:
+      uriParameters:
+        sc_id:
+          description: service consumer.
+      /profile/{profile_id}:
+        uriParameters:
+          profile_id:
+            description: service consumer preference profile
+        get: 
+          description: Returns the service consumer preferences profile (e.g. name, order, notes etc).
+          responses: 
+            200: 
+              body: 
+                application/json: 
+        delete: 
+          description: Deletes a service consumer preferences profile.
+          responses: 
+            200: 
+        post: 
+          description: Updates a service consumer preferences profile.
+          body: 
+            application/json: 
+          responses: 
+            200: 
+      /profile/{profile_name}: 
+        uriParameters:
+          profile_name:
+            description: name of the service consumer profile.
+        put: 
+          description: Creates a new service consumer profile named as in profileName. Returns back profileid.
+          body: 
+            application/json: 
+          responses: 
+            200:      
+      /detailed-list: 
+        get: 
+          description: Get a list of all service consumer stored profiles along with their descriptions, preferences, weights etc.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /list: 
+        get: 
+          description: Get a list of stored profile id’s and names.
+          responses: 
+            200: 
+              body: 
+                application/json:            
+    /category/{cat_id}/profiles: 
+      uriParameters:
+        cat_id:
+          description: Classification dimension
+      get: 
+        description: Returns a list of service consumer preference profiles belonging to the specified classification dimension.
+        responses: 
+          200: 
+            body: 
+              application/json: 
+    /{profile_id}/criteria/weights: 
+      uriParameters:
+        profile_id:
+          description: profile
+      post: 
+        description: Stores a list of criteria weights in profile specified
+        body: 
+          application/json: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+  /recommendation:
+    description: Recommendations Management API
+    /{recom_id}: 
+      uriParameters:
+        recom_id:
+      get: 
+        responses: 
+          200: 
+            body: 
+              application/json: 
+      put: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+      delete: 
+        responses: 
+          200: 
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+    /sc/{scId}/profile/{profileId}:
+      uriParameters:
+        scId:
+        profileId:
+      /period/{period_spec}/list: 
+        uriParameters:
+          period_spec:
+        get: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /request: 
+        get: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /clear-recommendations: 
+        post: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+    /item/{item_id}/{response}: 
+      uriParameters:
+        item_id:
+        response:
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+  /service-category:
+    description: Optimisation Attribute Mappings Management API
+    /list:
+      get:
+        description: Get a list of all service categories.
+        responses:
+          200:
+            body:
+              application/json:
+    /{cat_id}:
+      uriParameters:
+        cat_id:
+          description: Service category.
+      /attributes: 
+        get: 
+          description: Get a list of service category attributes for the specified service category.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /attributes-all: 
+        get: 
+          description: Get a list of service category attributes for the specified service category  as well as the attributes of its parent categories.
+          responses: 
+            200: 
+              body: 
+                application/json: 
+    /attributes: 
+      put: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+      post: 
+        body: 
+          application/json: 
+        responses: 
+          200: 
+      /{id}: 
+        uriParameters:
+          id:
+        get: 
+          responses: 
+            200: 
+              body: 
+                application/json: 
+      /{sca_id}:
+        uriParameters:
+          sca_id: 
+        delete: 
+          responses: 
+            200: 
