@@ -1,0 +1,140 @@
+#%RAML 0.8
+title: Service Lifecycle Message Broker API
+baseUri: http://example.com
+documentation:
+  - title: Service Lifecycle Message Broker API
+    content: Hey
+/subscriptions:    
+  description: Topic Subscription Management
+  /evaluation/serviceOnboardedTopic/{clientId}:
+    description: Temporary Subscription
+    uriParameters:
+      clientId:
+        description: An identifier of the client that is subscribing.
+    put:
+      description: Topic Subscription Interfaces
+      queryParameters:
+        wsCallbackEndpoint:
+          description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+      responses:
+        204:
+  /durable/serviceOnboardedTopic/{clientId}:
+      description: Durable Subscription
+      uriParameters:
+        clientId:
+          description: An identifier of the client that is subscribing.
+      put:
+        description: Durable Topic Subscription
+        queryParameters:
+          wsCallbackEndpoint:
+            description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+        responses:
+          204:
+  /durable/serviceOnboardedTopic/{clientId}/unsubscribe:
+      description: Unsubscribe from Durable Subscription
+      uriParameters:
+        clientId:
+          description: An identifier of the client that is subscribing.
+      put:
+        description: Durable Topic unsubscription
+        responses:
+          204:
+  /evaluation/serviceUpdatedTopic/{clientId}:
+    description: Temporary Subscription
+    uriParameters:
+      clientId:
+        description: An identifier of the client that is subscribing.
+    put:
+      description: Topic Subscription Interfaces
+      queryParameters:
+        wsCallbackEndpoint:
+          description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+      responses:
+        204:
+  /durable/serviceUpdatedTopic/{clientId}:
+      description: Durable Subscription
+      uriParameters:
+        clientId:
+          description: An identifier of the client that is subscribing.
+      put:
+        description: Durable Topic Subscription
+        queryParameters:
+          wsCallbackEndpoint:
+            description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+        responses:
+          204:
+  /durable/serviceUpdatedTopic/{clientId}/unsubscribe:
+      description: Unsubscribe from Durable Subscription
+      uriParameters:
+        clientId:
+          description: An identifier of the client that is subscribing.
+      put:
+        description: Durable Topic unsubscription
+        responses:
+          204:
+  /evaluation/serviceDeprecatedTopic/{clientId}:
+    description: Temporary Subscription
+    uriParameters:
+      clientId:
+        description: An identifier of the client that is subscribing.
+    put:
+      description: Topic Subscription Interfaces
+      queryParameters:
+        wsCallbackEndpoint:
+          description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+      responses:
+        204:
+  /durable/serviceDeprecatedTopic/{clientId}:
+      description: Durable Subscription
+      uriParameters:
+        clientId:
+          description: An identifier of the client that is subscribing.
+      put:
+        description: Durable Topic Subscription
+        queryParameters:
+          wsCallbackEndpoint:
+            description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+        responses:
+          204:
+  /durable/serviceDeprecatedTopic/{clientId}/unsubscribe:
+      description: Unsubscribe from Durable Subscription
+      uriParameters:
+        clientId:
+          description: An identifier of the client that is subscribing.
+      put:
+        description: Durable Topic unsubscription
+        responses:
+          204:
+/topics/evaluation/serviceOnboardedTopic/{clientId}:
+  description: Publish to a Topic
+  uriParameters:
+    clientId:
+      description: An identifier of the client that is subscribing.
+  post:
+    description: Topic Publication. The request payload is the content of the message to be published.
+    body:
+      text/plain:
+    responses:
+      200:
+/topics/evaluation/serviceUpdatedTopic/{clientId}:
+  description: Publish to a Topic
+  uriParameters:
+    clientId:
+      description: An identifier of the client that is subscribing.
+  post:
+    description: Topic Publication. The request payload is the content of the message to be published.
+    body:
+      text/plain:
+    responses:
+      200:
+/topics/evaluation/serviceDeprecatedTopic/{clientId}:
+  description: Publish to a Topic
+  uriParameters:
+    clientId:
+      description: An identifier of the client that is subscribing.
+  post:
+    description: Topic Publication. The request payload is the content of the message to be published.
+    body:
+      text/plain:
+    responses:
+      200:

@@ -280,3 +280,20 @@ tr input {
     margin-right: px;
     border: 0px;
 }
+
+dd {
+    margin-left: 20px;
+    margin-bottom: 5px;
+    font-family: verdana;
+    font-size: 100%;
+}
+
+dt {
+    font-family: verdana;
+    font-size: 105%;
+}
+
+dl {
+    padding: 5px;
+    margin: 10px;
+}

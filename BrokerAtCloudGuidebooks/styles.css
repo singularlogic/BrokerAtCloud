@@ -79,3 +79,7 @@ p#bp {
 input {
     width: 100%;
 }
+
+dd {
+    padding-bottom: 5px;
+}

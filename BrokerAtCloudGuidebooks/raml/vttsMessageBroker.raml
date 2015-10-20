@@ -1,0 +1,146 @@
+#%RAML 0.8
+title: Functional Testing API
+baseUri: http://example.com
+documentation:
+  - title: Functional Testing API
+    content: The interfaces of the Functional Testing mechanism are based on the pub/sub system.
+/subscriptions:    
+  description: Topic Subscription Management
+  /evaluation/vttsValidationReport/{clientId}:
+    description: Temporary Subscription to VTTS Validation results.
+    uriParameters:
+      clientId:
+        description: An identifier of the client that is subscribing.
+    put:
+      description: Topic Subscription Interfaces
+      queryParameters:
+        wsCallbackEndpoint:
+          description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+      responses:
+        204:
+  /durable/vttsValidationReport/{clientId}:
+      description: Durable Subscription to VTTS Validation results.
+      uriParameters:
+        clientId:
+          description: An identifier of the client that is subscribing.
+      put:
+        description: Durable Topic Subscription
+        queryParameters:
+          wsCallbackEndpoint:
+            description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+        responses:
+          204:
+  /durable/vttsValidationReport/{clientId}/unsubscribe:
+      description: Unsubscribe from Durable Subscription to VTTS Validation results.
+      uriParameters:
+        clientId:
+          description: An identifier of the client that is subscribing.
+      put:
+        description: Durable Topic unsubscription
+        responses:
+          204:
+  /evaluation/vttsVerificationReport/{clientId}:
+    description: Temporary Subscription to VTTS Verification results.
+    uriParameters:
+      clientId:
+        description: An identifier of the client that is subscribing.
+    put:
+      description: Topic Subscription Interfaces
+      queryParameters:
+        wsCallbackEndpoint:
+          description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+      responses:
+        204:
+  /durable/vttsVerificationReport/{clientId}:
+      description: Durable Subscription to VTTS Verification results.
+      uriParameters:
+        clientId:
+          description: An identifier of the client that is subscribing.
+      put:
+        description: Durable Topic Subscription
+        queryParameters:
+          wsCallbackEndpoint:
+            description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+        responses:
+          204:
+  /durable/vttsVerificationReport/{clientId}/unsubscribe:
+      description: Unsubscribe from Durable Subscription to VTTS Verification results.
+      uriParameters:
+        clientId:
+          description: An identifier of the client that is subscribing.
+      put:
+        description: Durable Topic unsubscription
+        responses:
+          204:
+  /evaluation/vttsGenerationReport/{clientId}:
+    description: Temporary Subscription to VTTS Test Generation results.
+    uriParameters:
+      clientId:
+        description: An identifier of the client that is subscribing.
+    put:
+      description: Topic Subscription Interfaces
+      queryParameters:
+        wsCallbackEndpoint:
+          description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+      responses:
+        204:
+  /durable/vttsGenerationReport/{clientId}:
+      description: Durable Subscription to VTTS Test Generation results.
+      uriParameters:
+        clientId:
+          description: An identifier of the client that is subscribing.
+      put:
+        description: Durable Topic Subscription
+        queryParameters:
+          wsCallbackEndpoint:
+            description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
+        responses:
+          204:
+  /durable/vttsGenerationReport/{clientId}/unsubscribe:
+      description: Unsubscribe from Durable Subscription to VTTS Test Generation results.
+      uriParameters:
+        clientId:
+          description: An identifier of the client that is subscribing.
+      put:
+        description: Durable Topic unsubscription
+        responses:
+          204:
+/topics/evaluation/vttsValidation/{clientId}:
+  description: Request a VTTS Validation.
+  uriParameters:
+    clientId:
+      description: An identifier of the client that is subscribing.
+  post:
+    description: Send a VTTS Model to trigger a Validation
+    body:
+      application/xml:
+    responses:
+      200:
+        body:
+          application/xml:
+/topics/evaluation/vttsVerification/{clientId}:
+  description: Request a VTTS Verification.
+  uriParameters:
+    clientId:
+      description: An identifier of the client that is subscribing.
+  post:
+    description: Send a VTTS Model to trigger a Verification
+    body:
+      application/xml:
+    responses:
+      200:
+        body:
+          application/xml:
+/topics/evaluation/vttsGeneration/{clientId}:
+  description: Request a VTTS Test Generation.
+  uriParameters:
+    clientId:
+      description: An identifier of the client that is subscribing.
+  post:
+    description: Send a VTTS Model to trigger a Test Model generation
+    body:
+      application/xml:
+    responses:
+      200:
+        body:
+          application/xml:

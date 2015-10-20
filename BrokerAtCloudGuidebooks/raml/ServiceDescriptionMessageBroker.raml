@@ -6,11 +6,9 @@ documentation:
     content: Hey
 /subscriptions:    
   description: Topic Subscription Management
-  /evaluation/{topicName}/{clientId}:
-    description: Temporary Subscription
+  /evaluation/SDReport/{clientId}:
+    description: Temporary Subscription to Service Description Reports
     uriParameters:
-      topicName:
-        description: Name of the topic that client needs to subscribe to.
       clientId:
         description: An identifier of the client that is subscribing.
     put:
@@ -20,11 +18,9 @@ documentation:
           description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
       responses:
         204:
-  /durable/{topicName}/{clientId}:
-      description: Durable Subscription
+  /durable/SDReport/{clientId}:
+      description: Durable Subscription to Service Description Reports
       uriParameters:
-        topicName:
-          description: Name of the topic that client needs to subscribe to.
         clientId:
           description: An identifier of the client that is subscribing.
       put:
@@ -34,22 +30,18 @@ documentation:
             description: A valid WS endpoint which will receive a POST request when a new message arrives for the subscribed topic. 
         responses:
           204:
-  /durable/{topicName}/{clientId}/unsubscribe:
-      description: Unsubscribe from Durable Subscription
+  /durable/SDReport/{clientId}/unsubscribe:
+      description: Unsubscribe from Durable Subscription to Service Description Reports
       uriParameters:
-        topicName:
-          description: Name of the topic that client needs to subscribe to.
         clientId:
           description: An identifier of the client that is subscribing.
       put:
         description: Durable Topic unsubscription
         responses:
           204:
-/topics/evaluation/{topicName}/{clientId}:
-  description: Publish to a Topic
+/topics/evaluation/SD/{clientId}:
+  description: Publish Service Description
   uriParameters:
-    topicName:
-      description: Name of the topic that client needs to subscribe to.
     clientId:
       description: An identifier of the client that is subscribing.
   post:
