@@ -64,7 +64,7 @@
                                 <a class="btn btn-default" href="api-console-dist/GovernanceRegistry.html" target="_blank" role="button">Display Governance Registry API</a></p>
                         </div>
                     </section>
-                    <section id="basicDurableSubscriptions">
+                    <section id="pubsub">
                         <h2>Pub/Sub Mechanism</h2>
                         <p>A generic pub/sub system management API is provided to allow subscribers interest in a topic. In addition to this generic pub/sub system management API, a durable subscription API has also been defined which allows subscribers to retrieve messages published to the topics of the pub/sub system during periods in which they were offline. These messages are cached in the pub/sub system and delivered to the subscribers once they are online again. </p>
                         <div>
@@ -100,7 +100,7 @@
                             </dd>
                         </dl>
                     </section>
-                    <section id="qgcBPmgmt">
+                    <section id="bpMgmt">
                         <h2>Broker Policy Management</h2>
                         <p> Broker@Cloud provides dedicated interfaces to manage the submission and and the validation of Broker Policies. Existing Broker Policies can be retrieved using the <a href="#basic-genericCRUD">Generic Governance Registry</a>.</p>
                         <dl>
@@ -116,7 +116,7 @@
                             </dd>
                         </dl>
                     </section>
-                    <section id="gqcTesting">
+                    <section id="vtts">
                         <h2>Functional Testing Management</h2>
                         <p>The Broker@Cloud platform offers an API for service validation, verification and test generation. These three procedures have been implemented using the generic pub/sub system management API. As an example, for the service validation mechanism any interested party initially needs to subscribe to the <code>vttsValidationReport</code> topic in order to later receive the service validation report. Then, it publishes the service specification document to the <code>vttsValidation</code> topic. Upon validation completion, a relevant report is published on the <code>vttsValidationReport</code> topic. In an analogous manner, for the cases of service verification and test generation any interested party needs to use the <code>vttsVerificationReport</code>/<code>vttsVerification</code> and <code>vttsGenerationReport</code>/<code>vttsGeneration</code> topics respectively.</p>
                         <div>
@@ -124,7 +124,7 @@
                                 <a class="btn btn-default" href="api-console-dist/vttsMessageBroker.html" target="_blank" role="button">Display Functional Testing Management API</a></p>
                         </div>
                     </section>
-                    <section id="gqcMonitoring">
+                    <section id="monitoring">
                         <h2>Monitoring API</h2>
                         <p>Monitoring data are published to designated topics of the pub/sub system. In this respect, this API forms a special case of the generic pub/sub system management API. The only difference is that data are now transferred in the form of text messages instead of byte messages. This restriction is imposed by the integration of the WSO<sub>2</sub> pub/sub system with the WSO<sub>2</sub> CEP engine.</p>
                         <div>
@@ -132,7 +132,7 @@
                                 <a class="btn btn-default" href="api-console-dist/EventsMonitoring.html" target="_blank" role="button">Display Events Monitoring API</a></p>
                         </div>
                     </section>
-                    <section id="gqcSLM">
+                    <section id="slm">
                         <h2>Service Lifecycle Management</h2>
                         <p>The Service Lifecycle Management API utilises the generic pub/sub system management API. It supports emitting events about service onboarding, update and deprecation. In particular, whenever a service gets onboarded, a message containing the service instance URI declared in the corresponding SD document is published to the <code>serviceOnboarded</code> topic. Similarly, the service update and service deprecation events are emitted to the <code>serviceUpdated</code> and <code>serviceDeprecated</code> topics respectively.</p>
                         <div>
@@ -169,7 +169,7 @@
                     </dl>
 
                 </section>
-                <section id="failurePrev">
+                <section id="fpr">
                     <h1>Failure Prevention and Recovery APIs</h1>
                     <p>The API of the Failure Prevention and Recovery mechanism consists of three parts: Adaptation Information, Adaptation History and Dependency Checking.</p>
                     <dl>

@@ -1054,39 +1054,65 @@
                         <div class="tab-content">
                             <div role="tabpanel" class="tab-pane active" id="serviceTab_0">
                                 <div class="panel panel-default panel1col">
-
                                     <div class="panel-heading">
-                                        <h1> Specify your quantitative service levels</h1>
+                                        <h1>Specify your Service Level Profile</h1>
                                     </div>
                                     <div class="panel-body">
-                                        <div id="slQuantitative"></div>
+                                        <form class="form-horizontal">
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label" for="slpName">Name</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control" type="text" id="slpName" value="MyName">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label" for="slpNamespace">Namespace</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control" type="text" id="slpName" value="myNamespace">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-2 control-label" for="slpprefix">Prefix</label>
+                                                <div class="col-sm-9">
+                                                    <input class="form-control" type="text" id="slpName" value="slp1">
+                                                </div>
+                                            </div>
+                                        </form>
+                                        <div class="panel panel-default panel1col">
+
+                                            <div class="panel-heading">
+                                                <h1> Specify your quantitative service levels</h1>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div id="slQuantitative"></div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="panel panel-default panel1col">
+
+                                            <div class="panel-heading">
+                                                <h1>Specify your qualitative service levels </h1>
+                                            </div>
+                                            <div class="panel-body">
+                                                <h1>Overview Qualitative Service Level Schemas </h1>
+
+                                                <table class="table" style="width: 95%" id="qualserviceleveldetails">
+                                                    <tr>
+                                                        <th class='col-sm-3'>Service Level</th>
+                                                        <th class='col-sm-9'>Description</th>
+                                                    </tr>
+                                                </table>
+
+                                                <h1>Specify Qualitative values</h1>
+                                                <p id="qualvalues">
+
+                                                </p>
+
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
-
-                                <div class="panel panel-default panel1col">
-
-                                    <div class="panel-heading">
-                                        <h1>Specify your qualitative service levels </h1>
-                                    </div>
-                                    <div class="panel-body">
-                                        <h1>Overview Qualitative Service Level Schemas </h1>
-
-                                        <table class="table" style="width: 95%" id="qualserviceleveldetails">
-                                            <tr>
-                                                <th class='col-sm-3'>Service Level</th>
-                                                <th class='col-sm-9'>Description</th>
-                                            </tr>
-                                        </table>
-
-                                        <h1>Specify Qualitative values</h1>
-                                        <p id="qualvalues">
-
-                                        </p>
-
-                                    </div>
-                                </div>
-
                             </div>
                             <div role="tabpanel" class="tab-pane" id="serviceTab_1">
                                 <p>empty</p>
