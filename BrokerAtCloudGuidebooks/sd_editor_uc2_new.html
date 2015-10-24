@@ -226,7 +226,7 @@
         function addClassificationConceptsToSD(kb) {
             var class_table = document.getElementById("class_table");
             for (i = 0; i < class_table.rows.length; i++) {
-                kb.add("<" + document.getElementById("sd_model").value + "> usdl-core-cb:hasClassificationDimension " + "<" + class_table.rows[i].cells[2].innerHTML + "> .")
+                kb.add("sd:" + document.getElementById("sd_model").value + " usdl-core-cb:hasClassificationDimension " + "<" + class_table.rows[i].cells[2].innerHTML + "> .")
             }
             return kb;
         }
@@ -237,20 +237,20 @@
             for (i = 1; i < qual_sl_table.rows.length; i++) {
                 var qual_value_type = qual_sl_table.rows[i].cells[0].childNodes[0].value;
                 // SL instance
-                kb.add("<SL" + qual_value_type + "Instance> a " + "bp:SL" + qual_value_type + " .")
-                    .add("<" + document.getElementById("slp").value + "> bp:hasSL" + qual_value_type + " <SL" + qual_value_type + "Instance> .")
+                kb.add("sd:SL" + qual_value_type + "Instance a " + "bp:SL" + qual_value_type + " .")
+                    .add("sd:" + document.getElementById("slp").value + " bp:hasSL" + qual_value_type + " sd:SL" + qual_value_type + "Instance .")
 
                 // SLE instance
-                kb.add("<SLE" + qual_value_type + "Instance> a " + "bp:SLE" + qual_value_type + " .")
-                    .add("<SL" + qual_value_type + "Instance> bp:hasSLE" + qual_value_type + " <SLE" + qual_value_type + "Instance> .")
+                kb.add("sd:SLE" + qual_value_type + "Instance a " + "bp:SLE" + qual_value_type + " .")
+                    .add("sd:SL" + qual_value_type + "Instance bp:hasSLE" + qual_value_type + " sd:SLE" + qual_value_type + "Instance .")
 
                 // Var instance
-                kb.add("<Var" + qual_value_type + "Instance> a " + "bp:Var" + qual_value_type + " .")
-                    .add("<SLE" + qual_value_type + "Instance> bp:hasVar" + qual_value_type + " <Var" + qual_value_type + "Instance> .")
+                kb.add("sd:Var" + qual_value_type + "Instance a " + "bp:Var" + qual_value_type + " .")
+                    .add("sd:SLE" + qual_value_type + "Instance bp:hasVar" + qual_value_type + " sd:Var" + qual_value_type + "Instance .")
 
                 // bind var instance to the qual value instance
                 var ddlb = document.getElementById("ddlb_" + qual_value_type);
-                kb.add("<Var" + qual_value_type + "Instance>  " + "bp:hasDefault" + qual_value_type + " <" + ddlb.value + "> .");
+                kb.add("sd:Var" + qual_value_type + "Instance  " + "bp:hasDefault" + qual_value_type + " <" + ddlb.value + "> .");
 
             }
             return kb;
@@ -287,26 +287,26 @@
                 var instanceDescriptionNG = document.getElementById(idInstanceDesc).value;
 
                 // SL instance
-                kb.add("<SL" + quant_value_typeNG + "Instance> a " + "bp:SL" + quant_value_typeNG + " .");
-                kb.add("<" + document.getElementById("slp").value + "> bp:hasSL" + quant_value_typeNG + " <SL" + quant_value_typeNG + "Instance> .");
+                kb.add("sd:SL" + quant_value_typeNG + "Instance a " + "bp:SL" + quant_value_typeNG + " .");
+                kb.add("sd:" + document.getElementById("slp").value + " bp:hasSL" + quant_value_typeNG + " sd:SL" + quant_value_typeNG + "Instance .");
 
                 // SLE instance
-                kb.add("<SLE" + quant_value_typeNG + "Instance> a " + "bp:SLE" + quant_value_typeNG + " .");
-                kb.add("<SL" + quant_value_typeNG + "Instance> bp:hasSLE" + quant_value_typeNG + " <SLE" + quant_value_typeNG + "Instance> .");
+                kb.add("sd:SLE" + quant_value_typeNG + "Instance a " + "bp:SLE" + quant_value_typeNG + " .");
+                kb.add("sd:SL" + quant_value_typeNG + "Instance bp:hasSLE" + quant_value_typeNG + " sd:SLE" + quant_value_typeNG + "Instance .");
 
                 // Var instance
-                kb.add("<Var" + quant_value_typeNG + "Instance> a " + "bp:Var" + quant_value_typeNG + " .");
-                kb.add("<SLE" + quant_value_typeNG + "Instance> bp:hasVar" + quant_value_typeNG + " <Var" + quant_value_typeNG + "Instance> .");
+                kb.add("sd:Var" + quant_value_typeNG + "Instance a " + "bp:Var" + quant_value_typeNG + " .");
+                kb.add("sd:SLE" + quant_value_typeNG + "Instance bp:hasVar" + quant_value_typeNG + " sd:Var" + quant_value_typeNG + "Instance .");
 
 
                 // bind var instance to the quant value instance
-                kb.add("<" + quant_value_instNG + "> a bp:" + quant_value_typeNG + " .");
+                kb.add("sd:" + quant_value_instNG + " a bp:" + quant_value_typeNG + " .");
                 // id = prefix + _i_ + instanceDescription
-                kb.add("<" + quant_value_instNG + "> " + ' rdfs:label "' + instanceDescriptionNG + '"^^xsd:string .');
+                kb.add("sd:" + quant_value_instNG + " " + ' rdfs:label "' + instanceDescriptionNG + '"^^xsd:string .');
                 // id = prefix + _i_ + uom
-                kb.add("<" + quant_value_instNG + "> " + ' gr:hasUnitOfMeasurement "' + uomNG + '"^^xsd:string .')
-                kb.add("<" + quant_value_instNG + "> " + "gr:valueReference " + "bp:" + quant_value_typeNG + "ValueRange .")
-                kb.add("<Var" + quant_value_typeNG + "Instance>  " + "bp:hasDefault" + quant_value_typeNG + " <" + quant_value_instNG + "> .");
+                kb.add("sd:" + quant_value_instNG + " " + ' gr:hasUnitOfMeasurement "' + uomNG + '"^^xsd:string .')
+                kb.add("sd:" + quant_value_instNG + " " + "gr:valueReference " + "bp:" + quant_value_typeNG + "ValueRange .")
+                kb.add("sd:Var" + quant_value_typeNG + "Instance  " + "bp:hasDefault" + quant_value_typeNG + " sd:" + quant_value_instNG + " .");
 
                 // specify quant value instance  Here the parsing code has to be adapted!!!
 
@@ -316,13 +316,13 @@
                     if (valueTypeNG == "integer") {
                         // Int value subclass
                         // id = prefix + _i_ + 
-                        kb.add("<" + quant_value_instNG + "> " + ' gr:hasMinValueInteger "' + minValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
-                            .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueInteger "' + maxValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                        kb.add("sd:" + quant_value_instNG + " " + ' gr:hasMinValueInteger "' + minValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                            .add("sd:" + quant_value_instNG + " " + ' gr:hasMaxValueInteger "' + maxValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
                     } else {
                         // Float value subclass
 
-                        kb.add("<" + quant_value_instNG + "> " + ' gr:hasMinValueFloat "' + minValueNG + '"^^xsd:float .')
-                            .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueFloat "' + maxValueNG + '"^^xsd:float .')
+                        kb.add("sd:" + quant_value_instNG + " " + ' gr:hasMinValueFloat "' + minValueNG + '"^^xsd:float .')
+                            .add("sd:" + quant_value_instNG + " " + ' gr:hasMaxValueFloat "' + maxValueNG + '"^^xsd:float .')
 
                     }
                 } else {
@@ -330,17 +330,17 @@
                     if (valueTypeNG == "integer") {
                         // Int value subclass
 
-                        kb.add("<" + quant_value_instNG + "> " + ' gr:hasValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
-                            .add("<" + quant_value_instNG + "> " + ' gr:hasMinValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
-                            .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                        kb.add("sd:" + quant_value_instNG + " " + ' gr:hasValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                            .add("sd:" + quant_value_instNG + " " + ' gr:hasMinValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                            .add("sd:" + quant_value_instNG + " " + ' gr:hasMaxValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
 
 
                     } else {
                         // Float value subclass
 
-                        kb.add("<" + quant_value_instNG + "> " + ' gr:hasValueFloat "' + valueNG + '"^^xsd:float .')
-                            .add("<" + quant_value_instNG + "> " + ' gr:hasMinValueFloat "' + valueNG + '"^^xsd:float .')
-                            .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueFloat "' + valueNG + '"^^xsd:float .')
+                        kb.add("sd:" + quant_value_instNG + " " + ' gr:hasValueFloat "' + valueNG + '"^^xsd:float .')
+                            .add("sd:" + quant_value_instNG + " " + ' gr:hasMinValueFloat "' + valueNG + '"^^xsd:float .')
+                            .add("sd:" + quant_value_instNG + " " + ' gr:hasMaxValueFloat "' + valueNG + '"^^xsd:float .')
                     }
                 }
             }
@@ -970,10 +970,10 @@
         }
 
         function storeSD() {
-            //todo: ein / statt -
-            var sp_namespace = document.getElementById("sd_namespace").value + "/" + document.getElementById("sd").value + "/";
+            var sd_namespace = document.getElementById("sd_namespace").value;
+            var sp_namespace = document.getElementById("sp_namespace").value;
             var kb_sd = $.rdf()
-                .base(sp_namespace)
+                .base(sd_namespace)
                 .prefix('foaf', 'http://xmlns.com/foaf/0.1/')
                 .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
                 .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
@@ -994,27 +994,28 @@
                 .prefix('gr', 'http://purl.org/goodrelations/v1#')
                 .prefix('doap', 'http://usefulinc.com/ns/doap#')
                 .prefix('bp', document.kb.databank.baseURI)
-                .prefix('sd', sp_namespace + "#")
+                .prefix('sd', sd_namespace + "#")
+                .prefix('sp', sp_namespace + "#")
                 // Create the business entity of the service provider
-                .add("<" + document.getElementById("sp_business_entity").value + "> a gr:BusinessEntity .")
-                .add('<' + document.getElementById("sp_business_entity").value + '> gr:legalName ' + '"' + document.getElementById("sp_legal_name").value + '"' + ' .')
+                .add("sp:" + document.getElementById("sp_business_entity").value + " a gr:BusinessEntity .")
+                .add('sp:' + document.getElementById("sp_business_entity").value + ' gr:legalName ' + '"' + document.getElementById("sp_legal_name").value + '"' + ' .')
                 // Create the entity involvement instance and bind it to the service provider business entity
-                .add("<" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + "> a usdl-core:EntityInvolvement .")
-                .add("<" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + "> usdl-core:withBusinessRole usdl-business-roles:provider .")
-                .add("<" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + "> usdl-core:ofBusinessEntity <" + document.getElementById("sp_business_entity").value + "> .")
+                .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " a usdl-core:EntityInvolvement .")
+                .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:withBusinessRole usdl-business-roles:provider .")
+                .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:ofBusinessEntity sp:" + document.getElementById("sp_business_entity").value + " .")
                 // Create the service instance
-                .add("<" + document.getElementById("sd").value + "> a usdl-core:Service .")
-                .add("<" + document.getElementById("sd").value + "> dcterms:creator <" + document.getElementById("sp_business_entity").value + "> .")
-                .add("<" + document.getElementById("sd").value + '> dcterms:title ' + '"' + document.getElementById("sd_title").value + '"' + ' .')
-                .add("<" + document.getElementById("sd").value + '> dcterms:description ' + '"' + document.getElementById("sd_description").value + '"' + ' .')
-                .add("<" + document.getElementById("sd").value + "> usdl-core:hasEntityInvolvement <" + document.getElementById("sp_business_entity").value + "EntityInvolvement> .")
-                .add("<" + document.getElementById("sd").value + "> usdl-core-cb:hasServiceModel <" + document.getElementById("sd_model").value + "> .")
+                .add("sd:" + document.getElementById("sd").value + " a usdl-core:Service .")
+                .add("sd:" + document.getElementById("sd").value + " dcterms:creator sp:" + document.getElementById("sp_business_entity").value + " .")
+                .add("sd:" + document.getElementById("sd").value + ' dcterms:title ' + '"' + document.getElementById("sd_title").value + '"' + ' .')
+                .add("sd:" + document.getElementById("sd").value + ' dcterms:description ' + '"' + document.getElementById("sd_description").value + '"' + ' .')
+                .add("sd:" + document.getElementById("sd").value + " usdl-core:hasEntityInvolvement sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement .")
+                .add("sd:" + document.getElementById("sd").value + " usdl-core-cb:hasServiceModel sd:" + document.getElementById("sd_model").value + " .")
                 // Create the service model instance
-                .add("<" + document.getElementById("sd_model").value + "> a bp:" + document.getElementById("servicemodel_class").value + " .")
-                .add("<" + document.getElementById("sd_model").value + "> gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
+                .add("sd:" + document.getElementById("sd_model").value + " a bp:" + document.getElementById("servicemodel_class").value + " .")
+                .add("sd:" + document.getElementById("sd_model").value + " gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
                 // Create and assign a profile instance to the service model
-                .add("<" + document.getElementById("slp").value + "> a bp:" + document.getElementById("slp_class").value + " .")
-                .add("<" + document.getElementById("sd_model").value + "> bp:has" + document.getElementById("slp_class").value + " <" + document.getElementById("slp").value + "> .");
+                .add("sd:" + document.getElementById("slp").value + " a bp:" + document.getElementById("slp_class").value + " .")
+                .add("sd:" + document.getElementById("sd_model").value + " bp:has" + document.getElementById("slp_class").value + " sd:" + document.getElementById("slp").value + " .");
             // Add the chosen classification concepts to the service model
             kb_sd = addClassificationConceptsToSD(kb_sd);
             kb_sd = addQualServiceLevelsToSD(kb_sd);
@@ -1125,9 +1126,9 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label" for="sd_namespace">Service provider namespace</label>
+                                                <label class="col-sm-4 control-label" for="sp_namespace">Service provider namespace</label>
                                                 <div class="col-sm-8">
-                                                    <input class="form-control" type="text" id="sd_namespace" value="http://yournamespace.com">
+                                                    <input class="form-control" type="text" id="sp_namespace" value="http://yournamespace.com">
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -1140,6 +1141,12 @@
                                                 <label class="col-sm-4 control-label" for="sp_legal_name">Provider legal name</label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control" type="text" id="sp_legal_name" value="Your Company Legal Name">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="sd_namespace">Service namespace</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="sd_namespace" value="http://yournamespace.com/services/yourservicenamespace">
                                                 </div>
                                             </div>
                                             <div class="form-group">
