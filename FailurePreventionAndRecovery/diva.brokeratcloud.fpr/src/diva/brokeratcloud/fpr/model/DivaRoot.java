@@ -735,7 +735,12 @@ public class DivaRoot {
 				}
 			}
 		}
+<<<<<<< HEAD
+		
+		List<Dimension> notToRemove = new ArrayList<Dimension>();
+=======
 
+>>>>>>> e031d2bed4c5c5dc5af1b13113ac44b9ee97213f
 		List<Dimension> toRemove = new ArrayList<Dimension>();
 		for (Dimension dim : root.getDimension()) {
 			boolean remitted = false;
@@ -747,6 +752,38 @@ public class DivaRoot {
 						break;
 					}
 				}
+<<<<<<< HEAD
+			}
+			if(remitted) 
+				notToRemove.add(dim);
+		}
+		
+		for(Dimension dim : root.getDimension()){
+			for(Dimension dim2 : root.getDimension()){
+				boolean remitted = false;
+				for(Dimension dim3 : root.getDimension()){
+					if(notToRemove.contains(dim3)){
+						for(Variant v2 : dim3.getVariant()){
+							 
+							 try{
+								 if(v2.getDependency().getText().contains(dim2.getId()))
+										 remitted = true;
+							 }
+							 catch(Exception e){
+								 
+							 }
+							if(remitted)
+								break;
+						}
+					}
+				}
+				if(remitted)
+					notToRemove.add(dim2);
+			}
+		}
+		for(Dimension dim : root.getDimension()){
+			if(!notToRemove.contains(dim))
+=======
 				if (remitted)
 					break;
 				for (Dimension dim2 : root.getDimension()) {
@@ -763,6 +800,7 @@ public class DivaRoot {
 				}
 			}
 			if (!remitted)
+>>>>>>> e031d2bed4c5c5dc5af1b13113ac44b9ee97213f
 				toRemove.add(dim);
 		}
 
