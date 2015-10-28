@@ -18,33 +18,34 @@
 @prefix gr: <http://purl.org/goodrelations/v1#> . 
 @prefix doap: <http://usefulinc.com/ns/doap#> . 
 @prefix bp: <http://guide.broker-cloud.eu/esocc2015#> . 
-@prefix sd: <http://yournamespace.com/services/yourservicenamespace#> . 
-@prefix sp: <http://yournamespace.com#> . 
+@prefix sd: <http://sap.com/services/HCPServNS#> . 
+@prefix sp: <http://sap.com#> . 
 
-sp:YourCompanyAcronym 
+sp:SAP 
   a gr:BusinessEntity ; 
-  gr:legalName "Your Company Legal Name" . 
+  gr:legalName "SAP SE" . 
 
-sd:YourCompanyAcronymEntityInvolvement 
+sd:SAPEntityInvolvement 
   a usdl-core:EntityInvolvement ; 
   usdl-core:withBusinessRole usdl-business-roles:provider ; 
-  usdl-core:ofBusinessEntity sp:YourCompanyAcronym . 
+  usdl-core:ofBusinessEntity sp:SAP . 
 
-sd:YourServiceDescriptionAcronym 
+sd:MyFirstHCPService 
   a usdl-core:Service ; 
-  dcterms:creator sp:YourCompanyAcronym ; 
-  dcterms:title "YourServiceDescriptionTitle" ; 
-  dcterms:description "YourServiceDescription" ; 
-  usdl-core:hasEntityInvolvement sd:YourCompanyAcronymEntityInvolvement ; 
-  usdl-core-cb:hasServiceModel sd:YourServiceModelName . 
+  dcterms:creator sp:SAP ; 
+  dcterms:title "MyFirstHCPService Description Title" ; 
+  dcterms:description "MyFirstHCPService Description" ; 
+  usdl-core:hasEntityInvolvement sd:SAPEntityInvolvement ; 
+  usdl-core-cb:hasServiceModel sd:MyFirstHCPServiceModel . 
 
-sd:YourServiceModelName 
+sd:MyFirstHCPServiceModel 
   a bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
   gr:isVariantOf bp:BrokerAtCloudESOCC2015TutorialBrokerPolicy ; 
-  bp:hasBrokerAtCloudESOCC2015TutorialServiceLevelProfile sd:YourServiceLevelProfileTitle ; 
-  usdl-core-cb:hasClassificationDimension <http://www.broker-cloud.eu/service-descriptions/CAS/categories#rootConcept> . 
+  bp:hasBrokerAtCloudESOCC2015TutorialServiceLevelProfile sd:MyFirstHCPServiceLevelProfile ; 
+  usdl-core-cb:hasClassificationDimension <http://www.broker-cloud.eu/service-descriptions/CAS/categories#Shipment> , 
+    <http://www.broker-cloud.eu/service-descriptions/CAS/categories#BankAndCashManagement> . 
 
-sd:YourServiceLevelProfileTitle 
+sd:MyFirstHCPServiceLevelProfile 
   a bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
   bp:hasSLSecurityLevel sd:SLSecurityLevelInstance ; 
   bp:hasSLAuditability sd:SLAuditabilityInstance ; 
@@ -129,11 +130,11 @@ sd:SLEAmountOfVCPUsInstance
 
 sd:VarAmountOfVCPUsInstance 
   a bp:VarAmountOfVCPUs ; 
-  bp:hasDefaultAmountOfVCPUs sd:vcpu . 
+  bp:hasDefaultAmountOfVCPUs sd:VCPU . 
 
-sd:vcpu 
+sd:VCPU 
   a bp:AmountOfVCPUs ; 
-  rdfs:label ""^^xsd:string ; 
+  rdfs:label "dsdsdsd"^^xsd:string ; 
   gr:hasUnitOfMeasurement "core"^^xsd:string ; 
   gr:valueReference bp:AmountOfVCPUsValueRange ; 
   gr:hasMinValueInteger "1"^^xsd:integer ; 
@@ -149,11 +150,11 @@ sd:SLEAmountOfConcurrentInstancesInstance
 
 sd:VarAmountOfConcurrentInstancesInstance 
   a bp:VarAmountOfConcurrentInstances ; 
-  bp:hasDefaultAmountOfConcurrentInstances sd:ci . 
+  bp:hasDefaultAmountOfConcurrentInstances sd:ConcurrentInstances . 
 
-sd:ci 
+sd:ConcurrentInstances 
   a bp:AmountOfConcurrentInstances ; 
-  rdfs:label ""^^xsd:string ; 
+  rdfs:label "My concurrent working containers"^^xsd:string ; 
   gr:hasUnitOfMeasurement "VMinstance"^^xsd:string ; 
   gr:valueReference bp:AmountOfConcurrentInstancesValueRange ; 
   gr:hasValueInteger "1"^^xsd:integer ; 
@@ -170,15 +171,15 @@ sd:SLERAMInstance
 
 sd:VarRAMInstance 
   a bp:VarRAM ; 
-  bp:hasDefaultRAM sd:ram . 
+  bp:hasDefaultRAM sd:MainMemory . 
 
-sd:ram 
+sd:MainMemory 
   a bp:RAM ; 
-  rdfs:label ""^^xsd:string ; 
+  rdfs:label "My main memory reqs"^^xsd:string ; 
   gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
   gr:valueReference bp:RAMValueRange ; 
   gr:hasMinValueInteger "512"^^xsd:integer ; 
-  gr:hasMaxValueInteger "4096"^^xsd:integer . 
+  gr:hasMaxValueInteger "2048"^^xsd:integer . 
 
 sd:SLDiscInstance 
   a bp:SLDisc ; 
@@ -190,15 +191,15 @@ sd:SLEDiscInstance
 
 sd:VarDiscInstance 
   a bp:VarDisc ; 
-  bp:hasDefaultDisc sd:disc . 
+  bp:hasDefaultDisc sd:HardDisc . 
 
-sd:disc 
+sd:HardDisc 
   a bp:Disc ; 
-  rdfs:label ""^^xsd:string ; 
+  rdfs:label "Persistent memory reqs"^^xsd:string ; 
   gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
   gr:valueReference bp:DiscValueRange ; 
   gr:hasMinValueInteger "1"^^xsd:integer ; 
-  gr:hasMaxValueInteger "50"^^xsd:integer . 
+  gr:hasMaxValueInteger "10"^^xsd:integer . 
 
 sd:SLFloatingIPsInstance 
   a bp:SLFloatingIPs ; 
@@ -210,11 +211,11 @@ sd:SLEFloatingIPsInstance
 
 sd:VarFloatingIPsInstance 
   a bp:VarFloatingIPs ; 
-  bp:hasDefaultFloatingIPs sd:fip . 
+  bp:hasDefaultFloatingIPs sd:PubIP . 
 
-sd:fip 
+sd:PubIP 
   a bp:FloatingIPs ; 
-  rdfs:label ""^^xsd:string ; 
+  rdfs:label "One publicly accessible IP."^^xsd:string ; 
   gr:hasUnitOfMeasurement "IPaddress"^^xsd:string ; 
   gr:valueReference bp:FloatingIPsValueRange ; 
   gr:hasValueInteger "1"^^xsd:integer ; 
@@ -231,15 +232,15 @@ sd:SLEEphemeralDiscInstance
 
 sd:VarEphemeralDiscInstance 
   a bp:VarEphemeralDisc ; 
-  bp:hasDefaultEphemeralDisc sd:ed . 
+  bp:hasDefaultEphemeralDisc sd:VMdiscspace . 
 
-sd:ed 
+sd:VMdiscspace 
   a bp:EphemeralDisc ; 
-  rdfs:label ""^^xsd:string ; 
+  rdfs:label "VM hard disc"^^xsd:string ; 
   gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
   gr:valueReference bp:EphemeralDiscValueRange ; 
   gr:hasMinValueInteger "1"^^xsd:integer ; 
-  gr:hasMaxValueInteger "10"^^xsd:integer . 
+  gr:hasMaxValueInteger "2"^^xsd:integer . 
 
 sd:SLSwapDiscInstance 
   a bp:SLSwapDisc ; 
@@ -251,12 +252,12 @@ sd:SLESwapDiscInstance
 
 sd:VarSwapDiscInstance 
   a bp:VarSwapDisc ; 
-  bp:hasDefaultSwapDisc sd:sd . 
+  bp:hasDefaultSwapDisc sd:swap . 
 
-sd:sd 
+sd:swap 
   a bp:SwapDisc ; 
-  rdfs:label ""^^xsd:string ; 
+  rdfs:label "Swap disc memory"^^xsd:string ; 
   gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
   gr:valueReference bp:SwapDiscValueRange ; 
   gr:hasMinValueInteger "0"^^xsd:integer ; 
-  gr:hasMaxValueInteger "4096"^^xsd:integer . 
+  gr:hasMaxValueInteger "1024"^^xsd:integer . 

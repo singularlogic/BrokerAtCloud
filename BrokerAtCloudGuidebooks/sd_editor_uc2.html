@@ -226,7 +226,7 @@
         function addClassificationConceptsToSD(kb) {
             var class_table = document.getElementById("class_table");
             for (i = 0; i < class_table.rows.length; i++) {
-                kb.add("<" + document.getElementById("sd_model").value + "> usdl-core-cb:hasClassificationDimension " + "<" + class_table.rows[i].cells[2].innerHTML + "> .")
+                kb.add("sd:" + document.getElementById("sd_model").value + " usdl-core-cb:hasClassificationDimension " + "<" + class_table.rows[i].cells[2].innerHTML + "> .")
             }
             return kb;
         }
@@ -237,20 +237,20 @@
             for (i = 1; i < qual_sl_table.rows.length; i++) {
                 var qual_value_type = qual_sl_table.rows[i].cells[0].childNodes[0].value;
                 // SL instance
-                kb.add("<SL" + qual_value_type + "Instance> a " + "bp:SL" + qual_value_type + " .")
-                    .add("<" + document.getElementById("slp").value + "> bp:hasSL" + qual_value_type + " <SL" + qual_value_type + "Instance> .")
+                kb.add("sd:SL" + qual_value_type + "Instance a " + "bp:SL" + qual_value_type + " .")
+                    .add("sd:" + document.getElementById("slp").value + " bp:hasSL" + qual_value_type + " sd:SL" + qual_value_type + "Instance .")
 
                 // SLE instance
-                kb.add("<SLE" + qual_value_type + "Instance> a " + "bp:SLE" + qual_value_type + " .")
-                    .add("<SL" + qual_value_type + "Instance> bp:hasSLE" + qual_value_type + " <SLE" + qual_value_type + "Instance> .")
+                kb.add("sd:SLE" + qual_value_type + "Instance a " + "bp:SLE" + qual_value_type + " .")
+                    .add("sd:SL" + qual_value_type + "Instance bp:hasSLE" + qual_value_type + " sd:SLE" + qual_value_type + "Instance .")
 
                 // Var instance
-                kb.add("<Var" + qual_value_type + "Instance> a " + "bp:Var" + qual_value_type + " .")
-                    .add("<SLE" + qual_value_type + "Instance> bp:hasVar" + qual_value_type + " <Var" + qual_value_type + "Instance> .")
+                kb.add("sd:Var" + qual_value_type + "Instance a " + "bp:Var" + qual_value_type + " .")
+                    .add("sd:SLE" + qual_value_type + "Instance bp:hasVar" + qual_value_type + " sd:Var" + qual_value_type + "Instance .")
 
                 // bind var instance to the qual value instance
                 var ddlb = document.getElementById("ddlb_" + qual_value_type);
-                kb.add("<Var" + qual_value_type + "Instance>  " + "bp:hasDefault" + qual_value_type + " <" + ddlb.value + "> .");
+                kb.add("sd:Var" + qual_value_type + "Instance  " + "bp:hasDefault" + qual_value_type + " <" + ddlb.value + "> .");
 
             }
             return kb;
@@ -287,26 +287,26 @@
                 var instanceDescriptionNG = document.getElementById(idInstanceDesc).value;
 
                 // SL instance
-                kb.add("<SL" + quant_value_typeNG + "Instance> a " + "bp:SL" + quant_value_typeNG + " .");
-                kb.add("<" + document.getElementById("slp").value + "> bp:hasSL" + quant_value_typeNG + " <SL" + quant_value_typeNG + "Instance> .");
+                kb.add("sd:SL" + quant_value_typeNG + "Instance a " + "bp:SL" + quant_value_typeNG + " .");
+                kb.add("sd:" + document.getElementById("slp").value + " bp:hasSL" + quant_value_typeNG + " sd:SL" + quant_value_typeNG + "Instance .");
 
                 // SLE instance
-                kb.add("<SLE" + quant_value_typeNG + "Instance> a " + "bp:SLE" + quant_value_typeNG + " .");
-                kb.add("<SL" + quant_value_typeNG + "Instance> bp:hasSLE" + quant_value_typeNG + " <SLE" + quant_value_typeNG + "Instance> .");
+                kb.add("sd:SLE" + quant_value_typeNG + "Instance a " + "bp:SLE" + quant_value_typeNG + " .");
+                kb.add("sd:SL" + quant_value_typeNG + "Instance bp:hasSLE" + quant_value_typeNG + " sd:SLE" + quant_value_typeNG + "Instance .");
 
                 // Var instance
-                kb.add("<Var" + quant_value_typeNG + "Instance> a " + "bp:Var" + quant_value_typeNG + " .");
-                kb.add("<SLE" + quant_value_typeNG + "Instance> bp:hasVar" + quant_value_typeNG + " <Var" + quant_value_typeNG + "Instance> .");
+                kb.add("sd:Var" + quant_value_typeNG + "Instance a " + "bp:Var" + quant_value_typeNG + " .");
+                kb.add("sd:SLE" + quant_value_typeNG + "Instance bp:hasVar" + quant_value_typeNG + " sd:Var" + quant_value_typeNG + "Instance .");
 
 
                 // bind var instance to the quant value instance
-                kb.add("<" + quant_value_instNG + "> a bp:" + quant_value_typeNG + " .");
+                kb.add("sd:" + quant_value_instNG + " a bp:" + quant_value_typeNG + " .");
                 // id = prefix + _i_ + instanceDescription
-                kb.add("<" + quant_value_instNG + "> " + ' rdfs:label "' + instanceDescriptionNG + '"^^xsd:string .');
+                kb.add("sd:" + quant_value_instNG + " " + ' rdfs:label "' + instanceDescriptionNG + '"^^xsd:string .');
                 // id = prefix + _i_ + uom
-                kb.add("<" + quant_value_instNG + "> " + ' gr:hasUnitOfMeasurement "' + uomNG + '"^^xsd:string .')
-                kb.add("<" + quant_value_instNG + "> " + "gr:valueReference " + "bp:" + quant_value_typeNG + "ValueRange .")
-                kb.add("<Var" + quant_value_typeNG + "Instance>  " + "bp:hasDefault" + quant_value_typeNG + " <" + quant_value_instNG + "> .");
+                kb.add("sd:" + quant_value_instNG + " " + ' gr:hasUnitOfMeasurement "' + uomNG + '"^^xsd:string .')
+                kb.add("sd:" + quant_value_instNG + " " + "gr:valueReference " + "bp:" + quant_value_typeNG + "ValueRange .")
+                kb.add("sd:Var" + quant_value_typeNG + "Instance  " + "bp:hasDefault" + quant_value_typeNG + " sd:" + quant_value_instNG + " .");
 
                 // specify quant value instance  Here the parsing code has to be adapted!!!
 
@@ -316,13 +316,13 @@
                     if (valueTypeNG == "integer") {
                         // Int value subclass
                         // id = prefix + _i_ + 
-                        kb.add("<" + quant_value_instNG + "> " + ' gr:hasMinValueInteger "' + minValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
-                            .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueInteger "' + maxValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                        kb.add("sd:" + quant_value_instNG + " " + ' gr:hasMinValueInteger "' + minValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                            .add("sd:" + quant_value_instNG + " " + ' gr:hasMaxValueInteger "' + maxValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
                     } else {
                         // Float value subclass
 
-                        kb.add("<" + quant_value_instNG + "> " + ' gr:hasMinValueFloat "' + minValueNG + '"^^xsd:float .')
-                            .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueFloat "' + maxValueNG + '"^^xsd:float .')
+                        kb.add("sd:" + quant_value_instNG + " " + ' gr:hasMinValueFloat "' + minValueNG + '"^^xsd:float .')
+                            .add("sd:" + quant_value_instNG + " " + ' gr:hasMaxValueFloat "' + maxValueNG + '"^^xsd:float .')
 
                     }
                 } else {
@@ -330,17 +330,17 @@
                     if (valueTypeNG == "integer") {
                         // Int value subclass
 
-                        kb.add("<" + quant_value_instNG + "> " + ' gr:hasValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
-                            .add("<" + quant_value_instNG + "> " + ' gr:hasMinValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
-                            .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                        kb.add("sd:" + quant_value_instNG + " " + ' gr:hasValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                            .add("sd:" + quant_value_instNG + " " + ' gr:hasMinValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                            .add("sd:" + quant_value_instNG + " " + ' gr:hasMaxValueInteger "' + valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
 
 
                     } else {
                         // Float value subclass
 
-                        kb.add("<" + quant_value_instNG + "> " + ' gr:hasValueFloat "' + valueNG + '"^^xsd:float .')
-                            .add("<" + quant_value_instNG + "> " + ' gr:hasMinValueFloat "' + valueNG + '"^^xsd:float .')
-                            .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueFloat "' + valueNG + '"^^xsd:float .')
+                        kb.add("sd:" + quant_value_instNG + " " + ' gr:hasValueFloat "' + valueNG + '"^^xsd:float .')
+                            .add("sd:" + quant_value_instNG + " " + ' gr:hasMinValueFloat "' + valueNG + '"^^xsd:float .')
+                            .add("sd:" + quant_value_instNG + " " + ' gr:hasMaxValueFloat "' + valueNG + '"^^xsd:float .')
                     }
                 }
             }
@@ -414,29 +414,26 @@
 
             }
         }
-        function loadClassifications(kb){
- /*               var models = kb.where("?sdModel gr:isVariantOf bp:" + document.getElementById("bp_model").value)
-                .where("?sdModel usdl-core-cb:hasClassificationDimension ?classConcept")
-            .where("?sdModel bp:" + document.getElementById("slp_class").value + " ?classConcept");
+        function loadClassifications(kb, url_sdmodel){
+               var classifications = kb.where("<" + url_sdmodel + "> usdl-core-cb:hasClassificationDimension ?classification");
 
-            models.each(function () {
-                var selection_class = this["serviceModel"];
-                var selection_instance = this["brokerPolicy"];
-
-                var url_class = selection_class.value._string;
-                var url_instance = selection_instance.value._string;
-                base = url_class.split('#')[0];
-                document.getElementById("bp_namespace").value = base;
-                // Assign the service model class and instance to the business policy form
-                document.getElementById("sd_model").value = url_class.split('#')[1];
-                document.getElementById("bp_instance").value = url_instance.split('#')[1];
-                // Assign the service model class and instance to the service description form
-                document.getElementById("servicemodel_class").value = url_class.split('#')[1];
-                document.getElementById("servicemodel").value = url_instance.split('#')[1];
-
-            })
-   */         
+            classifications.each(function () {
+                var classification = this["classification"];
+                var url_classification = classification.value._string;
+                var table = document.getElementById("class_table");
+                var rowCount = table.rows.length;
+                var row = table.insertRow(rowCount);
+                var cell1 = row.insertCell(0);
+                cell1.innerHTML = "<div class='checkbox'><label><input type='checkbox' value=''></label></div>";
+                var cell2 = row.insertCell(1);
+                cell2.innerHTML = rowCount + 1;
+                var cell3 = row.insertCell(2);
+                var tax_class = document.getElementById("classtaxonomy").value;
+                cell3.innerHTML = url_classification;
+                
+            })         
         }
+        
         function findSDbase(kb){
             var base = kb.databank.baseURI
             var services = kb.where("?sd a usdl-core:Service")
@@ -450,20 +447,20 @@
 
                 var url_sd = selection_sd.value._string;
                 
-                base = url_sd.split('_')[0];
+                base = url_sd.split('#')[0];
                 document.getElementById("sd_namespace").value = base;
-                var url_title = selection_title.value._string;
-                var url_description = selection_description.value._string;
+                //var url_title = selection_title.value._string;
+                //var url_description = selection_description.value._string;
                 // Assign the service instance to the sd form
 
-                document.getElementById("sd").value = url_sd.split('/')[1];
-                document.getElementById("sd_title").value = url_sd.split('/')[1];
-                document.getElementById("sd_description").value = url_sd.split('/')[1];
+                document.getElementById("sd").value = url_sd.split('#')[1];
+                document.getElementById("sd_title").value = selection_title.value;
+                document.getElementById("sd_description").value = selection_description.value;
 
 
             })
-            var models = kb.where("?sdModel gr:isVariantOf bp:" + document.getElementById("bp_model").value)
-                .where("?sdModel bp:has" + document.getElementById("slp_class").value + " ?profile");
+            var models = kb.where("?sdModel a <" + document.getElementById("bp_namespace").value + "#" + document.getElementById("bp_model").value + ">")
+                .where(" ?sdModel <" + document.getElementById("bp_namespace").value + "#has" + document.getElementById("slp_class").value + "> ?profile");
 
             models.each(function () {
                 var selection_sdModel = this["sdModel"];
@@ -473,8 +470,9 @@
                 var url_profile = selection_profile.value._string;
 
                 // Assign the service model instance to the sd form
-                document.getElementById("sd_model").value = url_sdModel.split('/')[1];
-                document.getElementById("slp").value = url_profile.split('/')[1];
+                document.getElementById("sd_model").value = url_sdModel.split('#')[1];
+                document.getElementById("slp").value = url_profile.split('#')[1];
+                loadClassifications(kb, url_sdModel);
 
             })
 
@@ -487,14 +485,148 @@
                 var url_bizentity = bizentity.value._string;
 
                 // Assign the service model class and instance to the business policy form
-                document.getElementById("sp_business_entity").value = url_bizentity.split('/')[1];
+                document.getElementById("sp_namespace").value =url_bizentity.split('#')[0];
+                document.getElementById("sp_business_entity").value = url_bizentity.split('#')[1];
                 document.getElementById("sp_legal_name").value = legalname.value;
 
             })
 
             return base
         }
+        function loadQualSDSLs(kb){
+            var qual_sl_table = document.getElementById("qualserviceleveldetails");
+            for (i = 1; i < qual_sl_table.rows.length; i++) {
+                var qual_value_type = qual_sl_table.rows[i].cells[0].childNodes[0].value;        
+                var qual_value = kb.where("sd:Var" + qual_value_type + "Instance " + "bp:hasDefault" + qual_value_type + " ?qualvalue")
+                qual_value.each(function () {
+                    var qvalue = this["qualvalue"];
+                    var qvalue_url = qvalue.value._string; 
+                    var ddlb = document.getElementById("ddlb_" + qual_value_type);
+                    for (j=0; j < ddlb.options.length; j++){
+                        if (ddlb.options[j].value == qvalue_url){
+                            ddlb.options[j].selected = "selected";
+                        }
+                    }
+                })
+            }
+        }
         
+         function loadQuantSDSLs(kb){
+            var prefix = 'quantitativeValues_';
+            var quant_sl_table = document.getElementById("slvaluequant");
+            var quant_sl_size = document.getElementById("slQuantitative").children.length;
+            //for (i = 1; i < quant_sl_table.rows.length; i++) {
+            for (i = 1; i <= quant_sl_size; i++) {
+                var idType = prefix + i + '_type';
+                var idInstance = prefix + i + '_instance';
+                var idInstanceDesc = prefix + i + '_instanceDesc';
+                var idIsRange = prefix + i + '_isRange';
+                var idValueType = prefix + i + '_valueType';
+                var idMinValue = prefix + i + '_minValue';
+                var idMaxValue = prefix + i + '_maxValue';
+                var idValue = prefix + i + '_value';
+
+                var quant_value_typeNG = document.getElementById(idType).innerHTML;
+                
+                
+                var quant_value_instNG = document.getElementById(idInstance).value;
+
+                var isRangeNG = document.getElementById(idIsRange).checked;
+
+                var valueNG = undefined;
+                if (!isRangeNG) {
+                    valueNG = document.getElementById(idValue).value;
+                }
+                var valueTypeNG = document.getElementById(idValueType).value;
+
+                if (isRangeNG == true) {
+                    // int or float value range subclass
+                    // id = prefix + _i_ + valueType
+                    if (valueTypeNG == "integer") {
+                        // Int value range subclass
+                        // Query instance from the kb
+                        var quant_value = kb.where("?quantvalue" + " a bp:" + quant_value_typeNG)
+                        .where("?quantvalue" + " rdfs:label ?label")
+                        .where("?quantvalue" + " gr:hasMinValueInteger ?min")
+                        .where("?quantvalue" + " gr:hasMaxValueInteger ?max"); 
+
+                        quant_value.each(function () {
+                            var qvalue = this["quantvalue"];
+                            var qvalue_url = qvalue.value._string; 
+                            var desc = this["label"];
+                            var minval = this["min"];
+                            var maxval =this["max"];
+                            window.alert(qvalue_url);
+                            document.getElementById(idInstance).value = qvalue_url.split("#")[1];
+                            document.getElementById(idInstanceDesc).value = desc.value;
+                            document.getElementById(idMinValue).value = minval.value;
+                            document.getElementById(idMaxValue).value = maxval.value;
+                    
+                })
+                    } else {
+                        // Float value range subclass
+                       var quant_value = kb.where("?quantvalue" + " a bp:" + quant_value_typeNG)
+                        .where("?quantvalue" + " rdfs:label ?label")
+                        .where("?quantvalue" + " gr:hasMinValueFloat ?min")
+                        .where("?quantvalue" + " gr:hasMaxValueFloat ?max"); 
+
+                        quant_value.each(function () {
+                            var qvalue = this["quantvalue"];
+                            var qvalue_url = qvalue.value._string; 
+                            var desc = this["label"];
+                            var minval = this["min"];
+                            var maxval =this["max"];
+                            window.alert(qvalue_url);
+                            document.getElementById(idInstance).value = qvalue_url.split("#")[1];
+                            document.getElementById(idInstanceDesc).value = desc.value;
+                            document.getElementById(idMinValue).value = minval.value;
+                            document.getElementById(idMaxValue).value = maxval.value;
+                        })
+
+
+                    }
+                } else {
+                    // int or float value subclass
+                    if (valueTypeNG == "integer") {
+                        // Int value subclass
+                       var quant_value = kb.where("?quantvalue" + " a bp:" + quant_value_typeNG)
+                        .where("?quantvalue" + " rdfs:label ?label")
+                        .where("?quantvalue" + " gr:hasValueInteger ?val"); 
+
+                        quant_value.each(function () {
+                            var qvalue = this["quantvalue"];
+                            var qvalue_url = qvalue.value._string; 
+                            var desc = this["label"];
+                            var intval = this["val"];
+                            window.alert(qvalue_url);
+                            document.getElementById(idInstance).value = qvalue_url.split("#")[1];
+                            document.getElementById(idInstanceDesc).value = desc.value;
+                            document.getElementById(idValue).value = intval.value;
+                        })
+
+                    } else {
+                        // Float value subclass
+                      var quant_value = kb.where("?quantvalue" + " a bp:" + quant_value_typeNG)
+                        .where("?quantvalue" + " rdfs:label ?label")
+                        .where("?quantvalue" + " gr:hasValueFloat ?val"); 
+
+                        quant_value.each(function () {
+                            var qvalue = this["quantvalue"];
+                            var qvalue_url = qvalue.value._string; 
+                            var desc = this["label"];
+                            var floatval = this["val"];
+                            window.alert(qvalue_url);
+                            document.getElementById(idInstance).value = qvalue_url.split("#")[1];
+                            document.getElementById(idInstanceDesc).value = desc.value;
+                            document.getElementById(idValue).value = floatval.value;
+                        })
+
+                    }
+                }
+            }
+            
+
+        }
         function loadSD(event) {
             event.preventDefault();
             var dt = event.dataTransfer
@@ -526,18 +658,15 @@
                         .prefix('time', 'http://www.w3.org/2006/time#')
                         .prefix('gr', 'http://purl.org/goodrelations/v1#')
                         .prefix('doap', 'http://usefulinc.com/ns/doap#')
-                        .prefix('bp', document.getElementById(bp_namespace)+"#")
+                        .prefix('bp', document.getElementById("bp_namespace").value + "#")
                         .base(findSDbase(kbsd) + "#");
 
-                    kbsd.prefix('sd', document.kb.base());
-
-                    //loadClassificationTaxonomy(kbsd);
-
-                    //loadClassificationConcepts(kbsd);
+                    kbsd.prefix('sd', document.getElementById("sd_namespace").value + "#")
+                    .prefix('sp', document.getElementById("sp_namespace").value + "#");
+  
                     loadClassifications(kbsd);
-                    //loadQuantitativeSLs(kbsd);
-                    //loadQualitativeSLs(kbsd);
-
+                    loadQualSDSLs(kbsd);
+                    loadQuantSDSLs(kbsd);
 
                     document.kbsd = kbsd;
                 }
@@ -970,10 +1099,10 @@
         }
 
         function storeSD() {
-            //todo: ein / statt -
-            var sp_namespace = document.getElementById("sd_namespace").value + "/" + document.getElementById("sd").value + "/";
+            var sd_namespace = document.getElementById("sd_namespace").value;
+            var sp_namespace = document.getElementById("sp_namespace").value;
             var kb_sd = $.rdf()
-                .base(sp_namespace)
+                .base(sd_namespace)
                 .prefix('foaf', 'http://xmlns.com/foaf/0.1/')
                 .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
                 .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
@@ -994,27 +1123,28 @@
                 .prefix('gr', 'http://purl.org/goodrelations/v1#')
                 .prefix('doap', 'http://usefulinc.com/ns/doap#')
                 .prefix('bp', document.kb.databank.baseURI)
-                .prefix('sd', sp_namespace + "#")
+                .prefix('sd', sd_namespace + "#")
+                .prefix('sp', sp_namespace + "#")
                 // Create the business entity of the service provider
-                .add("<" + document.getElementById("sp_business_entity").value + "> a gr:BusinessEntity .")
-                .add('<' + document.getElementById("sp_business_entity").value + '> gr:legalName ' + '"' + document.getElementById("sp_legal_name").value + '"' + ' .')
+                .add("sp:" + document.getElementById("sp_business_entity").value + " a gr:BusinessEntity .")
+                .add('sp:' + document.getElementById("sp_business_entity").value + ' gr:legalName ' + '"' + document.getElementById("sp_legal_name").value + '"' + ' .')
                 // Create the entity involvement instance and bind it to the service provider business entity
-                .add("<" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + "> a usdl-core:EntityInvolvement .")
-                .add("<" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + "> usdl-core:withBusinessRole usdl-business-roles:provider .")
-                .add("<" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + "> usdl-core:ofBusinessEntity <" + document.getElementById("sp_business_entity").value + "> .")
+                .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " a usdl-core:EntityInvolvement .")
+                .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:withBusinessRole usdl-business-roles:provider .")
+                .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:ofBusinessEntity sp:" + document.getElementById("sp_business_entity").value + " .")
                 // Create the service instance
-                .add("<" + document.getElementById("sd").value + "> a usdl-core:Service .")
-                .add("<" + document.getElementById("sd").value + "> dcterms:creator <" + document.getElementById("sp_business_entity").value + "> .")
-                .add("<" + document.getElementById("sd").value + '> dcterms:title ' + '"' + document.getElementById("sd_title").value + '"' + ' .')
-                .add("<" + document.getElementById("sd").value + '> dcterms:description ' + '"' + document.getElementById("sd_description").value + '"' + ' .')
-                .add("<" + document.getElementById("sd").value + "> usdl-core:hasEntityInvolvement <" + document.getElementById("sp_business_entity").value + "EntityInvolvement> .")
-                .add("<" + document.getElementById("sd").value + "> usdl-core-cb:hasServiceModel <" + document.getElementById("sd_model").value + "> .")
+                .add("sd:" + document.getElementById("sd").value + " a usdl-core:Service .")
+                .add("sd:" + document.getElementById("sd").value + " dcterms:creator sp:" + document.getElementById("sp_business_entity").value + " .")
+                .add("sd:" + document.getElementById("sd").value + ' dcterms:title ' + '"' + document.getElementById("sd_title").value + '"' + ' .')
+                .add("sd:" + document.getElementById("sd").value + ' dcterms:description ' + '"' + document.getElementById("sd_description").value + '"' + ' .')
+                .add("sd:" + document.getElementById("sd").value + " usdl-core:hasEntityInvolvement sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement .")
+                .add("sd:" + document.getElementById("sd").value + " usdl-core-cb:hasServiceModel sd:" + document.getElementById("sd_model").value + " .")
                 // Create the service model instance
-                .add("<" + document.getElementById("sd_model").value + "> a bp:" + document.getElementById("servicemodel_class").value + " .")
-                .add("<" + document.getElementById("sd_model").value + "> gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
+                .add("sd:" + document.getElementById("sd_model").value + " a bp:" + document.getElementById("servicemodel_class").value + " .")
+                .add("sd:" + document.getElementById("sd_model").value + " gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
                 // Create and assign a profile instance to the service model
-                .add("<" + document.getElementById("slp").value + "> a bp:" + document.getElementById("slp_class").value + " .")
-                .add("<" + document.getElementById("sd_model").value + "> bp:has" + document.getElementById("slp_class").value + " <" + document.getElementById("slp").value + "> .");
+                .add("sd:" + document.getElementById("slp").value + " a bp:" + document.getElementById("slp_class").value + " .")
+                .add("sd:" + document.getElementById("sd_model").value + " bp:has" + document.getElementById("slp_class").value + " sd:" + document.getElementById("slp").value + " .");
             // Add the chosen classification concepts to the service model
             kb_sd = addClassificationConceptsToSD(kb_sd);
             kb_sd = addQualServiceLevelsToSD(kb_sd);
@@ -1125,9 +1255,9 @@
                                     <div class="panel-body">
                                         <form class="form-horizontal">
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label" for="sd_namespace">Service provider namespace</label>
+                                                <label class="col-sm-4 control-label" for="sp_namespace">Service provider namespace</label>
                                                 <div class="col-sm-8">
-                                                    <input class="form-control" type="text" id="sd_namespace" value="http://yournamespace.com">
+                                                    <input class="form-control" type="text" id="sp_namespace" value="http://yournamespace.com">
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -1140,6 +1270,12 @@
                                                 <label class="col-sm-4 control-label" for="sp_legal_name">Provider legal name</label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control" type="text" id="sp_legal_name" value="Your Company Legal Name">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="sd_namespace">Service namespace</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="sd_namespace" value="http://yournamespace.com/services/yourservicenamespace">
                                                 </div>
                                             </div>
                                             <div class="form-group">
