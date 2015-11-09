@@ -152,12 +152,15 @@
         function findBase(kb) {
             var base = kb.databank.baseURI
             var services = kb.where("?brokerPolicy a ?serviceModel")
-                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel");
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy usdl-core:validFrom ?validFrom")
+                .where("?brokerPolicy usdl-core:validThrough ?validThrough");
 
             services.each(function () {
                 var selection_class = this["serviceModel"];
                 var selection_instance = this["brokerPolicy"];
-
+                var validFrom = this["validFrom"];
+                var validThrough = this["validThrough"];
                 var url_class = selection_class.value._string;
                 var url_instance = selection_instance.value._string;
                 base = url_class.split('#')[0];
@@ -165,11 +168,17 @@
                 // Assign the service model class and instance to the business policy form
                 document.getElementById("bp_model").value = url_class.split('#')[1];
                 document.getElementById("bp_instance").value = url_instance.split('#')[1];
-                // Assign the service model class and instance to the service description form
-                document.getElementById("servicemodel_class").value = url_class.split('#')[1];
-                document.getElementById("servicemodel").value = url_instance.split('#')[1];
-
+                document.getElementById("valid_from").value = validFrom.value;
+                document.getElementById("valid_through").value = validThrough.value;
             })
+            var successor = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy gr:successorOf ?successor");
+            successor.each(function () {
+                var successor_of = this["successor"];
+                document.getElementById("successor_of_bp").value = successor_of.value._string;
+
+            })           
             var business_entity = kb.where("?bentity a gr:BusinessEntity")
                 .where("?bentity gr:legalName ?legalName")
             business_entity.each(function () {
@@ -404,7 +413,7 @@
 
                     createQuantitativeSLValuesTable(kb);
 
-                    //window.alert(kb.base());
+                    
                     document.kb = kb;
                 }
                 reader.readAsText(files[0]);
@@ -438,13 +447,16 @@
             var base = kb.databank.baseURI
             var services = kb.where("?sd a usdl-core:Service")
                 .where("?sd dcterms:title ?title")
-                .where("?sd dcterms:description ?description");
+                .where("?sd dcterms:description ?description")
+                .where("?sd usdl-core:validFrom ?validFrom")
+                .where("?sd usdl-core:validThrough ?validThrough");
 
             services.each(function () {
                 var selection_sd = this["sd"];
                 var selection_title = this["title"];
                 var selection_description = this["description"];
-
+                var validFrom = this["validFrom"];
+                var validThrough = this["validThrough"];
                 var url_sd = selection_sd.value._string;
                 
                 base = url_sd.split('#')[0];
@@ -456,7 +468,15 @@
                 document.getElementById("sd").value = url_sd.split('#')[1];
                 document.getElementById("sd_title").value = selection_title.value;
                 document.getElementById("sd_description").value = selection_description.value;
+                document.getElementById("valid_from_sd").value = validFrom.value;
+                document.getElementById("valid_through_sd").value = validThrough.value;
 
+            })
+            var successor = kb.where("?sd a usdl-core:Service")
+                .where("?brokerPolicy gr:successorOf ?successor");
+            successor.each(function () {
+                var successor_of = this["successor"];
+                document.getElementById("successor_of_sd").value = successor_of.value._string;
 
             })
             var models = kb.where("?sdModel a <" + document.getElementById("bp_namespace").value + "#" + document.getElementById("bp_model").value + ">")
@@ -556,7 +576,6 @@
                             var desc = this["label"];
                             var minval = this["min"];
                             var maxval =this["max"];
-                            window.alert(qvalue_url);
                             document.getElementById(idInstance).value = qvalue_url.split("#")[1];
                             document.getElementById(idInstanceDesc).value = desc.value;
                             document.getElementById(idMinValue).value = minval.value;
@@ -576,7 +595,6 @@
                             var desc = this["label"];
                             var minval = this["min"];
                             var maxval =this["max"];
-                            window.alert(qvalue_url);
                             document.getElementById(idInstance).value = qvalue_url.split("#")[1];
                             document.getElementById(idInstanceDesc).value = desc.value;
                             document.getElementById(idMinValue).value = minval.value;
@@ -598,7 +616,6 @@
                             var qvalue_url = qvalue.value._string; 
                             var desc = this["label"];
                             var intval = this["val"];
-                            window.alert(qvalue_url);
                             document.getElementById(idInstance).value = qvalue_url.split("#")[1];
                             document.getElementById(idInstanceDesc).value = desc.value;
                             document.getElementById(idValue).value = intval.value;
@@ -615,7 +632,6 @@
                             var qvalue_url = qvalue.value._string; 
                             var desc = this["label"];
                             var floatval = this["val"];
-                            window.alert(qvalue_url);
                             document.getElementById(idInstance).value = qvalue_url.split("#")[1];
                             document.getElementById(idInstanceDesc).value = desc.value;
                             document.getElementById(idValue).value = floatval.value;
@@ -1137,14 +1153,20 @@
                 .add("sd:" + document.getElementById("sd").value + " dcterms:creator sp:" + document.getElementById("sp_business_entity").value + " .")
                 .add("sd:" + document.getElementById("sd").value + ' dcterms:title ' + '"' + document.getElementById("sd_title").value + '"' + ' .')
                 .add("sd:" + document.getElementById("sd").value + ' dcterms:description ' + '"' + document.getElementById("sd_description").value + '"' + ' .')
+                .add("sd:" + document.getElementById("sd").value + ' usdl-core:validFrom ' + '"' + document.getElementById("valid_from_sd").value + '"^^xsd:date .')
+                .add("sd:" + document.getElementById("sd").value + ' usdl-core:validThrough ' + '"' + document.getElementById("valid_through_sd").value + '"^^xsd:date .')
                 .add("sd:" + document.getElementById("sd").value + " usdl-core:hasEntityInvolvement sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement .")
                 .add("sd:" + document.getElementById("sd").value + " usdl-core-cb:hasServiceModel sd:" + document.getElementById("sd_model").value + " .")
                 // Create the service model instance
-                .add("sd:" + document.getElementById("sd_model").value + " a bp:" + document.getElementById("servicemodel_class").value + " .")
-                .add("sd:" + document.getElementById("sd_model").value + " gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
+                .add("sd:" + document.getElementById("sd_model").value + " a bp:" + document.getElementById("bp_model").value + " .")
+                .add("sd:" + document.getElementById("sd_model").value + " gr:isVariantOf bp:" + document.getElementById("bp_instance").value + " .")
                 // Create and assign a profile instance to the service model
                 .add("sd:" + document.getElementById("slp").value + " a bp:" + document.getElementById("slp_class").value + " .")
                 .add("sd:" + document.getElementById("sd_model").value + " bp:has" + document.getElementById("slp_class").value + " sd:" + document.getElementById("slp").value + " .");
+                        // Create successor of
+            if (document.getElementById("successor_of_sd").value != "") {
+                kb_sd.add("sd:" + document.getElementById("sd").value + " gr:successorOf <" + document.getElementById("successor_of_sd").value + "> ."); 
+            }
             // Add the chosen classification concepts to the service model
             kb_sd = addClassificationConceptsToSD(kb_sd);
             kb_sd = addQualServiceLevelsToSD(kb_sd);
@@ -1237,6 +1259,24 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="successor_of_bp">Successor of</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="successor_of_bp" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="valid_from">Valid from</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="valid_from" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="valid_through">Valid through</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="valid_through" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
                                                 <label class="col-sm-4 control-label" for="slp_class">Service Level Profile Type</label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control" type="text" id="slp_class" placeholder="SomeServiceLevelProfile">
@@ -1300,6 +1340,24 @@
                                                 <label class="col-sm-4 control-label" for="sd_model">Service model name</label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control" type="text" id="sd_model" value="YourServiceModelName">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="successor_of_sd">Successor of</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="successor_of_sd" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="valid_from_sd">Valid from</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="valid_from_sd" value="YYYY-MM-DD">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="valid_through_sd">Valid through</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="valid_through_sd" value="YYYY-MM-DD">
                                                 </div>
                                             </div>
                                             <div class="form-group">
