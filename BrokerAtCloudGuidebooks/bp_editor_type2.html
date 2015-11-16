@@ -95,22 +95,9 @@
             document.getElementById("classtaxroot").disabled = true;
             document.getElementById("classtaxURI").disabled = true;
 
-
-            //no longer needed for bp-type2
-            //deactivateQualSLSchemaTable();
             deactivateClassTaxTable();
 
         }
-
-
-        /*function deactivateQualSLSchemaTable() {
-            var qual_sl_table = document.getElementById("qualserviceleveldetails");
-            for (i = 1; i < qual_sl_table.rows.length; i++) {
-
-                qual_sl_table.rows[i].cells[0].childNodes[0].disabled = true;
-                qual_sl_table.rows[i].cells[1].childNodes[0].disabled = true;
-            }
-        }*/
 
         function deactivateClassTaxTable() {
             var qual_sl_table = document.getElementById("classtaxconcepts");
@@ -130,9 +117,6 @@
             var base = kb.databank.baseURI
             var services = kb.where("?brokerPolicy a ?serviceModel")
                 .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel");
-            //TODO gibt auch die instanzen zurück, was ja eigentlich nicht sein soll....
-            //TODO gibt auch die instanzen zurück, was ja eigentlich nicht sein soll....
-            //TODO gibt auch die instanzen zurück, was ja eigentlich nicht sein soll....
             if (services[0]) {
                 //services.each(function () {
                 var selection_class = services[0].serviceModel; //this["serviceModel"];
@@ -173,10 +157,6 @@
             var rowCount = table.rows.length;
             var row = table.insertRow(rowCount);
             var cell1 = row.insertCell(0);
-            //var element1 = document.createElement("input");
-            //element1.type = "checkbox";
-            //element1.type = "chkbox[]";
-            //cell1.appendChild(element1);
             cell1.innerHTML = "<div class='checkbox'><label><input type='checkbox' value=''></label></div>";
             var cell2 = row.insertCell(1);
             cell2.innerHTML = rowCount + 1;
@@ -291,10 +271,8 @@
 
                 if (isRangeNG == true) {
                     // int or float value subclass
-                    // id = prefix + _i_ + valueType
                     if (valueTypeNG == "integer") {
                         // Int value subclass
-                        // id = prefix + _i_ + 
                         kb.add("<" + quant_value_instNG + "> " + ' gr:hasMinValueInteger "' + minValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
                             .add("<" + quant_value_instNG + "> " + ' gr:hasMaxValueInteger "' + maxValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
                     } else {
@@ -400,10 +378,6 @@
         }
 
         function setExistingQuantitativeValue(kb, slpValueInstance, numberType, prefix) {
-            //todo: klappt so nich nicht. Ich muss noch verschiedene Werte vorher identifizieren:
-            // - den service Level Profile Namen
-            // - den value Type namen (also VerySpecial  als instanz von Specialness) - wie man die Dinger ausliest, ist im sd_editor_uc1 umgesetzt....
-
             var quant_value = [];
             if (numberType == "integer") {
                 // Int value subclass
@@ -548,122 +522,6 @@
 
             });
         }
-
-        /*function loadQualValuesNG(kb, serviceLevel, description) {
-            //create table
-
-
-
-            var qvTable = document.createElement('table');
-            qvTable.setAttribute('id', 'table_' + serviceLevel);
-            qvTable.setAttribute('style', 'width: 90%');
-            var qvHeader = qvTable.insertRow();
-            [{
-                content: 'Value',
-                class: 'col-sm-3'
-            }, {
-                content: 'Description',
-                class: 'col-sm-9'
-            }].forEach(function (descriptor) {
-                var headerCell = document.createElement('th');
-                if (descriptor.content) headerCell.appendChild(document.createTextNode(descriptor.content));
-                if (descriptor.class) headerCell.setAttribute('class', descriptor.class);
-                qvHeader.appendChild(headerCell);
-            });
-
-
-            var selectbox = document.createElement("SELECT");
-            selectbox.setAttribute('id', 'ddlb_' + serviceLevel);
-            // fill table with data
-
-            var query = kb.where("?valinst a bp:" + serviceLevel + "");
-            var rowcounter = 0;
-            query.each(function () {
-                var qvRow = qvTable.insertRow();
-                var selection = this["valinst"];
-                var qv_url = selection.value._string;
-
-                var sl = document.createElement('input');
-                sl.setAttribute('type', 'text');
-                sl.setAttribute('value', qv_url.split("#")[1]);
-                sl.setAttribute('disabled', 'true');
-                qvRow.insertCell().appendChild(sl);
-
-                var cell4Value = '';
-                var label = kb.where("<" + qv_url + ">" + " rdfs:label ?label");
-                label.each(function () {
-                    cell4Value = this["label"].value;
-                });
-                var slDesc = document.createElement('input');
-                slDesc.setAttribute('type', 'text');
-                slDesc.setAttribute('value', cell4Value);
-                slDesc.setAttribute('disabled', 'true');
-                qvRow.insertCell().appendChild(slDesc);
-
-                var selectOption = document.createElement('option');
-                selectOption.setAttribute('value', qv_url);
-                selectOption.appendChild(document.createTextNode(qv_url.split("#")[1]));
-                selectbox.appendChild(selectOption);
-            })
-
-            var panel = document.createElement('div');
-            panel.className = 'panel panel-default';
-            var panelHeader = document.createElement('div');
-            panelHeader.className = 'panel-heading';
-
-            //var qvDiv = document.createElement("div");
-            var header = document.createElement('H2');
-            header.appendChild(document.createTextNode('Value set of ' + serviceLevel));
-            panelHeader.appendChild(header);
-
-            var panelBody = document.createElement('div');
-            panelBody.classNAme = 'panel-body';
-
-            var descriptionNode = document.createElement('p');
-            descriptionNode.appendChild(document.createTextNode(description));
-            panelBody.appendChild(descriptionNode);
-
-            panelBody.appendChild(qvTable);
-            panelBody.appendChild(selectbox);
-            panel.appendChild(panelHeader);
-            panel.appendChild(panelBody);
-            return panel;
-
-
-        }*/
-
-        /*function loadQualitativeSLSchemasNG(kb) {
-            var table = document.getElementById("qualserviceleveldetails");
-            var quant_sls = kb.where("?qvc rdfs:subClassOf gr:QualitativeValue");
-            quant_sls.each(function () {
-
-                var selection = this["qvc"];
-                var sls_url = selection.value._string;
-
-                var serviceLevel = sls_url.split("#")[1];
-                var serviceLevelDescription = '';
-                var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
-                label.each(function () {
-                    serviceLevelDescription = this["label"].value;
-                });
-
-                var rowCount = table.rows.length;
-                var row = table.insertRow(rowCount);
-                var cell3 = row.insertCell();
-                var serviceLevelInput = document.createElement("INPUT");
-                serviceLevelInput.setAttribute('type', 'text');
-                serviceLevelInput.setAttribute('value', serviceLevel);
-                cell3.appendChild(serviceLevelInput);
-                var cell4 = row.insertCell();
-                var serviceLevelDescriptionInput = document.createElement("INPUT");
-                serviceLevelDescriptionInput.setAttribute('type', 'text');
-                serviceLevelDescriptionInput.setAttribute('value', serviceLevelDescription);
-                cell4.appendChild(serviceLevelDescriptionInput);
-
-                var panel = loadQualValuesNG(kb, serviceLevel, serviceLevelDescription);
-                document.getElementById("qualvalues").appendChild(panel);
-            });
-        }*/
 
         var elementUtil = {
             createTextBox: function (title, content, id) {
@@ -825,12 +683,6 @@
             })
         }
 
-        function createServiceLevelProfileTemplate(prefix, data, kb) {
-            //kb is optional
-            //kdiv, role="tabpanel", class ="tab-pane" id=prefix+"Tab"
-
-        }
-
 
         function storeBPtype2() {
             var kb_bp = document.kb;
@@ -898,14 +750,6 @@
             panelBody.setAttribute('class', 'panel-body');
             // add form to enter SLP name
             panelBody.appendChild(function () {
-                /*<form class="form-horizontal">
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label" for="slpName">Name</label>
-                        <div class="col-sm-9">
-                                <input class="form-control col-sm-9" type="text" id="slpName" value="http://myServiceLevelProfile">
-        </div>
-        </div>
-        </form>*/
                 var form = document.createElement('form');
                 form.className = 'form-horizontal';
                 var formGroup = document.createElement('div');
@@ -1338,14 +1182,11 @@
                 kb.add("bp:" + name + "Model a bp:" + document.getElementById("bp_instance").value + " .")
 
 
-                // .add("bp:" + name + "Model gr:isVariantOf bp:" + document.getElementById("by_instance").value + " .")
                 // Create and assign a profile instance to the service model
                 .add("bp:" + name + " a bp:" + document.getElementById("slp_class").value + " .")
                     .add("bp:" + name + "Model bp:has" + document.getElementById("slp_class").value + " bp:" + name + " .");
 
                 currentSLP.qualitative.forEach(function (currentQualInstance) {
-                    //todo: store the qualitative value thingy
-                    //var qual_value_type = qual_sl_table.rows[i].cells[0].childNodes[0].value;
                     // SL instance
                     kb.add("bp:" + name + "SL" + currentQualInstance.type + "Instance a " + "bp:SL" + currentQualInstance.type + " .")
                         .add("bp:" + name + " bp:hasSL" + currentQualInstance.type + " bp:" + name + "SL" + currentQualInstance.type + "Instance .")
@@ -1363,7 +1204,6 @@
 
                 });
                 currentSLP.quantitative.forEach(function (currentQuantInstance) {
-                    //todo: store quantitative value thingy
                     // SL instance
                     kb.add("bp:" + name + "SL" + currentQuantInstance.quant_value_typeNG + "Instance a " + "bp:SL" + currentQuantInstance.quant_value_typeNG + " .");
                     //slp.value == name+"Model"
@@ -1427,12 +1267,7 @@
                 kb.add('bp:' + document.getElementById('bp_instance').value + ' bp:has' + document.getElementById('slp_class').value + ' bp:' + name);
             });
 
-
             return kb;
-            //ganz am schluss:
-            // sollte sich eigentlich von alleine Erledigen...
-            //var brokerPolicy = "broker policy from original";
-            //var serviceLevelProfileType = ".,..";
         }
     </script>
 </head>
@@ -1592,7 +1427,6 @@
 
                     <div class="bc-buttongroup">
                         <button class="btn btn-default" onclick="storeBPtype2()">Show the service description specification. </button>
-                        <button class="btn btn-default" onclick="getSLPsFromPanels(document.getElementById('SD_tab_content').children)">Experiment!</button>
                     </div>
                 </div>
             </div>
