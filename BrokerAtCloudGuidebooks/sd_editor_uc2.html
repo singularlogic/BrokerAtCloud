@@ -652,7 +652,7 @@
                 createTextInputBox('Service Level', '', prefix + '_instance', false, 2, 10)
             );
             form.appendChild(
-                createTextAreaBox('Service Level Description', '', prefix + '_instanceDesc', false, 2, 10)
+                createTextInputBox('Service Level Description', '', prefix + '_instanceDesc', false, 2, 10)
             );
             form.appendChild(
                 createTextInputBox('Unit of Measurement', qv.uom, prefix + '_uom', true, 2, 10)
@@ -874,8 +874,12 @@
                 .add("<" + document.getElementById("sd").value + '> dcterms:description ' + '"' + document.getElementById("sd_description").value + '"' + ' .')
                 .add("<" + document.getElementById("sd").value + "> usdl-core:hasEntityInvolvement <" + document.getElementById("sp_business_entity").value + "EntityInvolvement> .")
                 .add("<" + document.getElementById("sd").value + "> usdl-core-cb:hasServiceModel <" + document.getElementById("sd_model").value + "> .")
-                // Create the service model instance
-                .add("<" + document.getElementById("sd_model").value + "> a bp:" + document.getElementById("servicemodel_class").value + " .")
+
+            // Create the service model instance
+            .add("<" + document.getElementById("sd_model").value + "> a bp:" + document.getElementById("servicemodel_class").value + " .")
+                //*****************
+                // servicemodel is the identifier for 
+                //*****************
                 .add("<" + document.getElementById("sd_model").value + "> gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
                 // Create and assign a profile instance to the service model
                 .add("<" + document.getElementById("slp").value + "> a bp:" + document.getElementById("slp_class").value + " .")

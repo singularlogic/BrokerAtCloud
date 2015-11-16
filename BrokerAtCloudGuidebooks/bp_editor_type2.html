@@ -95,43 +95,22 @@
             document.getElementById("classtaxroot").disabled = true;
             document.getElementById("classtaxURI").disabled = true;
 
-            //deactivateQuantSLSchemaTable();
-            //document.getElementById("quant_sl_table_add").disabled = true;
-            //document.getElementById("quant_sl_table_delete").disabled = true;
-            deactivateQualSLSchemaTable();
-            //document.getElementById("qual_sl_table_add").disabled = true;
-            //document.getElementById("qual_sl_table_delete").disabled = true;
-            deactivateClassTaxTable();
-            //document.getElementById("classtax_table_add").disabled = true;
-            //document.getElementById("classtax_table_delete").disabled = true;
 
-            //document.getElementById("safe_schemas").disabled = true;
-            //document.getElementById("edit_schemas").disabled = false;
+            //no longer needed for bp-type2
+            //deactivateQualSLSchemaTable();
+            deactivateClassTaxTable();
+
         }
 
-        /*function deactivateQuantSLSchemaTable() {
-            var quant_sl_table = document.getElementById("quantserviceleveldetails");
-            for (i = 1; i < quant_sl_table.rows.length; i++) {
 
-                quant_sl_table.rows[i].cells[2].childNodes[0].disabled = true;
-                quant_sl_table.rows[i].cells[3].childNodes[0].disabled = true;
-                quant_sl_table.rows[i].cells[4].childNodes[0].disabled = true;
-                quant_sl_table.rows[i].cells[5].childNodes[0].disabled = true;
-                quant_sl_table.rows[i].cells[6].childNodes[0].disabled = true;
-                quant_sl_table.rows[i].cells[7].childNodes[0].disabled = true;
-                quant_sl_table.rows[i].cells[8].childNodes[0].disabled = true;
-                quant_sl_table.rows[i].cells[9].childNodes[0].disabled = true;
-            }
-        }*/
-
-        function deactivateQualSLSchemaTable() {
+        /*function deactivateQualSLSchemaTable() {
             var qual_sl_table = document.getElementById("qualserviceleveldetails");
             for (i = 1; i < qual_sl_table.rows.length; i++) {
 
                 qual_sl_table.rows[i].cells[0].childNodes[0].disabled = true;
                 qual_sl_table.rows[i].cells[1].childNodes[0].disabled = true;
             }
-        }
+        }*/
 
         function deactivateClassTaxTable() {
             var qual_sl_table = document.getElementById("classtaxconcepts");
@@ -151,10 +130,13 @@
             var base = kb.databank.baseURI
             var services = kb.where("?brokerPolicy a ?serviceModel")
                 .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel");
-
-            services.each(function () {
-                var selection_class = this["serviceModel"];
-                var selection_instance = this["brokerPolicy"];
+            //TODO gibt auch die instanzen zurück, was ja eigentlich nicht sein soll....
+            //TODO gibt auch die instanzen zurück, was ja eigentlich nicht sein soll....
+            //TODO gibt auch die instanzen zurück, was ja eigentlich nicht sein soll....
+            if (services[0]) {
+                //services.each(function () {
+                var selection_class = services[0].serviceModel; //this["serviceModel"];
+                var selection_instance = services[0].brokerPolicy; //this["brokerPolicy"];
 
                 var url_class = selection_class.value._string;
                 var url_instance = selection_instance.value._string;
@@ -164,8 +146,11 @@
                 document.getElementById("bp_model").value = url_class.split('#')[1];
                 document.getElementById("bp_instance").value = url_instance.split('#')[1];
                 // Assign the service model class and instance to the service description form
+                document.getElementById("servicemodel_class").value = url_class.split('#')[1];
+                document.getElementById("servicemodel").value = url_instance.split('#')[1];
 
-            })
+                //})
+            }
             var business_entity = kb.where("?bentity a gr:BusinessEntity")
                 .where("?bentity gr:legalName ?legalName")
             business_entity.each(function () {
@@ -389,17 +374,22 @@
                         document.getElementById("slp_class").value = url_slps.split('#')[1];
                     });
 
-                    //this is obsolete...
-                    //loadQuantitativeSLSchemas(kb);
 
-                    loadQualitativeSLSchemasNG(kb);
+                    //no longer needed for bp-type2
+                    //loadQualitativeSLSchemasNG(kb);
                     deactivateInputFields();
                     //Create quant values table
 
-                    createQuantitativeSLValuesTable(kb);
+                    //no longer needed for bp-type2
+                    //createQuantitativeSLValuesTable(kb);
 
                     //window.alert(kb.base());
                     document.kb = kb;
+                    document.slpDimensions = extractServiceLevelDimensions(kb);
+
+                    processExistingClassifications(kb);
+
+                    generateExistingSLPs(kb);
                 }
                 reader.readAsText(files[0]);
                 document.getElementById("bp").innerHTML = "Broker policy loaded!";
@@ -409,9 +399,157 @@
             }
         }
 
+        function setExistingQuantitativeValue(kb, slpValueInstance, numberType, prefix) {
+            //todo: klappt so nich nicht. Ich muss noch verschiedene Werte vorher identifizieren:
+            // - den service Level Profile Namen
+            // - den value Type namen (also VerySpecial  als instanz von Specialness) - wie man die Dinger ausliest, ist im sd_editor_uc1 umgesetzt....
+
+            var quant_value = [];
+            if (numberType == "integer") {
+                // Int value subclass
+                quant_value = kb.where("bp:" + slpValueInstance + " rdfs:label ?description")
+                    .where("bp:" + slpValueInstance + " gr:hasValueInteger ?val");
+            } else {
+                // Float value subclass
+                var quant_value = kb.where("bp:" + slpValueInstance + " rdfs:label ?description")
+                    .where("bp:" + slpValueInstance + " gr:hasValueFloat ?val");
+            }
+            quant_value.each(function () {
+                document.getElementById(prefix + '_value').value = this["val"].value;
+                document.getElementById(prefix + '_instanceDesc').value = this["description"].value;
+            });
+        }
+
+        function setExistingQuantitativeValueRange(kb, slpValueInstance, numberType, prefix) {
+            var quant_value = [];
+            if (numberType == "integer") {
+                // Int value range subclass
+                // Query instance from the kb
+                quant_value = kb.where("bp:" + slpValueInstance + " rdfs:label ?description")
+                    .where("bp:" + slpValueInstance + " gr:hasMinValueInteger ?min")
+                    .where("bp:" + slpValueInstance + " gr:hasMaxValueInteger ?max");
+            } else {
+                // Float value range subclass
+                quant_value = kb.where("bp:" + slpValueInstance + " rdfs:label ?description")
+                    .where("bp:" + slpValueInstance + " gr:hasMinValueFloat ?min")
+                    .where("bp:" + slpValueInstance + " gr:hasMaxValueFloat ?max");
+            }
+            quant_value.each(function () {
+                document.getElementById(prefix + '_minValue').value = this["min"].value;
+                document.getElementById(prefix + '_maxValue').value = this["max"].value;
+                document.getElementById(prefix + '_instanceDesc').value = this["description"].value;
+            });
+        }
+
+        function extractExistingSLPs(kb) {
+            var sl_properties = [];
+            document.kb.where("?prop rdfs:subPropertyOf usdl-sla:hasServiceLevel").each(function () {
+                sl_properties.push(this.prop.value._string);
+            });
+            var slpclasses = kb.where("?slp a ?slps")
+                .where("?slps rdfs:subClassOf usdl-sla:ServiceLevelProfile");
+            var slptResult = [];
+            //Service Level Profile Type
+            slpclasses.each(function () {
+                var sel = this["slps"];
+                var url_slps = sel.value._string;
+                var selection = this["slp"];
+                var url = selection.value._string;
+                var sl_properties_result = {}; //[];
+                sl_properties.forEach(function (prop) {
+                    var sl_result;
+                    var sel_value_instance;
+                    //var sel_label;
+                    var sl_url;
+                    var sl = document.kb.where("<" + url + ">" + " <" + prop + "> " + "?sl");
+                    sl.each(function () {
+                        var sel = this["sl"];
+                        sl_url = sel.value._string;
+                        // Find label of the value instance
+                        //var value_instance_result;
+                        var value_instance = document.kb.where("<" + sl_url + ">" + " ?sle_prop " + " ?sle")
+                            .where("?sle_prop rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression")
+                            .where("?sle ?var_prop ?var")
+                            .where("?var_prop rdfs:subPropertyOf usdl-sla:hasVariable")
+                            .where("?var ?value_prop ?value")
+                            .where("?value rdfs:label ?text");
+                        value_instance.each(function () {
+                            sel_value_instance = this["value"].value._string;
+                        });
+
+                    });
+                    sl_properties_result[prop.split("#hasSL")[1]] =
+                        //sl_properties_result.push({
+                        {
+                            prop: prop,
+                            sel_value_instance: sel_value_instance,
+                            sl_url: sl_url
+                        };
+                    //});
+                });
+                sl_properties_result.url_slps = url_slps;
+                sl_properties_result.url = url;
+
+                slptResult.push(
+                    sl_properties_result
+                );
+            });
+            return slptResult;
+        }
+
+        function generateExistingSLPs(kb) {
+            var slps = extractExistingSLPs(kb);
+            var slpCounter = 0;
+            slps.forEach(function (currentSLP) {
+                slpCounter++;
+                addSLPPanel();
+                var slpInstanceName = currentSLP.url.split('#')[1];
+                //set name of slp
+                document.getElementById('slpPanel_' + slpCounter + '_name').value = slpInstanceName;
+
+                //process quantitative values
+                var quantValuesPanels = document.getElementById('slpPanel_' + slpCounter + '_quant_values').children;
+                for (var i = 0; i < quantValuesPanels.length; i++) {
+                    var currentPanel = quantValuesPanels[i];
+                    var slpType = currentPanel.children[0].children[0].textContent;
+                    var quantValueInstanceName = currentSLP[slpType].sel_value_instance.split('#' + slpInstanceName)[1];
+                    document.getElementById('slpPanel_' + slpCounter + '_' + slpType + '_instance').value = quantValueInstanceName;
+                    var valueType = document.getElementById('slpPanel_' + slpCounter + '_' + slpType + '_valueType').value;
+                    var isRange = document.getElementById('slpPanel_' + slpCounter + '_' + slpType + '_isRange').checked;
+                    if (isRange) {
+                        setExistingQuantitativeValueRange(kb, currentSLP[slpType].sel_value_instance.split('#')[1], valueType, 'slpPanel_' + slpCounter + '_' + slpType);
+                    } else {
+                        setExistingQuantitativeValue(kb, currentSLP[slpType].sel_value_instance.split('#')[1], valueType, 'slpPanel_' + slpCounter + '_' + slpType);
+                    }
+                }
+                //process qualitative values
+                //get quantv panel; get type; search type in SLP; set value
+                var qualValuesPanels = document.getElementById('slpPanel_' + slpCounter + '_qual_values').children;
+                for (var i = 0; i < qualValuesPanels.length; i++) {
+                    var currentPanel = qualValuesPanels[i];
+                    var slpType = currentPanel.children[0].children[0].textContent;
+                    document.getElementById('slpPanel_' + slpCounter + '_selectbox_' + slpType).value = currentSLP[slpType].sel_value_instance.split('#')[1];
+                }
+            });
+        }
 
 
-        function loadQualValuesNG(kb, serviceLevel, description) {
+        function processExistingClassifications(kb) {
+            var classconcepts = kb.where("?concept a usdl-core-cb:ClassificationDimension");
+
+            classconcepts.each(function () {
+                var selection = this["concept"];
+                var url = selection.value._string;
+                var selectelement = document.getElementById("classtaxonomy");
+                var concept = document.createElement("option");
+                concept.value = url;
+                concept.text = url.split('#')[1];
+                selectelement.add(concept, null);
+
+            });
+        }
+
+        /*function loadQualValuesNG(kb, serviceLevel, description) {
             //create table
 
 
@@ -492,9 +630,9 @@
             return panel;
 
 
-        }
+        }*/
 
-        function loadQualitativeSLSchemasNG(kb) {
+        /*function loadQualitativeSLSchemasNG(kb) {
             var table = document.getElementById("qualserviceleveldetails");
             var quant_sls = kb.where("?qvc rdfs:subClassOf gr:QualitativeValue");
             quant_sls.each(function () {
@@ -525,12 +663,10 @@
                 var panel = loadQualValuesNG(kb, serviceLevel, serviceLevelDescription);
                 document.getElementById("qualvalues").appendChild(panel);
             });
-        }
+        }*/
 
-
-
-        function createQuantitativeValueForm(qv, prefix) {
-            var createTextBox = function (title, content, id) {
+        var elementUtil = {
+            createTextBox: function (title, content, id) {
                 var div = document.createElement('div');
                 div.setAttribute('class', 'form-group');
                 div.appendChild(function () {
@@ -547,9 +683,9 @@
                     return input;
                 });
                 return div;
-            };
+            },
 
-            var createTextInputBox = function (title, content, id, readonly, descriptorSize, contentSize) {
+            createTextInputBox: function (title, content, id, readonly, descriptorSize, contentSize) {
                 var div = document.createElement('div');
                 div.setAttribute('class', 'form-group');
                 div.appendChild(function () {
@@ -574,8 +710,8 @@
                     return innerDiv;
                 }());
                 return div;
-            };
-            var createTextAreaBox = function (title, content, id, readonly, descriptorSize, contentSize) {
+            },
+            createTextAreaBox: function (title, content, id, readonly, descriptorSize, contentSize) {
                 var div = document.createElement('div');
                 div.setAttribute('class', 'form-group');
                 div.appendChild(function () {
@@ -600,8 +736,8 @@
                     return innerDiv;
                 }());
                 return div;
-            };
-            var createCheckBox = function (title, check, id, descriptorSize, contentSize) {
+            },
+            createCheckBox: function (title, check, id, descriptorSize, contentSize) {
                 var div = document.createElement('div');
                 div.setAttribute('class', 'checkbox');
                 div.appendChild(function () {
@@ -621,166 +757,7 @@
                 outerDiv.className = 'col-sm-offset-' + descriptorSize + ' col-sm-' + contentSize;
                 outerDiv.appendChild(div);
                 return outerDiv;
-            };
-
-            var panel = document.createElement('div');
-            panel.className = "panel panel-default panel2col";
-            panel.appendChild(function () {
-                var panelHeading = document.createElement('div');
-                panelHeading.className = 'panel-heading';
-                panelHeading.appendChild(function () {
-                    var header = document.createElement('h2');
-                    header.appendChild(document.createTextNode(qv.type));
-                    header.id = prefix + '_type';
-                    return header;
-                }());
-                return panelHeading;
-            }());
-
-            var form = document.createElement('form');
-            form.setAttribute('class', 'form-horizontal');
-            form.setAttribute('id', prefix + 'form');
-            form.appendChild(function () {
-                var paragraph = document.createElement('p');
-                paragraph.appendChild(document.createTextNode(qv.description));
-                return paragraph;
-            }());
-            form.appendChild(
-                createTextInputBox('Service Level', '', prefix + '_instance', false, 2, 10)
-            );
-            form.appendChild(
-                createTextAreaBox('Service Level Description', '', prefix + '_instanceDesc', false, 2, 10)
-            );
-            form.appendChild(
-                createTextInputBox('Unit of Measurement', qv.uom, prefix + '_uom', true, 2, 10)
-            );
-            form.appendChild(
-                createTextInputBox('Value type', qv.valueType, prefix + '_valueType', true, 2, 10)
-            );
-            if (!qv.isRange) {
-                form.appendChild(
-                    createTextInputBox('Min Value', qv.minValue, prefix + '_minValue', true, 2, 10)
-                );
-                form.appendChild(
-                    createTextInputBox('Value', '', prefix + '_value', false, 2, 10)
-                );
-                form.appendChild(
-                    createTextInputBox('Max Value', qv.maxValue, prefix + '_maxValue', true, 2, 10)
-                );
-            } else {
-                form.appendChild(
-                    createTextInputBox('Min Value', qv.minValue, prefix + '_minValue', false, 2, 10)
-                );
-                form.appendChild(
-                    createTextInputBox('Max Value', qv.maxValue, prefix + '_maxValue', false, 2, 10)
-                );
             }
-            form.appendChild(createCheckBox('Is Range', qv.isRange, prefix + '_isRange', 2, 4));
-            form.appendChild(createCheckBox('Higher is Better', qv.higherIsBetter, prefix + '_higherIsBetter', 2, 4));
-
-
-
-            panel.appendChild(function () {
-                var panelBody = document.createElement('div');
-                panelBody.className = 'panel-body';
-                panelBody.appendChild(form);
-                return panelBody;
-            }());
-            return panel;
-        }
-
-        function getQuantitativeServiceLevels(kb) {
-            var qslArray = [];
-            var quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueInteger");
-            quant_sls.each(function () {
-                qslArray[qslArray.length] = getQuantitativeServiceLevelValue(this["qvc"], kb, "integer");
-            });
-            quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueFloat");
-            quant_sls.each(function () {
-                qslArray[qslArray.length] = getQuantitativeServiceLevelValue(this["qvc"], kb, "float");
-            });
-        }
-
-        function getQuantitativeServiceLevelValue(selection, kb, valueType) {
-            var qv
-        }
-
-        function createQuantitativeValueEntry(selection, kb, i, prefix, valueType) {
-            var idType = prefix + i + '_type'; // 2
-            var idInstance = prefix + i + '_instance'; // 4
-            var idInstanceDesc = prefix + i + '_instanceDesc'; // 5
-            var idUom = prefix + i + '_uom'; // 6
-            var idIsRange = prefix + i + 'i_sRange'; // 11
-            var idValueType = prefix + i + '_valueType'; // 7
-            var idMinValue = prefix + i + '_minValue'; // 8
-            var idMaxValue = prefix + i + '_maxValue'; // 10
-            var idValue = prefix + i + '_value'; // 9
-
-            var sls_url = selection.value._string;
-            var qv = {};
-            qv.type = sls_url.split("#")[1];
-
-            //Label
-            var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
-            label.each(function () {
-                qv.description = this["label"].value;
-            });
-
-            var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
-            uom.each(function () {
-                qv.uom = this["uom"].value;
-            });
-
-            qv.valueType = valueType;
-
-            var minv;
-            if (valueType === 'integer') {
-                minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueInteger ?minv");
-            } else {
-                minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueFloat ?minv");
-            }
-            minv.each(function () {
-                qv.minValue = this["minv"].value;
-            });
-
-            var maxv;
-            if (valueType === 'integer') {
-                maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueInteger ?maxv");
-            } else {
-                maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueFloat ?maxv");
-            }
-            maxv.each(function () {
-                qv.maxValue = this["maxv"].value;
-            });
-
-            var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
-            range.each(function () {
-                qv.isRange = this["range"].value;
-            });
-
-            var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
-            hib.each(function () {
-                qv.higherIsBetter = this["hib"].value;
-            });
-
-            document.getElementById("slQuantitative").appendChild(createQuantitativeValueForm(qv, prefix + i));
-        }
-
-        function createQuantitativeSLValuesTable(kb) {
-            // Create integer values
-            var quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueInteger");
-            var prefix = 'quantitativeValues_';
-            var i = 0;
-            quant_sls.each(function () {
-                i++;
-                createQuantitativeValueEntry(this["qvc"], kb, i, prefix, "integer");
-            });
-            // Create float values
-            quant_sls = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueFloat");
-            quant_sls.each(function () {
-                i++;
-                createQuantitativeValueEntry(this["qvc"], kb, i, prefix, "float");
-            });
 
         }
 
@@ -848,61 +825,612 @@
             })
         }
 
-        function storeSD() {
-            //todo: ein / statt -
-            var sp_namespace = document.getElementById("sd_namespace").value + "/" + document.getElementById("sd").value + "/";
-            var kb_sd = $.rdf()
-                .base(sp_namespace)
-                .prefix('foaf', 'http://xmlns.com/foaf/0.1/')
-                .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
-                .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
-                .prefix('owl', 'http://www.w3.org/2002/07/owl#')
-                .prefix('dcterms', 'http://purl.org/dc/terms/')
-                .prefix('usdl-core', 'http://www.linked-usdl.org/ns/usdl-core#')
-                .prefix('usdl-core-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker#')
-                .prefix('usdl-sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
-                .prefix('usdl-sla-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#')
-                .prefix('usdl-business-roles', 'http://www.linked-usdl.org/ns/usdl-business-roles#')
-                .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
-                .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
-                .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
-                .prefix('ctag', 'http://commontag.org/ns#')
-                .prefix('org', 'http://www.w3.org/ns/org#')
-                .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
-                .prefix('time', 'http://www.w3.org/2006/time#')
-                .prefix('gr', 'http://purl.org/goodrelations/v1#')
-                .prefix('doap', 'http://usefulinc.com/ns/doap#')
-                .prefix('bp', document.kb.databank.baseURI)
-                // Create the business entity of the service provider
-                .add("<" + document.getElementById("sp_business_entity").value + "> a gr:BusinessEntity .")
-                .add('<' + document.getElementById("sp_business_entity").value + '> gr:legalName ' + '"' + document.getElementById("sp_legal_name").value + '"' + ' .')
-                // Create the entity involvement instance and bind it to the service provider business entity
-                .add("<" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + "> a usdl-core:EntityInvolvement .")
-                .add("<" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + "> usdl-core:withBusinessRole usdl-business-roles:provider .")
-                .add("<" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + "> usdl-core:ofBusinessEntity <" + document.getElementById("sp_business_entity").value + "> .")
-                // Create the service instance
-                .add("<" + document.getElementById("sd").value + "> a usdl-core:Service .")
-                .add("<" + document.getElementById("sd").value + "> dcterms:creator <" + document.getElementById("sp_business_entity").value + "> .")
-                .add("<" + document.getElementById("sd").value + '> dcterms:title ' + '"' + document.getElementById("sd_title").value + '"' + ' .')
-                .add("<" + document.getElementById("sd").value + '> dcterms:description ' + '"' + document.getElementById("sd_description").value + '"' + ' .')
-                .add("<" + document.getElementById("sd").value + "> usdl-core:hasEntityInvolvement <" + document.getElementById("sp_business_entity").value + "EntityInvolvement> .")
-                .add("<" + document.getElementById("sd").value + "> usdl-core-cb:hasServiceModel <" + document.getElementById("sd_model").value + "> .")
-                // Create and assign a profile instance to the service model
-                .add("<" + document.getElementById("slp").value + "> a bp:" + document.getElementById("slp_class").value + " .")
-                .add("<" + document.getElementById("sd_model").value + "> bp:has" + document.getElementById("slp_class").value + " <" + document.getElementById("slp").value + "> .");
-            // Add the chosen classification concepts to the service model
-            kb_sd = addClassificationConceptsToSD(kb_sd);
-            kb_sd = addQualServiceLevelsToSD(kb_sd, "qualserviceleveldetails");
-            kb_sd = addQuantServiceLevelsToSD(kb_sd);
-            // Dump the kb with the service description to a turtle format and show it in a separate window.
-            var dmp = kb_sd.databank.dump({
+        function createServiceLevelProfileTemplate(prefix, data, kb) {
+            //kb is optional
+            //kdiv, role="tabpanel", class ="tab-pane" id=prefix+"Tab"
+
+        }
+
+
+        function storeBPtype2() {
+            var kb_bp = document.kb;
+            kb_bp = storeSLPsFromPanels(kb_bp);
+            var dmp = kb_bp.databank.dump({
                 format: 'text/turtle',
                 indent: true,
                 serialize: true
-            })
-            var uueFile = Base64.encode(dmp)
-            var uri = 'data:text/turtle;base64,' + encodeURIComponent(uueFile)
-            window.open(uri)
+            });
+            var uueFile = Base64.encode(dmp);
+            var uri = 'data:text/turtle;base64,' + encodeURIComponent(uueFile);
+            window.open(uri);
+        }
+
+        function addSLPPanel() {
+            if (document.slpPanelCounter) {
+                document.slpPanelCounter++;
+            } else {
+                document.slpPanelCounter = 1;
+            }
+            $("#serviceTab_add").before(function () {
+                var li = document.createElement("li");
+                li.setAttribute("role", "presentation");
+                var a = document.createElement("a");
+                a.setAttribute("href", '#slpPanel_' + document.slpPanelCounter);
+                a.setAttribute("aria-controls", '#slpPanel_' + document.slpPanelCounter);
+                a.setAttribute("role", "tab");
+                a.setAttribute("data-toggle", "tab");
+                a.appendChild(document.createTextNode("SLP " + document.slpPanelCounter));
+                li.appendChild(a);
+                return li;
+            }());
+            $("#serviceTab_add_panel").before(
+                createServiceLevelProfilePanel(document.slpDimensions, {
+                    quantitativeConfiguration: null,
+                    qualitativeConfiguration: null
+                }, 'slpPanel_' + document.slpPanelCounter));
+            $('#SD_tab_list a[href="#slpPanel_' + document.slpPanelCounter + '"]').tab('show');
+        }
+
+        function createServiceLevelProfilePanel(slpDimensions, slpConfiguration, prefix) {
+            var tabpanel = document.createElement('div');
+            tabpanel.setAttribute('class', 'tab-pane');
+            tabpanel.setAttribute('role', 'tabpanel');
+            tabpanel.id = prefix;
+            tabpanel.appendChild(function () {
+                var panel = document.createElement('div');
+                panel.setAttribute('class', 'panel panel-default panel1col');
+                panel.appendChild(function () {
+                    var panelHeading = document.createElement('div');
+                    panelHeading.setAttribute('class', 'panel-heading');
+                    var heading = document.createElement('h1');
+                    heading.appendChild(document.createTextNode('Specify Your Service Level Profile'));
+                    panelHeading.appendChild(heading);
+                    return panelHeading;
+                }());
+                panel.appendChild(createServiceLevelProfilePanelBody(slpDimensions, slpConfiguration, prefix));
+                return panel;
+            }());
+            return tabpanel;
+        }
+
+        function createServiceLevelProfilePanelBody(slpDimensions, slpConfiguration, prefix) {
+            var panelBody = document.createElement('div');
+            panelBody.setAttribute('class', 'panel-body');
+            // add form to enter SLP name
+            panelBody.appendChild(function () {
+                /*<form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="slpName">Name</label>
+                        <div class="col-sm-9">
+                                <input class="form-control col-sm-9" type="text" id="slpName" value="http://myServiceLevelProfile">
+        </div>
+        </div>
+        </form>*/
+                var form = document.createElement('form');
+                form.className = 'form-horizontal';
+                var formGroup = document.createElement('div');
+                formGroup.className = 'form-group';
+                form.appendChild(formGroup);
+
+
+                var nameLabel = document.createElement('label');
+                nameLabel.className = 'col-sm-2 control-label';
+                nameLabel.setAttribute('for', prefix + '_name');
+                nameLabel.appendChild(document.createTextNode('Name'));
+
+                formGroup.appendChild(nameLabel);
+                var div = document.createElement('div');
+                div.className = 'col-sm-9';
+                var input = document.createElement('input');
+                input.className = 'form-control';
+                input.setAttribute('type', 'text');
+                input.id = prefix + '_name';
+                input.value = prefix + "_name";
+                div.appendChild(input);
+                formGroup.appendChild(div);
+                return form;
+            }());
+            panelBody.appendChild(createInnerSLPPanel('Specify Quantitative Service Levels', prefix + '_quant',
+                createQuantitativeServiceLevelEditor(prefix, slpDimensions.quantitative, slpConfiguration.quantitativeConfiguration)));
+            panelBody.appendChild(createInnerSLPPanel('Specify Qualitative Service Levels', prefix + '_qual',
+                createQualitativeServiceLevelEditor(prefix, slpDimensions.qualitative, slpConfiguration.qualitativeConfiguration)));
+            return panelBody;
+        }
+
+        function createInnerSLPPanel(headerText, bodyId, panelBodyContents) {
+            var panel = document.createElement('div');
+            panel.setAttribute('class', 'panel panel-default panel1col');
+            //add panel heading
+            panel.appendChild(function () {
+                var div = document.createElement('div');
+                div.className = 'panel-heading';
+                var h2 = document.createElement('h2');
+                h2.appendChild(document.createTextNode(headerText));
+                div.appendChild(h2);
+                return div;
+            }());
+            //add panel body
+            panel.appendChild(function () {
+                var div = document.createElement('div');
+                div.className = 'panel-body';
+                div.appendChild(panelBodyContents);
+                return div;
+            }());
+            return panel;
+        }
+
+        function createQualitativeServiceLevelEditor(prefix, qualitativeDimensions, qualitativeConfiguration) {
+            //qualitativeDimensions:
+            // format: [{value: "val", description: "desc", options: [{value: "optValue", description: "descr"},..]}..]
+            var div = document.createElement('div');
+            div.id = prefix + '_qual_values';
+            //referenz zu loadQualitativeSLSchemasNG
+            qualitativeDimensions.forEach(function (currentDimension) {
+                //create table
+                var qvTable = document.createElement('table');
+                qvTable.setAttribute('id', prefix + "_qual_values_" + currentDimension.value);
+                qvTable.setAttribute('style', 'width: 90%');
+                var qvHeader = qvTable.insertRow();
+                [{
+                    content: 'Value',
+                    class: 'col-sm-3'
+                }, {
+                    content: 'Description',
+                    class: 'col-sm-9'
+                }].forEach(function (descriptor) {
+                    var headerCell = document.createElement('th');
+                    if (descriptor.content) headerCell.appendChild(document.createTextNode(descriptor.content));
+                    if (descriptor.class) headerCell.setAttribute('class', descriptor.class);
+                    qvHeader.appendChild(headerCell);
+                });
+                //create selectbox
+                var selectbox = document.createElement("SELECT");
+                selectbox.setAttribute('id', prefix + '_selectbox_' + currentDimension.value);
+
+                currentDimension.options.forEach(function (currentOption) {
+                    var qvRow = qvTable.insertRow();
+                    var sl = document.createElement('input');
+                    sl.setAttribute('type', 'text');
+                    sl.setAttribute('value', currentOption.value);
+                    sl.setAttribute('disabled', 'true');
+                    qvRow.insertCell().appendChild(sl);
+                    var slDesc = document.createElement('input');
+                    slDesc.setAttribute('type', 'text');
+                    slDesc.setAttribute('value', currentOption.description);
+                    slDesc.setAttribute('disabled', 'true');
+                    qvRow.insertCell().appendChild(slDesc);
+
+                    var selectOption = document.createElement('option');
+                    selectOption.setAttribute('value', currentOption.value);
+                    selectOption.appendChild(document.createTextNode(currentOption.value));
+                    selectbox.appendChild(selectOption);
+                });
+
+                var panel = document.createElement('div');
+                panel.className = 'panel panel-default';
+                panel.id = prefix + "_" + currentDimension.value;
+                var panelHeader = document.createElement('div');
+                panelHeader.className = 'panel-heading';
+
+                var header = document.createElement('H2');
+                header.appendChild(document.createTextNode(currentDimension.value));
+                panelHeader.appendChild(header);
+
+                var panelBody = document.createElement('div');
+                panelBody.classNAme = 'panel-body';
+                //TODO vielleicht hier noch irgendwo den value reinschreiben, um ihn später leichter auslesen zu können
+                var descriptionNode = document.createElement('p');
+                descriptionNode.appendChild(document.createTextNode(currentDimension.description));
+                panelBody.appendChild(descriptionNode);
+
+                panelBody.appendChild(qvTable);
+                panelBody.appendChild(selectbox);
+                panel.appendChild(panelHeader);
+                panel.appendChild(panelBody);
+                div.appendChild(panel);
+            });
+            //
+
+            //und loadQualValuesNG
+            return div;
+        }
+
+        function createQuantitativeServiceLevelEditor(prefix, quantitativeDimensions, quantitativeConfiguration) {
+            //quantitativeDimensions
+            //format [{type: "AmmountOfCpu",  valueType: "float", uom: "", minValue: -1, maxValue: -1, isRange: false, higherIsBetter: false}, ...]
+
+            var div = document.createElement('div');
+            div.id = prefix + '_quant_values';
+
+            quantitativeDimensions.forEach(function (qv) {
+                var localPrefix = prefix + "_" + qv.type;
+                var panel = document.createElement('div');
+                panel.className = "panel panel-default panel2col";
+                panel.appendChild(function () {
+                    var panelHeading = document.createElement('div');
+                    panelHeading.className = 'panel-heading';
+                    panelHeading.appendChild(function () {
+                        var header = document.createElement('h2');
+                        header.appendChild(document.createTextNode(qv.type));
+                        header.id = localPrefix + '_type';
+                        return header;
+                    }());
+                    return panelHeading;
+                }());
+
+                var form = document.createElement('form');
+                form.setAttribute('class', 'form-horizontal');
+                form.setAttribute('id', localPrefix + '_form');
+                form.appendChild(function () {
+                    var paragraph = document.createElement('p');
+                    paragraph.appendChild(document.createTextNode(qv.description));
+                    return paragraph;
+                }());
+                form.appendChild(
+                    elementUtil.createTextInputBox('Service Level', '', localPrefix + '_instance', false, 2, 10)
+                );
+                form.appendChild(
+                    elementUtil.createTextInputBox('Service Level Description', '', localPrefix + '_instanceDesc', false, 2, 10)
+                );
+                form.appendChild(
+                    elementUtil.createTextInputBox('Unit of Measurement', qv.uom, localPrefix + '_uom', true, 2, 10)
+                );
+                form.appendChild(
+                    elementUtil.createTextInputBox('Value type', qv.valueType, localPrefix + '_valueType', true, 2, 10)
+                );
+                if (!qv.isRange) {
+                    form.appendChild(
+                        elementUtil.createTextInputBox('Min Value', qv.minValue, localPrefix + '_minValue', true, 2, 10)
+                    );
+                    form.appendChild(
+                        elementUtil.createTextInputBox('Value', '', localPrefix + '_value', false, 2, 10)
+                    );
+                    form.appendChild(
+                        elementUtil.createTextInputBox('Max Value', qv.maxValue, localPrefix + '_maxValue', true, 2, 10)
+                    );
+                } else {
+                    form.appendChild(
+                        elementUtil.createTextInputBox('Min Value', qv.minValue, localPrefix + '_minValue', false, 2, 10)
+                    );
+                    form.appendChild(
+                        elementUtil.createTextInputBox('Max Value', qv.maxValue, localPrefix + '_maxValue', false, 2, 10)
+                    );
+                }
+                form.appendChild(elementUtil.createCheckBox('Is Range', qv.isRange, localPrefix + '_isRange', 2, 4));
+                form.appendChild(elementUtil.createCheckBox('Higher is Better', qv.higherIsBetter, localPrefix + '_higherIsBetter', 2, 4));
+
+
+
+                panel.appendChild(function () {
+                    var panelBody = document.createElement('div');
+                    panelBody.className = 'panel-body';
+                    panelBody.appendChild(form);
+                    return panelBody;
+                }());
+                div.appendChild(panel);
+                //return panel;
+            });
+            return div;
+        }
+
+        //input
+        function extractServiceLevelDimensions(kb) {
+            //extract quantitative data
+            var quantitativeStuff = [];
+            var quant_serviceLevels_integer = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueInteger");
+            quant_serviceLevels_integer.each(function () {
+                var qv = {
+                    valueType: "integer",
+                    type: "",
+                    uom: "",
+                    minValue: -1,
+                    maxValue: -1,
+                    isRange: false,
+                    higherIsBetter: false
+                };
+                var sls_url = this['qvc'].value._string;
+                qv.type = sls_url.split("#")[1];
+                //Label
+                var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
+                label.each(function () {
+                    qv.description = this["label"].value;
+                });
+                // uom
+                var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
+                uom.each(function () {
+                    qv.uom = this["uom"].value;
+                });
+                // minvalue
+                var minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueInteger ?minv");
+                minv.each(function () {
+                    qv.minValue = this["minv"].value;
+                });
+                // maxValue
+                var maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueInteger ?maxv");
+                maxv.each(function () {
+                    qv.maxValue = this["maxv"].value;
+                });
+                //range
+                var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
+                range.each(function () {
+                    qv.isRange = this["range"].value;
+                });
+                //higher is better
+                var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
+                hib.each(function () {
+                    qv.higherIsBetter = this["hib"].value;
+                });
+                quantitativeStuff.push(qv);
+            });
+
+            var quant_serviceLevels_float = kb.where("?qvc rdfs:subClassOf gr:QuantitativeValueFloat");
+            quant_serviceLevels_float.each(function () {
+                var qv = {
+                    valueType: "float",
+                    type: "",
+                    uom: "",
+                    minValue: -1,
+                    maxValue: -1,
+                    isRange: false,
+                    higherIsBetter: false
+                };
+                var sls_url = this['qvc'].value._string;
+                qv.type = sls_url.split("#")[1];
+                //Label
+                var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
+                label.each(function () {
+                    qv.description = this["label"].value;
+                });
+                // uom
+                var uom = kb.where("<" + sls_url + ">" + " gr:hasUnitOfMeasurement ?uom");
+                uom.each(function () {
+                    qv.uom = this["uom"].value;
+                });
+                // minvalue
+                var minv = kb.where("<" + sls_url + ">" + " gr:hasMinValueFloat ?minv");
+                minv.each(function () {
+                    qv.minValue = this["minv"].value;
+                });
+                // maxValue
+                var maxv = kb.where("<" + sls_url + ">" + " gr:hasMaxValueFloat ?maxv");
+                maxv.each(function () {
+                    qv.maxValue = this["maxv"].value;
+                });
+                //range
+                var range = kb.where("<" + sls_url + ">" + " usdl-core-cb:isRange ?range");
+                range.each(function () {
+                    qv.isRange = this["range"].value;
+                });
+                //higher is better
+                var hib = kb.where("<" + sls_url + ">" + " usdl-core-cb:higherIsBetter ?hib");
+                hib.each(function () {
+                    qv.higherIsBetter = this["hib"].value;
+                });
+                quantitativeStuff.push(qv);
+            });
+
+
+            //extract qualitative data
+            var qualitativeStuff = [];
+            // format: [{value: "val", description: "desc", options: [{value: "optValue", description: "descr"},..]}..]
+            var qual_sls = kb.where("?qvc rdfs:subClassOf gr:QualitativeValue");
+            qual_sls.each(function () {
+                var qv_options = [];
+
+                var selection = this["qvc"];
+                var sls_url = selection.value._string;
+                //serviceLevel
+                var serviceLevel = sls_url.split("#")[1];
+                //serviceLevel Discription
+                var serviceLevelDescription = '';
+                var label = kb.where("<" + sls_url + ">" + " rdfs:label ?label");
+                label.each(function () {
+                    serviceLevelDescription = this["label"].value;
+                });
+
+                var serviceLevelValues = kb.where("?valinst a bp:" + serviceLevel + "");
+                serviceLevelValues.each(function () {
+                    var valueInstance = this["valinst"];
+                    var qv_url = valueInstance.value._string;
+                    var qv_value = qv_url.split('#')[1];
+
+                    var qv_description = '';
+                    var label = kb.where("<" + qv_url + ">" + " rdfs:label ?label");
+                    label.each(function () {
+                        qv_description = this["label"].value;
+                    });
+                    qv_options.push({
+                        value: qv_value,
+                        description: qv_description
+                    });
+                });
+                qualitativeStuff.push({
+                    value: serviceLevel,
+                    description: serviceLevelDescription,
+                    options: qv_options
+                });
+            });
+
+            return {
+                quantitative: quantitativeStuff,
+                qualitative: qualitativeStuff
+            };
+        }
+
+        //output preparation
+        function getSLPsFromPanels(panels) {
+            var slps = [];
+            for (var panelCounter = 1; panelCounter < panels.length; panelCounter++) {
+                var currentPanel = panels[panelCounter - 1];
+                var currentSLP = {};
+                currentSLP.prefix = currentPanel.id;
+                currentSLP.name = document.getElementById("slpPanel_" + panelCounter + "_name").value;
+
+                var qualitativeSL = [];
+                currentSLP.qualitative = qualitativeSL;
+                var qualValuesPanels = document.getElementById("slpPanel_" + panelCounter + "_qual_values").children;
+                for (var i = 0; i < qualValuesPanels.length; i++) {
+                    var qualValueType = qualValuesPanels[i].id.replace("slpPanel_" + panelCounter + "_", "");
+                    var qualValue = document.getElementById("slpPanel_" + panelCounter + "_selectbox_" + qualValueType).value;
+                    qualitativeSL.push({
+                        type: qualValueType,
+                        value: qualValue
+                    });
+                }
+                //todo extract qualitative SLs
+
+                var quantitativeSL = [];
+                currentSLP.quantitative = quantitativeSL;
+                var quantValuePanels = document.getElementById("slpPanel_" + panelCounter + "_quant_values").children;
+                for (var i = 0; i < quantValuePanels.length; i++) {
+                    var quantValueType = quantValuePanels[i].children[0].children[0].textContent;
+                    var prefix = "slpPanel_" + panelCounter + "_" + quantValueType;
+                    var idType = prefix + '_type';
+                    var idInstance = prefix + '_instance';
+                    var idInstanceDesc = prefix + '_instanceDesc';
+                    var idUom = prefix + '_uom';
+                    var idIsRange = prefix + '_isRange';
+                    var idValueType = prefix + '_valueType';
+                    var idMinValue = prefix + '_minValue';
+                    var idMaxValue = prefix + '_maxValue';
+                    var idValue = prefix + '_value';
+
+                    var quant_value_typeNG = document.getElementById(idType).innerHTML;
+                    var quant_value_instNG = document.getElementById(idInstance).value;
+                    var uomNG = document.getElementById(idUom).value;
+                    var isRangeNG = document.getElementById(idIsRange).checked;
+                    var minValueNG = document.getElementById(idMinValue).value;
+                    var maxValueNG = document.getElementById(idMaxValue).value;
+                    var valueNG = undefined;
+                    if (!isRangeNG) {
+                        valueNG = document.getElementById(idValue).value;
+                    }
+                    var valueTypeNG = document.getElementById(idValueType).value;
+                    var instanceDescriptionNG = document.getElementById(idInstanceDesc).value;
+
+                    quantitativeSL.push({
+                        quant_value_typeNG: quant_value_typeNG,
+                        quant_value_instNG: quant_value_instNG,
+                        uomNG: uomNG,
+                        isRangeNG: isRangeNG,
+                        minValueNG: minValueNG,
+                        maxValueNG: maxValueNG,
+                        valueNG: valueNG,
+                        valueTypeNG: valueTypeNG,
+                        instanceDescriptionNG: instanceDescriptionNG
+                    });
+                }
+                slps.push(currentSLP);
+            }
+            return slps;
+        }
+
+
+        //output
+        function storeSLPsFromPanels(kb) {
+            var panels = document.getElementById('SD_tab_content').children;
+            var slpData = getSLPsFromPanels(panels);
+
+            slpData.forEach(function (currentSLP, slpCounter) {
+                var name = currentSLP.name;
+                //needed: sd_model ->Service Model Name - ersetzt durch slp+Model
+                //        slp -> Service Level Profile Title
+                kb.add("bp:" + name + "Model a bp:" + document.getElementById("servicemodel_class").value + " .")
+                    .add("bp:" + name + "Model gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
+                    // Create and assign a profile instance to the service model
+                    .add("bp:" + name + " a bp:" + document.getElementById("slp_class").value + " .")
+                    .add("bp:" + name + "Model bp:has" + document.getElementById("slp_class").value + " bp:" + name + " .");
+
+                currentSLP.qualitative.forEach(function (currentQualInstance) {
+                    //todo: store the qualitative value thingy
+                    //var qual_value_type = qual_sl_table.rows[i].cells[0].childNodes[0].value;
+                    // SL instance
+                    kb.add("bp:" + name + "SL" + currentQualInstance.type + "Instance a " + "bp:SL" + currentQualInstance.type + " .")
+                        .add("bp:" + name + " bp:hasSL" + currentQualInstance.type + " bp:" + name + "SL" + currentQualInstance.type + "Instance .")
+
+                    // SLE instance
+                    kb.add("bp:" + name + "SLE" + currentQualInstance.type + "Instance a " + "bp:SLE" + currentQualInstance.type + " .")
+                        .add("bp:" + name + "SL" + currentQualInstance.type + "Instance bp:hasSLE" + currentQualInstance.type + " bp:" + name + "SLE" + currentQualInstance.type + "Instance .");
+
+                    // Var instance
+                    kb.add("bp:" + name + "Var" + currentQualInstance.type + "Instance a " + "bp:Var" + currentQualInstance.type + " .")
+                        .add("bp:" + name + "SLE" + currentQualInstance.type + "Instance bp:hasVar" + currentQualInstance.type + " bp:" + name + "Var" + currentQualInstance.type + "Instance .")
+
+                    // bind var instance to the qual value instance
+                    kb.add("bp:" + name + "Var" + currentQualInstance.type + "Instance  " + "bp:hasDefault" + currentQualInstance.type + " bp:" + currentQualInstance.value + " .");
+
+                });
+                currentSLP.quantitative.forEach(function (currentQuantInstance) {
+                    //todo: store quantitative value thingy
+                    // SL instance
+                    kb.add("bp:" + name + "SL" + currentQuantInstance.quant_value_typeNG + "Instance a " + "bp:SL" + currentQuantInstance.quant_value_typeNG + " .");
+                    //slp.value == name+"Model"
+                    kb.add("bp:" + name + " bp:hasSL" + currentQuantInstance.quant_value_typeNG + " bp:" + name + "SL" + currentQuantInstance.quant_value_typeNG + "Instance .");
+
+                    // SLE instance
+                    kb.add("bp:" + name + "SLE" + currentQuantInstance.quant_value_typeNG + "Instance a " + "bp:SLE" + currentQuantInstance.quant_value_typeNG + " .");
+                    kb.add("bp:" + name + "SL" + currentQuantInstance.quant_value_typeNG + "Instance bp:hasSLE" + currentQuantInstance.quant_value_typeNG + " bp:" + name + "SLE" + currentQuantInstance.quant_value_typeNG + "Instance .");
+
+                    // Var instance
+                    kb.add("bp:" + name + "Var" + currentQuantInstance.quant_value_typeNG + "Instance a " + "bp:Var" + currentQuantInstance.quant_value_typeNG + " .");
+                    kb.add("bp:" + name + "SLE" + currentQuantInstance.quant_value_typeNG + "Instance bp:hasVar" + currentQuantInstance.quant_value_typeNG + " bp:" + name + "Var" + currentQuantInstance.quant_value_typeNG + "Instance .");
+
+
+                    // bind var instance to the quant value instance
+                    kb.add("bp:" + name + currentQuantInstance.quant_value_instNG + " a bp:" + currentQuantInstance.quant_value_typeNG + " .");
+                    // id = prefix + _i_ + instanceDescription
+                    kb.add("bp:" + name + currentQuantInstance.quant_value_instNG + ' rdfs:label "' + currentQuantInstance.instanceDescriptionNG + '"^^xsd:string .');
+                    // id = prefix + _i_ + uom
+                    kb.add("bp:" + name + currentQuantInstance.quant_value_instNG + ' gr:hasUnitOfMeasurement "' + currentQuantInstance.uomNG + '"^^xsd:string .');
+                    kb.add("bp:" + name + currentQuantInstance.quant_value_instNG + " gr:valueReference " + "bp:" + currentQuantInstance.quant_value_typeNG + "ValueRange .");
+                    kb.add("bp:" + name + "Var" + currentQuantInstance.quant_value_typeNG + "Instance  " + "bp:hasDefault" + currentQuantInstance.quant_value_typeNG + " bp:" + name + currentQuantInstance.quant_value_instNG + " .");
+
+                    // specify quant value instance  Here the parsing code has to be adapted!!!
+
+                    if (currentQuantInstance.isRangeNG == true) {
+                        // int or float value subclass
+                        // id = prefix + _i_ + valueType
+                        if (currentQuantInstance.valueTypeNG == "integer") {
+                            // Int value subclass
+                            // id = prefix + _i_ + 
+                            kb.add("bp:" + name + currentQuantInstance.quant_value_instNG + " " + ' gr:hasMinValueInteger "' + currentQuantInstance.minValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                                .add("bp:" + name + currentQuantInstance.quant_value_instNG + " " + ' gr:hasMaxValueInteger "' + currentQuantInstance.maxValueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .');
+                        } else {
+                            // Float value subclass
+
+                            kb.add("bp:" + name + currentQuantInstance.quant_value_instNG + " " + ' gr:hasMinValueFloat "' + currentQuantInstance.minValueNG + '"^^xsd:float .')
+                                .add("bp:" + name + currentQuantInstance.quant_value_instNG + " " + ' gr:hasMaxValueFloat "' + currentQuantInstance.maxValueNG + '"^^xsd:float .');
+
+                        }
+                    } else {
+                        // int or float value subclass
+                        if (currentQuantInstance.valueTypeNG == "integer") {
+                            // Int value subclass
+
+                            kb.add("bp:" + name + "" + currentQuantInstance.quant_value_instNG + " " + ' gr:hasValueInteger "' + currentQuantInstance.valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                                .add("bp:" + name + currentQuantInstance.quant_value_instNG + " " + ' gr:hasMinValueInteger "' + currentQuantInstance.valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .')
+                                .add("bp:" + name + currentQuantInstance.quant_value_instNG + " " + ' gr:hasMaxValueInteger "' + currentQuantInstance.valueNG + '"^^<http://www.w3.org/2001/XMLSchema#integer> .');
+
+
+                        } else {
+                            // Float value subclass
+
+                            kb.add("bp:" + name + currentQuantInstance.quant_value_instNG + " " + ' gr:hasValueFloat "' + currentQuantInstance.valueNG + '"^^xsd:float .')
+                                .add("bp:" + name + currentQuantInstance.quant_value_instNG + " " + ' gr:hasMinValueFloat "' + currentQuantInstance.valueNG + '"^^xsd:float .')
+                                .add("bp:" + name + currentQuantInstance.quant_value_instNG + " " + ' gr:hasMaxValueFloat "' + currentQuantInstance.valueNG + '"^^xsd:float .');
+                        }
+                    }
+
+                });
+                kb.add('bp:' + document.getElementById('bp_instance').value + ' bp:has' + document.getElementById('slp_class').value + ' bp:' + name);
+            });
+
+
+            return kb;
+            //ganz am schluss:
+            // sollte sich eigentlich von alleine Erledigen...
+            //var brokerPolicy = "broker policy from original";
+            //var serviceLevelProfileType = ".,..";
         }
     </script>
 </head>
@@ -1040,81 +1568,19 @@
 
                             </div>
                         </div>
+                        <input type="text" id="servicemodel_class" value="Broker Policy Class" disabled="disabled" hidden="hidden">
+                        <input type="text" id="servicemodel" value="Broker Policy Instance" disabled="disabled" hidden="hidden">
                     </div>
 
                     <div>
                         <!-- Nav tabs -->
-                        <ul id="SD_tab" class="nav nav-tabs" role="tablist">
-                            <li role="presentation" class="active"><a href="#serviceTab_0" aria-controls="serviceTab_0" role="tab" data-toggle="tab">First</a></li>
-                            <li role="presentation"><a href="#serviceTab_1" aria-controls="serviceTab_1" role="tab" data-toggle="tab">Empty</a></li>
-                            <li role="presentation" onclick="window.alert('hello')"><a href="#" aria-controls="serviceTab_2" role="tab" data-toggle="tab">Hello</a></li>
+                        <ul id="SD_tab_list" class="nav nav-tabs" role="tablist">
+                            <li id="serviceTab_add" role="presentation" onclick="addSLPPanel()"><a href="#" aria-controls="serviceTab_2" role="tab" data-toggle="tab">Add SLP</a></li>
                         </ul>
 
                         <!-- Tab panes -->
-                        <div class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="serviceTab_0">
-                                <div class="panel panel-default panel1col">
-                                    <div class="panel-heading">
-                                        <h1>Specify your Service Level Profile</h1>
-                                    </div>
-                                    <div class="panel-body">
-                                        <form class="form-horizontal">
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label" for="slpName">Name</label>
-                                                <div class="col-sm-9">
-                                                    <input class="form-control" type="text" id="slpName" value="MyName">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label" for="slpNamespace">Namespace</label>
-                                                <div class="col-sm-9">
-                                                    <input class="form-control" type="text" id="slpName" value="myNamespace">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-sm-2 control-label" for="slpprefix">Prefix</label>
-                                                <div class="col-sm-9">
-                                                    <input class="form-control" type="text" id="slpName" value="slp1">
-                                                </div>
-                                            </div>
-                                        </form>
-                                        <div class="panel panel-default panel1col">
-
-                                            <div class="panel-heading">
-                                                <h1> Specify your quantitative service levels</h1>
-                                            </div>
-                                            <div class="panel-body">
-                                                <div id="slQuantitative"></div>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="panel panel-default panel1col">
-
-                                            <div class="panel-heading">
-                                                <h1>Specify your qualitative service levels </h1>
-                                            </div>
-                                            <div class="panel-body">
-                                                <h1>Overview Qualitative Service Level Schemas </h1>
-
-                                                <table class="table" style="width: 95%" id="qualserviceleveldetails">
-                                                    <tr>
-                                                        <th class='col-sm-3'>Service Level</th>
-                                                        <th class='col-sm-9'>Description</th>
-                                                    </tr>
-                                                </table>
-
-                                                <h1>Specify Qualitative values</h1>
-                                                <p id="qualvalues">
-
-                                                </p>
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="serviceTab_1">
+                        <div class="tab-content" id="SD_tab_content">
+                            <div role="tabpanel" class="tab-pane" id="serviceTab_add_panel">
                                 <p>empty</p>
                             </div>
                         </div>
@@ -1123,7 +1589,8 @@
 
 
                     <div class="bc-buttongroup">
-                        <button class="btn btn-default" onclick="storeSD()">Show the service description specification. </button>
+                        <button class="btn btn-default" onclick="storeBPtype2()">Show the service description specification. </button>
+                        <button class="btn btn-default" onclick="getSLPsFromPanels(document.getElementById('SD_tab_content').children)">Experiment!</button>
                     </div>
                 </div>
             </div>
