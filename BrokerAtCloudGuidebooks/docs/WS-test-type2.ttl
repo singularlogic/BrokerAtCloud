@@ -276,8 +276,7 @@ bp:silence
   rdfs:label "keine Musik fÃ¼r dich"@en . 
 
 bp:MediumModel 
-  a bp:MyBrokerPolicyModelName ; 
-  gr:isVariantOf bp:MyBrokerPolicyTitle ; 
+  a bp:MyBrokerPolicyTitle ; 
   bp:hasBestServiceLevelProvile bp:Medium . 
 
 bp:Medium 
@@ -353,8 +352,7 @@ bp:MediumLittleCareless
   gr:hasMaxValueFloat "100"^^xsd:float . 
 
 bp:ExtraLargeModel 
-  a bp:MyBrokerPolicyModelName ; 
-  gr:isVariantOf bp:MyBrokerPolicyTitle ; 
+  a bp:MyBrokerPolicyTitle ; 
   bp:hasBestServiceLevelProvile bp:ExtraLarge . 
 
 bp:ExtraLarge 

@@ -1335,10 +1335,12 @@
                 var name = currentSLP.name;
                 //needed: sd_model ->Service Model Name - ersetzt durch slp+Model
                 //        slp -> Service Level Profile Title
-                kb.add("bp:" + name + "Model a bp:" + document.getElementById("servicemodel_class").value + " .")
-                    .add("bp:" + name + "Model gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
-                    // Create and assign a profile instance to the service model
-                    .add("bp:" + name + " a bp:" + document.getElementById("slp_class").value + " .")
+                kb.add("bp:" + name + "Model a bp:" + document.getElementById("bp_instance").value + " .")
+
+
+                // .add("bp:" + name + "Model gr:isVariantOf bp:" + document.getElementById("by_instance").value + " .")
+                // Create and assign a profile instance to the service model
+                .add("bp:" + name + " a bp:" + document.getElementById("slp_class").value + " .")
                     .add("bp:" + name + "Model bp:has" + document.getElementById("slp_class").value + " bp:" + name + " .");
 
                 currentSLP.qualitative.forEach(function (currentQualInstance) {
