@@ -33,6 +33,8 @@ bp:BrokerAtCloudTutorialTeamEntityInvolvement
 bp:BrokerAtCloudESOCC2015TutorialBrokerPolicy 
   a bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
   dcterms:creator bp:BrokerAtCloudTutorialTeam ; 
+  usdl-core:validFrom "2015-11-12"^^xsd:date ; 
+  usdl-core:validThrough "2016-11-12"^^xsd:date ; 
   usdl-core:hasEntityInvolvement bp:BrokerAtCloudTutorialTeamEntityInvolvement ; 
   usdl-core-cb:hasClassificationDimension fc:rootConcept . 
 

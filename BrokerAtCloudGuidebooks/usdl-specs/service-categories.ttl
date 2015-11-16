@@ -1,0 +1,43 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix service-categories: <http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/service-categories#> .
+@base <http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/service-categories/> .
+
+<http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/service-categories/> rdf:type owl:Ontology .
+
+
+<http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/service-categories#> a skos:ConceptScheme , owl:Ontology;
+    dcterms:title "Broker@Cloud Example Service Categories concept scheme";
+    dcterms:description """<p>This vocabulary provides an example for service classification for SAP HANA Cloud Apps Broker. The taxonomy provided here is an example. Each brokerage platform could define its own categorization by creating a new SKOS concept scheme or by refering to an existing one. </p>"""@en ;
+    dcterms:modified "2014-02-24"^^xsd:date;
+    vann:preferredNamespaceUri "http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/service-categories#";
+    vann:preferredNamespacePrefix "service-categories";
+	skos:prefLabel "Service Categories"@en ;
+	skos:hasTopConcept <SAP_HANA_App>, <SAP_HANA_Data_Service> .
+
+
+# SAP HANA Service Categories
+<SAP_HANA_App> a skos:Concept ;
+    rdfs:label "SAP HANA App"@en ;
+    skos:prefLabel "SAP HANA App"@en ;
+    skos:altLabel "SAP HANA App"@en ;
+    skos:definition "<p>SAP HANA App Category.</p>"@en ;
+	skos:topConceptOf <http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/service-categories> ;
+	skos:inScheme <<http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/service-categories> .
+
+<SAP_HANA_Data_Service> a skos:Concept ;
+    rdfs:label "SAP HANA Data Service"@en ;
+    skos:prefLabel "SAP HANA Data Service"@en ;
+    skos:altLabel "SAP HANA Data Service"@en ;
+    skos:definition "<p>SAP HANA Data Service Category.</p>"@en ;
+	skos:topConceptOf <http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/service-categories> ;
+	skos:inScheme <<http://www.broker-cloud.eu/d043567/linked-usdl-ontologies/SAP-HANA-Cloud-Apps-Broker/2014/01/service-categories> .
+

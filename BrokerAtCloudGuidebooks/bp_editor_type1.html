@@ -121,6 +121,8 @@
                 // Create the business policy instance
                 .add("bp:" + document.getElementById("bp_instance").value + " a " + "bp:" + document.getElementById("bp_model").value + " .")
                 .add("bp:" + document.getElementById("bp_instance").value + " dcterms:creator " + "bp:" + document.getElementById("bp_business_entity").value + " .")
+                .add("bp:" + document.getElementById("bp_instance").value + ' usdl-core:validFrom ' + '"' + document.getElementById("valid_from").value + '"^^xsd:date .')
+                .add("bp:" + document.getElementById("bp_instance").value + ' usdl-core:validThrough ' + '"' + document.getElementById("valid_through").value + '"^^xsd:date .')
                 .add("bp:" + document.getElementById("bp_instance").value + " usdl-core:hasEntityInvolvement " + "bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement .")
                 .add("bp:" + document.getElementById("bp_instance").value + " usdl-core-cb:hasClassificationDimension " + document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " .")
                 // Create the bp service model
@@ -131,7 +133,11 @@
             .add("bp:" + document.getElementById("slp_class").value + " rdfs:subClassOf usdl-sla:ServiceLevelProfile .")
                 .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile .")
                 .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:domain " + "bp:" + document.getElementById("bp_model").value + " .")
-                .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:range " + "bp:" + document.getElementById("slp_class").value + " .")
+                .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:range " + "bp:" + document.getElementById("slp_class").value + " .");
+            // Create successor of
+            if (document.getElementById("successor_of_bp").value != "") {
+                kb_bp.add("bp:" + document.getElementById("bp_instance").value + " gr:successorOf <" + document.getElementById("successor_of_bp").value + "> ."); 
+            }
 
             // Add classification
             kb_bp = addClassificationConcepts(kb_bp);
@@ -308,12 +314,15 @@
         findBase = function (kb) {
             var base = kb.databank.baseURI
             var services = kb.where("?brokerPolicy a ?serviceModel")
-                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel");
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy usdl-core:validFrom ?validFrom")
+                .where("?brokerPolicy usdl-core:validThrough ?validThrough");
 
             services.each(function () {
                 var selection_class = this["serviceModel"];
                 var selection_instance = this["brokerPolicy"];
-
+                var validFrom = this["validFrom"];
+                var validThrough = this["validThrough"];
                 var url_class = selection_class.value._string;
                 var url_instance = selection_instance.value._string;
                 base = url_class.split('#')[0];
@@ -321,6 +330,15 @@
                 // Assign the service model class and instance to the business policy form
                 document.getElementById("bp_model").value = url_class.split('#')[1];
                 document.getElementById("bp_instance").value = url_instance.split('#')[1];
+                document.getElementById("valid_from").value = validFrom.value;
+                document.getElementById("valid_through").value = validThrough.value;
+            })
+            var successor = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy gr:successorOf ?successor");
+            successor.each(function () {
+                var successor_of = this["successor"];
+                document.getElementById("successor_of_bp").value = successor_of.value._string;
 
             })
             var business_entity = kb.where("?bentity a gr:BusinessEntity")
@@ -1106,6 +1124,18 @@
                                 <div class="form-group">
                                     <label>Broker policy model name</label>
                                     <input class="form-control" type="text" id="bp_model" value="YourBrokerPolicyModelName">
+                                </div>
+                                <div class="form-group">
+                                    <label>Is successor of (URI to the predecessor broker policy, if any)</label>
+                                    <input class="form-control" type="text" id="successor_of_bp" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Valid from</label>
+                                    <input class="form-control" type="text" id="valid_from" value="YYYY-MM-DD">
+                                </div>
+                                <div class="form-group">
+                                    <label>Valid through</label>
+                                    <input class="form-control" type="text" id="valid_through" value="YYYY-MM-DD">
                                 </div>
                             </form>
 
