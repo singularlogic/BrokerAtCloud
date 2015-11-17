@@ -18,7 +18,7 @@
 	rdfs:label "Linked USDL Core Cloud Broker"@en ;
     dcterms:title "Linked USDL Core Cloud Broker"@en ;
     dcterms:description """<p>This vocabulary provides a Broker@Cloud extension to the core module of Linked USDL required by the optimization mechanism. It introduces a root class for multi-dimensional classification taxonomies and provides a specification for fuzzy values .</p>"""@en ;
-    dcterms:modified "2014-09-30"^^xsd:date;
+    dcterms:modified "2015-11-17”^^xsd:date;
     vann:preferredNamespaceUri "http://www.linked-usdl.org/ns/usdl-core/cloud-broker#";
     vann:preferredNamespacePrefix "usdl-core-cb";
     # foaf:page <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/usdl-core-cb.html>;
@@ -57,19 +57,6 @@ usdl-core-cb:hasClassificationDimension a rdf:Property;
     rdfs:domain usdl-core:Service;
     rdfs:range usdl-core-cb:ClassificationDimension .
 
-# SAP (AF): Removed isMandatory 
-# 
-
-# Services not providing a value for a service attribute marked by a consumer as mandatory will be discarded by the optimization mechanism.
-
-# usdl-core-cb:isMandatory a rdf:Property;
-# rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
-#    rdfs:label "instance of a value class is mandatory"@en ;
-#    rdfs:comment "<p>Indicates if an instance of a value class is mandatory. True means 1..n cardinality. False means 0..n cardinality</p>"@en ;
-#    rdfs:domain gr:QualitativeValue, gr:QuantitativeValue;
-#    rdfs:range xsd:boolean .
-
-# SAP (AF): Added dependsOn 
 
 usdl-core-cb:dependsOn a rdf:Property;
 rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
@@ -176,4 +163,69 @@ usdl-core-cb:hasMaxMembershipValue a rdf:Property;
     rdfs:comment "<p>Indicates a max membership value.</p>"@en ;
     rdfs:domain usdl-core-cb:FuzzyValue;
     rdfs:range xsd:float .
-    
+
+# SAP (AF): Lifecycle management properties
+
+# validFrom is mandatory for broker policies and service descriptions.
+# validFrom of a new broker policy must be >= valid from of the  old broker policy
+# validFrom in a service description must be >= validFrom from the referred broker policy
+# validFrom of a new service description must be >= validFrom from the old service description
+
+usdl-core-cb:validFrom a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label “valid from”@en ;
+    rdfs:comment "<p>Indicates the start date of a validity period.</p>"@en ;
+    refs:domain usdl-core:Service;
+    rdfs:range xsd:datetime .
+
+# validThrough is optional for broker policies and service descriptions. 
+# That is, if the property is not set in the broker policy the valid through is not restricted. 
+# validThrough in a service description must be <= validThrough from the referred broker policy.
+# That is, it is = validThrough from the referred broker policy if not set in the service description. 
+
+usdl-core-cb:validThrough a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label “valid through”@en ;
+    rdfs:comment "<p>Indicates the end date of a validity period.</p>"@en ;
+    refs:domain usdl-core:Service;
+    rdfs:range xsd:datetime .
+
+# Use gr:successorOf to refer to the previous version of a broker policy or service description.
+
+# deprecationOnboardingTimePoint is used in a new broker policy to indicate the time point
+# from which on onboarding of new service descriptions still referring to the “old” broker policy
+# (i.e., the broker policy referred through gr:successorOf in this policy) will be rejected by the 
+# SC3 mechanism.
+# deprecationOnboardingTimePoint must be >= validFrom (of the new broker policy) <= validThrough (of the “old” broker policy)
+# If not set at all, deprecationOnboardingTimePoint = validThrough of the “old” broker policy
+ 
+usdl-core-cb:deprecationOnboardingTimePoint a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label “on boarding deprecation time point”@en ;
+    rdfs:comment "<p>Indicates the time point from which on onboarding of services referring to an old broker policy will be rejected.</p>"@en ;
+    refs:domain usdl-core:ServiceModel;
+    rdfs:range xsd:datetime .
+
+# deprecationRecommendationTimePoint can be used in a new broker policy to indicate the time point
+# from which on PuLSaR will stop recommending service descriptions still referring to the “old” broker policy
+
+# deprecationRecommendationTimePoint must be >= validFrom of the new broker policy and <= validThrough of the “old” broker policy
+# If not set at all, deprecationRecommendationTimePoint = validThrough of the “old” broker policy
+#
+# deprecationRecommendationTimePoint can also be used in a new service description to indicate the time point
+# from which on PuLSaR will stop recommending the old version of this service description independent if it is referring 
+# to the “old” or a new broker policy
+# The broker policy always subsumes (overrules) service description.  
+# This means, if the old service description relies on an old broker policy then the deprecationOnboardingTimePoint can only further restrict
+# recommendation deprecation time interval specified for that broker policy.
+# This means also that if a broker policy to which the old version of service description is referring to has been 
+# deprecated after this service description then the deprecationRecommendationTimePoint from the broker policy will be taken if it is <=
+# the deprecationRecommendationTimePoint from the service description. 
+#  
+ 
+usdl-core-cb:deprecationRecommendationTimePoint a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label “on boarding deprecation time point”@en ;
+    rdfs:comment "<p>Indicates the time point from which on PuLSaR stops recommendation of services referring to an old broker policy or of services having a new version onboarded.</p>"@en ;
+    refs:domain usdl-core:Service;
+    rdfs:range xsd:datetime .    
