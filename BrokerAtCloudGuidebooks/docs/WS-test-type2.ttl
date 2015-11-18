@@ -33,6 +33,11 @@ bp:MyBrokerPolicyTitle
   dcterms:creator bp:AAAAAAAcronymAAA ; 
   usdl-core:hasEntityInvolvement bp:AAAAAAAcronymAAAEntityInvolvement ; 
   usdl-core-cb:hasClassificationDimension <http://www.broker-cloud.eu/service-descriptions/torax/categories#rootOfAllEvil> ; 
+  usdl-core-cb:validFrom "2015-11-12"^^xsd:date ; 
+  usdl-core-cb:validThrough "2016-11-12"^^xsd:date ;
+  gr:successorOf <http://broker-cloud.eu/policies#MyFirstPolicy> ; 
+  usdl-core-cb:deprecationOnboardingTimePoint "2015-11-31"^^xsd:date ;
+  usdl-core-cb:deprecationRecommendationTimePoint "2015-12-31"^^xsd:date ; 
   bp:hasBestServiceLevelProvile bp:Medium , 
     bp:ExtraLarge . 
 

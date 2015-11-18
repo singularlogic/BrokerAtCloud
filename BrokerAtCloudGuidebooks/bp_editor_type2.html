@@ -94,7 +94,11 @@
             document.getElementById("classtaxpref").disabled = true;
             document.getElementById("classtaxroot").disabled = true;
             document.getElementById("classtaxURI").disabled = true;
-
+            document.getElementById("valid_from").disabled = true;
+            document.getElementById("valid_through").disabled = true;
+            document.getElementById("successor_of_bp").disabled = true;
+            document.getElementById("onboarding_deprecated_from").disabled = true;
+            document.getElementById("recommendation_deprecated_from").disabled = true;
             deactivateClassTaxTable();
 
         }
@@ -116,7 +120,8 @@
         function findBase(kb) {
             var base = kb.databank.baseURI
             var services = kb.where("?brokerPolicy a ?serviceModel")
-                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel");
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy usdl-core-cb:validFrom ?validFrom");
             if (services[0]) {
                 //services.each(function () {
                 var selection_class = services[0].serviceModel; //this["serviceModel"];
@@ -124,6 +129,8 @@
 
                 var url_class = selection_class.value._string;
                 var url_instance = selection_instance.value._string;
+                var validFrom = services[0].validFrom;
+
                 base = url_class.split('#')[0];
                 document.getElementById("bp_namespace").value = base;
                 // Assign the service model class and instance to the business policy form
@@ -132,9 +139,42 @@
                 // Assign the service model class and instance to the service description form
                 document.getElementById("servicemodel_class").value = url_class.split('#')[1];
                 document.getElementById("servicemodel").value = url_instance.split('#')[1];
-
+                document.getElementById("valid_from").value = validFrom.value;
                 //})
             }
+
+            var validthrough = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy usdl-core-cb:validThrough ?validThrough");
+
+            validthrough.each(function () {
+                var validThrough = this["validThrough"];
+                document.getElementById("valid_through").value = validThrough.value;
+            });
+            var successor = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy gr:successorOf ?successor");
+            successor.each(function () {
+                var successor_of = this["successor"];
+                document.getElementById("successor_of_bp").value = successor_of.value._string;
+            });
+            var onboarding = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy gr:successorOf ?successor")
+                .where("?brokerPolicy usdl-core-cb:deprecationOnboardingTimePoint ?onboarding");
+            onboarding.each(function () {
+                var onboarding_date = this["onboarding"];
+                document.getElementById("onboarding_deprecated_from").value = onboarding_date.value;
+            });
+            var recommendation = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy gr:successorOf ?successor")
+                .where("?brokerPolicy usdl-core-cb:deprecationRecommendationTimePoint ?recommendation");
+            recommendation.each(function () {
+                var recommendation_date = this["recommendation"];
+                document.getElementById("recommendation_deprecated_from").value = recommendation_date.value;
+            });
+
             var business_entity = kb.where("?bentity a gr:BusinessEntity")
                 .where("?bentity gr:legalName ?legalName")
             business_entity.each(function () {
@@ -1343,6 +1383,36 @@
                                             <label class="col-sm-4 control-label" for="slp_class">Service Level Profile Type</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control" type="text" id="slp_class" placeholder="SomeServiceLevelProfile">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Valid from</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" type="text" id="valid_from" value="YYYY-MM-DD">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Valid through</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" type="text" id="valid_through" value="YYYY-MM-DD">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Is successor of (URI to the predecessor broker policy, if any)</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" type="text" id="successor_of_bp" value="">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Service onboarding deprecation (for predecessor broker policy)</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" type="text" id="onboarding_deprecated_from" value="YYYY-MM-DD">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-4 control-label">Service recommendation deprecation (for predecessor broker policy)</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" type="text" id="recommendation_deprecated_from" value="YYYY-MM-DD">
                                             </div>
                                         </div>
                                     </form>
