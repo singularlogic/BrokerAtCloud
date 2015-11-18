@@ -121,8 +121,6 @@
                 // Create the business policy instance
                 .add("bp:" + document.getElementById("bp_instance").value + " a " + "bp:" + document.getElementById("bp_model").value + " .")
                 .add("bp:" + document.getElementById("bp_instance").value + " dcterms:creator " + "bp:" + document.getElementById("bp_business_entity").value + " .")
-                .add("bp:" + document.getElementById("bp_instance").value + ' usdl-core:validFrom ' + '"' + document.getElementById("valid_from").value + '"^^xsd:date .')
-                .add("bp:" + document.getElementById("bp_instance").value + ' usdl-core:validThrough ' + '"' + document.getElementById("valid_through").value + '"^^xsd:date .')
                 .add("bp:" + document.getElementById("bp_instance").value + " usdl-core:hasEntityInvolvement " + "bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement .")
                 .add("bp:" + document.getElementById("bp_instance").value + " usdl-core-cb:hasClassificationDimension " + document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " .")
                 // Create the bp service model
@@ -134,9 +132,23 @@
                 .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile .")
                 .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:domain " + "bp:" + document.getElementById("bp_model").value + " .")
                 .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:range " + "bp:" + document.getElementById("slp_class").value + " .");
-            // Create successor of
+            
+            //Broker policy lifecycle management 
+            //Create validFrom and valid through
+            kb_bp.add("bp:" + document.getElementById("bp_instance").value + ' usdl-core-cb:validFrom ' + '"' + document.getElementById("valid_from").value + '"^^xsd:date .')
+            if (document.getElementById("valid_through").value != "") {
+                kb_bp.add("bp:" + document.getElementById("bp_instance").value + ' usdl-core-cb:validThrough ' + '"' + document.getElementById("valid_through").value + '"^^xsd:date .')
+            }    
+            // Create successor of and deprecation properties, if any.
+            // Deprecation properties will not be created if there is no successor of even if values are provided!
             if (document.getElementById("successor_of_bp").value != "") {
-                kb_bp.add("bp:" + document.getElementById("bp_instance").value + " gr:successorOf <" + document.getElementById("successor_of_bp").value + "> ."); 
+                kb_bp.add("bp:" + document.getElementById("bp_instance").value + " gr:successorOf <" + document.getElementById("successor_of_bp").value + "> .");
+                if (document.getElementById("onboarding_deprecated_from").value != "") {
+                    kb_bp.add("bp:" + document.getElementById("bp_instance").value + ' usdl-core-cb:deprecationOnboardingTimePoint ' + '"' + document.getElementById("onboarding_deprecated_from").value + '"^^xsd:date .'); 
+                    }
+               if (document.getElementById("recommendation_deprecated_from").value != "") {
+                    kb_bp.add("bp:" + document.getElementById("bp_instance").value + ' usdl-core-cb:deprecationRecommendationTimePoint ' + '"' + document.getElementById("recommendation_deprecated_from").value + '"^^xsd:date .');
+                }
             }
 
             // Add classification
@@ -315,8 +327,7 @@
             var base = kb.databank.baseURI
             var services = kb.where("?brokerPolicy a ?serviceModel")
                 .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
-                .where("?brokerPolicy usdl-core:validFrom ?validFrom")
-                .where("?brokerPolicy usdl-core:validThrough ?validThrough");
+                .where("?brokerPolicy usdl-core-cb:validFrom ?validFrom");
 
             services.each(function () {
                 var selection_class = this["serviceModel"];
@@ -331,6 +342,13 @@
                 document.getElementById("bp_model").value = url_class.split('#')[1];
                 document.getElementById("bp_instance").value = url_instance.split('#')[1];
                 document.getElementById("valid_from").value = validFrom.value;
+            })
+            var validthrough = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy usdl-core-cb:validThrough ?validThrough");
+
+            validthrough.each(function () {
+                var validThrough = this["validThrough"];
                 document.getElementById("valid_through").value = validThrough.value;
             })
             var successor = kb.where("?brokerPolicy a ?serviceModel")
@@ -339,7 +357,22 @@
             successor.each(function () {
                 var successor_of = this["successor"];
                 document.getElementById("successor_of_bp").value = successor_of.value._string;
-
+            })
+            var onboarding = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy gr:successorOf ?successor")
+                .where("?brokerPolicy usdl-core-cb:deprecationOnboardingTimePoint ?onboarding");
+            onboarding.each(function () {
+                var onboarding_date = this["onboarding"];
+                document.getElementById("onboarding_deprecated_from").value = onboarding_date.value;
+            })
+            var recommendation = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy gr:successorOf ?successor")
+                .where("?brokerPolicy usdl-core-cb:deprecationRecommendationTimePoint ?recommendation");
+            recommendation.each(function () {
+                var recommendation_date = this["recommendation"];
+                document.getElementById("recommendation_deprecated_from").value = recommendation_date.value;
             })
             var business_entity = kb.where("?bentity a gr:BusinessEntity")
                 .where("?bentity gr:legalName ?legalName")
@@ -1126,10 +1159,6 @@
                                     <input class="form-control" type="text" id="bp_model" value="YourBrokerPolicyModelName">
                                 </div>
                                 <div class="form-group">
-                                    <label>Is successor of (URI to the predecessor broker policy, if any)</label>
-                                    <input class="form-control" type="text" id="successor_of_bp" value="">
-                                </div>
-                                <div class="form-group">
                                     <label>Valid from</label>
                                     <input class="form-control" type="text" id="valid_from" value="YYYY-MM-DD">
                                 </div>
@@ -1137,10 +1166,19 @@
                                     <label>Valid through</label>
                                     <input class="form-control" type="text" id="valid_through" value="YYYY-MM-DD">
                                 </div>
+                                <div class="form-group">
+                                    <label>Is successor of (URI to the predecessor broker policy, if any)</label>
+                                    <input class="form-control" type="text" id="successor_of_bp" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label>Service onboarding deprecation (for predecessor broker policy)</label>
+                                    <input class="form-control" type="text" id="onboarding_deprecated_from" value="YYYY-MM-DD">
+                                </div>
+                                <div class="form-group">
+                                    <label>Service recommendation deprecation (for predecessor broker policy)</label>
+                                    <input class="form-control" type="text" id="recommendation_deprecated_from" value="YYYY-MM-DD">
+                                </div>
                             </form>
-
-
-
                         </div>
                     </div>
                     <div class="panel panel-default">
