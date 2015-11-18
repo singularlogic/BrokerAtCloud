@@ -96,7 +96,11 @@
             document.getElementById("classtaxpref").disabled = true;
             document.getElementById("classtaxroot").disabled = true;
             document.getElementById("classtaxURI").disabled = true;
-
+            document.getElementById("valid_from").disabled = true;
+            document.getElementById("valid_through").disabled = true;
+            document.getElementById("successor_of_bp").disabled = true;
+            document.getElementById("recommendation_deprecated_from").disabled = true;            
+            document.getElementById("onboarding_deprecated_from").disabled = true;
             //deactivateQuantSLSchemaTable();
             //document.getElementById("quant_sl_table_add").disabled = true;
             //document.getElementById("quant_sl_table_delete").disabled = true;
@@ -153,14 +157,12 @@
             var base = kb.databank.baseURI
             var services = kb.where("?brokerPolicy a ?serviceModel")
                 .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
-                .where("?brokerPolicy usdl-core:validFrom ?validFrom")
-                .where("?brokerPolicy usdl-core:validThrough ?validThrough");
+                .where("?brokerPolicy usdl-core-cb:validFrom ?validFrom");
 
             services.each(function () {
                 var selection_class = this["serviceModel"];
                 var selection_instance = this["brokerPolicy"];
                 var validFrom = this["validFrom"];
-                var validThrough = this["validThrough"];
                 var url_class = selection_class.value._string;
                 var url_instance = selection_instance.value._string;
                 base = url_class.split('#')[0];
@@ -169,6 +171,13 @@
                 document.getElementById("bp_model").value = url_class.split('#')[1];
                 document.getElementById("bp_instance").value = url_instance.split('#')[1];
                 document.getElementById("valid_from").value = validFrom.value;
+            })
+            var validthrough = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy usdl-core-cb:validThrough ?validThrough");
+
+            validthrough.each(function () {
+                var validThrough = this["validThrough"];
                 document.getElementById("valid_through").value = validThrough.value;
             })
             var successor = kb.where("?brokerPolicy a ?serviceModel")
@@ -177,9 +186,24 @@
             successor.each(function () {
                 var successor_of = this["successor"];
                 document.getElementById("successor_of_bp").value = successor_of.value._string;
-
             })
-            var business_entity = kb.where("?bentity a gr:BusinessEntity")
+            var onboarding = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy gr:successorOf ?successor")
+                .where("?brokerPolicy usdl-core-cb:deprecationOnboardingTimePoint ?onboarding");
+            onboarding.each(function () {
+                var onboarding_date = this["onboarding"];
+                document.getElementById("onboarding_deprecated_from").value = onboarding_date.value;
+            })
+            var recommendation = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy gr:successorOf ?successor")
+                .where("?brokerPolicy usdl-core-cb:deprecationRecommendationTimePoint ?recommendation");
+            recommendation.each(function () {
+                var recommendation_date = this["recommendation"];
+                document.getElementById("recommendation_deprecated_from").value = recommendation_date.value;
+            })
+           var business_entity = kb.where("?bentity a gr:BusinessEntity")
                 .where("?bentity gr:legalName ?legalName")
             business_entity.each(function () {
                 var bizentity = this["bentity"];
@@ -449,36 +473,45 @@
             var services = kb.where("?sd a usdl-core:Service")
                 .where("?sd dcterms:title ?title")
                 .where("?sd dcterms:description ?description")
-                .where("?sd usdl-core:validFrom ?validFrom")
-                .where("?sd usdl-core:validThrough ?validThrough");
+                .where("?sd usdl-core-cb:validFrom ?validFrom");
 
             services.each(function () {
                 var selection_sd = this["sd"];
                 var selection_title = this["title"];
                 var selection_description = this["description"];
                 var validFrom = this["validFrom"];
-                var validThrough = this["validThrough"];
                 var url_sd = selection_sd.value._string;
-
                 base = url_sd.split('#')[0];
                 document.getElementById("sd_namespace").value = base;
-                //var url_title = selection_title.value._string;
-                //var url_description = selection_description.value._string;
+                var url_title = selection_title.value._string;
+                var url_description = selection_description.value._string;
                 // Assign the service instance to the sd form
 
                 document.getElementById("sd").value = url_sd.split('#')[1];
                 document.getElementById("sd_title").value = selection_title.value;
                 document.getElementById("sd_description").value = selection_description.value;
                 document.getElementById("valid_from_sd").value = validFrom.value;
-                document.getElementById("valid_through_sd").value = validThrough.value;
-
             })
+            var validthrough = kb.where("?sd a usdl-core:Service")
+                .where("?sd usdl-core-cb:validThrough ?validThrough");
+
+            validthrough.each(function () {
+                var validThrough = this["validThrough"];
+                document.getElementById("valid_through_sd").value = validThrough.value;
+            })            
             var successor = kb.where("?sd a usdl-core:Service")
-                .where("?brokerPolicy gr:successorOf ?successor");
+                .where("?sd gr:successorOf ?successor");
             successor.each(function () {
                 var successor_of = this["successor"];
                 document.getElementById("successor_of_sd").value = successor_of.value._string;
 
+            })
+            var recommendation = kb.where("?sd a usdl-core:Service")
+                .where("?sd gr:successorOf ?successor")
+                .where("?sd usdl-core-cb:deprecationRecommendationTimePoint ?recommendation");
+            recommendation.each(function () {
+                var recommendation_date = this["recommendation"];
+                document.getElementById("deprecation_recommendation_sd").value = recommendation_date.value;
             })
             var models = kb.where("?sdModel a <" + document.getElementById("bp_namespace").value + "#" + document.getElementById("bp_model").value + ">")
                 .where(" ?sdModel <" + document.getElementById("bp_namespace").value + "#has" + document.getElementById("slp_class").value + "> ?profile");
@@ -1157,7 +1190,6 @@
                 .add("sd:" + document.getElementById("sd").value + ' dcterms:title ' + '"' + document.getElementById("sd_title").value + '"' + ' .')
                 .add("sd:" + document.getElementById("sd").value + ' dcterms:description ' + '"' + document.getElementById("sd_description").value + '"' + ' .')
                 .add("sd:" + document.getElementById("sd").value + ' usdl-core:validFrom ' + '"' + document.getElementById("valid_from_sd").value + '"^^xsd:date .')
-                .add("sd:" + document.getElementById("sd").value + ' usdl-core:validThrough ' + '"' + document.getElementById("valid_through_sd").value + '"^^xsd:date .')
                 .add("sd:" + document.getElementById("sd").value + " usdl-core:hasEntityInvolvement sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement .")
                 .add("sd:" + document.getElementById("sd").value + " usdl-core-cb:hasServiceModel sd:" + document.getElementById("sd_model").value + " .")
                 // Create the service model instance
@@ -1166,9 +1198,18 @@
                 // Create and assign a profile instance to the service model
                 .add("sd:" + document.getElementById("slp").value + " a bp:" + document.getElementById("slp_class").value + " .")
                 .add("sd:" + document.getElementById("sd_model").value + " bp:has" + document.getElementById("slp_class").value + " sd:" + document.getElementById("slp").value + " .");
-            // Create successor of
+            //Create validFrom and validThrough
+            kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:validFrom ' + '"' + document.getElementById("valid_from_sd").value + '"^^xsd:date .');
+            if (document.getElementById("valid_through_sd").value != "") {
+                kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:validThrough ' + '"' + document.getElementById("valid_through_sd").value + '"^^xsd:date .');
+            }
+            // Create successor of and recommendation deprecation, if any.
+            // Deprecation recommendation will not be created if there is no successor of even if a value is provided!
             if (document.getElementById("successor_of_sd").value != "") {
                 kb_sd.add("sd:" + document.getElementById("sd").value + " gr:successorOf <" + document.getElementById("successor_of_sd").value + "> .");
+                if (document.getElementById("deprecation_recommendation_sd").value != "") {
+                    kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:deprecationRecommendationTimePoint ' + '"' + document.getElementById("deprecation_recommendation_sd").value + '"^^xsd:date .');
+                }
             }
             // Add the chosen classification concepts to the service model
             kb_sd = addClassificationConceptsToSD(kb_sd);
@@ -1262,12 +1303,6 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label" for="successor_of_bp">Successor of</label>
-                                                <div class="col-sm-8">
-                                                    <input class="form-control" type="text" id="successor_of_bp" value="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
                                                 <label class="col-sm-4 control-label" for="valid_from">Valid from</label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control" type="text" id="valid_from" value="">
@@ -1279,6 +1314,25 @@
                                                     <input class="form-control" type="text" id="valid_through" value="">
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="successor_of_bp">Successor of</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="successor_of_bp" value="">
+                                                </div>
+                                            </div> 
+                                              <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="onboarding_deprecated_from">Onboarding deprecated from</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="onboarding_deprecated_from" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="recommendation_deprecated_from">Recommendation deprecated from</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="recommendation_deprecated_from" value="">
+                                                </div>
+                                            </div>
+                                          
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label" for="slp_class">Service Level Profile Type</label>
                                                 <div class="col-sm-8">
@@ -1346,12 +1400,6 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label" for="successor_of_sd">Successor of</label>
-                                                <div class="col-sm-8">
-                                                    <input class="form-control" type="text" id="successor_of_sd" value="">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
                                                 <label class="col-sm-4 control-label" for="valid_from_sd">Valid from</label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control" type="text" id="valid_from_sd" value="YYYY-MM-DD">
@@ -1363,6 +1411,19 @@
                                                     <input class="form-control" type="text" id="valid_through_sd" value="YYYY-MM-DD">
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="successor_of_sd">Successor of</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="successor_of_sd" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="valid_from_sd">Recommendation deprecated from</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="deprecation_recommendation_sd" value="YYYY-MM-DD">
+                                                </div>
+                                            </div>
+ 
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label" for="slp">Service Level Profile Title</label>
                                                 <div class="col-sm-8">

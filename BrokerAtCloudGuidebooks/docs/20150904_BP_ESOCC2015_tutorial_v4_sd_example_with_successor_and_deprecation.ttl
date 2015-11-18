@@ -34,12 +34,14 @@ sd:MyServiceAcronym
   a usdl-core:Service ; 
   dcterms:creator sp:SAP ; 
   dcterms:title "MyFirstHCPService Description Title" ; 
-  dcterms:description "MyFirstHCPService Description" ;  
-  usdl-core-cb:validFrom "2015-11-13"^^xsd:date ; 
-  usdl-core-cb:validThrough "2016-11-13"^^xsd:date ; 
+  dcterms:description "MyFirstHCPService Description" ; 
+  usdl-core:validFrom "2015-11-13"^^xsd:date ; 
   usdl-core:hasEntityInvolvement sd:SAPEntityInvolvement ; 
   usdl-core-cb:hasServiceModel sd:MyFirstHCPServiceModel ; 
-  gr:successorOf <http://yournamespace.com/services/gjzguzg> . 
+  usdl-core-cb:validFrom "2015-11-13"^^xsd:date ; 
+  usdl-core-cb:validThrough "2016-11-13"^^xsd:date ; 
+  gr:successorOf <http://yournamespace.com/services/gjzguzg> ; 
+  usdl-core-cb:deprecationRecommendationTimePoint "2015-12-31"^^xsd:date . 
 
 sd:MyFirstHCPServiceModel 
   a bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
