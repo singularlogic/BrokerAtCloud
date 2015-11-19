@@ -206,13 +206,21 @@ usdl-core-cb:deprecationOnboardingTimePoint a rdf:Property;
     refs:domain usdl-core:ServiceModel;
     rdfs:range xsd:datetime .
 
-# deprecationRecommendationTimePoint can be used in a new broker policy to indicate the time point
-# from which on PuLSaR will stop recommending service descriptions still referring to the “old” broker policy
+# deprecationRecommendationTimePointBP can be used in a new broker policy to indicate the time point
+# from which on PuLSaR and FPR will stop recommending service descriptions still referring to the “old” broker policy
 
 # deprecationRecommendationTimePoint must be >= validFrom of the new broker policy and <= validThrough of the “old” broker policy
 # If not set at all, deprecationRecommendationTimePoint = validThrough of the “old” broker policy
 #
-# deprecationRecommendationTimePoint can also be used in a new service description to indicate the time point
+
+usdl-core-cb:deprecationRecommendationTimePointBP a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label “on boarding deprecation time point”@en ;
+    rdfs:comment "<p>Indicates the time point from which on PuLSaR stops recommendation of services referring to an old broker policy or of services having a new version onboarded.</p>"@en ;
+    refs:domain usdl-core:ServiceModel;
+    rdfs:range xsd:datetime .
+
+# deprecationRecommendationTimePointSD can be used in a new service description to indicate the time point
 # from which on PuLSaR will stop recommending the old version of this service description independent if it is referring 
 # to the “old” or a new broker policy
 # The broker policy always subsumes (overrules) service description.  
@@ -223,7 +231,7 @@ usdl-core-cb:deprecationOnboardingTimePoint a rdf:Property;
 # the deprecationRecommendationTimePoint from the service description. 
 #  
  
-usdl-core-cb:deprecationRecommendationTimePoint a rdf:Property;
+usdl-core-cb:deprecationRecommendationTimePointSD a rdf:Property;
     rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
     rdfs:label “on boarding deprecation time point”@en ;
     rdfs:comment "<p>Indicates the time point from which on PuLSaR stops recommendation of services referring to an old broker policy or of services having a new version onboarded.</p>"@en ;

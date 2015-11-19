@@ -198,7 +198,7 @@
             var recommendation = kb.where("?brokerPolicy a ?serviceModel")
                 .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
                 .where("?brokerPolicy gr:successorOf ?successor")
-                .where("?brokerPolicy usdl-core-cb:deprecationRecommendationTimePoint ?recommendation");
+                .where("?brokerPolicy usdl-core-cb:deprecationRecommendationTimePointBP ?recommendation");
             recommendation.each(function () {
                 var recommendation_date = this["recommendation"];
                 document.getElementById("recommendation_deprecated_from").value = recommendation_date.value;
@@ -508,7 +508,7 @@
             })
             var recommendation = kb.where("?sd a usdl-core:Service")
                 .where("?sd gr:successorOf ?successor")
-                .where("?sd usdl-core-cb:deprecationRecommendationTimePoint ?recommendation");
+                .where("?sd usdl-core-cb:deprecationRecommendationTimePointSD ?recommendation");
             recommendation.each(function () {
                 var recommendation_date = this["recommendation"];
                 document.getElementById("deprecation_recommendation_sd").value = recommendation_date.value;
@@ -1208,7 +1208,7 @@
             if (document.getElementById("successor_of_sd").value != "") {
                 kb_sd.add("sd:" + document.getElementById("sd").value + " gr:successorOf <" + document.getElementById("successor_of_sd").value + "> .");
                 if (document.getElementById("deprecation_recommendation_sd").value != "") {
-                    kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:deprecationRecommendationTimePoint ' + '"' + document.getElementById("deprecation_recommendation_sd").value + '"^^xsd:date .');
+                    kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:deprecationRecommendationTimePointSD ' + '"' + document.getElementById("deprecation_recommendation_sd").value + '"^^xsd:date .');
                 }
             }
             // Add the chosen classification concepts to the service model
@@ -1406,19 +1406,19 @@
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label" for="valid_through_sd">Valid through</label>
+                                                <label class="col-sm-4 control-label" for="valid_through_sd">Valid through (optional)</label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control" type="text" id="valid_through_sd" value="YYYY-MM-DD">
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label" for="successor_of_sd">Successor of</label>
+                                                <label class="col-sm-4 control-label" for="successor_of_sd">Successor of (URI to the predecessor service description, optional)</label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control" type="text" id="successor_of_sd" value="">
                                                 </div>
                                             </div>
                                             <div class="form-group">
-                                                <label class="col-sm-4 control-label" for="valid_from_sd">Recommendation deprecated from</label>
+                                                <label class="col-sm-4 control-label" for="valid_from_sd">Recommendation deprecated from (optional)</label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control" type="text" id="deprecation_recommendation_sd" value="YYYY-MM-DD">
                                                 </div>

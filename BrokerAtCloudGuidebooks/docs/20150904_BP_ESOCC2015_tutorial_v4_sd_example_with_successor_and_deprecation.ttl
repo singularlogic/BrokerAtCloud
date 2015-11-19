@@ -41,7 +41,7 @@ sd:MyServiceAcronym
   usdl-core-cb:validFrom "2015-11-13"^^xsd:date ; 
   usdl-core-cb:validThrough "2016-11-13"^^xsd:date ; 
   gr:successorOf <http://yournamespace.com/services/gjzguzg> ; 
-  usdl-core-cb:deprecationRecommendationTimePoint "2015-12-31"^^xsd:date . 
+  usdl-core-cb:deprecationRecommendationTimePointSD "2016-10-13"^^xsd:date . 
 
 sd:MyFirstHCPServiceModel 
   a bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
