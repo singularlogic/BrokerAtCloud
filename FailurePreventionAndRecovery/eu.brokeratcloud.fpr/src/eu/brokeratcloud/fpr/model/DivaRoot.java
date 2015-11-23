@@ -33,6 +33,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceImpl;
 
 import diva.BoolVariableValue;
@@ -126,6 +127,7 @@ public class DivaRoot {
 
 	public DivaRoot(URI uri) {
 		ResourceSet rs = new ResourceSetImpl();
+		rs.getResourceFactoryRegistry().getExtensionToFactoryMap().put("diva", new XMIResourceFactoryImpl());
 		Resource res = rs.createResource(uri);
 		try {
 			res.load(Collections.EMPTY_MAP);
@@ -824,6 +826,13 @@ public class DivaRoot {
 		}
 		if (prefix == null) {
 			saveModel(previousSaveUri);
+		}
+		if(previousSaveUri.toPlatformString(true)==null){
+			String uriString = previousSaveUri.toFileString();
+			uriString = uriString.substring(0, uriString.length() - 5) + "-" + prefix + ".diva";
+			URI uri = URI.createFileURI(uriString);
+			saveModel(uri);
+			return;
 		}
 		String uriString = previousSaveUri.toPlatformString(true);
 		uriString = uriString.substring(0, uriString.length() - 5) + "-" + prefix + ".diva";

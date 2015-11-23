@@ -16,6 +16,8 @@ import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.eclipse.core.commands.operations.DefaultOperationHistory;
 
+import eu.brokeratcloud.fpr.PropertiesUtil;
+
 public class SparqlQuery {
 
 	public static SparqlQuery INSTANCE = new SparqlQuery();
@@ -37,7 +39,8 @@ public class SparqlQuery {
 
 	public String defaultOutput = "Text";
 
-	public String server = "http://127.0.0.1:3030/bac-cas2/query";
+	public String server = PropertiesUtil.INSTANCE.get("fusekiServer");
+	//public String server = "http://127.0.0.1:3030/bac-cas2/query";
 	// public String server =
 	// "http://netserv.seerc.org:3030/BrokerAtCloud/query"
 
