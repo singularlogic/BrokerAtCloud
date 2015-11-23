@@ -17,7 +17,6 @@
 @prefix time: <http://www.w3.org/2006/time#> . 
 @prefix gr: <http://purl.org/goodrelations/v1#> . 
 @prefix doap: <http://usefulinc.com/ns/doap#> . 
-@prefix px: <http://www.broker-cloud.eu/service-descriptions/torax/categories#> . 
 @prefix bp: <http://yourbrokernamespace.com#> . 
 
 bp:AAAAAAAcronymAAA 
@@ -33,12 +32,14 @@ bp:MyBrokerPolicyTitle
   a bp:MyBrokerPolicyModelName ; 
   dcterms:creator bp:AAAAAAAcronymAAA ; 
   usdl-core:hasEntityInvolvement bp:AAAAAAAcronymAAAEntityInvolvement ; 
-  usdl-core-cb:hasClassificationDimension px:rootOfAllEvil ;
+  usdl-core-cb:hasClassificationDimension <http://www.broker-cloud.eu/service-descriptions/torax/categories#rootOfAllEvil> ; 
   usdl-core-cb:validFrom "2015-11-12"^^xsd:date ; 
   usdl-core-cb:validThrough "2016-11-12"^^xsd:date ;
   gr:successorOf <http://broker-cloud.eu/policies#MyFirstPolicy> ; 
   usdl-core-cb:deprecationOnboardingTimePoint "2015-11-31"^^xsd:date ;
-  usdl-core-cb:deprecationRecommendationTimePoint "2015-12-31"^^xsd:date . 
+  usdl-core-cb:deprecationRecommendationTimePoint "2015-12-31"^^xsd:date ; 
+  bp:hasBestServiceLevelProvile bp:Medium , 
+    bp:ExtraLarge . 
 
 bp:MyBrokerPolicyModelName 
   rdfs:subClassOf usdl-core:ServiceModel . 
@@ -51,33 +52,33 @@ bp:hasBestServiceLevelProvile
   rdfs:domain bp:MyBrokerPolicyModelName ; 
   rdfs:range bp:BestServiceLevelProvile . 
 
-px:MyBrokerPolicyTitleConceptScheme 
+<http://www.broker-cloud.eu/service-descriptions/torax/categories#MyBrokerPolicyTitleConceptScheme> 
   a skos:ConceptScheme ; 
   dcterms:title "Root for all classification dimensions." ; 
   skos:prefLabel "Root Concept Scheme"@en ; 
-  skos:hasTopConcept px:rootOfAllEvil . 
+  skos:hasTopConcept <http://www.broker-cloud.eu/service-descriptions/torax/categories#rootOfAllEvil> . 
 
-px:rootOfAllEvil 
+<http://www.broker-cloud.eu/service-descriptions/torax/categories#rootOfAllEvil> 
   a usdl-core-cb:ClassificationDimension ; 
   skos:prefLabel "Root Concept"@en ; 
-  skos:topConceptOf px:MyBrokerPolicyTitleConceptScheme ; 
-  skos:inScheme px:MyBrokerPolicyTitleConceptScheme ; 
-  skos:narrower px:ClassA , 
-    px:Special . 
+  skos:topConceptOf <http://www.broker-cloud.eu/service-descriptions/torax/categories#MyBrokerPolicyTitleConceptScheme> ; 
+  skos:inScheme <http://www.broker-cloud.eu/service-descriptions/torax/categories#MyBrokerPolicyTitleConceptScheme> ; 
+  skos:narrower <http://www.broker-cloud.eu/service-descriptions/torax/categories#ClassA> , 
+    <http://www.broker-cloud.eu/service-descriptions/torax/categories#Special> . 
 
-px:ClassA 
+<http://www.broker-cloud.eu/service-descriptions/torax/categories#ClassA> 
   a usdl-core-cb:ClassificationDimension ; 
   dcterms:title "Class a" ; 
   skos:prefLabel "caLabel"@en ; 
-  skos:broader px:rootOfAllEvil ; 
-  skos:inScheme px:MyBrokerPolicyTitleConceptScheme . 
+  skos:broader <http://www.broker-cloud.eu/service-descriptions/torax/categories#rootOfAllEvil> ; 
+  skos:inScheme <http://www.broker-cloud.eu/service-descriptions/torax/categories#MyBrokerPolicyTitleConceptScheme> . 
 
-px:Special 
+<http://www.broker-cloud.eu/service-descriptions/torax/categories#Special> 
   a usdl-core-cb:ClassificationDimension ; 
   dcterms:title "very special" ; 
   skos:prefLabel "specialLabel"@en ; 
-  skos:broader px:rootOfAllEvil ; 
-  skos:inScheme px:MyBrokerPolicyTitleConceptScheme . 
+  skos:broader <http://www.broker-cloud.eu/service-descriptions/torax/categories#rootOfAllEvil> ; 
+  skos:inScheme <http://www.broker-cloud.eu/service-descriptions/torax/categories#MyBrokerPolicyTitleConceptScheme> . 
 
 bp:SLAristocracy 
   rdfs:subClassOf usdl-sla:ServiceLevel . 
@@ -277,4 +278,156 @@ bp:Pop
 
 bp:silence 
   a bp:Music ; 
-  rdfs:label "keine Musik für dich"@en . 
+  rdfs:label "keine Musik fÃ¼r dich"@en . 
+
+bp:MediumModel 
+  a bp:MyBrokerPolicyTitle ; 
+  bp:hasBestServiceLevelProvile bp:Medium . 
+
+bp:Medium 
+  a bp:BestServiceLevelProvile ; 
+  bp:hasSLAristocracy bp:MediumSLAristocracyInstance ; 
+  bp:hasSLMusic bp:MediumSLMusicInstance ; 
+  bp:hasSLSpecialness bp:MediumSLSpecialnessInstance ; 
+  bp:hasSLCarelessness bp:MediumSLCarelessnessInstance . 
+
+bp:MediumSLAristocracyInstance 
+  a bp:SLAristocracy ; 
+  bp:hasSLEAristocracy bp:MediumSLEAristocracyInstance . 
+
+bp:MediumSLEAristocracyInstance 
+  a bp:SLEAristocracy ; 
+  bp:hasVarAristocracy bp:MediumVarAristocracyInstance . 
+
+bp:MediumVarAristocracyInstance 
+  a bp:VarAristocracy ; 
+  bp:hasDefaultAristocracy bp:Knight . 
+
+bp:MediumSLMusicInstance 
+  a bp:SLMusic ; 
+  bp:hasSLEMusic bp:MediumSLEMusicInstance . 
+
+bp:MediumSLEMusicInstance 
+  a bp:SLEMusic ; 
+  bp:hasVarMusic bp:MediumVarMusicInstance . 
+
+bp:MediumVarMusicInstance 
+  a bp:VarMusic ; 
+  bp:hasDefaultMusic bp:silence . 
+
+bp:MediumSLSpecialnessInstance 
+  a bp:SLSpecialness ; 
+  bp:hasSLESpecialness bp:MediumSLESpecialnessInstance . 
+
+bp:MediumSLESpecialnessInstance 
+  a bp:SLESpecialness ; 
+  bp:hasVarSpecialness bp:MediumVarSpecialnessInstance . 
+
+bp:MediumVarSpecialnessInstance 
+  a bp:VarSpecialness ; 
+  bp:hasDefaultSpecialness bp:MediumSomewhatSpecial . 
+
+bp:MediumSomewhatSpecial 
+  a bp:Specialness ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "Luftballons"^^xsd:string ; 
+  gr:valueReference bp:SpecialnessValueRange ; 
+  gr:hasValueInteger "5"^^xsd:integer ; 
+  gr:hasMinValueInteger "5"^^xsd:integer ; 
+  gr:hasMaxValueInteger "5"^^xsd:integer . 
+
+bp:MediumSLCarelessnessInstance 
+  a bp:SLCarelessness ; 
+  bp:hasSLECarelessness bp:MediumSLECarelessnessInstance . 
+
+bp:MediumSLECarelessnessInstance 
+  a bp:SLECarelessness ; 
+  bp:hasVarCarelessness bp:MediumVarCarelessnessInstance . 
+
+bp:MediumVarCarelessnessInstance 
+  a bp:VarCarelessness ; 
+  bp:hasDefaultCarelessness bp:MediumLittleCareless . 
+
+bp:MediumLittleCareless 
+  a bp:Carelessness ; 
+  rdfs:label "Better Medium than nothing"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "cares"^^xsd:string ; 
+  gr:valueReference bp:CarelessnessValueRange ; 
+  gr:hasMinValueFloat "0"^^xsd:float ; 
+  gr:hasMaxValueFloat "100"^^xsd:float . 
+
+bp:ExtraLargeModel 
+  a bp:MyBrokerPolicyTitle ; 
+  bp:hasBestServiceLevelProvile bp:ExtraLarge . 
+
+bp:ExtraLarge 
+  a bp:BestServiceLevelProvile ; 
+  bp:hasSLAristocracy bp:ExtraLargeSLAristocracyInstance ; 
+  bp:hasSLMusic bp:ExtraLargeSLMusicInstance ; 
+  bp:hasSLSpecialness bp:ExtraLargeSLSpecialnessInstance ; 
+  bp:hasSLCarelessness bp:ExtraLargeSLCarelessnessInstance . 
+
+bp:ExtraLargeSLAristocracyInstance 
+  a bp:SLAristocracy ; 
+  bp:hasSLEAristocracy bp:ExtraLargeSLEAristocracyInstance . 
+
+bp:ExtraLargeSLEAristocracyInstance 
+  a bp:SLEAristocracy ; 
+  bp:hasVarAristocracy bp:ExtraLargeVarAristocracyInstance . 
+
+bp:ExtraLargeVarAristocracyInstance 
+  a bp:VarAristocracy ; 
+  bp:hasDefaultAristocracy bp:King . 
+
+bp:ExtraLargeSLMusicInstance 
+  a bp:SLMusic ; 
+  bp:hasSLEMusic bp:ExtraLargeSLEMusicInstance . 
+
+bp:ExtraLargeSLEMusicInstance 
+  a bp:SLEMusic ; 
+  bp:hasVarMusic bp:ExtraLargeVarMusicInstance . 
+
+bp:ExtraLargeVarMusicInstance 
+  a bp:VarMusic ; 
+  bp:hasDefaultMusic bp:Rock . 
+
+bp:ExtraLargeSLSpecialnessInstance 
+  a bp:SLSpecialness ; 
+  bp:hasSLESpecialness bp:ExtraLargeSLESpecialnessInstance . 
+
+bp:ExtraLargeSLESpecialnessInstance 
+  a bp:SLESpecialness ; 
+  bp:hasVarSpecialness bp:ExtraLargeVarSpecialnessInstance . 
+
+bp:ExtraLargeVarSpecialnessInstance 
+  a bp:VarSpecialness ; 
+  bp:hasDefaultSpecialness bp:ExtraLargeVerySpecial . 
+
+bp:ExtraLargeVerySpecial 
+  a bp:Specialness ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "Luftballons"^^xsd:string ; 
+  gr:valueReference bp:SpecialnessValueRange ; 
+  gr:hasValueInteger "99"^^xsd:integer ; 
+  gr:hasMinValueInteger "99"^^xsd:integer ; 
+  gr:hasMaxValueInteger "99"^^xsd:integer . 
+
+bp:ExtraLargeSLCarelessnessInstance 
+  a bp:SLCarelessness ; 
+  bp:hasSLECarelessness bp:ExtraLargeSLECarelessnessInstance . 
+
+bp:ExtraLargeSLECarelessnessInstance 
+  a bp:SLECarelessness ; 
+  bp:hasVarCarelessness bp:ExtraLargeVarCarelessnessInstance . 
+
+bp:ExtraLargeVarCarelessnessInstance 
+  a bp:VarCarelessness ; 
+  bp:hasDefaultCarelessness bp:ExtraLargeExtraCareless . 
+
+bp:ExtraLargeExtraCareless 
+  a bp:Carelessness ; 
+  rdfs:label ""^^xsd:string ; 
+  gr:hasUnitOfMeasurement "cares"^^xsd:string ; 
+  gr:valueReference bp:CarelessnessValueRange ; 
+  gr:hasMinValueFloat "9999"^^xsd:float ; 
+  gr:hasMaxValueFloat "10000"^^xsd:float . 

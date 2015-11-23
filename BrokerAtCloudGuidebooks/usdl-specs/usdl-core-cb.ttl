@@ -1,0 +1,239 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix vcard: <http://www.w3.org/TR/vcard-rdf/> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> .
+
+<http://www.linked-usdl.org/ns/usdl-core/cloud-broker> a owl:Ontology;
+	dcterms:created "2014-09-30"^^xsd:date ;
+	dcterms:issued "2014-09-30"^^xsd:date ;
+	rdfs:label "Linked USDL Core Cloud Broker"@en ;
+    dcterms:title "Linked USDL Core Cloud Broker"@en ;
+    dcterms:description """<p>This vocabulary provides a Broker@Cloud extension to the core module of Linked USDL required by the optimization mechanism. It introduces a root class for multi-dimensional classification taxonomies and provides a specification for fuzzy values .</p>"""@en ;
+    dcterms:modified "2015-11-17”^^xsd:date;
+    vann:preferredNamespaceUri "http://www.linked-usdl.org/ns/usdl-core/cloud-broker#";
+    vann:preferredNamespacePrefix "usdl-core-cb";
+    # foaf:page <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/usdl-core-cb.html>;
+    dcterms:creator usdl-core-cb:afriesen ;
+	owl:versionInfo "1.0" .
+
+usdl-core-cb:afriesen a foaf:Person;
+    foaf:name "Andreas Friesen" .
+
+usdl-core-cb:SAP-Karlsruhe a foaf:Organization;
+    foaf:member usdl-core-cb:afriesen;
+    foaf:name "SAP Research Center Karlsruhe, SAP SE";
+    foaf:homepage <http://www.sap.com> .
+ 
+# SAP (AF): Added hasServiceModel property. It has been originally in the usdl-core spec but has been removed from the final version for whatever reasons.
+# This property connects instances of services to instances of service models. 
+
+usdl-core-cb:hasServiceModel a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "has classification dimension"@en ;
+    rdfs:comment "<p>Connects Service to a ServiceModel.</p>"@en ;
+    rdfs:domain usdl-core:Service;
+    rdfs:range usdl-core:ServiceModel .
+    
+usdl-core-cb:ClassificationDimension a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "Classification Dimension"@en ;
+    rdfs:comment "<p>Classification Dimension serves as a root class for platform-specific taxonomies providing vocabularies for classification of services according to different aspects (dimensions) available for classification on a cloud service brokerage platform according to Broker@Cloud methodology. This class is used by the PuLSaR optimization mechanism developed in the Broker@Cloud project for identification of applicable taxonomies.</p>"@en ;
+    rdfs:subClassOf skos:Concept .
+
+usdl-core-cb:hasClassificationDimension a rdf:Property;
+    rdfs:subPropertyOf usdl-core:hasClassification;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "has classification dimension"@en ;
+    rdfs:comment "<p>Indicates a classification dimension of a Service restricted to the taxonomies sub-classified under the usdl-core-cb:ClassificationDimension class.</p>"@en ;
+    rdfs:domain usdl-core:Service;
+    rdfs:range usdl-core-cb:ClassificationDimension .
+
+
+usdl-core-cb:dependsOn a rdf:Property;
+rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "depends on"@en ;
+    rdfs:comment "<p>Indicates if a service depends on an other service. </p>"@en ;
+    rdfs:domain usdl-core:Service;
+    rdfs:range usdl-core:Service .
+
+# Added higherIsBetter
+# This property makes a statement about a quantitative value class in order to interpret the direction of its value range as a utility function.
+
+usdl-core-cb:higherIsBetter a rdf:Property;
+rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "interpretation direction of a quantitative value range as a utility function"@en ;
+    rdfs:comment "<p>Indicates if a higher value corresponds to a better value of the utility function, e.g., 99% availability is better than 95%. True means higher is better. False means lower is better. </p>"@en ;
+    rdfs:domain gr:QuantitativeValue;
+    rdfs:range xsd:boolean .
+
+
+
+# SAP(AF): Good Relations has a convention that interprets hasMin = hasMax as a single value instead of a value range and offers a short link property hasValue. 
+
+# ICCS mechanism has to distinguish between single values and intervals so that we cannot rely on the GR convention.
+# Providing a single value instead of an interval will result in an error.
+# Providing an interval instead of a single value will result in an error, too.
+# SEERC compliance checker has to check this constraint!
+
+usdl-core-cb:isRange a rdf:Property;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "instance of a value class is a range rather than a single value"@en ;
+    rdfs:comment "<p>Indicates if an instance of a value class is a numeric or fuzzy range rather than a single value if the value is true. If the value is false only single values have to be provided in the service description. </p>"@en ;
+    rdfs:domain gr:QuantitativeValue;
+    rdfs:range xsd:boolean .
+
+
+
+# SAP (AF): ICCS requested modelling of boolean service attributes. Ideally, as xsd:boolean.
+
+# GoodRelations offers a  gr:datatypeProductOrServiceProperty 
+# This property is the super property for all pure datatype properties that can be used to describe a gr:ProductOrService (and hence in all subclasses introduced in Linked USDL and our extensions). 
+
+# In products and services ontologies, only such properties that are no quantitative properties and that have no predefined gr:QualitativeValue instances are subproperties of this property. 
+# In practice, this refers to: 
+# integer properties for which the integer value represents qualitative aspects, 
+# for string datatypes (as long as no predefined values exist), 
+# for boolean datatype properties, 
+# and for dates and times.
+
+# The Broker can create subproperties of this property in the Broker Policy to specify simple datatypes 
+
+
+#SAP (AF): The FuzzyValue spec is only required if the optimization mechanism of ICCS will be used by the broker. 
+
+usdl-core-cb:FuzzyValue a rdfs:Class, owl:Class;
+	rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "Fuzzy Value"@en ;
+    rdfs:comment "<p>FuzzyValue extends the notion of quantitative value specified in Good Relations to fuzzy values as specified by the Broker@Cloud optimization mechanism. This class is used by the optimization mechanism and preferences specification developed in the Broker@Cloud project for specification of imprecise (fuzzy) values in consumer preferences specifications.</p>"@en ;
+    rdfs:subClassOf gr:QuantitativeValueFloat .
+
+usdl-core-cb:fuzzyServiceProperty a rdf:Property;
+    rdfs:subPropertyOf gr:hasQuantitativeProductOrServiceProperty;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "fuzzy service property"@en ;
+    rdfs:comment "<p>Indicates a fuzzy service property.</p>"@en ;
+    rdfs:domain usdl-core:Service;
+    rdfs:range usdl-core-cb:FuzzyValue .
+    
+usdl-core-cb:hasMinSupport a rdf:Property;
+    rdfs:subPropertyOf gr:hasMinValueFloat;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "has min support"@en ;
+    rdfs:comment "<p>Indicates a min support.</p>"@en ;
+    rdfs:domain usdl-core-cb:FuzzyValue;
+    rdfs:range xsd:float .
+
+usdl-core-cb:hasMinKernel a rdf:Property;
+    rdfs:subPropertyOf gr:hasMinValueFloat;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "has min kernel"@en ;
+    rdfs:comment "<p>Indicates a min kernel.</p>"@en ;
+    rdfs:domain usdl-core-cb:FuzzyValue;
+    rdfs:range xsd:float .
+    
+usdl-core-cb:hasMaxSupport a rdf:Property;
+    rdfs:subPropertyOf gr:hasMaxValueFloat;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "has max support"@en ;
+    rdfs:comment "<p>Indicates a max support.</p>"@en ;
+    rdfs:domain usdl-core-cb:FuzzyValue;
+    rdfs:range xsd:float .  
+
+usdl-core-cb:hasMaxKernel a rdf:Property;
+    rdfs:subPropertyOf gr:hasMaxValueFloat;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "has max kernel"@en ;
+    rdfs:comment "<p>Indicates a max kernel.</p>"@en ;
+    rdfs:domain usdl-core-cb:FuzzyValue;
+    rdfs:range xsd:float .
+
+usdl-core-cb:hasMaxMembershipValue a rdf:Property;
+    rdfs:subPropertyOf gr:hasValueFloat;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label "has max membership value"@en ;
+    rdfs:comment "<p>Indicates a max membership value.</p>"@en ;
+    rdfs:domain usdl-core-cb:FuzzyValue;
+    rdfs:range xsd:float .
+
+# SAP (AF): Lifecycle management properties
+
+# validFrom is mandatory for broker policies and service descriptions.
+# validFrom of a new broker policy must be >= valid from of the  old broker policy
+# validFrom in a service description must be >= validFrom from the referred broker policy
+# validFrom of a new service description must be >= validFrom from the old service description
+
+usdl-core-cb:validFrom a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label “valid from”@en ;
+    rdfs:comment "<p>Indicates the start date of a validity period.</p>"@en ;
+    refs:domain usdl-core:Service;
+    rdfs:range xsd:datetime .
+
+# validThrough is optional for broker policies and service descriptions. 
+# That is, if the property is not set in the broker policy the valid through is not restricted. 
+# validThrough in a service description must be <= validThrough from the referred broker policy.
+# That is, it is = validThrough from the referred broker policy if not set in the service description. 
+
+usdl-core-cb:validThrough a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label “valid through”@en ;
+    rdfs:comment "<p>Indicates the end date of a validity period.</p>"@en ;
+    refs:domain usdl-core:Service;
+    rdfs:range xsd:datetime .
+
+# Use gr:successorOf to refer to the previous version of a broker policy or service description.
+
+# deprecationOnboardingTimePoint is used in a new broker policy to indicate the time point
+# from which on onboarding of new service descriptions still referring to the “old” broker policy
+# (i.e., the broker policy referred through gr:successorOf in this policy) will be rejected by the 
+# SC3 mechanism.
+# deprecationOnboardingTimePoint must be >= validFrom (of the new broker policy) <= validThrough (of the “old” broker policy)
+# If not set at all, deprecationOnboardingTimePoint = validThrough of the “old” broker policy
+ 
+usdl-core-cb:deprecationOnboardingTimePoint a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label “on boarding deprecation time point”@en ;
+    rdfs:comment "<p>Indicates the time point from which on onboarding of services referring to an old broker policy will be rejected.</p>"@en ;
+    refs:domain usdl-core:ServiceModel;
+    rdfs:range xsd:datetime .
+
+# deprecationRecommendationTimePointBP can be used in a new broker policy to indicate the time point
+# from which on PuLSaR and FPR will stop recommending service descriptions still referring to the “old” broker policy
+
+# deprecationRecommendationTimePoint must be >= validFrom of the new broker policy and <= validThrough of the “old” broker policy
+# If not set at all, deprecationRecommendationTimePoint = validThrough of the “old” broker policy
+#
+
+usdl-core-cb:deprecationRecommendationTimePointBP a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label “on boarding deprecation time point”@en ;
+    rdfs:comment "<p>Indicates the time point from which on PuLSaR stops recommendation of services referring to an old broker policy or of services having a new version onboarded.</p>"@en ;
+    refs:domain usdl-core:ServiceModel;
+    rdfs:range xsd:datetime .
+
+# deprecationRecommendationTimePointSD can be used in a new service description to indicate the time point
+# from which on PuLSaR will stop recommending the old version of this service description independent if it is referring 
+# to the “old” or a new broker policy
+# The broker policy always subsumes (overrules) service description.  
+# This means, if the old service description relies on an old broker policy then the deprecationOnboardingTimePoint can only further restrict
+# recommendation deprecation time interval specified for that broker policy.
+# This means also that if a broker policy to which the old version of service description is referring to has been 
+# deprecated after this service description then the deprecationRecommendationTimePoint from the broker policy will be taken if it is <=
+# the deprecationRecommendationTimePoint from the service description. 
+#  
+ 
+usdl-core-cb:deprecationRecommendationTimePointSD a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker>;
+    rdfs:label “on boarding deprecation time point”@en ;
+    rdfs:comment "<p>Indicates the time point from which on PuLSaR stops recommendation of services referring to an old broker policy or of services having a new version onboarded.</p>"@en ;
+    refs:domain usdl-core:Service;
+    rdfs:range xsd:datetime .    

@@ -1,0 +1,268 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . 
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> . 
+@prefix dcterms: <http://purl.org/dc/terms/> . 
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> . 
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> . 
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> . 
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> . 
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> . 
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> . 
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> . 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+@prefix ctag: <http://commontag.org/ns#> . 
+@prefix org: <http://www.w3.org/ns/org#> . 
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> . 
+@prefix time: <http://www.w3.org/2006/time#> . 
+@prefix gr: <http://purl.org/goodrelations/v1#> . 
+@prefix doap: <http://usefulinc.com/ns/doap#> . 
+@prefix bp: <http://guide.broker-cloud.eu/esocc2015#> . 
+@prefix sd: <http://yournamespace.com/services/yourservicenamespace#> . 
+@prefix sp: <http://sap.com#> . 
+
+sp:SAP 
+  a gr:BusinessEntity ; 
+  gr:legalName "SAP SE" . 
+
+sd:SAPEntityInvolvement 
+  a usdl-core:EntityInvolvement ; 
+  usdl-core:withBusinessRole usdl-business-roles:provider ; 
+  usdl-core:ofBusinessEntity sp:SAP . 
+
+sd:MyServiceAcronym 
+  a usdl-core:Service ; 
+  dcterms:creator sp:SAP ; 
+  dcterms:title "MyFirstHCPService Description Title" ; 
+  dcterms:description "MyFirstHCPService Description" ; 
+  usdl-core:validFrom "2015-11-13"^^xsd:date ; 
+  usdl-core:hasEntityInvolvement sd:SAPEntityInvolvement ; 
+  usdl-core-cb:hasServiceModel sd:MyFirstHCPServiceModel ; 
+  usdl-core-cb:validFrom "2015-11-13"^^xsd:date ; 
+  usdl-core-cb:validThrough "2016-11-13"^^xsd:date ; 
+  gr:successorOf <http://yournamespace.com/services/gjzguzg> ; 
+  usdl-core-cb:deprecationRecommendationTimePointSD "2016-10-13"^^xsd:date . 
+
+sd:MyFirstHCPServiceModel 
+  a bp:BrokerAtCloudESOCC2015TutorialBrokerPolicyModel ; 
+  gr:isVariantOf bp:BrokerAtCloudESOCC2015TutorialBrokerPolicy ; 
+  bp:hasBrokerAtCloudESOCC2015TutorialServiceLevelProfile sd:MyFirstHCPServiceLevelProfile ; 
+  usdl-core-cb:hasClassificationDimension <http://www.broker-cloud.eu/service-descriptions/CAS/categories#Shipment> , 
+    <http://www.broker-cloud.eu/service-descriptions/CAS/categories#BankAndCashManagement> . 
+
+sd:MyFirstHCPServiceLevelProfile 
+  a bp:BrokerAtCloudESOCC2015TutorialServiceLevelProfile ; 
+  bp:hasSLSecurityLevel sd:SLSecurityLevelInstance ; 
+  bp:hasSLAuditability sd:SLAuditabilityInstance ; 
+  bp:hasSLTransportSecurityGuarantees sd:SLTransportSecurityGuaranteesInstance ; 
+  bp:hasSLLearnability sd:SLLearnabilityInstance ; 
+  bp:hasSLAccessibility sd:SLAccessibilityInstance ; 
+  bp:hasSLAmountOfVCPUs sd:SLAmountOfVCPUsInstance ; 
+  bp:hasSLAmountOfConcurrentInstances sd:SLAmountOfConcurrentInstancesInstance ; 
+  bp:hasSLRAM sd:SLRAMInstance ; 
+  bp:hasSLDisc sd:SLDiscInstance ; 
+  bp:hasSLFloatingIPs sd:SLFloatingIPsInstance ; 
+  bp:hasSLEphemeralDisc sd:SLEphemeralDiscInstance ; 
+  bp:hasSLSwapDisc sd:SLSwapDiscInstance . 
+
+sd:SLSecurityLevelInstance 
+  a bp:SLSecurityLevel ; 
+  bp:hasSLESecurityLevel sd:SLESecurityLevelInstance . 
+
+sd:SLESecurityLevelInstance 
+  a bp:SLESecurityLevel ; 
+  bp:hasVarSecurityLevel sd:VarSecurityLevelInstance . 
+
+sd:VarSecurityLevelInstance 
+  a bp:VarSecurityLevel ; 
+  bp:hasDefaultSecurityLevel bp:Low_SecurityLevel . 
+
+sd:SLAuditabilityInstance 
+  a bp:SLAuditability ; 
+  bp:hasSLEAuditability sd:SLEAuditabilityInstance . 
+
+sd:SLEAuditabilityInstance 
+  a bp:SLEAuditability ; 
+  bp:hasVarAuditability sd:VarAuditabilityInstance . 
+
+sd:VarAuditabilityInstance 
+  a bp:VarAuditability ; 
+  bp:hasDefaultAuditability bp:Low_Auditability . 
+
+sd:SLTransportSecurityGuaranteesInstance 
+  a bp:SLTransportSecurityGuarantees ; 
+  bp:hasSLETransportSecurityGuarantees sd:SLETransportSecurityGuaranteesInstance . 
+
+sd:SLETransportSecurityGuaranteesInstance 
+  a bp:SLETransportSecurityGuarantees ; 
+  bp:hasVarTransportSecurityGuarantees sd:VarTransportSecurityGuaranteesInstance . 
+
+sd:VarTransportSecurityGuaranteesInstance 
+  a bp:VarTransportSecurityGuarantees ; 
+  bp:hasDefaultTransportSecurityGuarantees bp:No_TransportSecurityGuarantees . 
+
+sd:SLLearnabilityInstance 
+  a bp:SLLearnability ; 
+  bp:hasSLELearnability sd:SLELearnabilityInstance . 
+
+sd:SLELearnabilityInstance 
+  a bp:SLELearnability ; 
+  bp:hasVarLearnability sd:VarLearnabilityInstance . 
+
+sd:VarLearnabilityInstance 
+  a bp:VarLearnability ; 
+  bp:hasDefaultLearnability bp:Difficult_Learnability . 
+
+sd:SLAccessibilityInstance 
+  a bp:SLAccessibility ; 
+  bp:hasSLEAccessibility sd:SLEAccessibilityInstance . 
+
+sd:SLEAccessibilityInstance 
+  a bp:SLEAccessibility ; 
+  bp:hasVarAccessibility sd:VarAccessibilityInstance . 
+
+sd:VarAccessibilityInstance 
+  a bp:VarAccessibility ; 
+  bp:hasDefaultAccessibility bp:Low_Accessibility . 
+
+sd:SLAmountOfVCPUsInstance 
+  a bp:SLAmountOfVCPUs ; 
+  bp:hasSLEAmountOfVCPUs sd:SLEAmountOfVCPUsInstance . 
+
+sd:SLEAmountOfVCPUsInstance 
+  a bp:SLEAmountOfVCPUs ; 
+  bp:hasVarAmountOfVCPUs sd:VarAmountOfVCPUsInstance . 
+
+sd:VarAmountOfVCPUsInstance 
+  a bp:VarAmountOfVCPUs ; 
+  bp:hasDefaultAmountOfVCPUs sd:VCPU . 
+
+sd:VCPU 
+  a bp:AmountOfVCPUs ; 
+  rdfs:label "dsdsdsd"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "core"^^xsd:string ; 
+  gr:valueReference bp:AmountOfVCPUsValueRange ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "4"^^xsd:integer . 
+
+sd:SLAmountOfConcurrentInstancesInstance 
+  a bp:SLAmountOfConcurrentInstances ; 
+  bp:hasSLEAmountOfConcurrentInstances sd:SLEAmountOfConcurrentInstancesInstance . 
+
+sd:SLEAmountOfConcurrentInstancesInstance 
+  a bp:SLEAmountOfConcurrentInstances ; 
+  bp:hasVarAmountOfConcurrentInstances sd:VarAmountOfConcurrentInstancesInstance . 
+
+sd:VarAmountOfConcurrentInstancesInstance 
+  a bp:VarAmountOfConcurrentInstances ; 
+  bp:hasDefaultAmountOfConcurrentInstances sd:ConcurrentInstances . 
+
+sd:ConcurrentInstances 
+  a bp:AmountOfConcurrentInstances ; 
+  rdfs:label "My concurrent working containers"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "VMinstance"^^xsd:string ; 
+  gr:valueReference bp:AmountOfConcurrentInstancesValueRange ; 
+  gr:hasValueInteger "1"^^xsd:integer ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "1"^^xsd:integer . 
+
+sd:SLRAMInstance 
+  a bp:SLRAM ; 
+  bp:hasSLERAM sd:SLERAMInstance . 
+
+sd:SLERAMInstance 
+  a bp:SLERAM ; 
+  bp:hasVarRAM sd:VarRAMInstance . 
+
+sd:VarRAMInstance 
+  a bp:VarRAM ; 
+  bp:hasDefaultRAM sd:MainMemory . 
+
+sd:MainMemory 
+  a bp:RAM ; 
+  rdfs:label "My main memory reqs"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:valueReference bp:RAMValueRange ; 
+  gr:hasMinValueInteger "512"^^xsd:integer ; 
+  gr:hasMaxValueInteger "2048"^^xsd:integer . 
+
+sd:SLDiscInstance 
+  a bp:SLDisc ; 
+  bp:hasSLEDisc sd:SLEDiscInstance . 
+
+sd:SLEDiscInstance 
+  a bp:SLEDisc ; 
+  bp:hasVarDisc sd:VarDiscInstance . 
+
+sd:VarDiscInstance 
+  a bp:VarDisc ; 
+  bp:hasDefaultDisc sd:HardDisc . 
+
+sd:HardDisc 
+  a bp:Disc ; 
+  rdfs:label "Persistent memory reqs"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
+  gr:valueReference bp:DiscValueRange ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "10"^^xsd:integer . 
+
+sd:SLFloatingIPsInstance 
+  a bp:SLFloatingIPs ; 
+  bp:hasSLEFloatingIPs sd:SLEFloatingIPsInstance . 
+
+sd:SLEFloatingIPsInstance 
+  a bp:SLEFloatingIPs ; 
+  bp:hasVarFloatingIPs sd:VarFloatingIPsInstance . 
+
+sd:VarFloatingIPsInstance 
+  a bp:VarFloatingIPs ; 
+  bp:hasDefaultFloatingIPs sd:PubIP . 
+
+sd:PubIP 
+  a bp:FloatingIPs ; 
+  rdfs:label "One publicly accessible IP."^^xsd:string ; 
+  gr:hasUnitOfMeasurement "IPaddress"^^xsd:string ; 
+  gr:valueReference bp:FloatingIPsValueRange ; 
+  gr:hasValueInteger "1"^^xsd:integer ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "1"^^xsd:integer . 
+
+sd:SLEphemeralDiscInstance 
+  a bp:SLEphemeralDisc ; 
+  bp:hasSLEEphemeralDisc sd:SLEEphemeralDiscInstance . 
+
+sd:SLEEphemeralDiscInstance 
+  a bp:SLEEphemeralDisc ; 
+  bp:hasVarEphemeralDisc sd:VarEphemeralDiscInstance . 
+
+sd:VarEphemeralDiscInstance 
+  a bp:VarEphemeralDisc ; 
+  bp:hasDefaultEphemeralDisc sd:VMdiscspace . 
+
+sd:VMdiscspace 
+  a bp:EphemeralDisc ; 
+  rdfs:label "VM hard disc"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "GB"^^xsd:string ; 
+  gr:valueReference bp:EphemeralDiscValueRange ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "2"^^xsd:integer . 
+
+sd:SLSwapDiscInstance 
+  a bp:SLSwapDisc ; 
+  bp:hasSLESwapDisc sd:SLESwapDiscInstance . 
+
+sd:SLESwapDiscInstance 
+  a bp:SLESwapDisc ; 
+  bp:hasVarSwapDisc sd:VarSwapDiscInstance . 
+
+sd:VarSwapDiscInstance 
+  a bp:VarSwapDisc ; 
+  bp:hasDefaultSwapDisc sd:swap . 
+
+sd:swap 
+  a bp:SwapDisc ; 
+  rdfs:label "Swap disc memory"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:valueReference bp:SwapDiscValueRange ; 
+  gr:hasMinValueInteger "0"^^xsd:integer ; 
+  gr:hasMaxValueInteger "1024"^^xsd:integer . 

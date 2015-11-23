@@ -137,7 +137,7 @@
             event.preventDefault();
         }
         findBase = function (kb) {
-            var base = kb.databank.baseURI
+            var base = kb.databank.baseURI;
             var services = kb.where("?brokerPolicy a ?serviceModel")
                 .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel");
 
@@ -233,17 +233,17 @@
                     //.where("?value gr:valueReference ?unit");
                     //.optional("?value_prop rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue");
                     value_instance.each(function () {
-                            var sel_value_instance = this["value"];
-                            value_instance_url = sel_value_instance.value._string;
-                            var sel_label = this["text"];
-                            value_instance_label = sel_label.value;
-                            //var sel_unit = this["unit"];
-                            //if (sel_unit === undefined) {window.alert("undefined!")} else
-                            //{unit_of_measurement = sel_unit.value._string;}
+                        var sel_value_instance = this["value"];
+                        value_instance_url = sel_value_instance.value._string;
+                        var sel_label = this["text"];
+                        value_instance_label = sel_label.value;
+                        //var sel_unit = this["unit"];
+                        //if (sel_unit === undefined) {window.alert("undefined!")} else
+                        //{unit_of_measurement = sel_unit.value._string;}
 
-                            //window.alert(var_url);
-                        })
-                        // Insert data into the table
+                        //window.alert(var_url);
+                    });
+                    // Insert data into the table
                     var sl_table = document.getElementById("serviceleveldetails");
                     var new_row = sl_table.insertRow(-1);
                     var cell1 = new_row.insertCell(0);
@@ -268,9 +268,8 @@
             sl_property.each(function () {
                 var selection = this["prop"];
                 sl_prop_url[sl_prop_url.length] = selection.value._string;
-            })
+            });
             setServiceLevels(url, sl_prop_url);
-
         }
 
         function loadBP(event) {
@@ -304,7 +303,9 @@
                         .prefix('time', 'http://www.w3.org/2006/time#')
                         .prefix('gr', 'http://purl.org/goodrelations/v1#')
                         .prefix('doap', 'http://usefulinc.com/ns/doap#')
-                        .base(findBase(kb) + "#")
+                        .base(findBase(kb) + "#");
+
+                    kb.prefix('bp', kb.base());
 
                     var classconcepts = kb.where("?concept a usdl-core-cb:ClassificationDimension");
 
@@ -317,25 +318,24 @@
                         concept.text = url.split('#')[1];
                         selectelement.add(concept, null);
 
-                    })
+                    });
 
                     var slpclasses = kb.where("?slp a ?slps")
                         .where("?slps rdfs:subClassOf usdl-sla:ServiceLevelProfile");
 
                     slpclasses.each(function () {
-                            var sel = this["slps"];
-                            var url_slps = sel.value._string;
-                            document.getElementById("slp_class").value = url_slps.split('#')[1];
-                            var selection = this["slp"];
-                            var url = selection.value._string;
-                            var selectelement = document.getElementById("slp");
-                            var slp = document.createElement("option");
-                            slp.value = url;
-                            slp.text = url.split('#')[1];
-                            selectelement.add(slp, null);
-
-                        })
-                        //window.alert(kb.base());
+                        var sel = this["slps"];
+                        var url_slps = sel.value._string;
+                        document.getElementById("slp_class").value = url_slps.split('#')[1];
+                        var selection = this["slp"];
+                        var url = selection.value._string;
+                        var selectelement = document.getElementById("slp");
+                        var slp = document.createElement("option");
+                        slp.value = url;
+                        slp.text = url.split('#')[1];
+                        selectelement.add(slp, null);
+                    });
+                    //window.alert(kb.base());
 
                     document.kb = kb;
                     loadServiceLevels();

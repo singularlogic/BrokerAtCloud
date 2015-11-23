@@ -96,7 +96,11 @@
             document.getElementById("classtaxpref").disabled = true;
             document.getElementById("classtaxroot").disabled = true;
             document.getElementById("classtaxURI").disabled = true;
-
+            document.getElementById("valid_from").disabled = true;
+            document.getElementById("valid_through").disabled = true;
+            document.getElementById("successor_of_bp").disabled = true;
+            document.getElementById("recommendation_deprecated_from").disabled = true;            
+            document.getElementById("onboarding_deprecated_from").disabled = true;
             //deactivateQuantSLSchemaTable();
             //document.getElementById("quant_sl_table_add").disabled = true;
             //document.getElementById("quant_sl_table_delete").disabled = true;
@@ -152,12 +156,13 @@
         function findBase(kb) {
             var base = kb.databank.baseURI
             var services = kb.where("?brokerPolicy a ?serviceModel")
-                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel");
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy usdl-core-cb:validFrom ?validFrom");
 
             services.each(function () {
                 var selection_class = this["serviceModel"];
                 var selection_instance = this["brokerPolicy"];
-
+                var validFrom = this["validFrom"];
                 var url_class = selection_class.value._string;
                 var url_instance = selection_instance.value._string;
                 base = url_class.split('#')[0];
@@ -165,12 +170,40 @@
                 // Assign the service model class and instance to the business policy form
                 document.getElementById("bp_model").value = url_class.split('#')[1];
                 document.getElementById("bp_instance").value = url_instance.split('#')[1];
-                // Assign the service model class and instance to the service description form
-                document.getElementById("servicemodel_class").value = url_class.split('#')[1];
-                document.getElementById("servicemodel").value = url_instance.split('#')[1];
-
+                document.getElementById("valid_from").value = validFrom.value;
             })
-            var business_entity = kb.where("?bentity a gr:BusinessEntity")
+            var validthrough = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy usdl-core-cb:validThrough ?validThrough");
+
+            validthrough.each(function () {
+                var validThrough = this["validThrough"];
+                document.getElementById("valid_through").value = validThrough.value;
+            })
+            var successor = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy gr:successorOf ?successor");
+            successor.each(function () {
+                var successor_of = this["successor"];
+                document.getElementById("successor_of_bp").value = successor_of.value._string;
+            })
+            var onboarding = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy gr:successorOf ?successor")
+                .where("?brokerPolicy usdl-core-cb:deprecationOnboardingTimePoint ?onboarding");
+            onboarding.each(function () {
+                var onboarding_date = this["onboarding"];
+                document.getElementById("onboarding_deprecated_from").value = onboarding_date.value;
+            })
+            var recommendation = kb.where("?brokerPolicy a ?serviceModel")
+                .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
+                .where("?brokerPolicy gr:successorOf ?successor")
+                .where("?brokerPolicy usdl-core-cb:deprecationRecommendationTimePointBP ?recommendation");
+            recommendation.each(function () {
+                var recommendation_date = this["recommendation"];
+                document.getElementById("recommendation_deprecated_from").value = recommendation_date.value;
+            })
+           var business_entity = kb.where("?bentity a gr:BusinessEntity")
                 .where("?bentity gr:legalName ?legalName")
             business_entity.each(function () {
                 var bizentity = this["bentity"];
@@ -404,7 +437,7 @@
 
                     createQuantitativeSLValuesTable(kb);
 
-                    //window.alert(kb.base());
+
                     document.kb = kb;
                 }
                 reader.readAsText(files[0]);
@@ -414,8 +447,9 @@
 
             }
         }
-        function loadClassifications(kb, url_sdmodel){
-               var classifications = kb.where("<" + url_sdmodel + "> usdl-core-cb:hasClassificationDimension ?classification");
+
+        function loadClassifications(kb, url_sdmodel) {
+            var classifications = kb.where("<" + url_sdmodel + "> usdl-core-cb:hasClassificationDimension ?classification");
 
             classifications.each(function () {
                 var classification = this["classification"];
@@ -430,34 +464,54 @@
                 var cell3 = row.insertCell(2);
                 var tax_class = document.getElementById("classtaxonomy").value;
                 cell3.innerHTML = url_classification;
-                
-            })         
+
+            })
         }
-        
-        function findSDbase(kb){
+
+        function findSDbase(kb) {
             var base = kb.databank.baseURI
             var services = kb.where("?sd a usdl-core:Service")
                 .where("?sd dcterms:title ?title")
-                .where("?sd dcterms:description ?description");
+                .where("?sd dcterms:description ?description")
+                .where("?sd usdl-core-cb:validFrom ?validFrom");
 
             services.each(function () {
                 var selection_sd = this["sd"];
                 var selection_title = this["title"];
                 var selection_description = this["description"];
-
+                var validFrom = this["validFrom"];
                 var url_sd = selection_sd.value._string;
-                
                 base = url_sd.split('#')[0];
                 document.getElementById("sd_namespace").value = base;
-                //var url_title = selection_title.value._string;
-                //var url_description = selection_description.value._string;
+                var url_title = selection_title.value._string;
+                var url_description = selection_description.value._string;
                 // Assign the service instance to the sd form
 
                 document.getElementById("sd").value = url_sd.split('#')[1];
                 document.getElementById("sd_title").value = selection_title.value;
                 document.getElementById("sd_description").value = selection_description.value;
+                document.getElementById("valid_from_sd").value = validFrom.value;
+            })
+            var validthrough = kb.where("?sd a usdl-core:Service")
+                .where("?sd usdl-core-cb:validThrough ?validThrough");
 
+            validthrough.each(function () {
+                var validThrough = this["validThrough"];
+                document.getElementById("valid_through_sd").value = validThrough.value;
+            })            
+            var successor = kb.where("?sd a usdl-core:Service")
+                .where("?sd gr:successorOf ?successor");
+            successor.each(function () {
+                var successor_of = this["successor"];
+                document.getElementById("successor_of_sd").value = successor_of.value._string;
 
+            })
+            var recommendation = kb.where("?sd a usdl-core:Service")
+                .where("?sd gr:successorOf ?successor")
+                .where("?sd usdl-core-cb:deprecationRecommendationTimePointSD ?recommendation");
+            recommendation.each(function () {
+                var recommendation_date = this["recommendation"];
+                document.getElementById("deprecation_recommendation_sd").value = recommendation_date.value;
             })
             var models = kb.where("?sdModel a <" + document.getElementById("bp_namespace").value + "#" + document.getElementById("bp_model").value + ">")
                 .where(" ?sdModel <" + document.getElementById("bp_namespace").value + "#has" + document.getElementById("slp_class").value + "> ?profile");
@@ -485,7 +539,7 @@
                 var url_bizentity = bizentity.value._string;
 
                 // Assign the service model class and instance to the business policy form
-                document.getElementById("sp_namespace").value =url_bizentity.split('#')[0];
+                document.getElementById("sp_namespace").value = url_bizentity.split('#')[0];
                 document.getElementById("sp_business_entity").value = url_bizentity.split('#')[1];
                 document.getElementById("sp_legal_name").value = legalname.value;
 
@@ -493,25 +547,26 @@
 
             return base
         }
-        function loadQualSDSLs(kb){
+
+        function loadQualSDSLs(kb) {
             var qual_sl_table = document.getElementById("qualserviceleveldetails");
             for (i = 1; i < qual_sl_table.rows.length; i++) {
-                var qual_value_type = qual_sl_table.rows[i].cells[0].childNodes[0].value;        
+                var qual_value_type = qual_sl_table.rows[i].cells[0].childNodes[0].value;
                 var qual_value = kb.where("sd:Var" + qual_value_type + "Instance " + "bp:hasDefault" + qual_value_type + " ?qualvalue")
                 qual_value.each(function () {
                     var qvalue = this["qualvalue"];
-                    var qvalue_url = qvalue.value._string; 
+                    var qvalue_url = qvalue.value._string;
                     var ddlb = document.getElementById("ddlb_" + qual_value_type);
-                    for (j=0; j < ddlb.options.length; j++){
-                        if (ddlb.options[j].value == qvalue_url){
+                    for (j = 0; j < ddlb.options.length; j++) {
+                        if (ddlb.options[j].value == qvalue_url) {
                             ddlb.options[j].selected = "selected";
                         }
                     }
                 })
             }
         }
-        
-         function loadQuantSDSLs(kb){
+
+        function loadQuantSDSLs(kb) {
             var prefix = 'quantitativeValues_';
             var quant_sl_table = document.getElementById("slvaluequant");
             var quant_sl_size = document.getElementById("slQuantitative").children.length;
@@ -527,8 +582,8 @@
                 var idValue = prefix + i + '_value';
 
                 var quant_value_typeNG = document.getElementById(idType).innerHTML;
-                
-                
+
+
                 var quant_value_instNG = document.getElementById(idInstance).value;
 
                 var isRangeNG = document.getElementById(idIsRange).checked;
@@ -546,37 +601,35 @@
                         // Int value range subclass
                         // Query instance from the kb
                         var quant_value = kb.where("?quantvalue" + " a bp:" + quant_value_typeNG)
-                        .where("?quantvalue" + " rdfs:label ?label")
-                        .where("?quantvalue" + " gr:hasMinValueInteger ?min")
-                        .where("?quantvalue" + " gr:hasMaxValueInteger ?max"); 
+                            .where("?quantvalue" + " rdfs:label ?label")
+                            .where("?quantvalue" + " gr:hasMinValueInteger ?min")
+                            .where("?quantvalue" + " gr:hasMaxValueInteger ?max");
 
                         quant_value.each(function () {
                             var qvalue = this["quantvalue"];
-                            var qvalue_url = qvalue.value._string; 
+                            var qvalue_url = qvalue.value._string;
                             var desc = this["label"];
                             var minval = this["min"];
-                            var maxval =this["max"];
-                            window.alert(qvalue_url);
+                            var maxval = this["max"];
                             document.getElementById(idInstance).value = qvalue_url.split("#")[1];
                             document.getElementById(idInstanceDesc).value = desc.value;
                             document.getElementById(idMinValue).value = minval.value;
                             document.getElementById(idMaxValue).value = maxval.value;
-                    
-                })
+
+                        })
                     } else {
                         // Float value range subclass
-                       var quant_value = kb.where("?quantvalue" + " a bp:" + quant_value_typeNG)
-                        .where("?quantvalue" + " rdfs:label ?label")
-                        .where("?quantvalue" + " gr:hasMinValueFloat ?min")
-                        .where("?quantvalue" + " gr:hasMaxValueFloat ?max"); 
+                        var quant_value = kb.where("?quantvalue" + " a bp:" + quant_value_typeNG)
+                            .where("?quantvalue" + " rdfs:label ?label")
+                            .where("?quantvalue" + " gr:hasMinValueFloat ?min")
+                            .where("?quantvalue" + " gr:hasMaxValueFloat ?max");
 
                         quant_value.each(function () {
                             var qvalue = this["quantvalue"];
-                            var qvalue_url = qvalue.value._string; 
+                            var qvalue_url = qvalue.value._string;
                             var desc = this["label"];
                             var minval = this["min"];
-                            var maxval =this["max"];
-                            window.alert(qvalue_url);
+                            var maxval = this["max"];
                             document.getElementById(idInstance).value = qvalue_url.split("#")[1];
                             document.getElementById(idInstanceDesc).value = desc.value;
                             document.getElementById(idMinValue).value = minval.value;
@@ -589,16 +642,15 @@
                     // int or float value subclass
                     if (valueTypeNG == "integer") {
                         // Int value subclass
-                       var quant_value = kb.where("?quantvalue" + " a bp:" + quant_value_typeNG)
-                        .where("?quantvalue" + " rdfs:label ?label")
-                        .where("?quantvalue" + " gr:hasValueInteger ?val"); 
+                        var quant_value = kb.where("?quantvalue" + " a bp:" + quant_value_typeNG)
+                            .where("?quantvalue" + " rdfs:label ?label")
+                            .where("?quantvalue" + " gr:hasValueInteger ?val");
 
                         quant_value.each(function () {
                             var qvalue = this["quantvalue"];
-                            var qvalue_url = qvalue.value._string; 
+                            var qvalue_url = qvalue.value._string;
                             var desc = this["label"];
                             var intval = this["val"];
-                            window.alert(qvalue_url);
                             document.getElementById(idInstance).value = qvalue_url.split("#")[1];
                             document.getElementById(idInstanceDesc).value = desc.value;
                             document.getElementById(idValue).value = intval.value;
@@ -606,16 +658,15 @@
 
                     } else {
                         // Float value subclass
-                      var quant_value = kb.where("?quantvalue" + " a bp:" + quant_value_typeNG)
-                        .where("?quantvalue" + " rdfs:label ?label")
-                        .where("?quantvalue" + " gr:hasValueFloat ?val"); 
+                        var quant_value = kb.where("?quantvalue" + " a bp:" + quant_value_typeNG)
+                            .where("?quantvalue" + " rdfs:label ?label")
+                            .where("?quantvalue" + " gr:hasValueFloat ?val");
 
                         quant_value.each(function () {
                             var qvalue = this["quantvalue"];
-                            var qvalue_url = qvalue.value._string; 
+                            var qvalue_url = qvalue.value._string;
                             var desc = this["label"];
                             var floatval = this["val"];
-                            window.alert(qvalue_url);
                             document.getElementById(idInstance).value = qvalue_url.split("#")[1];
                             document.getElementById(idInstanceDesc).value = desc.value;
                             document.getElementById(idValue).value = floatval.value;
@@ -624,9 +675,10 @@
                     }
                 }
             }
-            
+
 
         }
+
         function loadSD(event) {
             event.preventDefault();
             var dt = event.dataTransfer
@@ -662,8 +714,8 @@
                         .base(findSDbase(kbsd) + "#");
 
                     kbsd.prefix('sd', document.getElementById("sd_namespace").value + "#")
-                    .prefix('sp', document.getElementById("sp_namespace").value + "#");
-  
+                        .prefix('sp', document.getElementById("sp_namespace").value + "#");
+
                     loadClassifications(kbsd);
                     loadQualSDSLs(kbsd);
                     loadQuantSDSLs(kbsd);
@@ -689,13 +741,13 @@
             qvTable.setAttribute('id', 'table_' + serviceLevel);
             qvTable.setAttribute('style', 'width: 90%');
             var qvHeader = qvTable.insertRow();
-            [{
+                [{
                 content: 'Value',
                 class: 'col-sm-3'
-            }, {
+                }, {
                 content: 'Description',
                 class: 'col-sm-9'
-            }].forEach(function (descriptor) {
+                }].forEach(function (descriptor) {
                 var headerCell = document.createElement('th');
                 if (descriptor.content) headerCell.appendChild(document.createTextNode(descriptor.content));
                 if (descriptor.class) headerCell.setAttribute('class', descriptor.class);
@@ -1137,14 +1189,28 @@
                 .add("sd:" + document.getElementById("sd").value + " dcterms:creator sp:" + document.getElementById("sp_business_entity").value + " .")
                 .add("sd:" + document.getElementById("sd").value + ' dcterms:title ' + '"' + document.getElementById("sd_title").value + '"' + ' .')
                 .add("sd:" + document.getElementById("sd").value + ' dcterms:description ' + '"' + document.getElementById("sd_description").value + '"' + ' .')
+                .add("sd:" + document.getElementById("sd").value + ' usdl-core:validFrom ' + '"' + document.getElementById("valid_from_sd").value + '"^^xsd:date .')
                 .add("sd:" + document.getElementById("sd").value + " usdl-core:hasEntityInvolvement sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement .")
                 .add("sd:" + document.getElementById("sd").value + " usdl-core-cb:hasServiceModel sd:" + document.getElementById("sd_model").value + " .")
                 // Create the service model instance
-                .add("sd:" + document.getElementById("sd_model").value + " a bp:" + document.getElementById("servicemodel_class").value + " .")
-                .add("sd:" + document.getElementById("sd_model").value + " gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
+                .add("sd:" + document.getElementById("sd_model").value + " a bp:" + document.getElementById("bp_model").value + " .")
+                .add("sd:" + document.getElementById("sd_model").value + " gr:isVariantOf bp:" + document.getElementById("bp_instance").value + " .")
                 // Create and assign a profile instance to the service model
                 .add("sd:" + document.getElementById("slp").value + " a bp:" + document.getElementById("slp_class").value + " .")
                 .add("sd:" + document.getElementById("sd_model").value + " bp:has" + document.getElementById("slp_class").value + " sd:" + document.getElementById("slp").value + " .");
+            //Create validFrom and validThrough
+            kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:validFrom ' + '"' + document.getElementById("valid_from_sd").value + '"^^xsd:date .');
+            if (document.getElementById("valid_through_sd").value != "") {
+                kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:validThrough ' + '"' + document.getElementById("valid_through_sd").value + '"^^xsd:date .');
+            }
+            // Create successor of and recommendation deprecation, if any.
+            // Deprecation recommendation will not be created if there is no successor of even if a value is provided!
+            if (document.getElementById("successor_of_sd").value != "") {
+                kb_sd.add("sd:" + document.getElementById("sd").value + " gr:successorOf <" + document.getElementById("successor_of_sd").value + "> .");
+                if (document.getElementById("deprecation_recommendation_sd").value != "") {
+                    kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:deprecationRecommendationTimePointSD ' + '"' + document.getElementById("deprecation_recommendation_sd").value + '"^^xsd:date .');
+                }
+            }
             // Add the chosen classification concepts to the service model
             kb_sd = addClassificationConceptsToSD(kb_sd);
             kb_sd = addQualServiceLevelsToSD(kb_sd);
@@ -1188,7 +1254,7 @@
                     <div class="droptarget" ondrop="loadBP(event)" ondragover="allowDrop(event)">
                         <p id="bp"> 1. Drop your broker policy here! </p>
                     </div>
-                    
+
 
                 </div>
                 <div id="serviceDescriptionLoadArea" class="collapse in">
@@ -1236,6 +1302,37 @@
                                                     <input class="form-control" type="text" id="bp_model" placeholder="YourBrokerPolicyModelName">
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="valid_from">Valid from</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="valid_from" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="valid_through">Valid through</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="valid_through" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="successor_of_bp">Successor of</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="successor_of_bp" value="">
+                                                </div>
+                                            </div> 
+                                              <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="onboarding_deprecated_from">Onboarding deprecated from</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="onboarding_deprecated_from" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="recommendation_deprecated_from">Recommendation deprecated from</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="recommendation_deprecated_from" value="">
+                                                </div>
+                                            </div>
+                                          
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label" for="slp_class">Service Level Profile Type</label>
                                                 <div class="col-sm-8">
@@ -1302,6 +1399,31 @@
                                                     <input class="form-control" type="text" id="sd_model" value="YourServiceModelName">
                                                 </div>
                                             </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="valid_from_sd">Valid from</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="valid_from_sd" value="YYYY-MM-DD">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="valid_through_sd">Valid through (optional)</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="valid_through_sd" value="YYYY-MM-DD">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="successor_of_sd">Successor of (URI to the predecessor service description, optional)</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="successor_of_sd" value="">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label" for="valid_from_sd">Recommendation deprecated from (optional)</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control" type="text" id="deprecation_recommendation_sd" value="YYYY-MM-DD">
+                                                </div>
+                                            </div>
+ 
                                             <div class="form-group">
                                                 <label class="col-sm-4 control-label" for="slp">Service Level Profile Title</label>
                                                 <div class="col-sm-8">
@@ -1399,9 +1521,7 @@
 
                             <h1>Specify Qualitative values</h1>
                             <p id="qualvalues">
-
                             </p>
-
                         </div>
                     </div>
 

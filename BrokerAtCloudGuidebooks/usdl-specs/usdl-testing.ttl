@@ -1,0 +1,341 @@
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix gr: <http://purl.org/goodrelations/v1#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@prefix vcard: <http://www.w3.org/TR/vcard-rdf/> .
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> .
+@prefix usdl-testing: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing#> .
+
+<http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing> a owl:Ontology;
+	dcterms:created "2014-11-05"^^xsd:date ;
+	dcterms:issued "2014-11-00"^^xsd:date ;
+	rdfs:label "Linked USDL Cloud Broker Testing"@en ;
+    dcterms:title "Linked USDL Cloud Broker Testing"@en ;
+    dcterms:description """<p>This vocabulary provides a Broker@Cloud extension to the core module of Linked USDL for integration of testing specification into service descriptions. It provides support for classification of testing methods and identification of providers offering testing services. This specification is intended to be quite general in its support for describing testing methods that range from informal to highly formal approaches.</p>"""@en ;
+    dcterms:modified "2014-09-30"^^xsd:date;
+    vann:preferredNamespaceUri "http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing#";
+    vann:preferredNamespacePrefix "usdl-testing";
+    # foaf:page <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing/testing.html>;
+    dcterms:creator usdl-testing:afriesen ;
+	owl:versionInfo "1.0" .
+
+usdl-testing:afriesen a foaf:Person;
+    foaf:name "Andreas Friesen" .
+
+usdl-testing:SAP-Karlsruhe a foaf:Organization;
+    foaf:member usdl-testing:afriesen;
+    foaf:name "SAP Research Center Karlsruhe, SAP SE";
+    foaf:homepage <http://www.sap.com> .
+ 
+# SAP (AF): Specification of the classes of the testing specification
+
+usdl-testing:TestingProcedure a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "Testing Procedure"@en ;
+    rdfs:comment "<p>Testing Procedure serves as anchor to attach testing instructions and the testing method to be used with the service description.</p>"@en .
+
+usdl-testing:TestingMethod a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "Testing Method"@en ;
+    rdfs:comment "<p>Testing Method allows a multi-dimensional classification of a concrete testing method.</p>"@en .
+
+usdl-testing:TestingFocus a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "Testing Focus"@en ;
+    rdfs:comment "<p> Testing Focus serves as a root class for a taxonomy providing vocabulary for classification of the testing focus of a testing method. </p>"@en ;
+    rdfs:subClassOf skos:Concept .
+
+usdl-testing:TestingGoal a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "Testing Goal"@en ;
+    rdfs:comment "<p> Testing Goal serves as a root class for a taxonomy providing vocabulary for classification of the testing goal of a testing method. </p>"@en ;
+    rdfs:subClassOf skos:Concept .
+    
+usdl-testing:TestingScale a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "Testing Scale"@en ;
+    rdfs:comment "<p> Testing Scale serves as a root class for a taxonomy providing vocabulary for classification of the testing scale of a testing method. </p>"@en ;
+    rdfs:subClassOf skos:Concept .
+
+usdl-testing:TestAdequacyCriteria a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "Test Adequacy Criteria"@en ;
+    rdfs:comment "<p> Test Adequacy Criteria serves as a root class for a taxonomy providing vocabulary for classification of the test adequacy criteria of a testing method. </p>"@en ;
+    rdfs:subClassOf skos:Concept .
+    
+usdl-testing:TestGenerationStrategy a rdfs:Class, owl:Class;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "Test Generation Strategy"@en ;
+    rdfs:comment "<p> Test Generation Strategy serves as a root class for a taxonomy providing vocabulary for classification of the test generation strategy of a testing method. </p>"@en ;
+    rdfs:subClassOf skos:Concept .
+    
+# SAP (AF): Specification of properties related to the TestingProcedure class.
+
+usdl-testing:hasTestingProcedure a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "has testing procedure"@en ;
+    rdfs:comment "<p>Connects Service Interaction Point to a TestingProcedure.</p>"@en ;
+    rdfs:domain usdl-core:InteractionPoint;
+    rdfs:range usdl-testing:TestingProcedure .
+    
+usdl-testing:hasTestingInstructions a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "has testing instructions"@en ;
+    rdfs:comment "<p>Connects TestingProcedure to a resource containing testing instructions.</p>"@en ;
+    rdfs:domain usdl-testing:TestingProcedure;
+    rdfs:range rdfs:Resource .
+
+usdl-testing:hasTestingMethod a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "has testing method"@en ;
+    rdfs:comment "<p>Connects TestingProcedure to TestingMethod description.</p>"@en ;
+    rdfs:domain usdl-testing:TestingProcedure;
+    rdfs:range usdl-testing:TestingMethod .
+
+usdl-testing:hasTestingProvider a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "has testing provider"@en ;
+    rdfs:comment "<p>Connects TestingProcedure to a business entity describing the provider of the TestingProcedure.</p>"@en ;
+    rdfs:domain usdl-testing:TestingProcedure;
+    rdfs:range gr:BusinessEntity .
+    
+# SAP (AF): Specification of properties describing TestingMethod. 
+
+usdl-testing:hasModel a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "has model"@en ;
+    rdfs:comment "<p>Connects TestingMethod to a resource containing method-specific model for the specification of testing instructions.</p>"@en ;
+    rdfs:domain usdl-testing:TestingMethod;
+    rdfs:range rdfs:Resource .
+    
+usdl-testing:hasCode a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "has code"@en ;
+    rdfs:comment "<p>Can be used to characterize the TestingMethod by a (de facto) standardized code. </p>"@en ;
+    rdfs:domain usdl-testing:TestingMethod;
+    rdfs:range xsd:String .
+    
+usdl-testing:focusOn a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "focus on"@en ;
+    rdfs:comment "<p>Connects TestingMethod to TestingFocus classification dimension.</p>"@en ;
+    rdfs:domain usdl-testing:TestingMethod;
+    rdfs:range usdl-testing:TestingFocus .
+
+usdl-testing:withGoal a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "with goal"@en ;
+    rdfs:comment "<p>Connects TestingMethod to TestingGoal classification dimension.</p>"@en ;
+    rdfs:domain usdl-testing:TestingMethod;
+    rdfs:range usdl-testing:TestingGoal .
+
+usdl-testing:withScale a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "with scale"@en ;
+    rdfs:comment "<p>Connects TestingMethod to TestingScale classification dimension.</p>"@en ;
+    rdfs:domain usdl-testing:TestingMethod;
+    rdfs:range usdl-testing:TestingScale .
+
+usdl-testing:hasAdequacy a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "has adequacy"@en ;
+    rdfs:comment "<p>Connects TestingMethod to TestAdequacyCriteria classification dimension.</p>"@en ;
+    rdfs:domain usdl-testing:TestingMethod;
+    rdfs:range usdl-testing:TestAdequacyCriteria .
+    
+usdl-testing:hasStrategy a rdf:Property;
+    rdfs:isDefinedBy <http://www.linked-usdl.org/ns/usdl-core/cloud-broker/testing>;
+    rdfs:label "has strategy"@en ;
+    rdfs:comment "<p>Connects TestingMethod to TestGenerationStrategy classification dimension.</p>"@en ;
+    rdfs:domain usdl-testing:TestingMethod;
+    rdfs:range usdl-testing:TestGenerationStrategy .
+
+# SAP (AF): Specification of the testing focus taxonomy
+
+usdl-testing:TestingFocusClassificationScheme a skos:ConceptScheme;
+    dcterms:title "Testing Focus classification concept scheme";
+    dcterms:description """<p>This vocabulary provides the concepts to classify testing focus dimension. </p>"""@en ;
+	skos:prefLabel "Testing Focus Classification"@en ;
+	skos:hasTopConcept usdl-testing:FunctionalTesting, usdl-testing:NonFunctionalTesting, usdl-testing:AcceptanceTesting .
+
+usdl-testing:FunctionalTesting a usdl-testing:TestingFocus ;
+    rdfs:label "Functional Testing"@en ;
+    skos:prefLabel "Functional Testing"@en ;
+    skos:altLabel "Functional Testing"@en ;
+    skos:definition "<p>A testing method is a functional testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestingFocusClassificationScheme;
+	skos:inScheme usdl-testing:TestingFocusClassificationScheme.
+	
+usdl-testing:NonFunctionalTesting a usdl-testing:TestingFocus ;
+    rdfs:label "Non-Functional Testing"@en ;
+    skos:prefLabel "Non-Functional Testing"@en ;
+    skos:altLabel "Non-Functional Testing"@en ;
+    skos:definition "<p>A testing method is a non-functional testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestingFocusClassificationScheme;
+	skos:inScheme usdl-testing:TestingFocusClassificationScheme.
+	
+usdl-testing:AcceptanceTesting a usdl-testing:TestingFocus ;
+    rdfs:label "Acceptance Testing"@en ;
+    skos:prefLabel "Acceptance Testing"@en ;
+    skos:altLabel "Acceptance Testing"@en ;
+    skos:definition "<p>A testing method is an acceptance testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestingFocusClassificationScheme;
+	skos:inScheme usdl-testing:TestingFocusClassificationScheme.
+	
+# SAP (AF): Specification of the testing goal taxonomy
+
+usdl-testing:TestingGoalClassificationScheme a skos:ConceptScheme;
+    dcterms:title "Testing Goal classification concept scheme";
+    dcterms:description """<p>This vocabulary provides the concepts to classify testing goal dimension. </p>"""@en ;
+	skos:prefLabel "Testing Goal Classification"@en ;
+	skos:hasTopConcept usdl-testing:ExploratoryTesting, usdl-testing:ConformanceTesting, usdl-testing:RegressionTesting, usdl-testing:DefectTesting, usdl-testing:StressTesting .
+
+usdl-testing:ExploratoryTesting a usdl-testing:TestingGoal ;
+    rdfs:label "Exploratory Testing"@en ;
+    skos:prefLabel "Exploratory Testing"@en ;
+    skos:altLabel "Exploratory Testing"@en ;
+    skos:definition "<p>A testing method is an exploratory testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestingGoalClassificationScheme;
+	skos:inScheme usdl-testing:TestingGoalClassificationScheme.
+	
+usdl-testing:ConformanceTestingTesting a usdl-testing:TestingGoal ;
+    rdfs:label "ConformanceTesting Testing"@en ;
+    skos:prefLabel "ConformanceTesting Testing"@en ;
+    skos:altLabel "ConformanceTesting Testing"@en ;
+    skos:definition "<p>A testing method is a conformanceTesting testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestingGoalClassificationScheme;
+	skos:inScheme usdl-testing:TestingGoalClassificationScheme.
+	
+usdl-testing:RegressionTesting a usdl-testing:TestingGoal ;
+    rdfs:label "Regression Testing"@en ;
+    skos:prefLabel "Regression Testing"@en ;
+    skos:altLabel "Regression Testing"@en ;
+    skos:definition "<p>A testing method is a regression testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestingGoalClassificationScheme;
+	skos:inScheme usdl-testing:TestingGoalClassificationScheme.
+
+usdl-testing:DefectTesting a usdl-testing:TestingGoal ;
+    rdfs:label "Defect Testing"@en ;
+    skos:prefLabel "Defect Testing"@en ;
+    skos:altLabel "Defect Testing"@en ;
+    skos:definition "<p>A testing method is a defect testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestingGoalClassificationScheme;
+	skos:inScheme usdl-testing:TestingGoalClassificationScheme.
+	
+usdl-testing:StressTesting a usdl-testing:TestingGoal ;
+    rdfs:label "Stress Testing"@en ;
+    skos:prefLabel "Stress Testing"@en ;
+    skos:altLabel "Stress Testing"@en ;
+    skos:definition "<p>A testing method is a stress testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestingGoalClassificationScheme;
+	skos:inScheme usdl-testing:TestingGoalClassificationScheme.
+	
+# SAP (AF): Ab hier falsch! Specification of the test adequacy criteria taxonomy
+
+usdl-testing:TestAdequacyCriteriaClassificationScheme a skos:ConceptScheme;
+    dcterms:title "Test Adequacy Criteria classification concept scheme";
+    dcterms:description """<p>This vocabulary provides the concepts to classify test adequacy criteria dimension. </p>"""@en ;
+	skos:prefLabel "Test Adequacy Criteria Classification"@en ;
+	skos:hasTopConcept usdl-testing:ModelBasedTesting, usdl-testing:CodeBasedTesting, usdl-testing:FaultBasedTesting .
+
+usdl-testing:ModelBasedTesting a usdl-testing:TestAdequacyCriteria ;
+    rdfs:label "Model-based Testing"@en ;
+    skos:prefLabel "Model-based Testing"@en ;
+    skos:altLabel "Model-based Testing"@en ;
+    skos:definition "<p>A testing method is a model-based testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestAdequacyCriteriaClassificationScheme;
+	skos:inScheme usdl-testing:TestAdequacyCriteriaClassificationScheme.
+	
+usdl-testing:CodeBasedTesting a usdl-testing:TestAdequacyCriteria ;
+    rdfs:label "Code-based Testing"@en ;
+    skos:prefLabel "Code-based Testing"@en ;
+    skos:altLabel "Code-based Testing"@en ;
+    skos:definition "<p>A testing method is a code-based testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestAdequacyCriteriaClassificationScheme;
+	skos:inScheme usdl-testing:TestAdequacyCriteriaClassificationScheme.
+	
+usdl-testing:FaultBasedTesting a usdl-testing:TestAdequacyCriteria ;
+    rdfs:label "Fault-based Testing"@en ;
+    skos:prefLabel "Fault-based Testing"@en ;
+    skos:altLabel "Fault-based Testing"@en ;
+    skos:definition "<p>A testing method is a fault-based testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestAdequacyCriteriaClassificationScheme;
+	skos:inScheme usdl-testing:TestAdequacyCriteriaClassificationScheme.
+	
+# SAP (AF): Specification of the testing scale taxonomy
+
+usdl-testing:TestingScaleClassificationScheme a skos:ConceptScheme;
+    dcterms:title "Testing Scale classification concept scheme";
+    dcterms:description """<p>This vocabulary provides the concepts to classify testing scale dimension. </p>"""@en ;
+	skos:prefLabel "Testing Scale Classification"@en ;
+	skos:hasTopConcept usdl-testing:UnitTesting, usdl-testing:IntegrationTesting, usdl-testing:SystemTesting .
+
+usdl-testing:UnitTesting a usdl-testing:TestingScale ;
+    rdfs:label "Unit Testing"@en ;
+    skos:prefLabel "Unit Testing"@en ;
+    skos:altLabel "Unit Testing"@en ;
+    skos:definition "<p>A testing method is a unit testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestingScaleClassificationScheme;
+	skos:inScheme usdl-testing:TestingScaleClassificationScheme.
+
+usdl-testing:IntegrationTesting a usdl-testing:TestingScale ;
+    rdfs:label "Integration Testing"@en ;
+    skos:prefLabel "Integration Testing"@en ;
+    skos:altLabel "Integration Testing"@en ;
+    skos:definition "<p>A testing method is an integration testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestingScaleClassificationScheme;
+	skos:inScheme usdl-testing:TestingScaleClassificationScheme.
+	
+usdl-testing:SystemTesting a usdl-testing:TestingScale ;
+    rdfs:label "System Testing"@en ;
+    skos:prefLabel "System Testing"@en ;
+    skos:altLabel "System Testing"@en ;
+    skos:definition "<p>A testing method is a system testing method.</p>"@en ;
+    skos:topConceptOf usdl-testing:TestingScaleClassificationScheme;
+	skos:inScheme usdl-testing:TestingScaleClassificationScheme.
+	
+# SAP (AF): Specification of the test generation strategy taxonomy
+
+usdl-testing:TestGenerationStrategyClassificationScheme a skos:ConceptScheme;
+    dcterms:title "Test Generation Strategy classification concept scheme";
+    dcterms:description """<p>This vocabulary provides the concepts to classify test generation strategy dimension. </p>"""@en ;
+	skos:prefLabel "Testing Generation Strategy Classification"@en ;
+	skos:hasTopConcept usdl-testing:ManualTesting, usdl-testing:RandomTesting, usdl-testing:SystematicTesting, usdl-testing:SearchBasedTesting .
+
+usdl-testing:ManualTesting a usdl-testing:TestGenerationStrategy ;
+    rdfs:label "Manual Testing"@en ;
+    skos:prefLabel "Manual Testing"@en ;
+    skos:altLabel "Manual Testing"@en ;
+    skos:definition "<p>A testing method is a manual testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestGenerationStrategyClassificationScheme;
+	skos:inScheme usdl-testing:TestGenerationStrategyClassificationScheme.
+
+usdl-testing:RandomTesting a usdl-testing:TestGenerationStrategy ;
+    rdfs:label "Random Testing"@en ;
+    skos:prefLabel "Random Testing"@en ;
+    skos:altLabel "Random Testing"@en ;
+    skos:definition "<p>A testing method is a random testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestGenerationStrategyClassificationScheme;
+	skos:inScheme usdl-testing:TestGenerationStrategyClassificationScheme.
+	
+usdl-testing:SystematicTesting a usdl-testing:TestGenerationStrategy ;
+    rdfs:label "Systematic Testing"@en ;
+    skos:prefLabel "Systematic Testing"@en ;
+    skos:altLabel "Systematic Testing"@en ;
+    skos:definition "<p>A testing method is a systematic testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestGenerationStrategyClassificationScheme;
+	skos:inScheme usdl-testing:TestGenerationStrategyClassificationScheme.
+	
+usdl-testing:SearchBasedTesting a usdl-testing:TestGenerationStrategy ;
+    rdfs:label "Search-based Testing"@en ;
+    skos:prefLabel "Search-based Testing"@en ;
+    skos:altLabel "Search-based Testing"@en ;
+    skos:definition "<p>A testing method is a search-based testing method.</p>"@en ;
+	skos:topConceptOf usdl-testing:TestGenerationStrategyClassificationScheme;
+	skos:inScheme usdl-testing:TestGenerationStrategyClassificationScheme.

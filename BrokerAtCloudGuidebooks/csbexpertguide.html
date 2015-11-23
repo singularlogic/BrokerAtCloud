@@ -71,772 +71,772 @@
                         <ul>
                             <li>The Pub/Sub system that has been used for Broker@Cloud is the WSO<sub>2</sub> Message Broker version 2.1.1, which can be downloaded from here:
                                 <a href="http://wso2.com/more-downloads/message-broker/">Message Broker</a></li>
-                                <li>Extract the downloaded .zip file to a location in your machine, this will be called the <code>MB_HOME</code>.</li>
-                                <li>The Pub/sub needs to be run in a different port than the default one. For this purpose, edit <code>MB_HOME/repository/conf/carbon.xml</code>, find the Offset tag and change its value to 1. Save and close the file.</li>
-                            </ul>
-                        </section>
-                        <section id="instSc3">
-                            <h2>SC<sup>3</sup> Installation <small>Service Consistency and Compliance Checking module</small></h2>
-                            <p>SC<sup>3</sup> seamlessly integrates with the following two components:</p>
-                            <ol>
-                                <li>WSO<sub>2</sub> Governance Registry 4.6.0</li>
-                                <li>Apache Tomcat 6</li>
-                            </ol>
-                            <h3>WSO<sub>2</sub> Governance Registry 4.6.0 Installation</h3>
-                            <ul>
-                                <li>The WSO<sub>2</sub> Governance Registry 4.6.0 can be downloaded from here:
-                                    <a href="http://wso2.com/products/governance-registry/">GReg</a></li>
-                                    <li>Extract the downloaded .zip file to a location in your machine, this will be called the <code>GREG_HOME</code></li>
-                                </ul>
+                            <li>Extract the downloaded .zip file to a location in your machine, this will be called the <code>MB_HOME</code>.</li>
+                            <li>The Pub/sub needs to be run in a different port than the default one. For this purpose, edit <code>MB_HOME/repository/conf/carbon.xml</code>, find the Offset tag and change its value to 1. Save and close the file.</li>
+                        </ul>
+                    </section>
+                    <section id="instSc3">
+                        <h2>SC<sup>3</sup> Installation <small>Service Consistency and Compliance Checking module</small></h2>
+                        <p>SC<sup>3</sup> seamlessly integrates with the following two components:</p>
+                        <ol>
+                            <li>WSO<sub>2</sub> Governance Registry 4.6.0</li>
+                            <li>Apache Tomcat 6</li>
+                        </ol>
+                        <h3>WSO<sub>2</sub> Governance Registry 4.6.0 Installation</h3>
+                        <ul>
+                            <li>The WSO<sub>2</sub> Governance Registry 4.6.0 can be downloaded from here:
+                                <a href="http://wso2.com/products/governance-registry/">GReg</a></li>
+                            <li>Extract the downloaded .zip file to a location in your machine, this will be called the <code>GREG_HOME</code></li>
+                        </ul>
 
-                                <h3>Apache Tomcat 6 Installation Installation</h3>
+                        <h3>Apache Tomcat 6 Installation Installation</h3>
+                        <ul>
+                            <li>Apache Tomcat 6 can be downloaded from here:
+                                <a href="http://apache.tsl.gr/tomcat/tomcat-6/v6.0.43/bin/apache-tomcat-6.0.43.zip">Apache Tomcat</a></li>
+                            <li>Extract the downloaded .zip file to a location in your machine, this will be called the <code>TOMCAT_HOME</code></li>
+                        </ul>
+
+                        <h3>Configure SC<sup>3</sup></h3>
+                        <ul>
+                            <li>All the software artefacts of the SC<sup>3</sup> system are located at the following GitHub repository: <a href="https://github.com/chrispetsos-seerc/BrokerAtCloud.git">Broker@Cloud Git</a></li>
+                            <li>Clone this repository locally on your system</li>
+                            <li>Import the following projects from the cloned repository within Eclipse:
+                                <ol>
+                                    <li><code>MessageBroker</code></li>
+                                    <li><code>PolicyCompletenessCompliance</code></li>
+                                    <li><code>BrokerLibs</code></li>
+                                    <li><code>MessageBrokerComponents</code></li>
+                                    <li><code>org.seerc.brokeratcloud.webservice</code></li>
+                                </ol>
+                            </li>
+                            <li>Next:
                                 <ul>
-                                    <li>Apache Tomcat 6 can be downloaded from here:
-                                        <a href="http://apache.tsl.gr/tomcat/tomcat-6/v6.0.43/bin/apache-tomcat-6.0.43.zip">Apache Tomcat</a></li>
-                                        <li>Extract the downloaded .zip file to a location in your machine, this will be called the <code>TOMCAT_HOME</code></li>
-                                    </ul>
+                                    <li>Go to <code>Servers</code> tab inside Eclipse</li>
+                                    <li>Right-click inside the panel and select <code>New &#8594; Server</code></li>
+                                    <li>Select <code>Apache &#8594; Tomcat v6.0 Server</code></li>
+                                    <li>Click <code>Browse</code> next to <code>Tomcat Installation Directory</code> and select the <code>TOMCAT_HOME</code> directory you’ve created earlier</li>
+                                    <li>Click <code>Next</code> and add the <code>MessageBrokerComponents</code> and the <code>org.seerc.brokeratcloud.webservice</code> projects to the <code>Configured</code> column</li>
+                                    <li>Click <code>Finish</code></li>
+                                    <li>Clean and re-build your projects within Eclipse</li>
+                                </ul>
+                            </li>
+                            <li>Export the first two projects above as JAR files and the last two as WAR files</li>
+                            <li>Copy the generated JAR files to the <code>&lt;GREG_HOME&gt;/repository/components/lib</code> folder and the generated WAR files to the <code>&lt;TOMCAT_HOME&gt;/webapps</code> folder</li>
+                            <li>The BrokerLibs project has a <code>lib</code> folder. Copy all the contents of this folder to the following two destinations:
+                                <ol>
+                                    <li><code>GREG_HOME/repository/components/lib</code></li>
+                                    <li><code>TOMCAT_HOME/lib</code></li>
+                                </ol>
+                            </li>
+                            <li>Download and install the WSO<sub>2</sub> Developer Studio. This can be downloaded from here: <a href="http://wso2.com/products/developer-studio/">Developer Studio</a></li>
+                            <li>Click on the version of <code>Eclipse JavaEEKepler + Developer Studio v 3.7.1</code> that suits your system specifications </li>
+                            <li>Extract the downloaded .zip file to a location in your machine, this will be called the <code>WSO2DEV_HOME</code></li>
+                            <li>Open WSO<sub>2</sub> Developer Studio and import the following projects from the previously cloned repository:
+                                <ol>
+                                    <li><code>BrokerAtCloud</code></li>
+                                    <li><code>BrokerPolicyValidationHandler</code></li>
+                                    <li><code>MessageBroker</code></li>
+                                    <li><code>PolicyCompletenessCompliance</code></li>
+                                    <li><code>ServiceDeprecationHandler</code></li>
+                                </ol>
+                            </li>
+                            <li>Download this <a href="http://maven.wso2.org/nexus/service/local/artifact/maven/redirect?r=wso2maven2&g=org.wso2.carbon&a=org.wso2.carbon.registry.api&v=4.0.0&e=jar">library</a></li>
+                            <li>Rename it to <code>org.wso2.carbon.registry.api_4.0.0.jar</code> and place it inside <code>ECLIPSE_WORKSPACE/.metadata/.plugins/org.wso2.developerstudio.eclipse.libraries/lib</code> where <code>ECLIPSE_WORKSPACE</code> is the workspace you are currently working on inside WSO<sub>2</sub> Developer Studio.</li>
+                            <li>Expand the <code>BrokerPolicyValidationHandler</code> project and right-click on <code>BrokerAtCloud</code> sub-project</li>
+                            <li>Select <code>Export Composite Application Project</code>, select a path to export to and click <code>Finish</code></li>
+                            <li>A <code>BrokerAtCloud_1.0.0.car</code> should be generated there</li>
+                            <li>Copy this file to <code>GREG_HOME/repository/deployment/server/carbonapps</code> (create the <code>carbonapps</code> folder if it doesn’t exist)</li>
+                        </ul>
+                    </section>
+                    <section id="instPulsar">
+                        <h2>PuLSaR Installation <small>Continuous Optimisation module</small></h2>
+                        <ul>
+                            <li>All the software artefacts of PuLSaR are located at the following GitHub repository: <a href="https://github.com/SingularLogic/BrokerAtCloud.git">Broker@Cloud Git</a>.</li>
+                            <li>Clone this repository locally on your system.</li>
+                            <li>Alternatively you may download only the <a href="https://github.com/SingularLogic/BrokerAtCloud/tree/master/PuLSaR">PuLSaR project</a>.</li>
+                            <li>Create a new database in MariaDB using your favorite tool (e.g. HeidiSQL).</li>
+                            <li>Connect to the newly created database (e.g. using HeidiSQL) and execute script <code>var/maria_db/initialize_db.sql</code> or <code>var/maria_db/initialize_db_with_sample_data.sql</code>.</li>
+                            <li>Open a command prompt window (in Windows start <code>cmd.exe</code>; in *nix/Linux start a <code>bash</code> shell)</li>
+                            <li>Change directory to the location where PuLSaR files reside (e.g. <code>cd brokeratcloud/PuLSaR</code>).</li>
+                            <li>Edit file <code>src/main/resources/feedback.properties</code> and set the correct values to parameters <code>db.conn-str, db.username, db.password</code>.</li>
+                            <li>Give <code>mvn clean package</code>. (An internet connection is required the first time you run this command in order to download and cache dependencies)</li>
+                            <li>Run script <code>bin\deps.bat</code> (in Windows) or <code>bin/deps.sh</code> (in *nix/Linux). (An internet connection might be required the first time you run this command in order to download and cache dependencies)</li>
+                            <li>Run script <code>bin\fuseki-setup.bat</code> (in Windows) or <code>bin/fuseki-setup.sh</code> (in *nix/Linux).</li>
+                        </ul>
 
-                                    <h3>Configure SC<sup>3</sup></h3>
-                                    <ul>
-                                        <li>All the software artefacts of the SC<sup>3</sup> system are located at the following GitHub repository: <a href="https://github.com/chrispetsos-seerc/BrokerAtCloud.git">Broker@Cloud Git</a></li>
-                                        <li>Clone this repository locally on your system</li>
-                                        <li>Import the following projects from the cloned repository within Eclipse:
-                                            <ol>
-                                                <li><code>MessageBroker</code></li>
-                                                <li><code>PolicyCompletenessCompliance</code></li>
-                                                <li><code>BrokerLibs</code></li>
-                                                <li><code>MessageBrokerComponents</code></li>
-                                                <li><code>org.seerc.brokeratcloud.webservice</code></li>
-                                            </ol>
-                                        </li>
-                                        <li>Next:
-                                            <ul>
-                                                <li>Go to <code>Servers</code> tab inside Eclipse</li>
-                                                <li>Right-click inside the panel and select <code>New &#8594; Server</code></li>
-                                                <li>Select <code>Apache &#8594; Tomcat v6.0 Server</code></li>
-                                                <li>Click <code>Browse</code> next to <code>Tomcat Installation Directory</code> and select the <code>TOMCAT_HOME</code> directory you’ve created earlier</li>
-                                                <li>Click <code>Next</code> and add the <code>MessageBrokerComponents</code> and the <code>org.seerc.brokeratcloud.webservice</code> projects to the <code>Configured</code> column</li>
-                                                <li>Click <code>Finish</code></li>
-                                                <li>Clean and re-build your projects within Eclipse</li>
-                                            </ul>
-                                        </li>
-                                        <li>Export the first two projects above as JAR files and the last two as WAR files</li>
-                                        <li>Copy the generated JAR files to the <code>&lt;GREG_HOME&gt;/repository/components/lib</code> folder and the generated WAR files to the <code>&lt;TOMCAT_HOME&gt;/webapps</code> folder</li>
-                                        <li>The BrokerLibs project has a <code>lib</code> folder. Copy all the contents of this folder to the following two destinations:
-                                            <ol>
-                                                <li><code>GREG_HOME/repository/components/lib</code></li>
-                                                <li><code>TOMCAT_HOME/lib</code></li>
-                                            </ol>
-                                        </li>
-                                        <li>Download and install the WSO<sub>2</sub> Developer Studio. This can be downloaded from here: <a href="http://wso2.com/products/developer-studio/">Developer Studio</a></li>
-                                        <li>Click on the version of <code>Eclipse JavaEEKepler + Developer Studio v 3.7.1</code> that suits your system specifications </li>
-                                        <li>Extract the downloaded .zip file to a location in your machine, this will be called the <code>WSO2DEV_HOME</code></li>
-                                        <li>Open WSO<sub>2</sub> Developer Studio and import the following projects from the previously cloned repository:
-                                            <ol>
-                                                <li><code>BrokerAtCloud</code></li>
-                                                <li><code>BrokerPolicyValidationHandler</code></li>
-                                                <li><code>MessageBroker</code></li>
-                                                <li><code>PolicyCompletenessCompliance</code></li>
-                                                <li><code>ServiceDeprecationHandler</code></li>
-                                            </ol>
-                                        </li>
-                                        <li>Download this <a href="http://maven.wso2.org/nexus/service/local/artifact/maven/redirect?r=wso2maven2&g=org.wso2.carbon&a=org.wso2.carbon.registry.api&v=4.0.0&e=jar">library</a></li>
-                                        <li>Rename it to <code>org.wso2.carbon.registry.api_4.0.0.jar</code> and place it inside <code>ECLIPSE_WORKSPACE/.metadata/.plugins/org.wso2.developerstudio.eclipse.libraries/lib</code> where <code>ECLIPSE_WORKSPACE</code> is the workspace you are currently working on inside WSO<sub>2</sub> Developer Studio.</li>
-                                        <li>Expand the <code>BrokerPolicyValidationHandler</code> project and right-click on <code>BrokerAtCloud</code> sub-project</li>
-                                        <li>Select <code>Export Composite Application Project</code>, select a path to export to and click <code>Finish</code></li>
-                                        <li>A <code>BrokerAtCloud_1.0.0.car</code> should be generated there</li>
-                                        <li>Copy this file to <code>GREG_HOME/repository/deployment/server/carbonapps</code> (create the <code>carbonapps</code> folder if it doesn’t exist)</li>
-                                    </ul>
-                                </section>
-                                <section id="instPulsar">
-                                    <h2>PuLSaR Installation <small>Continuous Optimisation module</small></h2>
-                                    <ul>
-                                        <li>All the software artefacts of PuLSaR are located at the following GitHub repository: <a href="https://github.com/SingularLogic/BrokerAtCloud.git">Broker@Cloud Git</a>.</li>
-                                        <li>Clone this repository locally on your system.</li>
-                                        <li>Alternatively you may download only the <a href="https://github.com/SingularLogic/BrokerAtCloud/tree/master/PuLSaR">PuLSaR project</a>.</li>
-                                        <li>Create a new database in MariaDB using your favorite tool (e.g. HeidiSQL).</li>
-                                        <li>Connect to the newly created database (e.g. using HeidiSQL) and execute script <code>var/maria_db/initialize_db.sql</code> or <code>var/maria_db/initialize_db_with_sample_data.sql</code>.</li>
-                                        <li>Open a command prompt window (in Windows start <code>cmd.exe</code>; in *nix/Linux start a <code>bash</code> shell)</li>
-                                        <li>Change directory to the location where PuLSaR files reside (e.g. <code>cd brokeratcloud/PuLSaR</code>).</li>
-                                        <li>Edit file <code>src/main/resources/feedback.properties</code> and set the correct values to parameters <code>db.conn-str, db.username, db.password</code>.</li>
-                                        <li>Give <code>mvn clean package</code>. (An internet connection is required the first time you run this command in order to download and cache dependencies)</li>
-                                        <li>Run script <code>bin\deps.bat</code> (in Windows) or <code>bin/deps.sh</code> (in *nix/Linux). (An internet connection might be required the first time you run this command in order to download and cache dependencies)</li>
-                                        <li>Run script <code>bin\fuseki-setup.bat</code> (in Windows) or <code>bin/fuseki-setup.sh</code> (in *nix/Linux).</li>
-                                    </ul>
+                        <h3>Configure PuLSaR </h3>
+                        <ul>
+                            <li>To add/delete/modify pulsar users edit file <code>jetty-users.properties</code>. After saving changes copy file into <code>bin</code> directory and overwrite any existing file.</li>
+                            <li>To change MariaDB connection settings edit file <code>src/main/resources/feedback.properties</code> and then recompile using command <code>mvn package</code>. You will need to restart PuLSaR in order the new settings to take effect.</li>
+                            <li>To change Pub/sub settings edit file <code>src/main/resources/pubsub.properties</code> and then recompile using command <code>mvn package</code>. You will need to restart PuLSaR in order the new settings to take effect.</li>
+                            <li>To change logging settings edit file <code>src/main/resources/log4j.properties</code> and then recompile using command <code>mvn package</code>. You will need to restart PuLSaR in order the new settings to take effect.</li>
+                        </ul>
 
-                                    <h3>Configure PuLSaR </h3>
-                                    <ul>
-                                        <li>To add/delete/modify pulsar users edit file <code>jetty-users.properties</code>. After saving changes copy file into <code>bin</code> directory and overwrite any existing file.</li>
-                                        <li>To change MariaDB connection settings edit file <code>src/main/resources/feedback.properties</code> and then recompile using command <code>mvn package</code>. You will need to restart PuLSaR in order the new settings to take effect.</li>
-                                        <li>To change Pub/sub settings edit file <code>src/main/resources/pubsub.properties</code> and then recompile using command <code>mvn package</code>. You will need to restart PuLSaR in order the new settings to take effect.</li>
-                                        <li>To change logging settings edit file <code>src/main/resources/log4j.properties</code> and then recompile using command <code>mvn package</code>. You will need to restart PuLSaR in order the new settings to take effect.</li>
-                                    </ul>
+                        <h3>Start PuLSaR </h3>
+                        <ul>
+                            <li>First start MariaDB if not already running.</li>
+                            <li>Run script <code>bin\fuseki.bat</code> (in Windows) or <code>bin/fuseki.sh</code> (in *nix/Linux).</li>
+                            <li>Run script <code>bin\pulsar.bat</code> (in Windows) or <code>bin/pulsar.sh</code> (in *nix/Linux).</li>
+                            <li>Run script <code>bin\cli.bat</code> (in Windows) or <code>bin/cli.sh</code> (in *nix/Linux).</li>
+                            <li>When CLI command prompt <code>PULSAR&gt;</code> write give <code>feedback schedule 60000</code> and press ENTER.</li>
+                            <li>The following links should now be available on your system:
+                                <ul>
+                                    <li><a href="https://localhost:3030">Fuseki Control Panel</a></li>
+                                    <li><a href="https://localhost:9090">PuLSaR </a></li>
+                                </ul>
+                            </li>
+                            <li>You can logging using any user listed in file <code>jetty-users.properties</code>.</li>
+                        </ul>
 
-                                    <h3>Start PuLSaR </h3>
-                                    <ul>
-                                        <li>First start MariaDB if not already running.</li>
-                                        <li>Run script <code>bin\fuseki.bat</code> (in Windows) or <code>bin/fuseki.sh</code> (in *nix/Linux).</li>
-                                        <li>Run script <code>bin\pulsar.bat</code> (in Windows) or <code>bin/pulsar.sh</code> (in *nix/Linux).</li>
-                                        <li>Run script <code>bin\cli.bat</code> (in Windows) or <code>bin/cli.sh</code> (in *nix/Linux).</li>
-                                        <li>When CLI command prompt <code>PULSAR&gt;</code> write give <code>feedback schedule 60000</code> and press ENTER.</li>
-                                        <li>The following links should now be available on your system:
-                                            <ul>
-                                                <li><a href="https://localhost:3030">Fuseki Control Panel</a></li>
-                                                <li><a href="https://localhost:9090">PuLSaR </a></li>
-                                            </ul>
-                                        </li>
-                                        <li>You can logging using any user listed in file <code>jetty-users.properties</code>.</li>
-                                    </ul>
-
-                                    <h3>Stopping PuLSaR </h3>
-                                    <ul>
-                                        <li>At CLI command prompt <code>PULSAR&gt;</code> type <code>q</code> (shorthand for quit) and press ENTER.</li>
-                                        <li>At PuLSaR console (<code>bin\pulsar.bat</code>) hit <code>Ctrl+C</code> in order to close console.</li>
-                                        <li>At Fuseki console (<code>bin\fuseki.bat</code>) hit <code>Ctrl+C</code> in order to close console.</li>
-                                        <li>Optionally, stop MariaDB.</li>
-                                    </ul>
-                                </section>
-                                <section id="instFPR">
-                                    <h2>FPR Installation <small>Failure Prevention and Recovery module</small></h2>
+                        <h3>Stopping PuLSaR </h3>
+                        <ul>
+                            <li>At CLI command prompt <code>PULSAR&gt;</code> type <code>q</code> (shorthand for quit) and press ENTER.</li>
+                            <li>At PuLSaR console (<code>bin\pulsar.bat</code>) hit <code>Ctrl+C</code> in order to close console.</li>
+                            <li>At Fuseki console (<code>bin\fuseki.bat</code>) hit <code>Ctrl+C</code> in order to close console.</li>
+                            <li>Optionally, stop MariaDB.</li>
+                        </ul>
+                    </section>
+                    <section id="instFPR">
+                        <h2>FPR Installation <small>Failure Prevention and Recovery module</small></h2>
 
 
-                                    <h3>Install the Failure Analysis tool</h3>
+                        <h3>Install the Failure Analysis tool</h3>
 
-                                    <ul>
-                                        <li>Clone the software artefacts of the Failure Analysis tool from the GitHub repository at: <a href="https://github.com/chrispetsos-seerc/BrokerAtCloud.git">Broker@Cloud Git</a></li>
-                                    </ul>
+                        <ul>
+                            <li>Clone the software artefacts of the Failure Analysis tool from the GitHub repository at: <a href="https://github.com/chrispetsos-seerc/BrokerAtCloud.git">Broker@Cloud Git</a></li>
+                        </ul>
 
-                                    <h3>Configure the Failure Analysis tool</h3>
+                        <h3>Configure the Failure Analysis tool</h3>
 
-                                    <ul>
-                                        <li>Change directory to <code>&lt;path-to-local-copy-Broker@Cloud-Git-repository&gt;/FailureAnalysis/repository/conf</code></li>
-                                        <li>Edit the file <code>jndi.properties</code></li>
-                                        <li>Replace <code>brokerlist='tcp://213.249.38.66:5673'</code> with <code>brokerlist='tcp://&lt;pub-sub-server-ip&gt;:&lt;pub-sub-server-port&gt;'</code></li>
-                                    </ul>
+                        <ul>
+                            <li>Change directory to <code>&lt;path-to-local-copy-Broker@Cloud-Git-repository&gt;/FailureAnalysis/repository/conf</code></li>
+                            <li>Edit the file <code>jndi.properties</code></li>
+                            <li>Replace <code>brokerlist='tcp://213.249.38.66:5673'</code> with <code>brokerlist='tcp://&lt;pub-sub-server-ip&gt;:&lt;pub-sub-server-port&gt;'</code></li>
+                        </ul>
 
-                                    <h3>Start the Failure Analysis tool</h3>
+                        <h3>Start the Failure Analysis tool</h3>
 
-                                    <ul>
-                                        <li>Change directory to <code>&lt;path-to-local-copy-Broker@Cloud-Git-repository&gt;/FailureAnalysis/bin</code></li>
-                                        <li>Run <code>./failureanalysis.sh</code> on GNU/Linux systems or <code>./failureanalysis.bat</code> on Windows systems</li>
-                                        <li>WSO<sub>2</sub> CEP server runs with the predefined failure analysis rules; to modify the predefined rules or create new ones, access the WSO<sub>2</sub> CEP administration console at: <code>https://&lt;failure-analysis-server-ip&gt;:9443/carbon/</code></li>
-                                    </ul>
+                        <ul>
+                            <li>Change directory to <code>&lt;path-to-local-copy-Broker@Cloud-Git-repository&gt;/FailureAnalysis/bin</code></li>
+                            <li>Run <code>./failureanalysis.sh</code> on GNU/Linux systems or <code>./failureanalysis.bat</code> on Windows systems</li>
+                            <li>WSO<sub>2</sub> CEP server runs with the predefined failure analysis rules; to modify the predefined rules or create new ones, access the WSO<sub>2</sub> CEP administration console at: <code>https://&lt;failure-analysis-server-ip&gt;:9443/carbon/</code></li>
+                        </ul>
 
-                                    <h3>Install the Failure Prevention and Recovery tool</h3>
+                        <h3>Install the Failure Prevention and Recovery tool</h3>
 
-                                    <p>The Failure Prevention and Recovery tool is implemented as a set of Eclipse plugins.</p>
+                        <p>The Failure Prevention and Recovery tool is implemented as a set of Eclipse plugins.</p>
 
-                                    <ul>
-                                        <li>Clone the software artefacts of the Failure Prevention and Recovery tool from the GitHub repository at: <a href="https://github.com/chrispetsos-seerc/BrokerAtCloud.git">Broker@Cloud Git</a></li>
-                                        <li>Download and install Eclipse from the <a href="http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/lunasr2">the Eclipse website</a>; the Failure Prevention and Recovery tool has been tested on Eclipse Luna (4.4.*)</li>
-                                        <li>Start Eclipse and create a new workspace</li>
-                                        <li>Select File &#8594; Import... &#8594; Existing Project into Workspace</li>
-                                        <li>Select <code>&lt;path-to-local-copy-Broker@Cloud-Git-repository&gt;/FailurePreventionAndRecovery</code> as root directory</li>
-                                        <li>Select all projects, i.e.:
-                                            <ul>
-                                                <li><code>eu.brokeratcloud.diva.model.edit</code></li>
-                                                <li><code>eu.brokeratcloud.diva.model.editor</code></li>
-                                                <li><code>eu.brokeratcloud.diva.model.simulation.ui</code></li>
-                                                <li><code>eu.brokeratcloud.diva.model.simulation</code></li>
-                                                <li><code>eu.brokeratcloud.diva.model</code></li>
-                                                <li><code>eu.brokeratcloud.fpr</code></li>
-                                            </ul>
-                                        </li>
-                                    </ul>
+                        <ul>
+                            <li>Clone the software artefacts of the Failure Prevention and Recovery tool from the GitHub repository at: <a href="https://github.com/chrispetsos-seerc/BrokerAtCloud.git">Broker@Cloud Git</a></li>
+                            <li>Download and install Eclipse from the <a href="http://www.eclipse.org/downloads/packages/eclipse-modeling-tools/lunasr2">the Eclipse website</a>; the Failure Prevention and Recovery tool has been tested on Eclipse Luna (4.4.*)</li>
+                            <li>Start Eclipse and create a new workspace</li>
+                            <li>Select File &#8594; Import... &#8594; Existing Project into Workspace</li>
+                            <li>Select <code>&lt;path-to-local-copy-Broker@Cloud-Git-repository&gt;/FailurePreventionAndRecovery</code> as root directory</li>
+                            <li>Select all projects, i.e.:
+                                <ul>
+                                    <li><code>eu.brokeratcloud.diva.model.edit</code></li>
+                                    <li><code>eu.brokeratcloud.diva.model.editor</code></li>
+                                    <li><code>eu.brokeratcloud.diva.model.simulation.ui</code></li>
+                                    <li><code>eu.brokeratcloud.diva.model.simulation</code></li>
+                                    <li><code>eu.brokeratcloud.diva.model</code></li>
+                                    <li><code>eu.brokeratcloud.fpr</code></li>
+                                </ul>
+                            </li>
+                        </ul>
 
-                                    <h3>Configure the Failure Prevention and Recovery tool</h3>
+                        <h3>Configure the Failure Prevention and Recovery tool</h3>
 
-                                    <ul>
-                                        <li>Change directory to <code>&lt;path-to-local-copy-Broker@Cloud-Git-repository&gt;/FailurePreventionAndRecovery/diva.brokeratcloud.fpr</code></li>
-                                        <li>Edit the file <code>plugin.properties</code></li>
-                                        <li>Replace <code>brokerlist='tcp://213.249.38.66:5673'</code> with <code>brokerlist='tcp://&lt;pub-sub-server-ip&gt;:&lt;pub-sub-server-port&gt;'</code></li>
-                                    </ul>
+                        <ul>
+                            <li>Change directory to <code>&lt;path-to-local-copy-Broker@Cloud-Git-repository&gt;/FailurePreventionAndRecovery/diva.brokeratcloud.fpr</code></li>
+                            <li>Edit the file <code>plugin.properties</code></li>
+                            <li>Replace <code>brokerlist='tcp://213.249.38.66:5673'</code> with <code>brokerlist='tcp://&lt;pub-sub-server-ip&gt;:&lt;pub-sub-server-port&gt;'</code></li>
+                        </ul>
 
-                                    <h3>Start the Failure Prevention and Recovery tool</h3>
+                        <h3>Start the Failure Prevention and Recovery tool</h3>
 
-                                    <ul>
-                                        <li>Start Eclipse and open the existing workspace</li>
-                                        <li>Right click on the project <code>eu.brokeratcloud.fpr</code></li>
-                                        <li>Select Run as &#8594; Eclipse Application; a new Eclipse instance will be started</li>
-                                        <li>In the new Eclipse instance, select Diva Rest &#8594; Run (or the equivalent icon in the toolbar).</li>
-                                    </ul>
-                                </section>
-                                <section id="instVTTS">
-                                    <h2>VTTS Installation <small>Verification and Testing Tool Suite</small></h2>
-                                    <p>The Verification and Testing Tool Suite (VTTS) for model-based testing of cloud software services may be accessed in several ways. The University of Sheffield offers a Testing-as-a-Service prototype, currently available here:</p>
-                                    <ul>
-                                        <li><a href="http://staffwww.dcs.shef.ac.uk/people/A.Simons/broker/">
+                        <ul>
+                            <li>Start Eclipse and open the existing workspace</li>
+                            <li>Right click on the project <code>eu.brokeratcloud.fpr</code></li>
+                            <li>Select Run as &#8594; Eclipse Application; a new Eclipse instance will be started</li>
+                            <li>In the new Eclipse instance, select Diva Rest &#8594; Run (or the equivalent icon in the toolbar).</li>
+                        </ul>
+                    </section>
+                    <section id="instVTTS">
+                        <h2>VTTS Installation <small>Verification and Testing Tool Suite</small></h2>
+                        <p>The Verification and Testing Tool Suite (VTTS) for model-based testing of cloud software services may be accessed in several ways. The University of Sheffield offers a Testing-as-a-Service prototype, currently available here:</p>
+                        <ul>
+                            <li><a href="http://staffwww.dcs.shef.ac.uk/people/A.Simons/broker/">
                                             Broker@Cloud Verification and Testing Tool Suite</a></li>
-                                        </ul>
+                        </ul>
 
-                                        <p>VTTS may also be installed as part of a cloud service brokerage platform conforming to the Broker@Cloud framework; or even as a standalone module for model-based testing of cloud software services. Installation instructions are provided below.</p>
+                        <p>VTTS may also be installed as part of a cloud service brokerage platform conforming to the Broker@Cloud framework; or even as a standalone module for model-based testing of cloud software services. Installation instructions are provided below.</p>
 
-                                        <h3>Prerequisites for the Verification and Testing Tool Suite</h3>
+                        <h3>Prerequisites for the Verification and Testing Tool Suite</h3>
 
-                                        <p>Depending on your preferred means of launching the tools, the following prerequisites should be satisfied
-                                        </p>
-                                        <ul>
-                                            <li><strong>Command line usage:</strong> To run the tools individually on a Unix or Windows command line, we recommend that you have Java JDK 1.7 installed. You will also need the JAST library.
-                                            </li>
-                                            <li><strong>Java Swing demo GUI:</strong> To run the standalone Java Swing demonstration, we recommend that you have Java JDK 1.7 installed. You will also need the JAST and JSyntaxPane libraries.
-                                            </li>
-                                            <li><strong>Eclipse IDE integration:</strong> To run the tools within the Eclipse IDE, we recommend you have Java JDK 1.7 and Eclipse v4.0 (Luna) installed. You will also need the JAST and JSyntaxPane libraries.
-                                            </li>
-                                            <li><strong>JUnit test execution:</strong> To execute sample test suites generated in Java for Java service clients, we also recommend you install JUnit 4.0 (also available as a library within Eclipse).
-                                            </li>
-                                            <li><strong>Web service execution:</strong> To execute SOAP or REST web service clients, you will need to install additional libraries, some standard examples of which are included below for convenience (all are available from the original providers).
-                                            </li>
-                                        </ul>
+                        <p>Depending on your preferred means of launching the tools, the following prerequisites should be satisfied
+                        </p>
+                        <ul>
+                            <li><strong>Command line usage:</strong> To run the tools individually on a Unix or Windows command line, we recommend that you have Java JDK 1.7 installed. You will also need the JAST library.
+                            </li>
+                            <li><strong>Java Swing demo GUI:</strong> To run the standalone Java Swing demonstration, we recommend that you have Java JDK 1.7 installed. You will also need the JAST and JSyntaxPane libraries.
+                            </li>
+                            <li><strong>Eclipse IDE integration:</strong> To run the tools within the Eclipse IDE, we recommend you have Java JDK 1.7 and Eclipse v4.0 (Luna) installed. You will also need the JAST and JSyntaxPane libraries.
+                            </li>
+                            <li><strong>JUnit test execution:</strong> To execute sample test suites generated in Java for Java service clients, we also recommend you install JUnit 4.0 (also available as a library within Eclipse).
+                            </li>
+                            <li><strong>Web service execution:</strong> To execute SOAP or REST web service clients, you will need to install additional libraries, some standard examples of which are included below for convenience (all are available from the original providers).
+                            </li>
+                        </ul>
 
-                                        <h3>Installation of the Verification and Testing Tool Suite</h3>
+                        <h3>Installation of the Verification and Testing Tool Suite</h3>
 
-                                        <!-- TBD: Panagiotis must replace his old file structure with the new structure -->
+                        <!-- TBD: Panagiotis must replace his old file structure with the new structure -->
 
-                                        <p>The main download bundles are available at the
-                                            <a href="https://github.com/SingularLogic/BrokerAtCloud">Broker@Cloud GitHub</a>, or can be downloaded from:
-                                            <a href="http://staffwww.dcs.shef.ac.uk/people/A.Simons/broker/">
+                        <p>The main download bundles are available at the
+                            <a href="https://github.com/SingularLogic/BrokerAtCloud">Broker@Cloud GitHub</a>, or can be downloaded from:
+                            <a href="http://staffwww.dcs.shef.ac.uk/people/A.Simons/broker/">
                                                 Broker@Cloud Verification and Testing Tool Suite</a>. For convenience, the software is split into two bundles:
-                                            </p>
-                                            <ul>
-                                                <li><code>brokeratcloud-vtts.zip</code> - the main VTTS bundle</li>
-                                                <li><code>brokeratcloud-vtts-lib.zip</code> - the external libraries</li>
-                                            </ul>
-                                            <p>
-                                                Download and unizp both bundles. The main bundle should contain the source code Java archive file <code>brokeratcloud-vtts-1.0.jar</code>. The library bundle should contain a root folder <code>brokeratcloud-vtts-lib</code>, containing a number of folders, each containing one or more library jar files.
-                                            </p>
-                                            <p>
-                                                Copy the contents of this library folder to somewhere on your machine from which your Eclipse, or JDK <code>CLASSPATH</code>, can access the library files as external jar files. Below, we will refer to the root of your library as <code>lib</code>, but you could use some other name.
-                                            </p>
-                                            <p>
-                                                If using Eclipse, create a new Eclipse project <code>BrokerAtCloudVTTS</code> (select: <code>File &#8594; New &#8594; Java Project</code>, and enter the project name). Import the main source code Java archive file <code>brokeratcloud-vtts-1.0.jar</code>. You should be able to see a collection of folders, which include:
-                                            </p>
-                                            <ul>
-                                                <li><code>src</code> - the source code directory, containing Java sources</li>
-                                                <li><code>doc</code> - the documentation directory, initially empty (see below)</li>
-                                                <li><code>xml</code> - the xml directory, containing service specifications</li>
-                                            </ul>
-                                            <p>You should also have some unresolved dependencies, showing as red checkboxes on folders containing Java packages. In your Eclipse IDE, configure your build path (right-click on the project name <code>BrokerAtCloudVTTS</code>, then select: <code>Build Path &#8594; Configure Build Path &#8594; Add External JARs</code>) to include the following external jar-files provided in your root library folder (here called <code>lib</code>, but use the name you gave it):
-                                                <ul>
-                                                    <li><code>lib/jast/jast-1.1.jar</code> - the Java Abstract Syntax Trees marshalling library</li>
-                                                    <li><code>lib/jsyntaxpane/jsyntaxpane-1.0.0.jar</code> - JSyntaxPane code formatting library</li>
-                                                </ul>
-                                                <p> Select OK to complete this, after you have added both libraries, and ensure that the red checkboxes have now disappeared. </p>
-                                                <p>The VTTS tools may now be used directly to analyse and verify the example XML service specifications provided in the <code>/xml</code> folder. You may also generate high-level test-suites, which are also stored as XML under the same folder. Please see the end-user guide for further information on how to use the tools. The generated documentation (see below) also has usage instructions for each tool.
-                                                </p>
+                        </p>
+                        <ul>
+                            <li><code>brokeratcloud-vtts.zip</code> - the main VTTS bundle</li>
+                            <li><code>brokeratcloud-vtts-lib.zip</code> - the external libraries</li>
+                        </ul>
+                        <p>
+                            Download and unizp both bundles. The main bundle should contain the source code Java archive file <code>brokeratcloud-vtts-1.0.jar</code>. The library bundle should contain a root folder <code>brokeratcloud-vtts-lib</code>, containing a number of folders, each containing one or more library jar files.
+                        </p>
+                        <p>
+                            Copy the contents of this library folder to somewhere on your machine from which your Eclipse, or JDK <code>CLASSPATH</code>, can access the library files as external jar files. Below, we will refer to the root of your library as <code>lib</code>, but you could use some other name.
+                        </p>
+                        <p>
+                            If using Eclipse, create a new Eclipse project <code>BrokerAtCloudVTTS</code> (select: <code>File &#8594; New &#8594; Java Project</code>, and enter the project name). Import the main source code Java archive file <code>brokeratcloud-vtts-1.0.jar</code>. You should be able to see a collection of folders, which include:
+                        </p>
+                        <ul>
+                            <li><code>src</code> - the source code directory, containing Java sources</li>
+                            <li><code>doc</code> - the documentation directory, initially empty (see below)</li>
+                            <li><code>xml</code> - the xml directory, containing service specifications</li>
+                        </ul>
+                        <p>You should also have some unresolved dependencies, showing as red checkboxes on folders containing Java packages. In your Eclipse IDE, configure your build path (right-click on the project name <code>BrokerAtCloudVTTS</code>, then select: <code>Build Path &#8594; Configure Build Path &#8594; Add External JARs</code>) to include the following external jar-files provided in your root library folder (here called <code>lib</code>, but use the name you gave it):
+                            <ul>
+                                <li><code>lib/jast/jast-1.1.jar</code> - the Java Abstract Syntax Trees marshalling library</li>
+                                <li><code>lib/jsyntaxpane/jsyntaxpane-1.0.0.jar</code> - JSyntaxPane code formatting library</li>
+                            </ul>
+                            <p> Select OK to complete this, after you have added both libraries, and ensure that the red checkboxes have now disappeared. </p>
+                            <p>The VTTS tools may now be used directly to analyse and verify the example XML service specifications provided in the <code>/xml</code> folder. You may also generate high-level test-suites, which are also stored as XML under the same folder. Please see the end-user guide for further information on how to use the tools. The generated documentation (see below) also has usage instructions for each tool.
+                            </p>
 
-                                                <h3>Generating Documentation for the Verification and Testing Tool Suite</h3>
+                            <h3>Generating Documentation for the Verification and Testing Tool Suite</h3>
 
-                                                <p>
-                                                    Detailed navigable documentation may be created from the main source code bundle, using the <code>javadoc</code> tool provided as part of your Java JDK installation. Eclipse may not have a particular <code>javadoc</code> generator installed, and a dialog will ask you to point to your particular JDK installation.
-                                                </p>
-                                                <p>
-                                                    Generate Javadoc documentation in Eclipse (left-click the project name <code>BrokerAtCloudVTTS</code>, menu select: <code>Project &#8594; Generate Javadoc</code>). This will open a dialog where you must fill in the path to your JDK's <code>javadoc</code> program; and you should also tell Eclipse where to put the generated documentation. For this, use the directory set up within the project, ready to receive the documentation. These might look something like this under Windows:
-                                                </p>
-                                                <ul>
-                                                    <li><code>C:\Program Files\Java\jdk1.7.0_80\bin\javadoc.exe</code></li>
-                                                    <li><code>&lt;path-to-eclipse&gt;\Eclipse\BrokerAtCloudVTTS\doc</code></li>
-                                                </ul>
-                                                <p>
-                                                    Select OK to complete this, after ensuring both dialog fields point to the right places, and you should see a log appear in the Eclipse output console as Javadoc is created. Note that VTTS code should generate no Javadoc warnings; but user-generated classes added subsequently may generate warnings, if not fully documented by the user. To view the documentation, open the file:
-                                                </p>
-                                                <ul>
-                                                    <li><code>
+                            <p>
+                                Detailed navigable documentation may be created from the main source code bundle, using the <code>javadoc</code> tool provided as part of your Java JDK installation. Eclipse may not have a particular <code>javadoc</code> generator installed, and a dialog will ask you to point to your particular JDK installation.
+                            </p>
+                            <p>
+                                Generate Javadoc documentation in Eclipse (left-click the project name <code>BrokerAtCloudVTTS</code>, menu select: <code>Project &#8594; Generate Javadoc</code>). This will open a dialog where you must fill in the path to your JDK's <code>javadoc</code> program; and you should also tell Eclipse where to put the generated documentation. For this, use the directory set up within the project, ready to receive the documentation. These might look something like this under Windows:
+                            </p>
+                            <ul>
+                                <li><code>C:\Program Files\Java\jdk1.7.0_80\bin\javadoc.exe</code></li>
+                                <li><code>&lt;path-to-eclipse&gt;\Eclipse\BrokerAtCloudVTTS\doc</code></li>
+                            </ul>
+                            <p>
+                                Select OK to complete this, after ensuring both dialog fields point to the right places, and you should see a log appear in the Eclipse output console as Javadoc is created. Note that VTTS code should generate no Javadoc warnings; but user-generated classes added subsequently may generate warnings, if not fully documented by the user. To view the documentation, open the file:
+                            </p>
+                            <ul>
+                                <li><code>
                                                         &lt;path-to-eclipse&gt;\Eclipse\BrokerAtCloudVTTS\doc\index.html
                                                     </code></li>
-                                                </ul>
+                            </ul>
 
-                                                <h3>Selection of External Libraries for Executing Web Services</h3>
+                            <h3>Selection of External Libraries for Executing Web Services</h3>
 
-                                                <p>You are free to translate the high-level XML test-suites generated by our tools into whatever concrete format you need for your cloud service technology. For demonstration purposes, we have provided three concrete groundings, which all assume Java clients to invoke each service, and use JUnit as the technology to execute the tests. If you generate concrete JUnit test-driver classes using our demonstration groundings, the resulting test-drivers will have further dependencies, which may appear in the project as red checkboxes.
-                                                </p>
-                                                <ul>
-                                                    <li>For testing simple Java clients (POJOs), you will only need to install JUnit 4.0, which is provided as part of the Eclipse distribution. Your generated test-driver will depend on a Java client to be tested.
-                                                    </li>
-                                                    <li>For testing JAX-WS Java clients for SOAP web services, you will have used JAX-WS to create your web service and also to generate a Java client from the WSDL description of the service. Your generated test-driver will depend on a Java resource class and a Java interface to the service, in the style expected by JAX-WS.
-                                                    </li>
-                                                    <li>For testing JAX-RS Java clients for REST web services, you will have installed a suitable REST service. Your generated test-driver will depend on the Apache Jersey reference implementation of JAX-RS; and also on the Google Gson library for unmarshalling JSON data. </li>
-                                                </ul>
-                                                <p>
-                                                    We assume that it is easy for you to obtain JUnit, JAX-WS and JAX-RS libraries as part of your Java Enterprise Edition platform. For convenience we have bundled some of the other libraries in the second download bundle. This bundle contains the root folder: <code>brokeratcloud-vtts-lib</code>, which has the following structure:
-                                                </p>
-                                                <ul>
-                                                    <li><code>gson</code> - the Google Gson library for marshalling and unmarshalling JSON format data (needed for our generated REST clients).
-                                                    </li>
-                                                    <li><code>jackson</code> - the Jackson library for processing JSON format data in different ways (may be needed for future REST clients).
-                                                    </li>
-                                                    <li><code>jast</code> - the Java Abstract Syntax Trees library for marshalling and unmarshalling XML (needed by all verification and testing tools).
-                                                    </li>
-                                                    <li><code>jersey</code> - the Apache Jersey reference implementation of a JAX-RS REST web service (needed for our REST clients).
-                                                    </li>
-                                                    <li><code>jsyntaxpane</code> - the Google JSyntaxPane library for syntax highlighting of code (needed by the standalone Java Swing application).
-                                                    </li>
-                                                </ul>
-                                                <p>
-                                                    Add the relevant jar-files to your build path as and when you need them (in Eclipse, this will be indicated by a red checkbox appearing on a generated Java file, when this file depends on types that are as yet unknown to the environment). See the instructions above on how to configure your build path.
-                                                </p>
-                                            </section>
-                                            <section id="instStartPlatform">
-                                                <h2>Starting the Broker@Cloud Framework Instance</h2>
-                                                <ul>
-                                                    <li>First start the WSO<sub>2</sub> Message Broker by executing the file <code>wso2server.bat</code> or <code>wso2server.sh</code> located in the <code>MB_HOME/bin</code> folder, depending on the platform you are using (the former for MS Windows and the latter for Linux and Mac)</li>
-                                                    <li>You should end up with a terminal screen similar to the one below:
-                                                        <img src="images/MB-screen.jpg" alt="Starting WSO<sub>2</sub> Message Broker" class="img-responsive"></li>
-                                                        <li>Then start the WSO<sub>2</sub> Governance Registry by executing the file <code>wso2server.bat</code> or <code>wso2server.sh</code> located in the <code>GREG_HOME/bin</code> folder, depending on the platform you are using (the former for MS Windows and the latter for Linux and Mac)</li>
-                                                        <li>You should end up with a terminal showing messages like the ones below:
-                                                            <img src="images/GReg-screen.jpg" alt="Starting WSO<sub>2</sub> Message Broker" class="img-responsive"></li>
-                                                            <li>Finally, start the Apache Tomcat server by executing the file <code>startup.bat</code> or <code>startup.sh</code> located in <code>TOMCAT_HOME/bin</code> folder, depending on the platform you are using (the former for MS Windows and the latter for Linux and Mac)</li>
-                                                            <li>The following links should now be available on your system:
-                                                                <ul>
-                                                                    <li><a href="https://localhost:9444">WSO<sub>2</sub> MB</a></li>
-                                                                    <li><a href="https://localhost:9443">WSO<sub>2</sub> GReg</a></li>
-                                                                    <li><a href="http://localhost:8080">Apache Tomcat</a></li>
-                                                                </ul>
-                                                            </li>
-                                                        </ul>
-                                                    </section>
-                                                </section>
-                                                <section id="policy">
-                                                    <h1>Broker Policy Guidelines</h1>
-                                                    <p>After the installation the Broker@Cloud framework has to be initialized with a broker policy that should be applied to the lifecycle management of the service descriptions managed by the cloud service brokerage platform. The next deal with broker policy management, i.e., explain how to create, verify and deploy broker policies. </p>
+                            <p>You are free to translate the high-level XML test-suites generated by our tools into whatever concrete format you need for your cloud service technology. For demonstration purposes, we have provided three concrete groundings, which all assume Java clients to invoke each service, and use JUnit as the technology to execute the tests. If you generate concrete JUnit test-driver classes using our demonstration groundings, the resulting test-drivers will have further dependencies, which may appear in the project as red checkboxes.
+                            </p>
+                            <ul>
+                                <li>For testing simple Java clients (POJOs), you will only need to install JUnit 4.0, which is provided as part of the Eclipse distribution. Your generated test-driver will depend on a Java client to be tested.
+                                </li>
+                                <li>For testing JAX-WS Java clients for SOAP web services, you will have used JAX-WS to create your web service and also to generate a Java client from the WSDL description of the service. Your generated test-driver will depend on a Java resource class and a Java interface to the service, in the style expected by JAX-WS.
+                                </li>
+                                <li>For testing JAX-RS Java clients for REST web services, you will have installed a suitable REST service. Your generated test-driver will depend on the Apache Jersey reference implementation of JAX-RS; and also on the Google Gson library for unmarshalling JSON data. </li>
+                            </ul>
+                            <p>
+                                We assume that it is easy for you to obtain JUnit, JAX-WS and JAX-RS libraries as part of your Java Enterprise Edition platform. For convenience we have bundled some of the other libraries in the second download bundle. This bundle contains the root folder: <code>brokeratcloud-vtts-lib</code>, which has the following structure:
+                            </p>
+                            <ul>
+                                <li><code>gson</code> - the Google Gson library for marshalling and unmarshalling JSON format data (needed for our generated REST clients).
+                                </li>
+                                <li><code>jackson</code> - the Jackson library for processing JSON format data in different ways (may be needed for future REST clients).
+                                </li>
+                                <li><code>jast</code> - the Java Abstract Syntax Trees library for marshalling and unmarshalling XML (needed by all verification and testing tools).
+                                </li>
+                                <li><code>jersey</code> - the Apache Jersey reference implementation of a JAX-RS REST web service (needed for our REST clients).
+                                </li>
+                                <li><code>jsyntaxpane</code> - the Google JSyntaxPane library for syntax highlighting of code (needed by the standalone Java Swing application).
+                                </li>
+                            </ul>
+                            <p>
+                                Add the relevant jar-files to your build path as and when you need them (in Eclipse, this will be indicated by a red checkbox appearing on a generated Java file, when this file depends on types that are as yet unknown to the environment). See the instructions above on how to configure your build path.
+                            </p>
+                    </section>
+                    <section id="instStartPlatform">
+                        <h2>Starting the Broker@Cloud Framework Instance</h2>
+                        <ul>
+                            <li>First start the WSO<sub>2</sub> Message Broker by executing the file <code>wso2server.bat</code> or <code>wso2server.sh</code> located in the <code>MB_HOME/bin</code> folder, depending on the platform you are using (the former for MS Windows and the latter for Linux and Mac)</li>
+                            <li>You should end up with a terminal screen similar to the one below:
+                                <img src="images/MB-screen.jpg" alt="Starting WSO<sub>2</sub> Message Broker" class="img-responsive"></li>
+                            <li>Then start the WSO<sub>2</sub> Governance Registry by executing the file <code>wso2server.bat</code> or <code>wso2server.sh</code> located in the <code>GREG_HOME/bin</code> folder, depending on the platform you are using (the former for MS Windows and the latter for Linux and Mac)</li>
+                            <li>You should end up with a terminal showing messages like the ones below:
+                                <img src="images/GReg-screen.jpg" alt="Starting WSO<sub>2</sub> Message Broker" class="img-responsive"></li>
+                            <li>Finally, start the Apache Tomcat server by executing the file <code>startup.bat</code> or <code>startup.sh</code> located in <code>TOMCAT_HOME/bin</code> folder, depending on the platform you are using (the former for MS Windows and the latter for Linux and Mac)</li>
+                            <li>The following links should now be available on your system:
+                                <ul>
+                                    <li><a href="https://localhost:9444">WSO<sub>2</sub> MB</a></li>
+                                    <li><a href="https://localhost:9443">WSO<sub>2</sub> GReg</a></li>
+                                    <li><a href="http://localhost:8080">Apache Tomcat</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </section>
+                </section>
+                <section id="policy">
+                    <h1>Broker Policy Guidelines</h1>
+                    <p>After the installation the Broker@Cloud framework has to be initialized with a broker policy that should be applied to the lifecycle management of the service descriptions managed by the cloud service brokerage platform. The next deal with broker policy management, i.e., explain how to create, verify and deploy broker policies. </p>
 
-                                                    <section id="policyWhat">
-                                                        <h2>What is a Broker Policy?</h2>
-                                                        <p>A cloud service broker in order to be able to serve as an intermediary needs to establish a shared understanding about the meaning and format of the artefacts exchanged with the actors of its ecosystem: service providers, service consumers, and hosting platforms. The role of a broker policy is to provide a shared data model for: </p>
-                                                        <ul>
-                                                            <li>expression of service descriptions of service providers or hosting platforms</li>
-                                                            <li>expression of preferences of the consumers</li>
-                                                            <li>other data artefacts exchanged between the actors of the ecosystem and mechanisms of the framework</li>
-                                                        </ul>
-                                                        <p>Broker@Cloud framework provides support for two different types of broker policies with respect to handling of SLAs:</p>
-                                                        <ul>
-                                                            <li> Type1: Cloud service brokerage platform defines the fixed structure for service levels and their bundling </li>
-                                                            <li> Type2: Cloud service brokerage platform defines a fixed set of distinguished and bundled service levels </li>
-                                                        </ul>
-                                                        <h3>Type1 broker policies</h3>
-                                                        <p>A Broker specifies the structure of the SLAs and bundles them into distinguished Service Level Profile classes. Providers select between offered Service Level Profile classes and specify their own SLAs following the structure and restrictions of the selected Service Level Profile class.</p>
-                                                        <h3>Type2 broker policies</h3>
-                                                        <p> A Broker completely specifies SLAs and bundles them into distinguished Service Level Profiles. Providers can only select between Service Level Profiles offered to them by the broker. </p>
-                                                        <p> The detailed documentation of all theoretical and technical aspects related to the concept and structure of the broker policy is available in the deliverables <a href="https://sites.google.com/site/brokeratcloud/documents/deliverables/d30-1-architecture-of-brokerage-framework">D30.1</a> and <a href="https://sites.google.com/site/brokeratcloud/documents/deliverables/d30-2-methods-and-tools-for-brokerage-enabling-description-of-enterprise-cloud-services">D30.2</a>. The final structure of the broker policy in documented in <a href="https://sites.google.com/site/brokeratcloud/documents/deliverables/d30-4-brokerage-framework-architecture-interfaces-and-methodology">D30.4</a>.</p>
-                                                    </section>
+                    <section id="policyWhat">
+                        <h2>What is a Broker Policy?</h2>
+                        <p>A cloud service broker in order to be able to serve as an intermediary needs to establish a shared understanding about the meaning and format of the artefacts exchanged with the actors of its ecosystem: service providers, service consumers, and hosting platforms. The role of a broker policy is to provide a shared data model for: </p>
+                        <ul>
+                            <li>expression of service descriptions of service providers or hosting platforms</li>
+                            <li>expression of preferences of the consumers</li>
+                            <li>other data artefacts exchanged between the actors of the ecosystem and mechanisms of the framework</li>
+                        </ul>
+                        <p>Broker@Cloud framework provides support for two different types of broker policies with respect to handling of SLAs:</p>
+                        <ul>
+                            <li> Type1: Cloud service brokerage platform defines the fixed structure for service levels and their bundling </li>
+                            <li> Type2: Cloud service brokerage platform defines a fixed set of distinguished and bundled service levels </li>
+                        </ul>
+                        <h3>Type1 broker policies</h3>
+                        <p>A Broker specifies the structure of the SLAs and bundles them into distinguished Service Level Profile classes. Providers select between offered Service Level Profile classes and specify their own SLAs following the structure and restrictions of the selected Service Level Profile class.</p>
+                        <h3>Type2 broker policies</h3>
+                        <p> A Broker completely specifies SLAs and bundles them into distinguished Service Level Profiles. Providers can only select between Service Level Profiles offered to them by the broker. </p>
+                        <p> The detailed documentation of all theoretical and technical aspects related to the concept and structure of the broker policy is available in the deliverables <a href="https://sites.google.com/site/brokeratcloud/documents/deliverables/d30-1-architecture-of-brokerage-framework">D30.1</a> and <a href="https://sites.google.com/site/brokeratcloud/documents/deliverables/d30-2-methods-and-tools-for-brokerage-enabling-description-of-enterprise-cloud-services">D30.2</a>. The final structure of the broker policy in documented in <a href="https://sites.google.com/site/brokeratcloud/documents/deliverables/d30-4-brokerage-framework-architecture-interfaces-and-methodology">D30.4</a>.</p>
+                    </section>
 
-                                                    <section id="policyDev">
-                                                        <h2>Broker Policy Development and Verification</h2>
-                                                        <p>A broker policy is described in Linked USDL with some specific extensions and conventions introduced in the <a href="https://sites.google.com/site/brokeratcloud/documents/deliverables/d30-2-methods-and-tools-for-brokerage-enabling-description-of-enterprise-cloud-services"> Broker@Cloud methodology</a>. Linked USDL is specified in RDF Schema on top of a number of RDF Schema ontologies like <a href="http://www.heppnetz.de/projects/goodrelations/">Good Relations</a>. Hence, a text editor is the most flexible way to specify a broker policy that can potentially use the full modelling power offered through the ontologies linked into the Linked USDL. In this case, the broker can also take into consideration broker policy aspects that might be relevant for the cloud service brokerage platform but are not covered by the minimal requirements on a broker policy specified by the Broker@Cloud framework</p>
+                    <section id="policyDev">
+                        <h2>Broker Policy Development and Verification</h2>
+                        <p>A broker policy is described in Linked USDL with some specific extensions and conventions introduced in the <a href="https://sites.google.com/site/brokeratcloud/documents/deliverables/d30-2-methods-and-tools-for-brokerage-enabling-description-of-enterprise-cloud-services"> Broker@Cloud methodology</a>. Linked USDL is specified in RDF Schema on top of a number of RDF Schema ontologies like <a href="http://www.heppnetz.de/projects/goodrelations/">Good Relations</a>. Hence, a text editor is the most flexible way to specify a broker policy that can potentially use the full modelling power offered through the ontologies linked into the Linked USDL. In this case, the broker can also take into consideration broker policy aspects that might be relevant for the cloud service brokerage platform but are not covered by the minimal requirements on a broker policy specified by the Broker@Cloud framework</p>
 
-                                                        <p> As a starting point we are offering an exemplar of a <a href="docs/SAP-broker-policy-template-including-classification-taxonomy.ttl">valid commented broker policy of Type2</a>. The comments highlight the parts that make a difference between Type1 and Type2 broker policy so that by removing some parts specific to Type2 you get a valid broker policy of Type1. Using a text-based RDF-editor, like the rdfEditor contained in the <a href="http://www.dotnetrdf.org/">dotNetRDF</a> Toolkit improves not only readability but also provides some usefull syntactic checks.</p>
-                                                        <p>The modelling power and flexibility of Linked USDL has also a downside. Creation of a valid broker policy using a text-based editor is a time consuming and an error-prone procedure. We are offering two kinds of support tools: graphical broker policy editors for both types of broker policy and an online REST API for broker policy validity checking offered by the SC<sup>3</sup> mechanism. A graphical text editor significantly simplifies the creation of a broker policy. However, only creation of a minimal broker policy is supported, i.e., only creation of parts absolutelly necessary to satisfy the Broker@Cloud requirements on a Broker Policy specification is supported. The validity checking API on the other hand checks any broker policy specified in Linked USDL if it is compliant with the Broker@Cloud requirements on a Broker Policy specification.</p>
+                        <p> As a starting point we are offering an exemplar of a <a href="docs/SAP-broker-policy-template-including-classification-taxonomy.ttl">valid commented broker policy of Type2</a>. The comments highlight the parts that make a difference between Type1 and Type2 broker policy so that by removing some parts specific to Type2 you get a valid broker policy of Type1. Using a text-based RDF-editor, like the rdfEditor contained in the <a href="http://www.dotnetrdf.org/">dotNetRDF</a> Toolkit improves not only readability but also provides some usefull syntactic checks.</p>
+                        <p>The modelling power and flexibility of Linked USDL has also a downside. Creation of a valid broker policy using a text-based editor is a time consuming and an error-prone procedure. We are offering two kinds of support tools: graphical broker policy editors for both types of broker policy and an online REST API for broker policy validity checking offered by the SC<sup>3</sup> mechanism. A graphical text editor significantly simplifies the creation of a broker policy. However, only creation of a minimal broker policy is supported, i.e., only creation of parts absolutelly necessary to satisfy the Broker@Cloud requirements on a Broker Policy specification is supported. The validity checking API on the other hand checks any broker policy specified in Linked USDL if it is compliant with the Broker@Cloud requirements on a Broker Policy specification.</p>
 
-                                                        <h3>Graphical broker policy editors </h3>
+                        <h3>Graphical broker policy editors </h3>
 
-                                                        <ul>
-                                                            <li><a href="bp_editor_type1.html">Broker Policy Editor (Type1)</a></li>
-                                                            <li> Broker Policy Editor (Type2)</li>
-                                                        </ul>
+                        <ul>
+                            <li><a href="bp_editor_type1.html">Broker Policy Editor (Type1)</a></li>
+                            <li><a href="bp_editor_type2.html">Broker Policy Editor (Type2)</a></li>
+                        </ul>
 
-                                                        <h3>Broker Policy validation</h3>
-                                                        <p>Broker@Cloud project is operating an instance of a Broker@Cloud framework that can be used for different testing and validation tasks. This instance can be used also for validation of your broker policies. Of course, you can use also your own Broker@Cloud instance if you already installed one. </p>
+                        <h3>Broker Policy validation</h3>
+                        <p>Broker@Cloud project is operating an instance of a Broker@Cloud framework that can be used for different testing and validation tasks. This instance can be used also for validation of your broker policies. Of course, you can use also your own Broker@Cloud instance if you already installed one. </p>
 
-                                                        <p> If you are using the Broker@Cloud framework instance operated by the Broker@Cloud project: POST the broker policy description to the following URL: <code>http://213.249.38.66:3335/org.seerc.brokeratcloud.webservice/rest/brokerPolicy/validate</code>
-                                                        </p>
-                                                        <p>For testing purposes, you can use e.g., <a href="http://thomas-bayer.com/restgate/index.do">RESTGate</a> - a web-based client for REST services to test online or download a REST client for your browser like this <a href="https://github.com/jeremys/Simple-Rest-Client-Chrome-Extension">Simple Rest Client for Google Chrome</a>.</p>
+                        <p> If you are using the Broker@Cloud framework instance operated by the Broker@Cloud project: POST the broker policy description to the following URL: <code>http://213.249.38.66:3335/org.seerc.brokeratcloud.webservice/rest/brokerPolicy/validate</code>
+                        </p>
+                        <p>For testing purposes, you can use e.g., <a href="http://thomas-bayer.com/restgate/index.do">RESTGate</a> - a web-based client for REST services to test online or download a REST client for your browser like this <a href="https://github.com/jeremys/Simple-Rest-Client-Chrome-Extension">Simple Rest Client for Google Chrome</a>.</p>
 
-                                                        <p>The following two screenshots show the validation request and response of the <a href="docs/SAP-broker-policy-template-including-classification-taxonomy.ttl">valid commented broker policy of Type2</a> in the <a href="http://thomas-bayer.com/restgate/index.do">RESTGate</a> client. </p>
-                                                        <div class="row">
-                                                            <div class="col-sm-6">
-                                                                <a href="images/BP_validation_req.jpg" data-toggle="lightbox" class="thumbnail" data-title="Broker Policy validation request">
-                                                                    <img src="images/BP_validation_req.jpg" alt="Broker Policy validation request" class="img-responsive">
-                                                                    <p>Broker Policy validation request</p>
-                                                                </a>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <a href="images/BP_validation_resp.jpg" class="thumbnail" data-toggle="lightbox" data-title="Broker Policy validation Response">
-                                                                    <img src="images/BP_validation_resp.jpg" alt="Broker Policy validation response" class="img-responsive">
-                                                                    <p>Broker Policy validation response</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
-                                                    </section>
+                        <p>The following two screenshots show the validation request and response of the <a href="docs/SAP-broker-policy-template-including-classification-taxonomy.ttl">valid commented broker policy of Type2</a> in the <a href="http://thomas-bayer.com/restgate/index.do">RESTGate</a> client. </p>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <a href="images/BP_validation_req.jpg" data-toggle="lightbox" class="thumbnail" data-title="Broker Policy validation request">
+                                    <img src="images/BP_validation_req.jpg" alt="Broker Policy validation request" class="img-responsive">
+                                    <p>Broker Policy validation request</p>
+                                </a>
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="images/BP_validation_resp.jpg" class="thumbnail" data-toggle="lightbox" data-title="Broker Policy validation Response">
+                                    <img src="images/BP_validation_resp.jpg" alt="Broker Policy validation response" class="img-responsive">
+                                    <p>Broker Policy validation response</p>
+                                </a>
+                            </div>
+                        </div>
+                    </section>
 
-                                                    <section id="policyDep">
-                                                        <h2>Broker Policy Deployment</h2>
-                                                        <p>Broker@Cloud project is operating an instance of a Broker@Cloud framework that can be used for different testing and validation tasks. This instance can be configured with your broker policy. Of course, you can also configure your own Broker@Cloud instance if you already installed one.</p>
-                                                        <h3>Broker Policy deployment at the Broker@Cloud framework test instance (operated by Broker@Cloud)</h3>
-                                                        <p> PUT the broker policy description to the following URL:<code>http://213.249.38.66:3335/org.seerc.brokeratcloud.webservice/rest/brokerPolicy/upload</code></p>
+                    <section id="policyDep">
+                        <h2>Broker Policy Deployment</h2>
+                        <p>Broker@Cloud project is operating an instance of a Broker@Cloud framework that can be used for different testing and validation tasks. This instance can be configured with your broker policy. Of course, you can also configure your own Broker@Cloud instance if you already installed one.</p>
+                        <h3>Broker Policy deployment at the Broker@Cloud framework test instance (operated by Broker@Cloud)</h3>
+                        <p> PUT the broker policy description to the following URL:<code>http://213.249.38.66:3335/org.seerc.brokeratcloud.webservice/rest/brokerPolicy/upload</code></p>
 
-                                                        <p>You can use e.g., <a href="http://thomas-bayer.com/restgate/index.do">RESTGate</a> - a web-based client for REST services to upload your broker policy online or download a REST client for your browser like this <a href="https://github.com/jeremys/Simple-Rest-Client-Chrome-Extension">Simple Rest Client for Google Chrome</a>.</p>
+                        <p>You can use e.g., <a href="http://thomas-bayer.com/restgate/index.do">RESTGate</a> - a web-based client for REST services to upload your broker policy online or download a REST client for your browser like this <a href="https://github.com/jeremys/Simple-Rest-Client-Chrome-Extension">Simple Rest Client for Google Chrome</a>.</p>
 
-                                                        <p>The following two screenshots show the validation request and response of the <a href="docs/SAP-broker-policy-template-including-classification-taxonomy.ttl">valid commented broker policy of Type2</a> in the <a href="http://thomas-bayer.com/restgate/index.do">RESTGate</a> client. </p>
-                                                        <div class="row">
-                                                            <div class="col-sm-6">
-                                                                <a href="images/BP_upload_req.jpg" data-toggle="lightbox" class="thumbnail">
-                                                                    <img src="images/BP_upload_req.jpg" alt="Broker Policy upload request" class="img-responsive">
-                                                                    <p>Broker Policy upload request</p>
-                                                                </a>
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                <a href="images/BP_upload_resp.jpg" class="thumbnail" data-toggle="lightbox" data-title="Broker Policy Upload Response" data-footer="response">
-                                                                    <img src="images/BP_upload_resp.jpg" alt="Broker Policy upload response" class="img-responsive">
-                                                                    <p>Broker Policy upload response</p>
-                                                                </a>
-                                                            </div>
-                                                        </div>
+                        <p>The following two screenshots show the validation request and response of the <a href="docs/SAP-broker-policy-template-including-classification-taxonomy.ttl">valid commented broker policy of Type2</a> in the <a href="http://thomas-bayer.com/restgate/index.do">RESTGate</a> client. </p>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <a href="images/BP_upload_req.jpg" data-toggle="lightbox" class="thumbnail">
+                                    <img src="images/BP_upload_req.jpg" alt="Broker Policy upload request" class="img-responsive">
+                                    <p>Broker Policy upload request</p>
+                                </a>
+                            </div>
+                            <div class="col-sm-6">
+                                <a href="images/BP_upload_resp.jpg" class="thumbnail" data-toggle="lightbox" data-title="Broker Policy Upload Response" data-footer="response">
+                                    <img src="images/BP_upload_resp.jpg" alt="Broker Policy upload response" class="img-responsive">
+                                    <p>Broker Policy upload response</p>
+                                </a>
+                            </div>
+                        </div>
 
                         <!--p>
                                 <img src="images/BP_upload_req.jpg" alt="Broker Policy upload request" class="img-thumbnail" style="height:150px">
                                 <img src="images/BP_upload_resp.jpg" alt="Broker Policy upload response" class="img-thumbnail" style="height:150px">
                             </p-->
-                            <h3>Broker Policy deployment at your own Broker@Cloud framework instance</h3>
-                            <p>The deployment of a Broker Policy can also be done from within the WSO<sub>2</sub> GReg environment itself:</p>
+                        <h3>Broker Policy deployment at your own Broker@Cloud framework instance</h3>
+                        <p>The deployment of a Broker Policy can also be done from within the WSO<sub>2</sub> GReg environment itself:</p>
+                        <ul>
+                            <li>Login to GReg by visiting: <a href="https://localhost:9443">https://localhost:9443</a></li>
+                            <li>Enter username and password (<code>admin</code>, <code>admin</code>).</li>
+                            <li>Click the <code>Browse</code> option of the <code>Resources</code> menu on the left.
+                                <a href="images/BR-setup-img-1.jpg" data-toggle="lightbox" data-title="Broker Policy upload step 1">
+                                    <img src="images/BR-setup-img-1.jpg" alt="Broker Policy upload step 1" class="img-responsive">
+                                </a>
+                            </li>
+                            <li>You will be directed to the resource browser of GReg. Expand the <code>brokerAtCloud</code> folder and click on the <code>brokerPolicies</code> folder.
+                                <a href="images/BR-setup-img-2.jpg" data-toggle="lightbox" data-title="Broker Policy upload step 2">
+                                    <img src="images/BR-setup-img-2.jpg" alt="Broker Policy upload step 2" class="img-responsive">
+                                </a>
+                            </li>
+                            <li>Click the <code>Add Resource</code> option in the <code>Entries</code> panel. Leave the <code>Method</code> option to <code>Upload content from file</code> and click the <code>Choose File</code> button to browse for your Broker Policy file in your file system. The <code>Name</code> of the file should be auto-completed, but you may change it to your needs.
+                                <a href="images/BR-setup-img-3.jpg" data-toggle="lightbox" data-title="Broker Policy upload step 3">
+                                    <img src="images/BR-setup-img-3.jpg" alt="Broker Policy upload step 3" class="img-responsive">
+                                </a>
+                            </li>
+                            <li>Finally, click the <code>Add</code> button. If the validation of your BP has passed, you will receive a message that it has been successfully uploaded and your file will be added in the <code>Entries</code> list of the <code>brokerPolicies</code> folder.
+                                <a href="images/BR-setup-img-4.jpg" data-toggle="lightbox" data-title="Broker Policy upload successful">
+                                    <img src="images/BR-setup-img-4.jpg" alt="Broker Policy upload successful" class="img-responsive">
+                                </a>
+                            </li>
+                            <li>The Broker Policy is now onboarded and is ready to be used by the SC<sup>3</sup> mechanism for evaluating Service Descriptions against it.</li>
+                            <li>If the submitted Broker Policy is not valid, you will receive an error message explaining what went wrong with the validation. In this case, the Broker Policy is not added to GReg and needs to be corrected and re-submitted before being accessible to the SC<sup>3</sup> mechanism.
+                                <a href="images/BR-setup-img-5.jpg" data-toggle="lightbox" data-title="Broker Policy upload failed">
+                                    <img src="images/BR-setup-img-5.jpg" alt="Broker Policy upload failed" class="img-responsive">
+                                </a>
+                            </li>
+                        </ul>
+                    </section>
+                </section>
+                <section id="integration">
+                    <h1>Integration Guidelines</h1>
+                    <section id="integrationSC3">
+                        <h2>Integration with the SC<sup>3</sup> mechanism</h2>
+                        <p>The Broker@Cloud framework provides two methods for integrating with the SC<sup>3</sup> mechanism and evaluating a Service Description (SD):</p>
+                        <ol>
+                            <li>
+                                A method which follows the request-response paradigm for posting an SD to the SC<sup>3</sup> mechanism and for receiving the corresponding report with the evaluation outcome. This method does
+                                <div style="color: red">not</div> deploy the SD to the underlying WSO<sub>2</sub> GReg infrastructure. It is thus suitable for one-off SD evaluations, e.g. when someone is interested in quickly determining whether an SD abides by a particular broker policy.
+                            </li>
+                            <li>
+                                A method which uses the Pub/Sub system for submitting an SD to the SC<sup>3</sup> mechanism and for receiving the corresponding report with the evaluation outcome. This method does deploy the SD on the underlying WSO<sub>2</sub> GReg and it is thus suitable when someone is not only interested in evaluating the SD, but also in storing it in the Broker@Cloud platform.
+                            </li>
+                        </ol>
+                    </section>
+                    <section id="integrationPulsar">
+                        <h2>Integration with the PuLSaR mechanism</h2>
+                        <p>The Broker@Cloud framework provides two methods for integrating with PuLSaR mechanism for specifying preference profiles, requesting recommendations and managing preference policy:</p>
+                        <ol>
+                            <li>
+                                The first method follows the request-response paradigm for retrieving and managing preference profiles, requesting recommendations, managing preference policy specifications and importing/exporting preference policy. Requests must be directed to the PuLSaR public API and they must also conform to the corresponding message formats. The Public API encompasses RESTfull webservice endpoints, whereas messages exchanged are in JSON format. The only exception is when importing/exporting preference policy, in which case <code>multipart/form-data</code> and <code>text/turtle</code> formats are used.
+                            </li>
+                            <li>
+                                The second method regards programmatic integration using the PuLSaR framework classes (packages <code>eu.brokeratcloud.common</code>, <code>.fuseki</code>, <code>.opt</code>, <code>.persistence</code>, <code>.rest.opt</code> and <code>.util</code> and their sub-packages). The Java programming language or any language capable to use Java bytecode can be used. The core classes are those in the <code>eu.brokeratcloud.rest.opt</code> package as well as the class <code>eu.brokeratcloud.opt.RecommendationManager</code>. An alternative integration approach could leverage the interactive command-line tool of PuLSaR (class <code>eu.brokeratcloud.opt.engine.CLI</code>).
+                            </li>
+                        </ol>
+                    </section>
+                    <section id="integrationFPR">
+                        <h2>Integration with the FPR mechanism</h2>
+                        <p>The Broker@Cloud framework provides two methods for integrating with the FPR mechanism:</p>
+                        <ol>
+                            <li>The first method is based on the Pub/Sub system, whereby the Failure Analysis tool subscribes to a set of predefined topics in the Pub/Sub system, i.e.,
+                                <ul>
+                                    <li>HTTPResponseTime</li>
+                                    <li>QueryTime</li>
+                                    <li>CPULoadAvgPerCore</li>
+                                    <li>MemoryLoad</li>
+                                    <li>StorageLoad</li>
+                                    <li>RequestsPerSec</li>
+                                    <li>Threads</li>
+                                </ul>
+                                and receives monitoring events from each of these topics, e.g., CPU load. The clients of the FPR mechanism must subscribe to these topics and send monitoring events to each of these topics in JSON format. Then, the Failure Prevention and Recovery tool subscribes to a predefined topic in the Pub/Sub system, i.e.,
+                                <ul>
+                                    <li>FPRRecommendation</li>
+                                </ul>
+                                and sends the recommendation of service substitutions to this topic. The clients of the FPR mechanism must subscribe to this topic and receive recommendations of service substitutions from this topic in JSON format.
+                            </li>
+                            <li>
+                                The second method is based on the REST paradigm. The clients of the FPR mechanism use this method to receive the latest recommendations of service substitutions (as an alternative to the method above), to check if a service has been recommended to be removed within a specific timeframe, or to complete a set of services based on their dependencies. The clients of the FPR mechanism must send HTTP GET requests and receive the corresponding responses in JSON format.
+                            </li>
+                        </ol>
+                    </section>
+                    <section id="testingguide">
+                        <h2>Guide to Verification and Testing</h2>
+
+                        <p>The Verification and Testing Tool Suite (VTTS) for software services in the cloud can be accessed in several ways:
+                        </p>
+                        <ul>
+                            <li>
+                                <a href="http://staffwww.dcs.shef.ac.uk/people/A.Simons/broker/">
+                                        as an online demonstration service</a> - see the website hosted by the University of Sheffield.
+                            </li>
+                            <li><a href="csbexpertguide.html#instVTTS">as a downloadable package</a> - user guide instructions follow below.
+                            </li>
+                            <li>
+                                as a CSB platform service (TBD) - integration instructions (TBD)
+                            </li>
+                        </ul>
+                        <p>
+                            The following instructions assume you have downloaded the software bundle for the Broker@Cloud Verification and Testing Tool Suite (VTTS). For the online demonstration service, please refer to the University of Sheffield website above.
+                        </p>
+
+                        <section id="vttsOverview">
+                            <h3>In a Nutshell: Verification and Testing of Cloud Services</h3>
+
+                            <p>The overall goal of of the EU FP7 Broker@Cloud project is to provide new methods and mechanisms for continuous quality assurance for enterprise cloud service brokers. The expectation is that many more software vendors will become involved as cloud ecosystem partners, offering competing services on brokered platforms. Keeping track of standards and quality in this rapidly expanding market is challenging. Some of the Broker@Cloud tools offer support for the governance of the service lifecycle, to ensure that offered services meet the expectations of brokerage platforms.
+                            </p>
+                            <p>The verification and testing tools provide a measure of functional quality control, to ensure that offered services meet certain specification standards and can be used interchangeably with other services meeting the same standards. The standard for service is developed as a service specification, which can be checked by tools (verification) and from which exhaustive test-suites may be generated automatically (testing), to ensure that aspiring instances of the service are actually compliant to the specification. The benefits of this approach include:
+                            </p>
                             <ul>
-                                <li>Login to GReg by visiting: <a href="https://localhost:9443">https://localhost:9443</a></li>
-                                <li>Enter username and password (<code>admin</code>, <code>admin</code>).</li>
-                                <li>Click the <code>Browse</code> option of the <code>Resources</code> menu on the left.
-                                    <a href="images/BR-setup-img-1.jpg" data-toggle="lightbox" data-title="Broker Policy upload step 1">
-                                        <img src="images/BR-setup-img-1.jpg" alt="Broker Policy upload step 1" class="img-responsive">
-                                    </a>
+                                <li>standard service specifications - these apply a gentle standardising force to the way in which services are designed and developed, which will in the future support the creation of many interoperable services.
                                 </li>
-                                <li>You will be directed to the resource browser of GReg. Expand the <code>brokerAtCloud</code> folder and click on the <code>brokerPolicies</code> folder.
-                                    <a href="images/BR-setup-img-2.jpg" data-toggle="lightbox" data-title="Broker Policy upload step 2">
-                                        <img src="images/BR-setup-img-2.jpg" alt="Broker Policy upload step 2" class="img-responsive">
-                                    </a>
+                                <li>automatic validation - allows the designer to validate a specification to ensure that the states and transitions of the service correspond intuitively to the way they want the service to behave.
                                 </li>
-                                <li>Click the <code>Add Resource</code> option in the <code>Entries</code> panel. Leave the <code>Method</code> option to <code>Upload content from file</code> and click the <code>Choose File</code> button to browse for your Broker Policy file in your file system. The <code>Name</code> of the file should be auto-completed, but you may change it to your needs.
-                                    <a href="images/BR-setup-img-3.jpg" data-toggle="lightbox" data-title="Broker Policy upload step 3">
-                                        <img src="images/BR-setup-img-3.jpg" alt="Broker Policy upload step 3" class="img-responsive">
-                                    </a>
+                                <li>automatic verification - allows the designer to verify the specification for consistency and completeness, in particular to ensure that every specified operation is deterministic and non-blocking.
                                 </li>
-                                <li>Finally, click the <code>Add</code> button. If the validation of your BP has passed, you will receive a message that it has been successfully uploaded and your file will be added in the <code>Entries</code> list of the <code>brokerPolicies</code> folder.
-                                    <a href="images/BR-setup-img-4.jpg" data-toggle="lightbox" data-title="Broker Policy upload successful">
-                                        <img src="images/BR-setup-img-4.jpg" alt="Broker Policy upload successful" class="img-responsive">
-                                    </a>
+                                <li>automatic test generation - allows the designer to generate technology-neutral test-suites that completely cover the states and transitions of the specification and all equivalence-partitions of its operations.
                                 </li>
-                                <li>The Broker Policy is now onboarded and is ready to be used by the SC<sup>3</sup> mechanism for evaluating Service Descriptions against it.</li>
-                                <li>If the submitted Broker Policy is not valid, you will receive an error message explaining what went wrong with the validation. In this case, the Broker Policy is not added to GReg and needs to be corrected and re-submitted before being accessible to the SC<sup>3</sup> mechanism.
-                                    <a href="images/BR-setup-img-5.jpg" data-toggle="lightbox" data-title="Broker Policy upload failed">
-                                        <img src="images/BR-setup-img-5.jpg" alt="Broker Policy upload failed" class="img-responsive">
-                                    </a>
+                                <li>automatic test grounding - allows the designer to select technology-specific translations of test-suites into executable JUnit test libraries for Java, SOAP or REST services (with POJO, JAX-WS or JAX-RS Java clients).
+                                </li>
+                            </ul>
+                            <p>Further kinds of test grounding to other formats are possible, if you wish to extend our framework, which offers a standard <em>Visitor Pattern</em> style of translator.
+                            </p>
+                        </section>
+                        <section id="vttsUsage">
+                            <h3>Using the Verification and Testing Tool Suite</h3>
+
+                            <p>
+                                The Broker@Cloud Verification and Testing Tool Suite (VTTS) supplied in the download bundle is designed to be consumed in several different ways, according to preference. To find out more about each of these ways of launching the tools, please create the Javadoc documentation from the source code distribution, which has detailed navigable guidance on all aspects of usage. The tools are offered as:
+                            </p>
+                            <ul>
+                                <li>command-line programs - Java main programs executable in the JRE 7 runtime, that accept all parameters on the command-line, then read and write XML files; these are found in the main package: <code>uk.ac.sheffield.vtts</code>.
+                                </li>
+                                <li>Java Swing demonstrator - a Java Swing GUI that has four tabs to execute the four main tools as a standalone application, reading files and displaying formatted output; this is found in the package: <code>uk.ac.sheffield.vtts.gui</code>.
+                                </li>
+                                <li>back-end CGI programs - Java programs designed to be launched by CGI scripts, that read web form parameters on standard input, read XML via URLs and display XML in a web browser; these are found in the package: <code>uk.ac.sheffield.vtts.web</code>.
+                                </li>
+                            </ul>
+                            <p>All of the tools expect to consume and produce XML files, a format chosen for ease of transmission, and to allow both human- and machine-processing of the results (but the test grounding tool generates Java source code as output). By default, they use the folder-structure of the distribution to store further generated files. There are separate folders for XML documents, generated Java test-drivers and Java service clients (further subdivided into POJO, JAX-WS and JAX-RS flavours).
+                            </p>
+                        </section>
+                        <section id="vttsSpecification">
+                            <h3>Cloud Service Specification</h3>
+                            <p>
+                                The starting point for developing high-quality cloud services is to develop a model specification for what the service is expected to do. Conceptually, a specifcation is a combination of a finite state machine, expressing the different responsive modes of the service in which certain operations are available or unavailable, and a functional protocol expressing the equivalence-partitioned behaviour of each operation, according to different specified input or memory conditions.
+                            </p>
+                            <p>A specification is developed as an XML document that conforms to the Broker@Cloud standard schema for service specifications:
+                                <a href="http://staffwww.dcs.shef.ac.uk/people/A.Simons/broker/ServiceSchema.xsd">
+                                            http://staffwww.dcs.shef.ac.uk/people/A.Simons/broker/ServiceSchema.xsd</a> (which is maintained on the Sheffield website). Since developing a specification may be a new venture for some, we have developed a
+                                <a href="vtts/ServiceSpecificationGuide.pdf">Guide to Writing Service Specifications</a> which explains the concepts and develops a specification in stages. Otherwise, the software distribution comes with several example service specifications that progressively introduce more aspcts of the specification language:
+                            </p>
+                            <ul>
+                                <li><code>xml/Login.xml</code> - is a simple two-state login service, mainly to show the design of the state machine;
+                                </li>
+                                <li><code>xml/Account.xml</code> - is a two-state bank account service that offers banking operations that update memory variables;
+                                </li>
+                                <li><code>xml/ContactList.xml</code> - is a three-state example that mimics the selection behavior of GUIs with list insertion and deletion;
+                                </li>
+                                <li><code>xml/HolidayBooking.xml</code> - is a three-state vacation booking service that also introduces stronger conditions;
+                                </li>
+                                <li><code>xml/ShoppingCart.xml</code> - is a four-state shopping service with a strong modal flavour and introducing symbolic types;
+                                </li>
+                                <li><code>xml/DocumentStore.xml</code> - is a complex versioned document storage service, with symbolic types and server exceptions.
                                 </li>
                             </ul>
                         </section>
-                    </section>
-                    <section id="integration">
-                        <h1>Integration Guidelines</h1>
-                        <section id="integrationSC3">
-                            <h2>Integration with the SC<sup>3</sup> mechanism</h2>
-                            <p>The Broker@Cloud framework provides two methods for integrating with the SC<sup>3</sup> mechanism and evaluating a Service Description (SD):</p>
-                            <ol>
-                                <li>
-                                    A method which follows the request-response paradigm for posting an SD to the SC<sup>3</sup> mechanism and for receiving the corresponding report with the evaluation outcome. This method does
-                                    <div style="color: red">not</div> deploy the SD to the underlying WSO<sub>2</sub> GReg infrastructure. It is thus suitable for one-off SD evaluations, e.g. when someone is interested in quickly determining whether an SD abides by a particular broker policy.
-                                </li>
-                                <li>
-                                    A method which uses the Pub/Sub system for submitting an SD to the SC<sup>3</sup> mechanism and for receiving the corresponding report with the evaluation outcome. This method does deploy the SD on the underlying WSO<sub>2</sub> GReg and it is thus suitable when someone is not only interested in evaluating the SD, but also in storing it in the Broker@Cloud platform.
-                                </li>
-                            </ol>
-                        </section>
-                        <section id="integrationPulsar">
-                            <h2>Integration with the PuLSaR mechanism</h2>
-                            <p>The Broker@Cloud framework provides two methods for integrating with PuLSaR mechanism for specifying preference profiles, requesting recommendations and managing preference policy:</p>
-                            <ol>
-                                <li>
-                                    The first method follows the request-response paradigm for retrieving and managing preference profiles, requesting recommendations, managing preference policy specifications and importing/exporting preference policy. Requests must be directed to the PuLSaR public API and they must also conform to the corresponding message formats. The Public API encompasses RESTfull webservice endpoints, whereas messages exchanged are in JSON format. The only exception is when importing/exporting preference policy, in which case <code>multipart/form-data</code> and <code>text/turtle</code> formats are used.
-                                </li>
-                                <li>
-                                    The second method regards programmatic integration using the PuLSaR framework classes (packages <code>eu.brokeratcloud.common</code>, <code>.fuseki</code>, <code>.opt</code>, <code>.persistence</code>, <code>.rest.opt</code> and <code>.util</code> and their sub-packages). The Java programming language or any language capable to use Java bytecode can be used. The core classes are those in the <code>eu.brokeratcloud.rest.opt</code> package as well as the class <code>eu.brokeratcloud.opt.RecommendationManager</code>. An alternative integration approach could leverage the interactive command-line tool of PuLSaR (class <code>eu.brokeratcloud.opt.engine.CLI</code>).
-                                </li>
-                            </ol>
-                        </section>
-                        <section id="integrationFPR">
-                            <h2>Integration with the FPR mechanism</h2>
-                            <p>The Broker@Cloud framework provides two methods for integrating with the FPR mechanism:</p>
-                            <ol>
-                                <li>The first method is based on the Pub/Sub system, whereby the Failure Analysis tool subscribes to a set of predefined topics in the Pub/Sub system, i.e.,
-                                    <ul>
-                                        <li>HTTPResponseTime</li>
-                                        <li>QueryTime</li>
-                                        <li>CPULoadAvgPerCore</li>
-                                        <li>MemoryLoad</li>
-                                        <li>StorageLoad</li>
-                                        <li>RequestsPerSec</li>
-                                        <li>Threads</li>
-                                    </ul>
-                                    and receives monitoring events from each of these topics, e.g., CPU load. The clients of the FPR mechanism must subscribe to these topics and send monitoring events to each of these topics in JSON format. Then, the Failure Prevention and Recovery tool subscribes to a predefined topic in the Pub/Sub system, i.e.,
-                                    <ul>
-                                        <li>FPRRecommendation</li>
-                                    </ul>
-                                    and sends the recommendation of service substitutions to this topic. The clients of the FPR mechanism must subscribe to this topic and receive recommendations of service substitutions from this topic in JSON format.
-                                </li>
-                                <li>
-                                    The second method is based on the REST paradigm. The clients of the FPR mechanism use this method to receive the latest recommendations of service substitutions (as an alternative to the method above), to check if a service has been recommended to be removed within a specific timeframe, or to complete a set of services based on their dependencies. The clients of the FPR mechanism must send HTTP GET requests and receive the corresponding responses in JSON format.
-                                </li>
-                            </ol>
-                        </section>
-                        <section id="testingguide">
-                            <h2>Guide to Verification and Testing</h2>
-
-                            <p>The Verification and Testing Tool Suite (VTTS) for software services in the cloud can be accessed in several ways:
+                        <section id="vttsValidation">
+                            <h3>Cloud Service Validation</h3>
+                            <p>
+                                Validation is a semi-formal human inspection process in which aspects of the specification are reflected back to the designer, to help determine whether the right design has been developed. This is done by checking the completeness of the state machine for the cloud service and reporting back to the designer, who may then decide whether further states or transitions are desired in the design. There is no right or wrong answer; but the designer should be able to determine whether the state machine for the service should handle, or ignore particular events in each state.
                             </p>
-                            <ul>
-                                <li>
-                                    <a href="http://staffwww.dcs.shef.ac.uk/people/A.Simons/broker/">
-                                        as an online demonstration service</a> - see the website hosted by the University of Sheffield.
-                                    </li>
-                                    <li><a href="csbexpertguide.html#instVTTS">as a downloadable package</a> - user guide instructions follow below.
-                                    </li>
-                                    <li>
-                                        as a CSB platform service (TBD) - integration instructions (TBD)
-                                    </li>
-                                </ul>
-                                <p>
-                                    The following instructions assume you have downloaded the software bundle for the Broker@Cloud Verification and Testing Tool Suite (VTTS). For the online demonstration service, please refer to the University of Sheffield website above.
-                                </p>
-
-                                <section id="vttsOverview">
-                                    <h3>In a Nutshell: Verification and Testing of Cloud Services</h3>
-
-                                    <p>The overall goal of of the EU FP7 Broker@Cloud project is to provide new methods and mechanisms for continuous quality assurance for enterprise cloud service brokers. The expectation is that many more software vendors will become involved as cloud ecosystem partners, offering competing services on brokered platforms. Keeping track of standards and quality in this rapidly expanding market is challenging. Some of the Broker@Cloud tools offer support for the governance of the service lifecycle, to ensure that offered services meet the expectations of brokerage platforms.
-                                    </p>
-                                    <p>The verification and testing tools provide a measure of functional quality control, to ensure that offered services meet certain specification standards and can be used interchangeably with other services meeting the same standards. The standard for service is developed as a service specification, which can be checked by tools (verification) and from which exhaustive test-suites may be generated automatically (testing), to ensure that aspiring instances of the service are actually compliant to the specification. The benefits of this approach include:
-                                    </p>
-                                    <ul>
-                                        <li>standard service specifications - these apply a gentle standardising force to the way in which services are designed and developed, which will in the future support the creation of many interoperable services.
-                                        </li>
-                                        <li>automatic validation - allows the designer to validate a specification to ensure that the states and transitions of the service correspond intuitively to the way they want the service to behave.
-                                        </li>
-                                        <li>automatic verification - allows the designer to verify the specification for consistency and completeness, in particular to ensure that every specified operation is deterministic and non-blocking.
-                                        </li>
-                                        <li>automatic test generation - allows the designer to generate technology-neutral test-suites that completely cover the states and transitions of the specification and all equivalence-partitions of its operations.
-                                        </li>
-                                        <li>automatic test grounding - allows the designer to select technology-specific translations of test-suites into executable JUnit test libraries for Java, SOAP or REST services (with POJO, JAX-WS or JAX-RS Java clients).
-                                        </li>
-                                    </ul>
-                                    <p>Further kinds of test grounding to other formats are possible, if you wish to extend our framework, which offers a standard <em>Visitor Pattern</em> style of translator.
-                                    </p>
-                                </section>
-                                <section id="vttsUsage">
-                                    <h3>Using the Verification and Testing Tool Suite</h3>
-
-                                    <p>
-                                        The Broker@Cloud Verification and Testing Tool Suite (VTTS) supplied in the download bundle is designed to be consumed in several different ways, according to preference. To find out more about each of these ways of launching the tools, please create the Javadoc documentation from the source code distribution, which has detailed navigable guidance on all aspects of usage. The tools are offered as:
-                                    </p>
-                                    <ul>
-                                        <li>command-line programs - Java main programs executable in the JRE 7 runtime, that accept all parameters on the command-line, then read and write XML files; these are found in the main package: <code>uk.ac.sheffield.vtts</code>.
-                                        </li>
-                                        <li>Java Swing demonstrator - a Java Swing GUI that has four tabs to execute the four main tools as a standalone application, reading files and displaying formatted output; this is found in the package: <code>uk.ac.sheffield.vtts.gui</code>.
-                                        </li>
-                                        <li>back-end CGI programs - Java programs designed to be launched by CGI scripts, that read web form parameters on standard input, read XML via URLs and display XML in a web browser; these are found in the package: <code>uk.ac.sheffield.vtts.web</code>.
-                                        </li>
-                                    </ul>
-                                    <p>All of the tools expect to consume and produce XML files, a format chosen for ease of transmission, and to allow both human- and machine-processing of the results (but the test grounding tool generates Java source code as output). By default, they use the folder-structure of the distribution to store further generated files. There are separate folders for XML documents, generated Java test-drivers and Java service clients (further subdivided into POJO, JAX-WS and JAX-RS flavours).
-                                    </p>
-                                </section>
-                                <section id="vttsSpecification">
-                                    <h3>Cloud Service Specification</h3>
-                                    <p>
-                                        The starting point for developing high-quality cloud services is to develop a model specification for what the service is expected to do. Conceptually, a specifcation is a combination of a finite state machine, expressing the different responsive modes of the service in which certain operations are available or unavailable, and a functional protocol expressing the equivalence-partitioned behaviour of each operation, according to different specified input or memory conditions.
-                                    </p>
-                                    <p>A specification is developed as an XML document that conforms to the Broker@Cloud standard schema for service specifications:
-                                        <a href="http://staffwww.dcs.shef.ac.uk/people/A.Simons/broker/ServiceSchema.xsd">
-                                            http://staffwww.dcs.shef.ac.uk/people/A.Simons/broker/ServiceSchema.xsd</a> (which is maintained on the Sheffield website). Since developing a specification may be a new venture for some, we have developed a
-                                            <a href="vtts/ServiceSpecificationGuide.pdf">Guide to Writing Service Specifications</a> which explains the concepts and develops a specification in stages. Otherwise, the software distribution comes with several example service specifications that progressively introduce more aspcts of the specification language:
-                                        </p>
-                                        <ul>
-                                            <li><code>xml/Login.xml</code> - is a simple two-state login service, mainly to show the design of the state machine;
-                                            </li>
-                                            <li><code>xml/Account.xml</code> - is a two-state bank account service that offers banking operations that update memory variables;
-                                            </li>
-                                            <li><code>xml/ContactList.xml</code> - is a three-state example that mimics the selection behavior of GUIs with list insertion and deletion;
-                                            </li>
-                                            <li><code>xml/HolidayBooking.xml</code> - is a three-state vacation booking service that also introduces stronger conditions;
-                                            </li>
-                                            <li><code>xml/ShoppingCart.xml</code> - is a four-state shopping service with a strong modal flavour and introducing symbolic types;
-                                            </li>
-                                            <li><code>xml/DocumentStore.xml</code> - is a complex versioned document storage service, with symbolic types and server exceptions.
-                                            </li>
-                                        </ul>
-                                    </section>
-                                    <section id="vttsValidation">
-                                        <h3>Cloud Service Validation</h3>
-                                        <p>
-                                            Validation is a semi-formal human inspection process in which aspects of the specification are reflected back to the designer, to help determine whether the right design has been developed. This is done by checking the completeness of the state machine for the cloud service and reporting back to the designer, who may then decide whether further states or transitions are desired in the design. There is no right or wrong answer; but the designer should be able to determine whether the state machine for the service should handle, or ignore particular events in each state.
-                                        </p>
-                                        <p>The validation tool checks the completeness of a service's state machine (it checks statically whether each event is explicitly handled by a specified transition in every state). The tool reads the XML file containing the service specification in XML format. It writes machine-readable output in XML format, describing the state machine with extra annotations indicating the analysis of states and transitions.
-                                        </p>
-                                        <p><code>
+                            <p>The validation tool checks the completeness of a service's state machine (it checks statically whether each event is explicitly handled by a specified transition in every state). The tool reads the XML file containing the service specification in XML format. It writes machine-readable output in XML format, describing the state machine with extra annotations indicating the analysis of states and transitions.
+                            </p>
+                            <p><code>
                                             java uk.ac.sheffield.vtts.ValidateMachine &lt;specFile.xml&gt;
                                         </code></p>
-                                        <p>
-                                            If the input file can be read, the output will be an XML file containing the analysed state machine specification (otherwise an error message will be displayed). The root
-                                            <code>Machine</code> node will contain a <code>Notice</code> node, which may contain further <code>Analysis</code> or <code>Warning</code> nodes. A <code>Warning</code> is issued if any states cannot be reached in the machine, or if known events are not handled by the machine. These are faults in the specification that should be rectified. An
-                                            <code>Analysis</code> is issued if any state ignores certain events. This is not necessarily a fault, and is provided for information.
-                                        </p>
-                                        <p>
-                                            A <code>Notice</code> is then also attached to each <code>State</code> node, giving an
-                                            <code>Analysis</code> of which events are ignored by that state. A state may legitimately choose to ignore certain events; but the analysis allows you to check that events are handled as you really intend. The <code>Warning</code> is repeated for each unreachable state, as a reminder.
-                                        </p>
-                                    </section>
+                            <p>
+                                If the input file can be read, the output will be an XML file containing the analysed state machine specification (otherwise an error message will be displayed). The root
+                                <code>Machine</code> node will contain a <code>Notice</code> node, which may contain further <code>Analysis</code> or <code>Warning</code> nodes. A <code>Warning</code> is issued if any states cannot be reached in the machine, or if known events are not handled by the machine. These are faults in the specification that should be rectified. An
+                                <code>Analysis</code> is issued if any state ignores certain events. This is not necessarily a fault, and is provided for information.
+                            </p>
+                            <p>
+                                A <code>Notice</code> is then also attached to each <code>State</code> node, giving an
+                                <code>Analysis</code> of which events are ignored by that state. A state may legitimately choose to ignore certain events; but the analysis allows you to check that events are handled as you really intend. The <code>Warning</code> is repeated for each unreachable state, as a reminder.
+                            </p>
+                        </section>
 
-                                    <section id="vttsVerification">
-                                        <h3>Cloud Service Verification</h3>
-                                        <p>
-                                            Verification is a formal process in which a specification is checked for completeness and consistency. This is done by checking each operation, to ensure that whatever the current state of variables in memory, and whatever values are supplied as inputs, there will always be one path that is executable. The verification process uses symbolic evaluation to determine possible partitions in the input space and symbolic subsumption to check which path is enabled. The verification process can detect whether the specification contains nondeterminism (more than one path enabled) or blocking (no path enabled) for particular inputs and states.
-                                        </p>
-                                        <p>
-                                            The verification tool checks the completeness of a service's protocol (it checks statically whether single branches exist for each logical input and memory condition of each operation). The tool reads the XML file containing the service specification in XML format. It writes machine-readable output in XML format, describing the service protocol with extra annotations indicating the analysis of input/memory partitions and whether the specified operations cover all of these cases.
-                                        </p>
-                                        <p><code>
+                        <section id="vttsVerification">
+                            <h3>Cloud Service Verification</h3>
+                            <p>
+                                Verification is a formal process in which a specification is checked for completeness and consistency. This is done by checking each operation, to ensure that whatever the current state of variables in memory, and whatever values are supplied as inputs, there will always be one path that is executable. The verification process uses symbolic evaluation to determine possible partitions in the input space and symbolic subsumption to check which path is enabled. The verification process can detect whether the specification contains nondeterminism (more than one path enabled) or blocking (no path enabled) for particular inputs and states.
+                            </p>
+                            <p>
+                                The verification tool checks the completeness of a service's protocol (it checks statically whether single branches exist for each logical input and memory condition of each operation). The tool reads the XML file containing the service specification in XML format. It writes machine-readable output in XML format, describing the service protocol with extra annotations indicating the analysis of input/memory partitions and whether the specified operations cover all of these cases.
+                            </p>
+                            <p><code>
                                             java uk.ac.sheffield.vtts.VerifyProtocol &lt;specFile.xml&gt;
                                         </code></p>
-                                        <p>
-                                            If the input file can be read, the output will be an XML file containing the analysed protocol specification (otherwise, an error message will be displayed). The root
-                                            <code>Protocol</code> node will contain a <code>Notice</code> node, which may contain further
-                                            <code>Analysis</code> or <code>Warning</code> nodes. An <code>Analysis</code> node is issued if the memory is correctly initialised and each operation is found to be deterministic. A
-                                            <code>Warning</code> node is issued if the memory is not fully initialised, or operation inputs are not all bound, or known events are not handled by the protocol specification. A
-                                            <code>Warning</code> is also issued if an operation is found to be blocking (unable to respond), or non-deterministic (able to respond ambiguously) under certain inputs. These warnings indicate faults in the specification that should be corrected.
-                                        </p>
-                                    </section>
-                                    <section id="vttsGeneration">
-                                        <h3>Cloud Service Test Generation</h3>
-                                        <p>
-                                            Model-based testing is a formal process in which all the paths through a specification are systematically explored to generate all possible test sequences that the service might encounter. Test sequences are typically generated to some finite bounded depth, to avoid an explosion of cases. However, it is important to cover all of the states and transitions of the service, and also to attempt all significant input partitions that might trigger different behaviour. The formal specification captures both of these aspects, such that the test generation tool can provide an ideal test suite that covers all the paths in the service specification. The high-level test suite is expressed in a technology-agnostic way that must then be grounded in any particular implementation technology.
-                                        </p>
-                                        <p>
-                                            The test generation tool generates a high-level test suite from a software service specification. The tool reads the XML file containing the service specification in XML format. Two further parameters may be supplied, either as attributes of the <code>Service</code> node, or as extra command-line/GUI/web-form parameters. These are: <code>testDepth</code> (the maximum path length to be explored from each state) and <code>multiTest</code> (a boolean flag indicating whether to generate fewer multi-objective tests). It writes machine-readable output in XML format, describing a complete test-suite, with annotations indicating optimisations that were performed.
-                                        </p>
-                                        <p><code>
+                            <p>
+                                If the input file can be read, the output will be an XML file containing the analysed protocol specification (otherwise, an error message will be displayed). The root
+                                <code>Protocol</code> node will contain a <code>Notice</code> node, which may contain further
+                                <code>Analysis</code> or <code>Warning</code> nodes. An <code>Analysis</code> node is issued if the memory is correctly initialised and each operation is found to be deterministic. A
+                                <code>Warning</code> node is issued if the memory is not fully initialised, or operation inputs are not all bound, or known events are not handled by the protocol specification. A
+                                <code>Warning</code> is also issued if an operation is found to be blocking (unable to respond), or non-deterministic (able to respond ambiguously) under certain inputs. These warnings indicate faults in the specification that should be corrected.
+                            </p>
+                        </section>
+                        <section id="vttsGeneration">
+                            <h3>Cloud Service Test Generation</h3>
+                            <p>
+                                Model-based testing is a formal process in which all the paths through a specification are systematically explored to generate all possible test sequences that the service might encounter. Test sequences are typically generated to some finite bounded depth, to avoid an explosion of cases. However, it is important to cover all of the states and transitions of the service, and also to attempt all significant input partitions that might trigger different behaviour. The formal specification captures both of these aspects, such that the test generation tool can provide an ideal test suite that covers all the paths in the service specification. The high-level test suite is expressed in a technology-agnostic way that must then be grounded in any particular implementation technology.
+                            </p>
+                            <p>
+                                The test generation tool generates a high-level test suite from a software service specification. The tool reads the XML file containing the service specification in XML format. Two further parameters may be supplied, either as attributes of the <code>Service</code> node, or as extra command-line/GUI/web-form parameters. These are: <code>testDepth</code> (the maximum path length to be explored from each state) and <code>multiTest</code> (a boolean flag indicating whether to generate fewer multi-objective tests). It writes machine-readable output in XML format, describing a complete test-suite, with annotations indicating optimisations that were performed.
+                            </p>
+                            <p><code>
                                             java uk.ac.sheffield.vtts.GenerateTests &lt;specFile.xml&gt; [&lt;testDepth:int&gt;
                                             &lt;multiTest:bool&gt;]
                                         </code></p>
-                                        <p>
-                                            If the input file can be read, the output will be an XML file containing the high-level tests (otherwise an error message will be displayed). The root node <code>TestSuite</code> will contain a
-                                            <code>Notice</code> node, whose children nodes consist of <code>Advice</code> nodes describing the stages in generating and filtering the resulting tests, and <code>Warning</code> nodes describing any transitions and states that were not covered in the specification, for the chosen depth of exploration. The remaining <code>TestSequence</code> nodes are the paths to test, presented as an ordered set.
-                                        </p>
-                                        <p>
-                                            Each <code>TestSequence</code> describes a unique test case, consisting of a sequence of
-                                            <code>TestStep</code>s. Typically, the early <code>TestStep</code>s in a sequence denote set-up actions and the final <code>TestStep</code> is the particular step under observation, to be verified (any step annotated with <code>verify="true"</code> should later be checked using e.g. JUnit assertions). However, if multi-objective tests were selected, some <code>TestSequence</code>s may also have intermediate verified <code>TestStep</code>s. This is where shorter tests have been merged into longer tests, where the shorter sequence is a prefix of the longer sequence.
-                                        </p>
-                                    </section>
+                            <p>
+                                If the input file can be read, the output will be an XML file containing the high-level tests (otherwise an error message will be displayed). The root node <code>TestSuite</code> will contain a
+                                <code>Notice</code> node, whose children nodes consist of <code>Advice</code> nodes describing the stages in generating and filtering the resulting tests, and <code>Warning</code> nodes describing any transitions and states that were not covered in the specification, for the chosen depth of exploration. The remaining <code>TestSequence</code> nodes are the paths to test, presented as an ordered set.
+                            </p>
+                            <p>
+                                Each <code>TestSequence</code> describes a unique test case, consisting of a sequence of
+                                <code>TestStep</code>s. Typically, the early <code>TestStep</code>s in a sequence denote set-up actions and the final <code>TestStep</code> is the particular step under observation, to be verified (any step annotated with <code>verify="true"</code> should later be checked using e.g. JUnit assertions). However, if multi-objective tests were selected, some <code>TestSequence</code>s may also have intermediate verified <code>TestStep</code>s. This is where shorter tests have been merged into longer tests, where the shorter sequence is a prefix of the longer sequence.
+                            </p>
+                        </section>
 
-                                    <section id="vttsGrounding">
-                                        <h3>Cloud Service Test Grounding</h3>
-                                        <p>
-                                            Test grounding is the final stage in the model-based testing process, whereby technology-neutral XML test sequences are converted into concrete tests that can be executed on a given platform. The conversion process is achieved using a <em>Visitor Pattern</em> algorithm which traverses the memory model of the high-level XML test suite generated earlier. Having a separate test grounding stage is useful, because it decouples the test generation phase, a formal process, from any particular implementation technology for the service. Test grounding is normally something to be accomplished by the service provider, to ground the tests according to the particular service technology used. However, we provide three standard groundings as demonstrations. In the following examples, we assume that the System-Under-Test is either a plain old Java object (POJO), or a Java SOAP client built using JAX-WS, or a REST client build using JAX-RS (Apache Jersey) and generate tests grounded in Java for a JUnit test driver fixture.
-                                        </p>
-                                        <p>
-                                            The test grounding tool generates a concrete JUnit test driver from a technology-neutral test-suite. The tool reads the XML file containing the high-level test suite. It writes a Java source code output file, defining the JUnit test driver, in one of three demonstration formats. Two further parameters may be supplied, either as attributes of the <code>TestSuite</code> node, or as extra command-line/GUI/web-form parameters. These are: <code>grounding</code> (the particular grounding to use, one of: <code>Java</code>, <code>JAX-WS</code> or <code>JAX-RS</code>) and <code>metaCheck</code> (a boolean flag indicating whether to generate assertions to verify the full state and transition behaviour of the service, assuming the service records such metadata for testing purposes). Different versions of this tool also accept further optional arguments for specifying a REST URI (used only in the JAX-RS grounding), or Java package names (the target package for the JUnit test driver; and source packages for the Java service client and resources; the first package is assumed to be the target).
-                                        </p>
-                                        <p><code>
+                        <section id="vttsGrounding">
+                            <h3>Cloud Service Test Grounding</h3>
+                            <p>
+                                Test grounding is the final stage in the model-based testing process, whereby technology-neutral XML test sequences are converted into concrete tests that can be executed on a given platform. The conversion process is achieved using a <em>Visitor Pattern</em> algorithm which traverses the memory model of the high-level XML test suite generated earlier. Having a separate test grounding stage is useful, because it decouples the test generation phase, a formal process, from any particular implementation technology for the service. Test grounding is normally something to be accomplished by the service provider, to ground the tests according to the particular service technology used. However, we provide three standard groundings as demonstrations. In the following examples, we assume that the System-Under-Test is either a plain old Java object (POJO), or a Java SOAP client built using JAX-WS, or a REST client build using JAX-RS (Apache Jersey) and generate tests grounded in Java for a JUnit test driver fixture.
+                            </p>
+                            <p>
+                                The test grounding tool generates a concrete JUnit test driver from a technology-neutral test-suite. The tool reads the XML file containing the high-level test suite. It writes a Java source code output file, defining the JUnit test driver, in one of three demonstration formats. Two further parameters may be supplied, either as attributes of the <code>TestSuite</code> node, or as extra command-line/GUI/web-form parameters. These are: <code>grounding</code> (the particular grounding to use, one of: <code>Java</code>, <code>JAX-WS</code> or <code>JAX-RS</code>) and <code>metaCheck</code> (a boolean flag indicating whether to generate assertions to verify the full state and transition behaviour of the service, assuming the service records such metadata for testing purposes). Different versions of this tool also accept further optional arguments for specifying a REST URI (used only in the JAX-RS grounding), or Java package names (the target package for the JUnit test driver; and source packages for the Java service client and resources; the first package is assumed to be the target).
+                            </p>
+                            <p><code>
                                             java uk.ac.sheffield.vtts.GroundTests &lt;testFile.xml&gt; [&lt;grounding:enum&gt;
                                             &lt;metaCheck:bool&gt; &lt;endpoint:uri&gt;? &lt;packageName&gt;*]
                                         </code></p>
-                                        <p>
-                                            If the input file can be read, the output will be Java source file containing the executable tests (otherwise an error message will be displayed). The file will define a JUnit test driver class, named following JUnit conventions, and executable in any environment supporting JUnit 4. The test driver's
-                                            <code>@Before setUp()</code> method creates an instance of the Service-Under-Test, presumed here to be either a plain old Java object, or a Java SOAP client interface built using JAX-WS, or an Apache Jersey REST client built using JAX-RS. The driver and the SUT can be in different Java packages (if none are supplied, the tools assume by default the package structure defined in the software distribution, which has separate folders for client and test software, and subdivisions within these for each kind of grounding). The
-                                            <code>@Test test<em>N</em>()</code> methods of the driver correspond to the test sequences generated by the high-level test generator. By default, each test consists of set-up steps, followed by a verified step, in which the outputs of methods are verified using JUnit assertions.
-                                        </p>
-                                        <p>
-                                            If multi-objective testing was selected in the test generation phase, each test may contain multiple verified steps, corresponding to additional JUnit assertions inserted in each sequence. Multi-objective testing merges shorter test sequences into longer sequences. This minimises the number of test sequences, while still testing the same objectives. If a full meta-check of state and transition behaviour was requested, further JUnit assertions are generated, to query the system about the last scenario executed and the last reached state. The implemented service must follow certain design-for-test conditions to be fully testable, with operations to reveal its last action and reached state. The example Java POJO clients supplied with the software distribution illustrate how to develop such a testable service. These examples all use the <em>State Pattern</em> for their implementation.
-                                        </p>
-                                        <p>
-                                            Finally, it should be noted that all generated JUnit software will depend on the existence of a suitable Java client for the tested service. We have provided full implementations of Java POJO clients for all the example specifications, and skeletons for a few JAX-WS clients (really, the service developer should supply these using JAX-WS tools). We have made assumptions that the JAX-RS client is an Apache Jersey REST server that translates JSON data using Google's <code>Gson</code> parser.
-                                            <strong>Warning:</strong> when you first generate test drivers, these will have unresolved dependencies and you will have to include the relevant libraries on your build-path. Please see the:
-                                            <a href="csbexpertguide.html#instVTTS"> installation instructions</a>. If you rely on the default package structure, this will appear to create unresolved dependencies within the distributed software bundle - this is not then our responsibility!
-                                        </p>
-                                    </section>
+                            <p>
+                                If the input file can be read, the output will be Java source file containing the executable tests (otherwise an error message will be displayed). The file will define a JUnit test driver class, named following JUnit conventions, and executable in any environment supporting JUnit 4. The test driver's
+                                <code>@Before setUp()</code> method creates an instance of the Service-Under-Test, presumed here to be either a plain old Java object, or a Java SOAP client interface built using JAX-WS, or an Apache Jersey REST client built using JAX-RS. The driver and the SUT can be in different Java packages (if none are supplied, the tools assume by default the package structure defined in the software distribution, which has separate folders for client and test software, and subdivisions within these for each kind of grounding). The
+                                <code>@Test test<em>N</em>()</code> methods of the driver correspond to the test sequences generated by the high-level test generator. By default, each test consists of set-up steps, followed by a verified step, in which the outputs of methods are verified using JUnit assertions.
+                            </p>
+                            <p>
+                                If multi-objective testing was selected in the test generation phase, each test may contain multiple verified steps, corresponding to additional JUnit assertions inserted in each sequence. Multi-objective testing merges shorter test sequences into longer sequences. This minimises the number of test sequences, while still testing the same objectives. If a full meta-check of state and transition behaviour was requested, further JUnit assertions are generated, to query the system about the last scenario executed and the last reached state. The implemented service must follow certain design-for-test conditions to be fully testable, with operations to reveal its last action and reached state. The example Java POJO clients supplied with the software distribution illustrate how to develop such a testable service. These examples all use the <em>State Pattern</em> for their implementation.
+                            </p>
+                            <p>
+                                Finally, it should be noted that all generated JUnit software will depend on the existence of a suitable Java client for the tested service. We have provided full implementations of Java POJO clients for all the example specifications, and skeletons for a few JAX-WS clients (really, the service developer should supply these using JAX-WS tools). We have made assumptions that the JAX-RS client is an Apache Jersey REST server that translates JSON data using Google's <code>Gson</code> parser.
+                                <strong>Warning:</strong> when you first generate test drivers, these will have unresolved dependencies and you will have to include the relevant libraries on your build-path. Please see the:
+                                <a href="csbexpertguide.html#instVTTS"> installation instructions</a>. If you rely on the default package structure, this will appear to create unresolved dependencies within the distributed software bundle - this is not then our responsibility!
+                            </p>
+                        </section>
 
-                                    <section id="vttsDemo">
-                                        <h3>Using the VTTS Demonstration Java Swing GUI</h3>
-                                        <p>
-                                            To use the Java Swing GUI demonstrator, which also reads and writes files by default to the standard package structure, you only need to launch the main-class in the GUI package. You can either launch this using <code>Run</code> within your Eclipse IDE, or by compiling the main class as an executable jar-file and running it on the command-line, or by double-clicking on the icon for the compiled program.
-                                        </p>
-                                        <p><code>
+                        <section id="vttsDemo">
+                            <h3>Using the VTTS Demonstration Java Swing GUI</h3>
+                            <p>
+                                To use the Java Swing GUI demonstrator, which also reads and writes files by default to the standard package structure, you only need to launch the main-class in the GUI package. You can either launch this using <code>Run</code> within your Eclipse IDE, or by compiling the main class as an executable jar-file and running it on the command-line, or by double-clicking on the icon for the compiled program.
+                            </p>
+                            <p><code>
                                             java uk.ac.sheffield.vtts.gui.BrokerAtCloudVTTS
                                         </code></p>
-                                        <p>
-                                            Thereafter, the usage should be intuitive, assuming you have read the above principles. The GUI tool invokes the same programs described above, but also displays the input and output files in two large panes. It uses Google's <code>JSyntaxPane</code> software to pretty-print both XML and Java text, using syntax highlighting to make the input and output easier to browse. <strong>Warning:</strong> we have discovered that the syntax highlighting code can be very s..l..o..w.. for longer files (e.g. for test-suites generated to depth 3, or higher) and will take many seconds to render. So we have provided a check-box to disable syntax highlighting!
-                                        </p>
-                                    </section>
-                                    <section id="vttsCGI">
-                                        <h3>Using the VTTS Back-End CGI Web Programs</h3>
-                                        <p>
-                                            To use the CGI programs, which read XML files from supplied public URLs and write output to a web-browser, you will need to configure your own <code>cgi-bin</code> set-up. Instructions are given in the Javadoc documentation for the software distribution. The basic steps are as follows:
-                                        </p>
-                                        <ul>
-                                            <li>Compile the VTTS software distribution and make the <code>model</code>, <code>ground</code> and <code>web</code> packages' binary class files available in some directory that is readable by scripts in your <code>cgi-bin</code> directory. You will also need JAST 1.1's <code>ast</code> package to marshal the XML.
-                                            </li>
-                                            <li>Write four short CGI shell-scripts that launch your Java JRE (6/7) runtime and one of the back-end programs: <code>WebValidateMachine</code>, <code>WebVerifyProtocol</code>, <code>WebGenerateTests</code> and <code>WebGroundTests</code>. These are in the <code>web</code> package.
-                                            </li>
-                                            <li>Create four web pages that each contain a web form that invokes one of your CGI scripts as its action, and uses the HTTP POST method to supply all web form parameters on standard input. Parameter names and their meanings are described in the Javadoc for the <code>web</code> package.
-                                            </li>
-                                        </ul>
-                                        <p>As an example of such a web service, you may visit:
-                                            <a href="http://staffwww.dcs.shef.ac.uk/people/A.Simons/broker/">
+                            <p>
+                                Thereafter, the usage should be intuitive, assuming you have read the above principles. The GUI tool invokes the same programs described above, but also displays the input and output files in two large panes. It uses Google's <code>JSyntaxPane</code> software to pretty-print both XML and Java text, using syntax highlighting to make the input and output easier to browse. <strong>Warning:</strong> we have discovered that the syntax highlighting code can be very s..l..o..w.. for longer files (e.g. for test-suites generated to depth 3, or higher) and will take many seconds to render. So we have provided a check-box to disable syntax highlighting!
+                            </p>
+                        </section>
+                        <section id="vttsCGI">
+                            <h3>Using the VTTS Back-End CGI Web Programs</h3>
+                            <p>
+                                To use the CGI programs, which read XML files from supplied public URLs and write output to a web-browser, you will need to configure your own <code>cgi-bin</code> set-up. Instructions are given in the Javadoc documentation for the software distribution. The basic steps are as follows:
+                            </p>
+                            <ul>
+                                <li>Compile the VTTS software distribution and make the <code>model</code>, <code>ground</code> and <code>web</code> packages' binary class files available in some directory that is readable by scripts in your <code>cgi-bin</code> directory. You will also need JAST 1.1's <code>ast</code> package to marshal the XML.
+                                </li>
+                                <li>Write four short CGI shell-scripts that launch your Java JRE (6/7) runtime and one of the back-end programs: <code>WebValidateMachine</code>, <code>WebVerifyProtocol</code>, <code>WebGenerateTests</code> and <code>WebGroundTests</code>. These are in the <code>web</code> package.
+                                </li>
+                                <li>Create four web pages that each contain a web form that invokes one of your CGI scripts as its action, and uses the HTTP POST method to supply all web form parameters on standard input. Parameter names and their meanings are described in the Javadoc for the <code>web</code> package.
+                                </li>
+                            </ul>
+                            <p>As an example of such a web service, you may visit:
+                                <a href="http://staffwww.dcs.shef.ac.uk/people/A.Simons/broker/">
                                                 The Sheffield Broker@Cloud Quality Control</a> website, which uses these programs.
-                                            </p>
-                                        </section>
-                                    </section>
-                                </section>
-                            </div>
-                            <!-- end of main panel -->
-                            <div class="col-md-3 scrollspy">
-                                <ul id="nav" class="nav affix-top" data-spy="affix">
-                                    <li><a href="#installation">Installation Guidelines</a>
-                                        <ul class="nav">
-                                            <li><a href="#instPre">Prerequisites</a></li>
-                                            <li><a href="#instPubSub">Pub/Sub Installation</a></li>
-                                            <li><a href="#instSc3">SC<sup>3</sup> Installation</a></li>
-                                            <li><a href="#instPulsar">PuLSaR Installation</a></li>
-                                            <li><a href="#instFPR">FPR Installation</a></li>
-                                            <li><a href="#instVTTS">VTTS Installation</a></li>
-                                            <li><a href="#instStartPlatform">Starting Broker@Cloud Platform</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="#policy">Broker Policy Guidelines</a>
-                                        <ul class="nav">
-                                            <li><a href="#policyWhat">What is a broker policy?</a></li>
-                                            <li><a href="#policyDev">Broker Policy Development and Verification</a></li>
-                                            <li><a href="#policyDep">Broker Policy Deployment</a></li>
-                                        </ul>
-                                    </li>
-                                    <li><a href="#integration">Integration Guidelines</a>
-                                        <ul class="nav">
-                                            <li><a href="#integrationSC3">Integration with the SC<sup>3</sup> mechanism</a></li>
-                                            <li><a href="#integrationPulsar">Integration with the PuLSaR mechanism</a></li>
-                                            <li><a href="#testingguide">Integration of the VTTS mechanism</a>
-                                                <ul class="nav">
-                                                    <li><a href="#vttsOverview">Overview</a></li>
-                                                    <li><a href="#vttsUsage">Usage</a></li>
-                                                    <li><a href="#vttsSpecification">Specification</a></li>
-                                                    <li><a href="#vttsValidation">Validation</a></li>
-                                                    <li><a href="#vttsVerification">Verification</a></li>
-                                                    <li><a href="#vttsGeneration">Test Generation</a></li>
-                                                    <li><a href="#vttsGrounding">Test Grounding</a></li>
-                                                    <li><a href="#vttsDemo">Swing Demo</a></li>
-                                                    <li><a href="#vttsCGI">CGI Back-End Usage</a></li>
+                            </p>
+                        </section>
+                    </section>
+                </section>
+            </div>
+            <!-- end of main panel -->
+            <div class="col-md-3 scrollspy">
+                <ul id="nav" class="nav affix-top" data-spy="affix">
+                    <li><a href="#installation">Installation Guidelines</a>
+                        <ul class="nav">
+                            <li><a href="#instPre">Prerequisites</a></li>
+                            <li><a href="#instPubSub">Pub/Sub Installation</a></li>
+                            <li><a href="#instSc3">SC<sup>3</sup> Installation</a></li>
+                            <li><a href="#instPulsar">PuLSaR Installation</a></li>
+                            <li><a href="#instFPR">FPR Installation</a></li>
+                            <li><a href="#instVTTS">VTTS Installation</a></li>
+                            <li><a href="#instStartPlatform">Starting Broker@Cloud Platform</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#policy">Broker Policy Guidelines</a>
+                        <ul class="nav">
+                            <li><a href="#policyWhat">What is a broker policy?</a></li>
+                            <li><a href="#policyDev">Broker Policy Development and Verification</a></li>
+                            <li><a href="#policyDep">Broker Policy Deployment</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#integration">Integration Guidelines</a>
+                        <ul class="nav">
+                            <li><a href="#integrationSC3">Integration with the SC<sup>3</sup> mechanism</a></li>
+                            <li><a href="#integrationPulsar">Integration with the PuLSaR mechanism</a></li>
+                            <li><a href="#testingguide">Integration of the VTTS mechanism</a>
+                                <ul class="nav">
+                                    <li><a href="#vttsOverview">Overview</a></li>
+                                    <li><a href="#vttsUsage">Usage</a></li>
+                                    <li><a href="#vttsSpecification">Specification</a></li>
+                                    <li><a href="#vttsValidation">Validation</a></li>
+                                    <li><a href="#vttsVerification">Verification</a></li>
+                                    <li><a href="#vttsGeneration">Test Generation</a></li>
+                                    <li><a href="#vttsGrounding">Test Grounding</a></li>
+                                    <li><a href="#vttsDemo">Swing Demo</a></li>
+                                    <li><a href="#vttsCGI">CGI Back-End Usage</a></li>
 
-                                                </ul>
-                                            </li>
-                                        </ul>
-                                    </li>
                                 </ul>
-                            </div>
-                            <!-- end of side panel -->
-                        </div>
-                        <!-- end of row -->
-                    </div>
-                    <!-- /.container -->
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <!-- end of side panel -->
+        </div>
+        <!-- end of row -->
+    </div>
+    <!-- /.container -->
 
-                    <section></section>
-                    <footer class="text-center">
-                        <p>
-                            <a href="index.html">Broker@Cloud User Guides</a> &copy; 2015 <a href="http://www.broker-cloud.eu/">EU Project Broker@Cloud</a>
-                        </p>
-                    </footer>
-                    <script src="bower_components/jquery/dist/jquery.min.js"></script>
-                    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-                    <script src="bower_components/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
+    <section></section>
+    <footer class="text-center">
+        <p>
+            <a href="index.html">Broker@Cloud User Guides</a> &copy; 2015 <a href="http://www.broker-cloud.eu/">EU Project Broker@Cloud</a>
+        </p>
+    </footer>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
 
-                    <script src="js/index.js"></script>
-                </body>
+    <script src="js/index.js"></script>
+</body>
 
-                </html>
+</html>
