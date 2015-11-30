@@ -78,6 +78,8 @@ public class DivaRoot {
 	private static final String HIGH = "impendingFailureHigh";
 	private static final String FAILED = "occurredFailure";
 	private static final String RECOVERED = "failureRecovered";
+	
+	public static Set<String> environment = new HashSet<String>();
 
 	private int getFailureNumValue(String s) {
 		switch (s) {
@@ -668,7 +670,7 @@ public class DivaRoot {
 		return configPool;
 	}
 
-	public List<String> getRecommQuery(String consumer, List<String> srvs) {
+	public List<String> getRecommQuery_old(String consumer, List<String> srvs) {
 		List<String> result = new ArrayList<String>();
 		Set<String> requirements = new HashSet<String>();
 		ServiceDependencySparql dc = new ServiceDependencySparql();
@@ -695,15 +697,7 @@ public class DivaRoot {
 			}
 		}
 
-		// for(String srv : srvs){
-		// for(String dep : dc.getDependency(srv)){
-		// for(String req : dc.getRequirement(dep)){
-		// if(req.startsWith("RFC")){
-		// requirements.add("RFC");
-		// }
-		// }
-		// }
-		// }
+
 
 		Context ctx = root.getSimulation().getScenario().get(0).getContext().get(0);
 		ctx.getVariable().clear();
@@ -789,6 +783,67 @@ public class DivaRoot {
 
 		root.getDimension().removeAll(toRemove);
 		saveModel(consumer + "-before");
+		this.fileNamePrefix = consumer;
+		_runSimulation();
+
+		try {
+			Configuration config = root.getSimulation().getScenario().get(0).getContext().get(0).getConfiguration()
+					.get(0);
+			for (ConfigVariant v : config.getVariant()) {
+				result.add(v.getVariant().getId());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.add(e.getStackTrace().toString());
+		}
+		return result;
+	}
+	
+	public List<String> getRecommQuery(String consumer, List<String> srvs) {
+		
+		/**--- By default, for Customer----*/
+		environment.add("ForCustomer");
+		
+		List<String> result = new ArrayList<String>();
+		Set<String> requirements = new HashSet<String>();
+		ServiceDependencySparql dc = new ServiceDependencySparql();
+
+		
+
+		Context ctx = root.getSimulation().getScenario().get(0).getContext().get(0);
+		ctx.getVariable().clear();
+
+		for (Dimension dim : root.getDimension()) {
+			for (Variant v : dim.getVariant()) {
+				for (String srv : srvs) {
+					if (srv.equals(v.getId())) {
+						dim.setLower(1);
+						break;
+					}
+				}
+			}
+			
+		}
+		
+		for (Variable var : root.getContext()) {
+			if (var instanceof BooleanVariable) {
+				BoolVariableValue varval = DivaFactory.eINSTANCE.createBoolVariableValue();
+				
+				String id = var.getId();
+				if (!id.startsWith("For")) {
+					continue;
+				}
+				
+				ctx.getVariable().add(varval);
+				varval.setVariable(var);
+				if(environment.contains(id))
+					varval.setBool(true);
+				else
+					varval.setBool(false);
+			}
+		}
+		
+		//saveModel(consumer + "-before");
 		this.fileNamePrefix = consumer;
 		_runSimulation();
 

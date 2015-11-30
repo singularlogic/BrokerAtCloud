@@ -23,8 +23,32 @@ public class ServiceDependencySparql extends ServiceDependencyLocal {
 			init();
 		return depRecord.get(srv);
 	}
+	
+	void init(){
+		depRecord = new HashMap<String, List<String>>();
+		String q = "SELECT ?service ?dep \n" + "WHERE\n" + "  {\n" + "     ?service usdl-core-cb:dependsOn ?dep . \n" + "  }";
 
-	void init() {
+		try {
+			Collection mBindings = SparqlQuery.INSTANCE.queryToJsonResults(q);
+			for (Object x : mBindings) {
+				Map m = (Map) x;
+				Map service = (Map) m.get("service");
+				String serviceName = (service.get("value").toString());
+				serviceName = ServiceCategorySparql.resolveService(serviceName);
+
+				Map dep = (Map) m.get("dep");
+				String depName = (dep.get("value")).toString();
+				depName = ServiceCategorySparql.resolveService(depName);
+
+				addDep(serviceName, depName);
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException("Wrong query or results", e);
+		}
+	}
+
+	void init_old() {
 		depRecord = new HashMap<String, List<String>>();
 		String q = "SELECT ?service ?fc \n" + "WHERE\n" + "  {\n"
 				+ "     ?service usdl-core-cb:hasServiceModel ?model . \n"

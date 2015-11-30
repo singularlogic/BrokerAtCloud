@@ -51,7 +51,8 @@ public class ServiceAttributeSparql extends ServiceAttributeLocal {
 		attrRec = new HashMap<String, Integer>();
 		for (String attrName : attrNames) {
 			String q = "SELECT ?service ?attr ?value" + "\n" + "WHERE\n" + "  {\n"
-					+ "    ?service usdl-core-cb:hasServiceModel ?model. \n" + "	 ?model " + attrPrefix + ":"
+					+ "    ?service usdl-core-cb:hasServiceModel ?model. \n" + 
+					"	 ?model " + attrPrefix + ":"
 					+ attrName + " ?value \n" + "  }";
 			try {
 				Collection mBindings = SparqlQuery.INSTANCE.queryToJsonResults(q);

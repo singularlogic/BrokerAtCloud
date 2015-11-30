@@ -47,15 +47,49 @@ public class ServiceCategorySparql extends ServiceCategoryLocal {
 			result = s.split("#")[1];
 		} else if (s.startsWith(servicePrefix)) {
 			result = s.split(":")[1];
-		} else
+		} else{
+			System.out.println(s);
 			throw new RuntimeException(
 					"service name should start with <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider> or <sp:>");
+		}
 		return result;
 	}
-
-	void init() {
+	
+	void init(){
+		init_chris();
+	}
+	
+	void init_chris(){
 		catRecord.clear();
-		String q = "SELECT ?service" + "\n" + "WHERE\n" + "  {\n" + "    ?service a usdl-core:Service, cas:App; \n"
+		String q = "SELECT ?service ?fc \n" + "WHERE\n" + "  {\n"
+				+ "     ?service usdl-core-cb:hasServiceModel ?model . \n"
+				+ "	  ?model usdl-core-cb:hasClassificationDimension ?fc \n" + "  }";
+		
+		try {
+			Collection mBindings = SparqlQuery.INSTANCE.queryToJsonResults(q);
+			for (Object x : mBindings) {
+				Map m = (Map) x;
+				Map service = (Map) m.get("service");
+				String serviceName = (service.get("value").toString());
+				
+				Map fc = (Map) m.get("fc");
+				String fcName = (fc.get("value")).toString();
+				fcName = ServiceCategorySparql.resolveFc(fcName);
+				
+				serviceName = resolveService(serviceName);
+				
+				catRecord.put(serviceName, fcName);
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException("Wrong query or results", e);
+		}
+	}
+
+	void init_old() {
+		catRecord.clear();
+		String q = "SELECT ?service" + "\n" + "WHERE\n" + "  {\n" + 
+		"    ?service a usdl-core:Service, cas:App; \n"
 				+ "  }";
 		try {
 			Collection mBindings = SparqlQuery.INSTANCE.queryToJsonResults(q);
