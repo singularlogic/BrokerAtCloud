@@ -1,0 +1,120 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . 
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> . 
+@prefix dcterms: <http://purl.org/dc/terms/> . 
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> . 
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> . 
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> . 
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> . 
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> . 
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> . 
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> . 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+@prefix ctag: <http://commontag.org/ns#> . 
+@prefix org: <http://www.w3.org/ns/org#> . 
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> . 
+@prefix time: <http://www.w3.org/2006/time#> . 
+@prefix gr: <http://purl.org/goodrelations/v1#> . 
+@prefix doap: <http://usefulinc.com/ns/doap#> . 
+@prefix bp: <http://Orbi-Imu.com#> . 
+@prefix sd: <http://P1.com/services/P1super#> . 
+@prefix sp: <http://P1.com#> . 
+
+sp:P1acr 
+  a gr:BusinessEntity ; 
+  gr:legalName "P1 Inc" . 
+
+sd:P1acrEntityInvolvement 
+  a usdl-core:EntityInvolvement ; 
+  usdl-core:withBusinessRole usdl-business-roles:provider ; 
+  usdl-core:ofBusinessEntity sp:P1acr . 
+
+sd:P1super 
+  a usdl-core:Service ; 
+  dcterms:creator sp:P1acr ; 
+  dcterms:title "P1superTitle" ; 
+  dcterms:description "P1 Super Service" ; 
+  usdl-core:hasEntityInvolvement sd:P1acrEntityInvolvement ; 
+  usdl-core-cb:hasServiceModel sd:P1superModel ; 
+  usdl-core-cb:validFrom "2015-12-02"^^xsd:date ; 
+  usdl-core-cb:validThrough "2016-12-01"^^xsd:date . 
+
+sd:P1superModel 
+  a bp:OrbiImuPolicyModel ; 
+  gr:isVariantOf bp:OrbiImuPolicy ; 
+  bp:hasOrbiImuPolicySLP sd:P1superSLP ; 
+  usdl-core-cb:hasClassificationDimension <http://www.broker-cloud.eu/service-descriptions/OrbiImu/categories#cat1> . 
+
+sd:P1superSLP 
+  a bp:OrbiImuPolicySLP ; 
+  bp:hasSLReputation sd:SLReputationInstance ; 
+  bp:hasSLUsability sd:SLUsabilityInstance ; 
+  bp:hasSLCPU sd:SLCPUInstance ; 
+  bp:hasSLMemory sd:SLMemoryInstance . 
+
+sd:SLReputationInstance 
+  a bp:SLReputation ; 
+  bp:hasSLEReputation sd:SLEReputationInstance . 
+
+sd:SLEReputationInstance 
+  a bp:SLEReputation ; 
+  bp:hasVarReputation sd:VarReputationInstance . 
+
+sd:VarReputationInstance 
+  a bp:VarReputation ; 
+  bp:hasDefaultReputation bp:GoodRep . 
+
+sd:SLUsabilityInstance 
+  a bp:SLUsability ; 
+  bp:hasSLEUsability sd:SLEUsabilityInstance . 
+
+sd:SLEUsabilityInstance 
+  a bp:SLEUsability ; 
+  bp:hasVarUsability sd:VarUsabilityInstance . 
+
+sd:VarUsabilityInstance 
+  a bp:VarUsability ; 
+  bp:hasDefaultUsability bp:GoodU . 
+
+sd:SLCPUInstance 
+  a bp:SLCPU ; 
+  bp:hasSLECPU sd:SLECPUInstance . 
+
+sd:SLECPUInstance 
+  a bp:SLECPU ; 
+  bp:hasVarCPU sd:VarCPUInstance . 
+
+sd:VarCPUInstance 
+  a bp:VarCPU ; 
+  bp:hasDefaultCPU sd:P1superCPU . 
+
+sd:P1superCPU 
+  a bp:CPU ; 
+  rdfs:label "P1super CPU"^^xsd:string ; 
+  gr:hasUnitOfMeasurement ""^^xsd:string ; 
+  gr:valueReference bp:CPUValueRange ; 
+  gr:hasValueInteger "32"^^xsd:integer ; 
+  gr:hasMinValueInteger "32"^^xsd:integer ; 
+  gr:hasMaxValueInteger "32"^^xsd:integer . 
+
+sd:SLMemoryInstance 
+  a bp:SLMemory ; 
+  bp:hasSLEMemory sd:SLEMemoryInstance . 
+
+sd:SLEMemoryInstance 
+  a bp:SLEMemory ; 
+  bp:hasVarMemory sd:VarMemoryInstance . 
+
+sd:VarMemoryInstance 
+  a bp:VarMemory ; 
+  bp:hasDefaultMemory sd:P1superRAM . 
+
+sd:P1superRAM 
+  a bp:Memory ; 
+  rdfs:label "P1super RAM"^^xsd:string ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:valueReference bp:MemoryValueRange ; 
+  gr:hasValueInteger "4194304"^^xsd:integer ; 
+  gr:hasMinValueInteger "4194304"^^xsd:integer ; 
+  gr:hasMaxValueInteger "4194304"^^xsd:integer . 
