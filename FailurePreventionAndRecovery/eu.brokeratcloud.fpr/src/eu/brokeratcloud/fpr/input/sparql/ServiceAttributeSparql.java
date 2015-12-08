@@ -14,7 +14,7 @@ public class ServiceAttributeSparql extends ServiceAttributeLocal {
 	static final String attrPrefix = "cas";
 	static List<String> attrNames = Arrays.asList("hasExtensibility", "hasAdaptability", "hasEaseOfDoingBusiness",
 			"hasSuitability", "hasPortability", "hasRecoverability", "hasLearnability", "hasAccessibility",
-			"hasOperability");
+			"hasServiceLevelProfileCAS");
 	static Map<String, Integer> attrRec = null;
 
 	private static Map<String, List<String>> alias = new HashMap<String, List<String>>();
@@ -73,11 +73,11 @@ public class ServiceAttributeSparql extends ServiceAttributeLocal {
 		if (literal == null) {
 			return 0;
 		}
-		if (literal.endsWith("LOW") || literal.endsWith("EASY") || literal.endsWith("GOOD")) {
+		if (literal.endsWith("LOW") || literal.endsWith("EASY") || literal.endsWith("GOOD") || literal.endsWith("Bronze")) {
 			return 1;
-		} else if (literal.endsWith("MEDIUM")) {
+		} else if (literal.endsWith("MEDIUM") || literal.endsWith("Silver")) {
 			return 2;
-		} else if (literal.endsWith("HIGH") || literal.endsWith("DIFFICULT") || literal.endsWith("BAD")) {
+		} else if (literal.endsWith("HIGH") || literal.endsWith("DIFFICULT") || literal.endsWith("BAD") || literal.endsWith("Gold") ) {
 			return 4;
 		} else
 			return 0;

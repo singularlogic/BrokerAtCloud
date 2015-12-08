@@ -17,14 +17,14 @@ public class AdaptRuleSparql extends AdaptRule {
 		ms.put("rule", "ForCustomer");
 		ms.put("hasExtensibility", "0");
 		ms.put("hasAdaptability", "1");
-		ms.put("hasEaseOfDoingBusiness", "5");
-		ms.put("hasSuitability", "3");
+		ms.put("hasEaseOfDoingBusiness", "2");
+		ms.put("hasSuitability", "2");
 		ms.put("hasPortability", "1");
 		ms.put("hasRecoverability", "1");
-		ms.put("hasLearnability", "5");
+		ms.put("hasLearnability", "3");
 		ms.put("hasAccessibility", "2");
-		ms.put("hasOperability", "1");
-		ms.put("Failure", "1");
+		ms.put("hasServiceLevelProfileCAS", "1");
+		//ms.put("Failure", "1");
 		fakedRepo.put("RuleForCustomer", ms);
 
 		ms = new HashMap<String, String>();
@@ -37,7 +37,7 @@ public class AdaptRuleSparql extends AdaptRule {
 		ms.put("hasRecoverability", "2");
 		ms.put("hasLearnability", "2");
 		ms.put("hasAccessibility", "2");
-		ms.put("hasOperability", "5");
+		ms.put("hasServiceLevelProfileCAS", "1");
 		ms.put("Failure", "1");
 		fakedRepo.put("RuleForDeveloper", ms);
 
@@ -51,28 +51,28 @@ public class AdaptRuleSparql extends AdaptRule {
 		ms.put("hasRecoverability", "1");
 		ms.put("hasLearnability", "4");
 		ms.put("hasAccessibility", "0");
-		ms.put("hasOperability", "1");
+		ms.put("hasServiceLevelProfileCAS", "1");
 		ms.put("Failure", "1");
 		fakedRepo.put("ForAdministrator", ms);
 
 		ms = new HashMap<String, String>();
-		ms.put("rule", "ForPotenial");
-		ms.put("hasExtensibility", "5");
-		ms.put("hasAdaptability", "3");
+		ms.put("rule", "LongResponse");
+		ms.put("hasExtensibility", "0");
+		ms.put("hasAdaptability", "0");
 		ms.put("hasEaseOfDoingBusiness", "1");
 		ms.put("hasSuitability", "0");
 		ms.put("hasPortability", "0");
-		ms.put("hasRecoverability", "1");
+		ms.put("hasRecoverability", "0");
 		ms.put("hasLearnability", "0");
-		ms.put("hasAccessibility", "1");
-		ms.put("hasOperability", "1");
+		ms.put("hasAccessibility", "0");
+		ms.put("hasServiceLevelProfileCAS", "3");
 		ms.put("Failure", "1");
-		fakedRepo.put("ForPotenial", ms);
+		fakedRepo.put("LongResponse", ms);
 	}
 
 	@Override
 	public List<String> involvedContext() {
-		return Arrays.asList("ForCustomer", "ForDeveloper", "ForAdministrator", "ForPotenial");
+		return Arrays.asList("ForCustomer", "ForDeveloper", "ForAdministrator", "LongResponse");
 	}
 
 	public AdaptRuleSparql() {

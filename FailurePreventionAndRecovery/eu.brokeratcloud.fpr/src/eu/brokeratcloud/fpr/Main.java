@@ -39,8 +39,8 @@ public class Main {
 
 
 		updateAndSave();
-
-		URI uri = UriBuilder.fromUri("http://0.0.0.0/").port(8089).build();
+		String port = PropertiesUtil.INSTANCE.get("port");
+		URI uri = UriBuilder.fromUri("http://0.0.0.0/").port(Integer.valueOf(port)).build();
 		ResourceConfig resourceConfig = new ResourceConfig(Demo.class);
 		resourceConfig.register(Recommendation.class);
 		resourceConfig.register(DependencyChecking.class);

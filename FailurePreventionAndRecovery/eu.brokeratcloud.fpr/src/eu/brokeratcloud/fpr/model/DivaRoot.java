@@ -73,13 +73,14 @@ import eu.brokeratcloud.fpr.input.sparql.ServiceDependencySparql;
 public class DivaRoot {
 
 	private static final String NONE = "NoImpendingFailure";
-	private static final String LOW = "impendingFailureLow";
-	private static final String MEDIUM = "impendingFailureMedium";
-	private static final String HIGH = "impendingFailureHigh";
-	private static final String FAILED = "occurredFailure";
-	private static final String RECOVERED = "failureRecovered";
+	private static final String LOW = "ImpendingFailureLow";
+	private static final String MEDIUM = "ImpendingFailureMedium";
+	private static final String HIGH = "ImpendingFailureHigh";
+	private static final String FAILED = "OccurredFailure";
+	private static final String RECOVERED = "FailureRecovered";
 	
 	public static Set<String> environment = new HashSet<String>();
+	
 
 	private int getFailureNumValue(String s) {
 		switch (s) {
@@ -303,7 +304,7 @@ public class DivaRoot {
 		for (String s : ServiceAttribute.INSTANCE.listCommonAttributes()) {
 			Property p = factory.createProperty();
 			// p.setDirection(1);
-			p.setDirection(0);
+			p.setDirection(1);
 			p.setName(s);
 			p.setId(s);
 			root.getProperty().add(p);
@@ -315,6 +316,12 @@ public class DivaRoot {
 		p.setId(s);
 		root.getProperty().add(p);
 
+		s = "Cost";
+		p = factory.createProperty();
+		p.setDirection(0);
+		p.setName(s);
+		p.setId(s);
+		root.getProperty().add(p);
 	}
 
 	private void updateFixed() {
@@ -360,20 +367,20 @@ public class DivaRoot {
 		//
 		// }
 
-		BooleanVariable bv = factory.createBooleanVariable();
-		bv.setName("cpuOverload");
-		bv.setId("cpuOverload");
-		root.getContext().add(bv);
-
-		bv = factory.createBooleanVariable();
-		bv.setName("memoryOverload");
-		bv.setId("memoryOverload");
-		root.getContext().add(bv);
-
-		bv = factory.createBooleanVariable();
-		bv.setName("Normal");
-		bv.setId("Normal");
-		root.getContext().add(bv);
+//		BooleanVariable bv = factory.createBooleanVariable();
+//		bv.setName("cpuOverload");
+//		bv.setId("cpuOverload");
+//		root.getContext().add(bv);
+//
+//		bv = factory.createBooleanVariable();
+//		bv.setName("memoryOverload");
+//		bv.setId("memoryOverload");
+//		root.getContext().add(bv);
+//
+//		bv = factory.createBooleanVariable();
+//		bv.setName("Normal");
+//		bv.setId("Normal");
+//		root.getContext().add(bv);
 
 	}
 
@@ -423,7 +430,9 @@ public class DivaRoot {
 					Object res = ServiceAttribute.INSTANCE.get(var.getId(), pv.getProperty().getId());
 					if (res != null && res instanceof Integer)
 						pv.setValue((Integer) res);
-					// TODO: handle properties in other types.
+
+					if(pv.getProperty().getId().equals("Cost"))
+						pv.setValue(4);
 				}
 			}
 		}
@@ -802,7 +811,8 @@ public class DivaRoot {
 	public List<String> getRecommQuery(String consumer, List<String> srvs) {
 		
 		/**--- By default, for Customer----*/
-		environment.add("ForCustomer");
+		if(environment.isEmpty())
+			environment.add("ForCustomer");
 		
 		List<String> result = new ArrayList<String>();
 		Set<String> requirements = new HashSet<String>();
@@ -812,27 +822,77 @@ public class DivaRoot {
 
 		Context ctx = root.getSimulation().getScenario().get(0).getContext().get(0);
 		ctx.getVariable().clear();
+		
+		List<Dimension> notToRemove = new ArrayList<Dimension>();
 
 		for (Dimension dim : root.getDimension()) {
+			boolean remitted = false;
 			for (Variant v : dim.getVariant()) {
 				for (String srv : srvs) {
 					if (srv.equals(v.getId())) {
 						dim.setLower(1);
+						remitted = true;
 						break;
 					}
 				}
 			}
-			
+			if(remitted) 
+				notToRemove.add(dim);
 		}
 		
+		for(Dimension dim : root.getDimension()){
+			for(Dimension dim2 : root.getDimension()){
+				boolean remitted = false;
+				for(Dimension dim3 : root.getDimension()){
+					if(notToRemove.contains(dim3)){
+						for(Variant v2 : dim3.getVariant()){
+							 
+							 try{
+								 if(v2.getDependency().getText().toLowerCase().contains(dim2.getId().substring(2)))
+										 remitted = true;
+							 }
+							 catch(Exception e){
+								 
+							 }
+							if(remitted)
+								break;
+						}
+					}
+				}
+				if(remitted)
+					notToRemove.add(dim2);
+			}
+		}
+		List<Dimension> toRemove = new ArrayList<Dimension>();
+		for(Dimension dim : root.getDimension()){
+			if(! notToRemove.contains(dim)){
+				toRemove.add(dim);
+			}
+		}
+		root.getDimension().removeAll(toRemove);
+		
+//		List<Dimension> toRemove = new ArrayList<Dimension>();
+//		for (Dimension dim : root.getDimension()) {
+//			for (Variant v : dim.getVariant()) {
+//				for (String srv : srvs) {
+//					if (srv.equals(v.getId())) {
+//						dim.setLower(1);
+//						break;
+//					}
+//				}
+//				
+//			}
+//			if(dim.getId().endsWith("todos")){
+//				toRemove.add(dim);
+//			}
+//		}
+//		root.getDimension().removeAll(toRemove);
 		for (Variable var : root.getContext()) {
 			if (var instanceof BooleanVariable) {
 				BoolVariableValue varval = DivaFactory.eINSTANCE.createBoolVariableValue();
 				
 				String id = var.getId();
-				if (!id.startsWith("For")) {
-					continue;
-				}
+
 				
 				ctx.getVariable().add(varval);
 				varval.setVariable(var);
@@ -848,8 +908,15 @@ public class DivaRoot {
 		_runSimulation();
 
 		try {
-			Configuration config = root.getSimulation().getScenario().get(0).getContext().get(0).getConfiguration()
-					.get(0);
+			Configuration config = null;
+			List<Configuration> configs = root.getSimulation().getScenario().get(0).getContext().get(0).getConfiguration();
+			int max = -100000;
+			for(Configuration c : configs){
+				if(c.getTotalScore() > max){
+					config = c;
+					max = c.getTotalScore();
+				}
+			}
 			for (ConfigVariant v : config.getVariant()) {
 				result.add(v.getVariant().getId());
 			}
@@ -922,7 +989,8 @@ public class DivaRoot {
 			for (String propName : propertyNames) {
 				priorities.put(propName, adaptRule.getPriority(name, propName));
 			}
-			priorities.put("Failure", 16);
+			priorities.put("Failure", 4);
+			priorities.put("Cost", 8);
 			this.fillRule(name, adaptRule.getRule(name), priorities);
 		}
 

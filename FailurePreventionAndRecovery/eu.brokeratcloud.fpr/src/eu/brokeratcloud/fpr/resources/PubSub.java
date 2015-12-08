@@ -13,6 +13,8 @@ import javax.ws.rs.core.MediaType;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
+import eu.brokeratcloud.fpr.input.abstracts.AdaptRule;
+import eu.brokeratcloud.fpr.input.sparql.ServiceCategorySparql;
 import eu.brokeratcloud.fpr.model.DivaRoot;
 import eu.brokeratcloud.fpr.model.Repository;
 
@@ -55,13 +57,21 @@ public class PubSub {
 			for (int i = 0; i < causesArray.length; i++)
 				causesList.add(causesArray[i].trim());
 
-			result = result + "\n" + root.updateFailureLikelihood(serviceName, key);
-			for (String s : allcontexts) {
-				if (causesList.contains(s))
-					result = result + "\n" + root.updateFailureLikelihood(s, "true");
-				else
-					result = result + "\n" + root.updateFailureLikelihood(s, "recovered");
-
+			String cleanServiceName = ServiceCategorySparql.resolveService(serviceName);
+			result = result + "\n" + root.updateFailureLikelihood(cleanServiceName, key);
+//			for (String s : allcontexts) {
+//				if (causesList.contains(s))
+//					result = result + "\n" + root.updateFailureLikelihood(s, "true");
+//				else
+//					result = result + "\n" + root.updateFailureLikelihood(s, "recovered");
+//
+//			}
+			DivaRoot.environment.clear();
+			List<String> involved = AdaptRule.INSTANCE.involvedContext();
+			for(String cause: causesList){
+				if(involved.contains(cause)){
+					DivaRoot.environment.add(cause);
+				}
 			}
 
 		}

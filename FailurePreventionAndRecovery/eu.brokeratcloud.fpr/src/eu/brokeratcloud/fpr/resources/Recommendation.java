@@ -337,8 +337,15 @@ public class Recommendation {
 		// remove.add(s);
 		// }
 		// }
+		String nextQuery = "consumer="+consumer;
+		for(String s : res){
+			nextQuery = nextQuery + "&service=sp:"+s;
+		}
+		
 		result.put("add", add);
 		result.put("remove", remove);
+		result.put("reason", PubSub.latestReasons);
+		result.put("nextQuery", nextQuery);
 		//
 		return result;
 	}
