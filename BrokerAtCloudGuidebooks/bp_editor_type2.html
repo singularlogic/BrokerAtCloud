@@ -526,14 +526,18 @@
                 for (var i = 0; i < quantValuesPanels.length; i++) {
                     var currentPanel = quantValuesPanels[i];
                     var slpType = currentPanel.children[0].children[0].textContent;
-                    var quantValueInstanceName = currentSLP[slpType].sel_value_instance.split('#' + slpInstanceName)[1];
-                    document.getElementById('slpPanel_' + slpCounter + '_' + slpType + '_instance').value = quantValueInstanceName;
-                    var valueType = document.getElementById('slpPanel_' + slpCounter + '_' + slpType + '_valueType').value;
-                    var isRange = document.getElementById('slpPanel_' + slpCounter + '_' + slpType + '_isRange').checked;
-                    if (isRange) {
-                        setExistingQuantitativeValueRange(kb, currentSLP[slpType].sel_value_instance.split('#')[1], valueType, 'slpPanel_' + slpCounter + '_' + slpType);
-                    } else {
-                        setExistingQuantitativeValue(kb, currentSLP[slpType].sel_value_instance.split('#')[1], valueType, 'slpPanel_' + slpCounter + '_' + slpType);
+                    if (currentSLP[slpType].sel_value_instance) {
+                        var quantValueInstanceName = currentSLP[slpType].sel_value_instance.split('#' + slpInstanceName)[1];
+
+                        document.getElementById('slpPanel_' + slpCounter + '_' + slpType + '_inUse').checked = true;
+                        document.getElementById('slpPanel_' + slpCounter + '_' + slpType + '_instance').value = quantValueInstanceName;
+                        var valueType = document.getElementById('slpPanel_' + slpCounter + '_' + slpType + '_valueType').value;
+                        var isRange = document.getElementById('slpPanel_' + slpCounter + '_' + slpType + '_isRange').checked;
+                        if (isRange) {
+                            setExistingQuantitativeValueRange(kb, currentSLP[slpType].sel_value_instance.split('#')[1], valueType, 'slpPanel_' + slpCounter + '_' + slpType);
+                        } else {
+                            setExistingQuantitativeValue(kb, currentSLP[slpType].sel_value_instance.split('#')[1], valueType, 'slpPanel_' + slpCounter + '_' + slpType);
+                        }
                     }
                 }
                 //process qualitative values
@@ -542,9 +546,13 @@
                 for (var i = 0; i < qualValuesPanels.length; i++) {
                     var currentPanel = qualValuesPanels[i];
                     var slpType = currentPanel.children[0].children[0].textContent;
-                    document.getElementById('slpPanel_' + slpCounter + '_selectbox_' + slpType).value = currentSLP[slpType].sel_value_instance.split('#')[1];
+                    if (currentSLP[slpType].sel_value_instance) {
+                        document.getElementById('slpPanel_' + slpCounter + '_' + slpType + '_inUse').checked = true;
+                        document.getElementById('slpPanel_' + slpCounter + '_selectbox_' + slpType).value = currentSLP[slpType].sel_value_instance.split('#')[1];
+                    }
                 }
             });
+            activateOrTriggerPanels(false);
         }
 
 
@@ -635,7 +643,7 @@
                 }());
                 return div;
             },
-            createCheckBox: function (title, check, id, descriptorSize, contentSize) {
+            createCheckBox: function (title, check, id, descriptorSize, contentSize, enabled, onclickFunction) {
                 var div = document.createElement('div');
                 div.setAttribute('class', 'checkbox');
                 div.appendChild(function () {
@@ -645,7 +653,12 @@
                     checkbox.setAttribute("type", "checkbox");
                     checkbox.id = id;
                     checkbox.checked = check;
-                    checkbox.disabled = true;
+                    if (enabled) {
+                        checkbox.disabled = false;
+                    } else {
+                        checkbox.disabled = true;
+                    }
+                    if (onclickFunction) checkbox.onclick = onclickFunction;
                     label.appendChild(checkbox);
                     label.appendChild(document.createTextNode(title));
                     return label;
@@ -756,14 +769,11 @@
                 return li;
             }());
             $("#serviceTab_add_panel").before(
-                createServiceLevelProfilePanel(document.slpDimensions, {
-                    quantitativeConfiguration: null,
-                    qualitativeConfiguration: null
-                }, 'slpPanel_' + document.slpPanelCounter));
+                createServiceLevelProfilePanel(document.slpDimensions, 'slpPanel_' + document.slpPanelCounter));
             $('#SD_tab_list a[href="#slpPanel_' + document.slpPanelCounter + '"]').tab('show');
         }
 
-        function createServiceLevelProfilePanel(slpDimensions, slpConfiguration, prefix) {
+        function createServiceLevelProfilePanel(slpDimensions, prefix) {
             var tabpanel = document.createElement('div');
             tabpanel.setAttribute('class', 'tab-pane');
             tabpanel.setAttribute('role', 'tabpanel');
@@ -779,13 +789,13 @@
                     panelHeading.appendChild(heading);
                     return panelHeading;
                 }());
-                panel.appendChild(createServiceLevelProfilePanelBody(slpDimensions, slpConfiguration, prefix));
+                panel.appendChild(createServiceLevelProfilePanelBody(slpDimensions, prefix));
                 return panel;
             }());
             return tabpanel;
         }
 
-        function createServiceLevelProfilePanelBody(slpDimensions, slpConfiguration, prefix) {
+        function createServiceLevelProfilePanelBody(slpDimensions, prefix) {
             var panelBody = document.createElement('div');
             panelBody.setAttribute('class', 'panel-body');
             // add form to enter SLP name
@@ -815,9 +825,9 @@
                 return form;
             }());
             panelBody.appendChild(createInnerSLPPanel('Specify Quantitative Service Levels', prefix + '_quant',
-                createQuantitativeServiceLevelEditor(prefix, slpDimensions.quantitative, slpConfiguration.quantitativeConfiguration)));
+                createQuantitativeServiceLevelEditor(prefix, slpDimensions.quantitative)));
             panelBody.appendChild(createInnerSLPPanel('Specify Qualitative Service Levels', prefix + '_qual',
-                createQualitativeServiceLevelEditor(prefix, slpDimensions.qualitative, slpConfiguration.qualitativeConfiguration)));
+                createQualitativeServiceLevelEditor(prefix, slpDimensions.qualitative)));
             return panelBody;
         }
 
@@ -843,7 +853,7 @@
             return panel;
         }
 
-        function createQualitativeServiceLevelEditor(prefix, qualitativeDimensions, qualitativeConfiguration) {
+        function createQualitativeServiceLevelEditor(prefix, qualitativeDimensions) {
             //qualitativeDimensions:
             // format: [{value: "val", description: "desc", options: [{value: "optValue", description: "descr"},..]}..]
             var div = document.createElement('div');
@@ -896,21 +906,47 @@
                 var panelHeader = document.createElement('div');
                 panelHeader.className = 'panel-heading';
 
+
                 var header = document.createElement('H2');
+                var headerCheckbox = document.createElement('input');
+
+                headerCheckbox.type = 'checkbox';
+                headerCheckbox.style = 'float:inherit;';
+                headerCheckbox.id = prefix + '_' + currentDimension.value + '_inUse';
+                headerCheckbox.onclick = function () {
+                    if (this.checked == true) {
+                        document.getElementById(prefix + '_panel-body_' + currentDimension.value).hidden = false;
+                        document.getElementById(prefix + '_panel-body-dummy_' + currentDimension.value).hidden = true;
+                    } else {
+                        document.getElementById(prefix + '_panel-body_' + currentDimension.value).hidden = true;
+                        document.getElementById(prefix + '_panel-body-dummy_' + currentDimension.value).hidden = false;
+                    }
+                };
+
+                header.appendChild(headerCheckbox);
                 header.appendChild(document.createTextNode(currentDimension.value));
                 panelHeader.appendChild(header);
 
                 var panelBody = document.createElement('div');
-                panelBody.classNAme = 'panel-body';
+                panelBody.className = 'panel-body';
+                panelBody.id = prefix + '_panel-body_' + currentDimension.value;
                 //TODO vielleicht hier noch irgendwo den value reinschreiben, um ihn später leichter auslesen zu können
                 var descriptionNode = document.createElement('p');
                 descriptionNode.appendChild(document.createTextNode(currentDimension.description));
                 panelBody.appendChild(descriptionNode);
 
+
+
                 panelBody.appendChild(qvTable);
                 panelBody.appendChild(selectbox);
+                var panelBodyDummy = document.createElement('div');
+                panelBodyDummy.appendChild(document.createTextNode('No value for service level ' + currentDimension.value + '.'));
+                panelBodyDummy.className = 'panel-body';
+                panelBodyDummy.id = prefix + '_panel-body-dummy_' + currentDimension.value;
+                panelBodyDummy.hidden = true;
                 panel.appendChild(panelHeader);
                 panel.appendChild(panelBody);
+                panel.appendChild(panelBodyDummy);
                 div.appendChild(panel);
             });
             //
@@ -919,7 +955,7 @@
             return div;
         }
 
-        function createQuantitativeServiceLevelEditor(prefix, quantitativeDimensions, quantitativeConfiguration) {
+        function createQuantitativeServiceLevelEditor(prefix, quantitativeDimensions) {
             //quantitativeDimensions
             //format [{type: "AmmountOfCpu",  valueType: "float", uom: "", minValue: -1, maxValue: -1, isRange: false, higherIsBetter: false}, ...]
 
@@ -933,8 +969,25 @@
                 panel.appendChild(function () {
                     var panelHeading = document.createElement('div');
                     panelHeading.className = 'panel-heading';
+
                     panelHeading.appendChild(function () {
                         var header = document.createElement('h2');
+                        var headerCheckbox = document.createElement('input');
+
+                        headerCheckbox.type = 'checkbox';
+                        headerCheckbox.style = 'float:inherit;';
+                        headerCheckbox.id = localPrefix + '_inUse';
+                        headerCheckbox.onclick = function () {
+                            if (this.checked == true) {
+                                document.getElementById(localPrefix + '_panel-body').hidden = false;
+                                document.getElementById(localPrefix + '_panel-body-dummy').hidden = true;
+                            } else {
+                                document.getElementById(localPrefix + '_panel-body').hidden = true;
+                                document.getElementById(localPrefix + '_panel-body-dummy').hidden = false;
+                            }
+                        };
+
+                        header.appendChild(headerCheckbox);
                         header.appendChild(document.createTextNode(qv.type));
                         header.id = localPrefix + '_type';
                         return header;
@@ -950,6 +1003,7 @@
                     paragraph.appendChild(document.createTextNode(qv.description));
                     return paragraph;
                 }());
+
                 form.appendChild(
                     elementUtil.createTextInputBox('Service Level', '', localPrefix + '_instance', false, 2, 10)
                 );
@@ -988,8 +1042,17 @@
                 panel.appendChild(function () {
                     var panelBody = document.createElement('div');
                     panelBody.className = 'panel-body';
+                    panelBody.id = localPrefix + '_panel-body';
                     panelBody.appendChild(form);
                     return panelBody;
+                }());
+                panel.appendChild(function () {
+                    var panelBodyDummy = document.createElement('div');
+                    panelBodyDummy.appendChild(document.createTextNode('No value for service level ' + qv.type + '.'));
+                    panelBodyDummy.className = 'panel-body';
+                    panelBodyDummy.id = localPrefix + '_panel-body-dummy';
+                    panelBodyDummy.hidden = true;
+                    return panelBodyDummy;
                 }());
                 div.appendChild(panel);
                 //return panel;
@@ -1155,13 +1218,14 @@
                 var qualValuesPanels = document.getElementById("slpPanel_" + panelCounter + "_qual_values").children;
                 for (var i = 0; i < qualValuesPanels.length; i++) {
                     var qualValueType = qualValuesPanels[i].id.replace("slpPanel_" + panelCounter + "_", "");
-                    var qualValue = document.getElementById("slpPanel_" + panelCounter + "_selectbox_" + qualValueType).value;
-                    qualitativeSL.push({
-                        type: qualValueType,
-                        value: qualValue
-                    });
+                    if (document.getElementById("slpPanel_" + panelCounter + "_" + qualValueType + '_inUse').checked) {
+                        var qualValue = document.getElementById("slpPanel_" + panelCounter + "_selectbox_" + qualValueType).value;
+                        qualitativeSL.push({
+                            type: qualValueType,
+                            value: qualValue
+                        });
+                    }
                 }
-                //todo extract qualitative SLs
 
                 var quantitativeSL = [];
                 currentSLP.quantitative = quantitativeSL;
@@ -1179,30 +1243,32 @@
                     var idMaxValue = prefix + '_maxValue';
                     var idValue = prefix + '_value';
 
-                    var quant_value_typeNG = document.getElementById(idType).innerHTML;
-                    var quant_value_instNG = document.getElementById(idInstance).value;
-                    var uomNG = document.getElementById(idUom).value;
-                    var isRangeNG = document.getElementById(idIsRange).checked;
-                    var minValueNG = document.getElementById(idMinValue).value;
-                    var maxValueNG = document.getElementById(idMaxValue).value;
-                    var valueNG = undefined;
-                    if (!isRangeNG) {
-                        valueNG = document.getElementById(idValue).value;
-                    }
-                    var valueTypeNG = document.getElementById(idValueType).value;
-                    var instanceDescriptionNG = document.getElementById(idInstanceDesc).value;
+                    if (document.getElementById(prefix + '_inUse').checked) {
+                        var quant_value_typeNG = document.getElementById(idType).textContent;
+                        var quant_value_instNG = document.getElementById(idInstance).value;
+                        var uomNG = document.getElementById(idUom).value;
+                        var isRangeNG = document.getElementById(idIsRange).checked;
+                        var minValueNG = document.getElementById(idMinValue).value;
+                        var maxValueNG = document.getElementById(idMaxValue).value;
+                        var valueNG = undefined;
+                        if (!isRangeNG) {
+                            valueNG = document.getElementById(idValue).value;
+                        }
+                        var valueTypeNG = document.getElementById(idValueType).value;
+                        var instanceDescriptionNG = document.getElementById(idInstanceDesc).value;
 
-                    quantitativeSL.push({
-                        quant_value_typeNG: quant_value_typeNG,
-                        quant_value_instNG: quant_value_instNG,
-                        uomNG: uomNG,
-                        isRangeNG: isRangeNG,
-                        minValueNG: minValueNG,
-                        maxValueNG: maxValueNG,
-                        valueNG: valueNG,
-                        valueTypeNG: valueTypeNG,
-                        instanceDescriptionNG: instanceDescriptionNG
-                    });
+                        quantitativeSL.push({
+                            quant_value_typeNG: quant_value_typeNG,
+                            quant_value_instNG: quant_value_instNG,
+                            uomNG: uomNG,
+                            isRangeNG: isRangeNG,
+                            minValueNG: minValueNG,
+                            maxValueNG: maxValueNG,
+                            valueNG: valueNG,
+                            valueTypeNG: valueTypeNG,
+                            instanceDescriptionNG: instanceDescriptionNG
+                        });
+                    }
                 }
                 slps.push(currentSLP);
             }
@@ -1309,6 +1375,32 @@
 
             return kb;
         }
+
+        function activateOrTriggerPanels(activate) {
+            var panels = document.getElementById('SD_tab_content').children;
+            for (var panelCounter = 1; panelCounter < panels.length; panelCounter++) {
+                var currentPanel = panels[panelCounter - 1];
+                var qualValuesPanels = document.getElementById("slpPanel_" + panelCounter + "_qual_values").children;
+                for (var i = 0; i < qualValuesPanels.length; i++) {
+                    var qualValueType = qualValuesPanels[i].id.replace("slpPanel_" + panelCounter + "_", "");
+                    var qualCheckbox = document.getElementById("slpPanel_" + panelCounter + "_" + qualValueType + '_inUse');
+                    if (activate) {
+                        qualCheckbox.checked = true;
+                    }
+                    qualCheckbox.onclick();
+                }
+                var quantValuePanels = document.getElementById("slpPanel_" + panelCounter + "_quant_values").children;
+                for (var i = 0; i < quantValuePanels.length; i++) {
+                    var quantValueType = quantValuePanels[i].children[0].children[0].textContent;
+                    var prefix = "slpPanel_" + panelCounter + "_" + quantValueType;
+                    var quantCheckbox = document.getElementById(prefix + '_inUse');
+                    if (activate) {
+                        quantCheckbox.checked = true;
+                    }
+                    quantCheckbox.onclick();
+                }
+            }
+        }
     </script>
 </head>
 
@@ -1322,7 +1414,7 @@
             </div>
             <div class="col-md-9">
                 <h1> Welcome to the Broker@Cloud Broker Policy Editor for Type 2 Broker Policies </h1>
-                <p>More description will be entered here.</p>
+                <p>This editor supports instantiation of multiple profiles after a broker policy has been created with the broker policy editor for type 1 broker policies.</p>
             </div>
         </div>
     </div>
@@ -1340,15 +1432,14 @@
                     </div>
 
                 </div>
-                <div id="serviceEditArea" class="collapse in">
+                <div id="serviceEditArea" class="collapse">
                     <div class="container">
                         <div class="col-sm-12">
-                            <div class="panel panel-default panel2col">
+                            <div class="panel panel-default panel1col">
                                 <div class="panel-heading">
                                     <h1> Broker Policy </h1>
                                 </div>
-                                <div class="panel-body">
-
+                                <div class="panel-body" id="myblubb">
                                     <form class="form-horizontal">
                                         <div class="form-group">
                                             <label class="col-sm-4 control-label" for="bp_namespace">Broker namespace</label>
@@ -1482,7 +1573,7 @@
                     <div>
                         <!-- Nav tabs -->
                         <ul id="SD_tab_list" class="nav nav-tabs" role="tablist">
-                            <li id="serviceTab_add" role="presentation" onclick="addSLPPanel()"><a href="#" aria-controls="serviceTab_2" role="tab" data-toggle="tab">Add SLP</a></li>
+                            <li id="serviceTab_add" role="presentation" onclick="{addSLPPanel(); activateOrTriggerPanels(true);}"><a href="#" aria-controls="serviceTab_2" role="tab" data-toggle="tab">Add SLP</a></li>
                         </ul>
 
                         <!-- Tab panes -->

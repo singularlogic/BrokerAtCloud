@@ -1,0 +1,317 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . 
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> . 
+@prefix dcterms: <http://purl.org/dc/terms/> . 
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> . 
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> . 
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> . 
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> . 
+@prefix usdl-pref: <http://www.linked-usdl.org/ns/usdl-pref#> . 
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> . 
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> . 
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> . 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+@prefix ctag: <http://commontag.org/ns#> . 
+@prefix org: <http://www.w3.org/ns/org#> . 
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> . 
+@prefix time: <http://www.w3.org/2006/time#> . 
+@prefix gr: <http://purl.org/goodrelations/v1#> . 
+@prefix doap: <http://usefulinc.com/ns/doap#> . 
+@prefix fc: <http://www.broker-cloud.eu/service-descriptions/OrbiImu/categories#> . 
+@prefix bp: <http://Orbi-Imu.com#> . 
+
+bp:OrbiIMU 
+  a gr:BusinessEntity ; 
+  gr:legalName "Orbi IMU"^^xsd:string . 
+
+bp:OrbiIMUEntityInvolvement 
+  a usdl-core:EntityInvolvement ; 
+  usdl-core:withBusinessRole usdl-business-roles:intermediary ; 
+  usdl-core:ofBusinessEntity bp:OrbiIMU . 
+
+bp:OrbiImuPolicy 
+  a bp:OrbiImuPolicyModel ; 
+  dcterms:creator bp:OrbiIMU ; 
+  usdl-core:hasEntityInvolvement bp:OrbiIMUEntityInvolvement ; 
+  usdl-core-cb:hasClassificationDimension fc:rootConcept ; 
+  usdl-core-cb:validFrom "2015-12-01"^^xsd:date ; 
+  usdl-core-cb:validThrough "2016-12-01"^^xsd:date . 
+
+bp:OrbiImuPolicyModel 
+  rdfs:subClassOf usdl-core:ServiceModel . 
+
+bp:OrbiImuPolicySLP 
+  rdfs:subClassOf usdl-sla:ServiceLevelProfile . 
+
+bp:hasOrbiImuPolicySLP 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile ; 
+  rdfs:domain bp:OrbiImuPolicyModel ; 
+  rdfs:range bp:OrbiImuPolicySLP . 
+
+fc:OrbiImuPolicyConceptScheme 
+  a skos:ConceptScheme ; 
+  dcterms:title "Root for all classification dimensions." ; 
+  skos:prefLabel "Root Concept Scheme"@en ; 
+  skos:hasTopConcept fc:rootConcept . 
+
+fc:rootConcept 
+  a usdl-core-cb:ClassificationDimension ; 
+  skos:prefLabel "Root Concept"@en ; 
+  skos:topConceptOf fc:OrbiImuPolicyConceptScheme ; 
+  skos:inScheme fc:OrbiImuPolicyConceptScheme ; 
+  skos:narrower fc:cat1 , 
+    fc:cat2 . 
+
+fc:cat1 
+  a usdl-core-cb:ClassificationDimension ; 
+  dcterms:title "Category 1" ; 
+  skos:prefLabel "Cat #1"@en ; 
+  skos:broader fc:rootConcept ; 
+  skos:inScheme fc:OrbiImuPolicyConceptScheme . 
+
+fc:cat2 
+  a usdl-core-cb:ClassificationDimension ; 
+  dcterms:title "Category 2" ; 
+  skos:prefLabel "Cat #2"@en ; 
+  skos:broader fc:rootConcept ; 
+  skos:inScheme fc:OrbiImuPolicyConceptScheme . 
+
+bp:SLReputation 
+  rdfs:subClassOf usdl-sla:ServiceLevel . 
+
+bp:hasSLReputation 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
+  rdfs:domain bp:OrbiImuPolicySLP ; 
+  rdfs:range bp:SLReputation . 
+
+bp:SLEReputation 
+  rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+bp:hasSLEReputation 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
+  rdfs:domain bp:SLReputation ; 
+  rdfs:range bp:SLEReputation . 
+
+bp:VarReputation 
+  rdfs:subClassOf usdl-sla:Variable . 
+
+bp:hasVarReputation 
+  rdfs:subPropertyOf usdl-sla:hasVariable ; 
+  rdfs:domain bp:SLEReputation ; 
+  rdfs:range bp:VarReputation . 
+
+bp:Reputation 
+  rdfs:subClassOf gr:QualitativeValue ; 
+  rdfs:label "Provider Reputation"@en . 
+
+bp:hasDefaultReputation 
+  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
+  rdfs:domain bp:VarReputation ; 
+  rdfs:range bp:Reputation . 
+
+bp:hasReputation 
+  rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty ; 
+  rdfs:domain bp:OrbiImuPolicyModel ; 
+  rdfs:range bp:Reputation . 
+
+bp:ReputationPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QualitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarReputation 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQualitativeValue ; 
+  rdfs:domain bp:ReputationPreferenceVariable ; 
+  rdfs:range bp:Reputation . 
+
+bp:SLUsability 
+  rdfs:subClassOf usdl-sla:ServiceLevel . 
+
+bp:hasSLUsability 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
+  rdfs:domain bp:OrbiImuPolicySLP ; 
+  rdfs:range bp:SLUsability . 
+
+bp:SLEUsability 
+  rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+bp:hasSLEUsability 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
+  rdfs:domain bp:SLUsability ; 
+  rdfs:range bp:SLEUsability . 
+
+bp:VarUsability 
+  rdfs:subClassOf usdl-sla:Variable . 
+
+bp:hasVarUsability 
+  rdfs:subPropertyOf usdl-sla:hasVariable ; 
+  rdfs:domain bp:SLEUsability ; 
+  rdfs:range bp:VarUsability . 
+
+bp:Usability 
+  rdfs:subClassOf gr:QualitativeValue ; 
+  rdfs:label "Service Usability"@en . 
+
+bp:hasDefaultUsability 
+  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQualitativeValue ; 
+  rdfs:domain bp:VarUsability ; 
+  rdfs:range bp:Usability . 
+
+bp:hasUsability 
+  rdfs:subPropertyOf gr:qualitativeProductOrServiceProperty ; 
+  rdfs:domain bp:OrbiImuPolicyModel ; 
+  rdfs:range bp:Usability . 
+
+bp:UsabilityPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QualitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarUsability 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQualitativeValue ; 
+  rdfs:domain bp:UsabilityPreferenceVariable ; 
+  rdfs:range bp:Usability . 
+
+bp:SLCPU 
+  rdfs:subClassOf usdl-sla:ServiceLevel . 
+
+bp:hasSLCPU 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
+  rdfs:domain bp:OrbiImuPolicySLP ; 
+  rdfs:range bp:SLCPU . 
+
+bp:SLECPU 
+  rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+bp:hasSLECPU 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
+  rdfs:domain bp:SLCPU ; 
+  rdfs:range bp:SLECPU . 
+
+bp:VarCPU 
+  rdfs:subClassOf usdl-sla:Variable . 
+
+bp:hasVarCPU 
+  rdfs:subPropertyOf usdl-sla:hasVariable ; 
+  rdfs:domain bp:SLECPU ; 
+  rdfs:range bp:VarCPU . 
+
+bp:CPU 
+  rdfs:subClassOf gr:QuantitativeValueInteger ; 
+  rdfs:label "C.P.U."@en ; 
+  gr:hasUnitOfMeasurement ""^^xsd:string ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "32"^^xsd:integer ; 
+  usdl-core-cb:isRange "false"^^xsd:boolean ; 
+  usdl-core-cb:higherIsBetter "true"^^xsd:boolean . 
+
+bp:CPUValueRange 
+  a bp:CPU ; 
+  rdfs:label "C.P.U."@en ; 
+  gr:hasUnitOfMeasurement ""^^xsd:string ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "32"^^xsd:integer . 
+
+bp:hasDefaultCPU 
+  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:VarCPU ; 
+  rdfs:range bp:CPU . 
+
+bp:hasCPU 
+  rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ; 
+  rdfs:domain bp:OrbiImuPolicyModel ; 
+  rdfs:range bp:CPU . 
+
+bp:CPUPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QuantitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarCPU 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:CPUPreferenceVariable ; 
+  rdfs:range bp:CPU . 
+
+bp:SLMemory 
+  rdfs:subClassOf usdl-sla:ServiceLevel . 
+
+bp:hasSLMemory 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevel ; 
+  rdfs:domain bp:OrbiImuPolicySLP ; 
+  rdfs:range bp:SLMemory . 
+
+bp:SLEMemory 
+  rdfs:subClassOf usdl-sla:ServiceLevelExpression . 
+
+bp:hasSLEMemory 
+  rdfs:subPropertyOf usdl-sla:hasServiceLevelExpression ; 
+  rdfs:domain bp:SLMemory ; 
+  rdfs:range bp:SLEMemory . 
+
+bp:VarMemory 
+  rdfs:subClassOf usdl-sla:Variable . 
+
+bp:hasVarMemory 
+  rdfs:subPropertyOf usdl-sla:hasVariable ; 
+  rdfs:domain bp:SLEMemory ; 
+  rdfs:range bp:VarMemory . 
+
+bp:Memory 
+  rdfs:subClassOf gr:QuantitativeValueInteger ; 
+  rdfs:label "RAM memory"@en ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "10000000"^^xsd:integer ; 
+  usdl-core-cb:isRange "false"^^xsd:boolean ; 
+  usdl-core-cb:higherIsBetter "true"^^xsd:boolean . 
+
+bp:MemoryValueRange 
+  a bp:Memory ; 
+  rdfs:label "RAM memory"@en ; 
+  gr:hasUnitOfMeasurement "MB"^^xsd:string ; 
+  gr:hasMinValueInteger "1"^^xsd:integer ; 
+  gr:hasMaxValueInteger "10000000"^^xsd:integer . 
+
+bp:hasDefaultMemory 
+  rdfs:subPropertyOf usdl-sla-cb:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:VarMemory ; 
+  rdfs:range bp:Memory . 
+
+bp:hasMemory 
+  rdfs:subPropertyOf gr:quantitativeProductOrServiceProperty ; 
+  rdfs:domain bp:OrbiImuPolicyModel ; 
+  rdfs:range bp:Memory . 
+
+bp:MemoryPreferenceVariable 
+  rdfs:subClassOf usdl-pref:QuantitativeVariable ; 
+  usdl-pref:belongsTo fc:rootConcept ; 
+  usdl-pref:refToServiceAttribute <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> . 
+
+bp:hasDefaultPrefVarMemory 
+  rdfs:subPropertyOf usdl-pref:hasDefaultQuantitativeValue ; 
+  rdfs:domain bp:MemoryPreferenceVariable ; 
+  rdfs:range bp:Memory . 
+
+bp:BadRep 
+  a bp:Reputation ; 
+  rdfs:label "Bad Reputation"@en ; 
+  gr:lesser bp:NormRep . 
+
+bp:NormRep 
+  a bp:Reputation ; 
+  rdfs:label "Normal Reputation"@en ; 
+  gr:lesser bp:GoodRep . 
+
+bp:GoodRep 
+  a bp:Reputation ; 
+  rdfs:label "Good Reputation"@en . 
+
+bp:LowU 
+  a bp:Usability ; 
+  rdfs:label "Low Usability"@en ; 
+  gr:lesser bp:GoodU . 
+
+bp:GoodU 
+  a bp:Usability ; 
+  rdfs:label "Good Usability"@en . 
