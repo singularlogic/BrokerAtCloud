@@ -68,8 +68,27 @@ public class Main {
 					try {
 						sleep(3600000);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
+						
 						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
+		
+		new Thread(){
+			public void run(){
+				while(true){
+					if(Subscriber.dirty){
+						Subscriber.dirty=false;
+						//TODO: Enacting part from SiLo
+					}
+					try{
+						sleep(10000);
+					}
+				
+					catch (InterruptedException e) {
+						e.printStackTrace();
+					
 					}
 				}
 			}

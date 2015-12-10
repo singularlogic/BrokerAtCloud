@@ -5,11 +5,14 @@ import java.util.Properties;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.MessageProducer;
+import javax.jms.Queue;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.jms.TopicConnection;
 import javax.jms.TopicConnectionFactory;
+import javax.jms.TopicPublisher;
 import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
 
@@ -19,6 +22,8 @@ import eu.brokeratcloud.fpr.resources.PubSub;
 public class Subscriber implements MessageListener {
 
 	public static String pubsubServer = null;
+	public static TopicSession session = null;
+	public static boolean dirty = false;
 
 	public static void startListening() throws JMSException {
 		// public static void main(String[] args) throws JMSException{
@@ -32,8 +37,9 @@ public class Subscriber implements MessageListener {
 		TopicConnectionFactory topicConnectionFactory = JNDIContext.getInstance().getTopicConnectionFactory();
 		TopicConnection topicConnection = topicConnectionFactory.createTopicConnection();
 		TopicSession session = topicConnection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
-
-		listenTo(session, "AvgQueryTime");
+		Subscriber.session = session;
+		
+		//listenTo(session, "AvgQueryTime");
 		listenTo(session, "ImpendingFailureHigh");
 		listenTo(session, "ImpendingFailureLow");
 		listenTo(session, "ImpendingFailureMedium");
@@ -66,6 +72,7 @@ public class Subscriber implements MessageListener {
 			String cep = String.format("{ \"%s\": %s }", topic, s);
 			System.out.println(cep);
 			new PubSub().cepEvent(cep);
+			dirty = true;
 		} catch (JMSException e) {
 
 			e.printStackTrace();
@@ -74,6 +81,16 @@ public class Subscriber implements MessageListener {
 
 	public static void main(String[] args) throws JMSException {
 		startListening();
+	}
+	
+
+	public static void sendMessage(String topic, String message) throws JMSException{
+		
+		Topic jmstopic = session.createTopic(topic);
+		TopicPublisher publisher = session.createPublisher(jmstopic);
+		TextMessage textmessage = session.createTextMessage(message);
+		publisher.send(textmessage);
+		System.out.println("sent");
 	}
 
 }
