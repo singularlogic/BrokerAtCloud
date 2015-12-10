@@ -324,7 +324,7 @@
             event.preventDefault();
         }
         findBase = function (kb) {
-            var base = kb.databank.baseURI
+            var base = kb.databank.baseURI;
             var services = kb.where("?brokerPolicy a ?serviceModel")
                 .where("?serviceModel rdfs:subClassOf usdl-core:ServiceModel")
                 .where("?brokerPolicy usdl-core-cb:validFrom ?validFrom");

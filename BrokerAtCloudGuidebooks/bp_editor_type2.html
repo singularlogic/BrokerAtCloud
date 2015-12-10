@@ -769,14 +769,11 @@
                 return li;
             }());
             $("#serviceTab_add_panel").before(
-                createServiceLevelProfilePanel(document.slpDimensions, {
-                    quantitativeConfiguration: null,
-                    qualitativeConfiguration: null
-                }, 'slpPanel_' + document.slpPanelCounter));
+                createServiceLevelProfilePanel(document.slpDimensions, 'slpPanel_' + document.slpPanelCounter));
             $('#SD_tab_list a[href="#slpPanel_' + document.slpPanelCounter + '"]').tab('show');
         }
 
-        function createServiceLevelProfilePanel(slpDimensions, slpConfiguration, prefix) {
+        function createServiceLevelProfilePanel(slpDimensions, prefix) {
             var tabpanel = document.createElement('div');
             tabpanel.setAttribute('class', 'tab-pane');
             tabpanel.setAttribute('role', 'tabpanel');
@@ -792,13 +789,13 @@
                     panelHeading.appendChild(heading);
                     return panelHeading;
                 }());
-                panel.appendChild(createServiceLevelProfilePanelBody(slpDimensions, slpConfiguration, prefix));
+                panel.appendChild(createServiceLevelProfilePanelBody(slpDimensions, prefix));
                 return panel;
             }());
             return tabpanel;
         }
 
-        function createServiceLevelProfilePanelBody(slpDimensions, slpConfiguration, prefix) {
+        function createServiceLevelProfilePanelBody(slpDimensions, prefix) {
             var panelBody = document.createElement('div');
             panelBody.setAttribute('class', 'panel-body');
             // add form to enter SLP name
@@ -828,9 +825,9 @@
                 return form;
             }());
             panelBody.appendChild(createInnerSLPPanel('Specify Quantitative Service Levels', prefix + '_quant',
-                createQuantitativeServiceLevelEditor(prefix, slpDimensions.quantitative, slpConfiguration.quantitativeConfiguration)));
+                createQuantitativeServiceLevelEditor(prefix, slpDimensions.quantitative)));
             panelBody.appendChild(createInnerSLPPanel('Specify Qualitative Service Levels', prefix + '_qual',
-                createQualitativeServiceLevelEditor(prefix, slpDimensions.qualitative, slpConfiguration.qualitativeConfiguration)));
+                createQualitativeServiceLevelEditor(prefix, slpDimensions.qualitative)));
             return panelBody;
         }
 
@@ -856,7 +853,7 @@
             return panel;
         }
 
-        function createQualitativeServiceLevelEditor(prefix, qualitativeDimensions, qualitativeConfiguration) {
+        function createQualitativeServiceLevelEditor(prefix, qualitativeDimensions) {
             //qualitativeDimensions:
             // format: [{value: "val", description: "desc", options: [{value: "optValue", description: "descr"},..]}..]
             var div = document.createElement('div');
@@ -958,7 +955,7 @@
             return div;
         }
 
-        function createQuantitativeServiceLevelEditor(prefix, quantitativeDimensions, quantitativeConfiguration) {
+        function createQuantitativeServiceLevelEditor(prefix, quantitativeDimensions) {
             //quantitativeDimensions
             //format [{type: "AmmountOfCpu",  valueType: "float", uom: "", minValue: -1, maxValue: -1, isRange: false, higherIsBetter: false}, ...]
 
