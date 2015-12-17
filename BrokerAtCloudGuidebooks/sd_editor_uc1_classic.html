@@ -81,9 +81,8 @@
         var kb;
 
         function storeSD() {
-            var sp_namespace = document.getElementById("sd_namespace").value;
             var kb_sd = $.rdf()
-                .base(sp_namespace)
+                .base(document.getElementById("sd_namespace").value)
                 .prefix('foaf', 'http://xmlns.com/foaf/0.1/')
                 .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
                 .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
@@ -104,32 +103,23 @@
                 .prefix('gr', 'http://purl.org/goodrelations/v1#')
                 .prefix('doap', 'http://usefulinc.com/ns/doap#')
                 .prefix('bp', document.kb.databank.baseURI)
-                .prefix('sp', sp_namespace + "#")
                 // Create the business entity of the service provider
-                .add("sp:" + document.getElementById("sp_business_entity").value + " a gr:BusinessEntity .")
-                .add('sp:' + document.getElementById("sp_business_entity").value + ' gr:legalName ' + '"' + document.getElementById("sp_legal_name").value + '"' + ' .')
+                .add("<" + document.getElementById("sp_business_entity").value + "> a gr:BusinessEntity .")
+                .add('<' + document.getElementById("sp_business_entity").value + '> gr:legalName ' + '"' + document.getElementById("sp_legal_name").value + '"' + ' .')
                 // Create the entity involvement instance and bind it to the service provider business entity
-                .add("sp:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " a usdl-core:EntityInvolvement .")
-                .add("sp:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:withBusinessRole usdl-business-roles:provider .")
-                .add("sp:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:ofBusinessEntity sp:" + document.getElementById("sp_business_entity").value + " .")
+                .add("<" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + "> a usdl-core:EntityInvolvement .")
+                .add("<" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + "> usdl-core:withBusinessRole usdl-business-roles:provider .")
+                .add("<" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + "> usdl-core:ofBusinessEntity <" + document.getElementById("sp_business_entity").value + "> .")
                 // Create the service instance
-                .add("sp:" + document.getElementById("sd").value + " a usdl-core:Service .")
-                .add("sp:" + document.getElementById("sd").value + " dcterms:creator sp:" + document.getElementById("sp_business_entity").value + " .")
-                .add("sp:" + document.getElementById("sd").value + " usdl-core:hasEntityInvolvement sp:" + document.getElementById("sp_business_entity").value + "EntityInvolvement .")
-                .add("sp:" + document.getElementById("sd").value + " usdl-core-cb:hasServiceModel sp:" + document.getElementById("sd_model").value + " .")
-                .add("sp:" + document.getElementById("sd").value + " usdl-core-cb:validFrom \"" + document.getElementById("sd_validFrom").value + "\"^^xsd:date .")
-                .add("sp:" + document.getElementById("sd").value + " usdl-core-cb:validThrough \"" + document.getElementById("sd_validThrough").value + "\"^^xsd:date .")
-
-            // Create the service model instance
-            .add("sp:" + document.getElementById("sd_model").value + " a bp:" + document.getElementById("servicemodel_class").value + " .")
-                .add("sp:" + document.getElementById("sd_model").value + " gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
+                .add("<" + document.getElementById("sd").value + "> a usdl-core:Service .")
+                .add("<" + document.getElementById("sd").value + "> dcterms:creator <" + document.getElementById("sp_business_entity").value + "> .")
+                .add("<" + document.getElementById("sd").value + "> usdl-core:hasEntityInvolvement <" + document.getElementById("sp_business_entity").value + "EntityInvolvement> .")
+                .add("<" + document.getElementById("sd").value + "> usdl-core-cb:hasServiceModel <" + document.getElementById("sd_model").value + "> .")
+                // Create the service model instance
+                .add("<" + document.getElementById("sd_model").value + "> a bp:" + document.getElementById("servicemodel_class").value + " .")
+                .add("<" + document.getElementById("sd_model").value + "> gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
                 // Assign the selected profile instance to the service model
-                .add("sp:" + document.getElementById("sd_model").value + " bp:" + document.getElementById("slp_class").value + " <" + document.getElementById("slp").value + "> .");
-            if (document.getElementById("sd_dependsOn").value != "") {
-                document.getElementById("sd_dependsOn").value.split(" ").forEach(function (dep) {
-                    kb_sd.add("sp:" + document.getElementById("sd").value + " usdl-core-cb:dependsOn " + dep + " .");
-                });
-            }
+                .add("<" + document.getElementById("sd_model").value + "> bp:" + document.getElementById("slp_class").value + " <" + document.getElementById("slp").value + "> .");
             // Add the chosen classification concepts to the service model
             kb_sd = addClassificationConcepts(kb_sd);
             // Dump the kb with the service description to a turtle format and show it in a separate window.
@@ -151,11 +141,10 @@
             var currentSLs = getSLsFromPanel(document.getElementById('optionalInstancePanel'));
 
             currentSLs.qualitative.forEach(function (currentQualInstance) {
-                //quickfix: bp:hasXYZ -> bp:hasSLXYZ
                 kb.add("<" + document.getElementById("sd_model").value + "> bp:has" + currentQualInstance.type + " bp:" + currentQualInstance.value);
             });
             currentSLs.quantitative.forEach(function (currentQuantInstance) {
-                //quickfix: bp:hasXYZ -> bp:hasSLXYZ
+                //bind
                 kb.add("<" + document.getElementById("sd_model").value + "> bp:has" + currentQuantInstance.quant_value_typeNG + " bp:" + currentQuantInstance.quant_value_instNG);
 
                 kb.add("bp:" + currentQuantInstance.quant_value_instNG + " a bp:" + currentQuantInstance.quant_value_typeNG + " .");
@@ -327,7 +316,7 @@
         function addClassificationConcepts(kb) {
             var class_table = document.getElementById("class_table");
             for (i = 0; i < class_table.rows.length; i++) {
-                kb.add("sp:" + document.getElementById("sd_model").value + " usdl-core-cb:hasClassificationDimension " + "<" + class_table.rows[i].cells[2].innerHTML + "> .")
+                kb.add("<" + document.getElementById("sd_model").value + "> usdl-core-cb:hasClassificationDimension " + "<" + class_table.rows[i].cells[2].innerHTML + "> .")
             }
             return kb;
         }
@@ -960,8 +949,8 @@
                     <!--p> Specify your broker namespace </p-->
                     <form>
                         <div class="form-group">
-                            <label>Provider Namespace</label>
-                            <input type="text" class="form-control" id="sd_namespace" value="http://yourprovidernamespace.com">
+                            <label>Broker Namespace</label>
+                            <input type="text" class="form-control" id="sd_namespace" value="http://yourbrokernamespace.com">
                         </div>
                     </form>
                 </div>
@@ -997,18 +986,6 @@
                             <label>Service model name</label>
                             <input class="form-control" type="text" id="sd_model" value="YourServiceModelName">
                             <input type="text" id="servicemodel" value="Broker Policy Instance" disabled="disabled" hidden="hidden">
-                        </div>
-                        <div class="form-group">
-                            <label>Valid From</label>
-                            <input class="form-control" type="text" id="sd_validFrom" value="2017-02-01">
-                        </div>
-                        <div class="form-group">
-                            <label>Valid Through</label>
-                            <input class="form-control" type="text" id="sd_validThrough" value="2017-02-28">
-                        </div>
-                        <div class="form-group">
-                            <label>Depends on</label>
-                            <input class="form-control" type="text" id="sd_dependsOn">
                         </div>
                     </form>
                 </div>

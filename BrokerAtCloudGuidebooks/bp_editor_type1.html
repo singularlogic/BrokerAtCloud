@@ -486,6 +486,7 @@
             cell4.innerHTML = "<input type='text'>";
             var cell5 = row.insertCell(4);
             cell5.innerHTML = "<select name='ordinal' id='ordinal_rel' > <option>nonEqual</option> <option>lesser</option> </select>";
+            //cell5.innerHTML = "<select name='ordinal' id='ordinal_rel' > <option>lesser</option> </select>";
         }
 
         function deleteQualSLConcept() {
@@ -849,9 +850,11 @@
                         //Ordinal
                     var cell5 = row.insertCell(4);
                     cell5.innerHTML = "<select name='ordinal' id='ordinal_rel' > <option>nonEqual</option> <option>lesser</option> </select>";
+                    //cell5.innerHTML = "<select name='ordinal' id='ordinal_rel' > <option>lesser</option></select>";
                     var ordinal = kb.where("<" + qv_url + ">" + " gr:lesser ?successor");
                     ordinal.each(function () {
-                        cell5.innerHTML = "<select name='ordinal' id='ordinal_rel' > <option>lesser</option> <option>nonEqual</option> </select>"
+                        cell5.innerHTML = "<select name='ordinal' id='ordinal_rel' > <option>lesser</option> <option>nonEqual</option> </select>";
+                        //cell5.innerHTML = "<select name='ordinal' id='ordinal_rel' > <option>lesser</option> </select>"
                     })
                 })
 
