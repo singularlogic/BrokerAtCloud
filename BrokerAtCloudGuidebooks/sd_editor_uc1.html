@@ -759,8 +759,8 @@
                     //window.alert(kb.base());
 
                     document.kb = kb;
-                    loadServiceLevels();
                     document.serviceLevelDimensions = extractServiceLevelDimensions(kb);
+                    loadServiceLevels();
 
                 }
                 reader.readAsText(files[0]);
