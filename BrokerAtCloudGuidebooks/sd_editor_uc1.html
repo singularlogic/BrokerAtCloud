@@ -84,7 +84,7 @@
             var sp_namespace = document.getElementById("sp_namespace").value;
             var sd_namespace = document.getElementById("sd_namespace").value;
             var kb_sd = $.rdf()
-                .base(sp_namespace)
+                .base(sd_namespace)
                 .prefix('foaf', 'http://xmlns.com/foaf/0.1/')
                 .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
                 .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
@@ -140,7 +140,7 @@
                 .add("sd:" + document.getElementById("sd_model").value + " bp:" + document.getElementById("slp_class").value + " <" + document.getElementById("slp").value + "> .");
             if (document.getElementById("sd_dependsOn").value != "") {
                 document.getElementById("sd_dependsOn").value.split(" ").forEach(function (dep) {
-                    kb_sd.add("sd:" + document.getElementById("sd").value + " usdl-core-cb:dependsOn " + dep + " .");
+                    kb_sd.add("sd:" + document.getElementById("sd").value + " usdl-core-cb:dependsOn <" + dep + "> .");
                 });
             }
             // Add the chosen classification concepts to the service model
