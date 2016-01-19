@@ -81,7 +81,8 @@
         var kb;
 
         function storeSD() {
-            var sp_namespace = document.getElementById("sd_namespace").value;
+            var sp_namespace = document.getElementById("sp_namespace").value;
+            var sd_namespace = document.getElementById("sd_namespace").value;
             var kb_sd = $.rdf()
                 .base(sp_namespace)
                 .prefix('foaf', 'http://xmlns.com/foaf/0.1/')
@@ -105,29 +106,41 @@
                 .prefix('doap', 'http://usefulinc.com/ns/doap#')
                 .prefix('bp', document.kb.databank.baseURI)
                 .prefix('sp', sp_namespace + "#")
+                .prefix('sd', sd_namespace + "#")
                 // Create the business entity of the service provider
                 .add("sp:" + document.getElementById("sp_business_entity").value + " a gr:BusinessEntity .")
                 .add('sp:' + document.getElementById("sp_business_entity").value + ' gr:legalName ' + '"' + document.getElementById("sp_legal_name").value + '"' + ' .')
                 // Create the entity involvement instance and bind it to the service provider business entity
-                .add("sp:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " a usdl-core:EntityInvolvement .")
-                .add("sp:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:withBusinessRole usdl-business-roles:provider .")
-                .add("sp:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:ofBusinessEntity sp:" + document.getElementById("sp_business_entity").value + " .")
+                .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " a usdl-core:EntityInvolvement .")
+                .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:withBusinessRole usdl-business-roles:provider .")
+                .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:ofBusinessEntity sp:" + document.getElementById("sp_business_entity").value + " .")
                 // Create the service instance
-                .add("sp:" + document.getElementById("sd").value + " a usdl-core:Service .")
-                .add("sp:" + document.getElementById("sd").value + " dcterms:creator sp:" + document.getElementById("sp_business_entity").value + " .")
-                .add("sp:" + document.getElementById("sd").value + " usdl-core:hasEntityInvolvement sp:" + document.getElementById("sp_business_entity").value + "EntityInvolvement .")
-                .add("sp:" + document.getElementById("sd").value + " usdl-core-cb:hasServiceModel sp:" + document.getElementById("sd_model").value + " .")
-                .add("sp:" + document.getElementById("sd").value + " usdl-core-cb:validFrom \"" + document.getElementById("sd_validFrom").value + "\"^^xsd:date .")
-                .add("sp:" + document.getElementById("sd").value + " usdl-core-cb:validThrough \"" + document.getElementById("sd_validThrough").value + "\"^^xsd:date .")
+                .add("sd:" + document.getElementById("sd").value + " a usdl-core:Service .")
+                .add("sd:" + document.getElementById("sd").value + " dcterms:creator sp:" + document.getElementById("sp_business_entity").value + " .")
+                .add("sd:" + document.getElementById("sd").value + " usdl-core:hasEntityInvolvement sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement .")
+                .add("sd:" + document.getElementById("sd").value + " usdl-core-cb:hasServiceModel sd:" + document.getElementById("sd_model").value + " .")
+                .add("sd:" + document.getElementById("sd").value + " usdl-core-cb:validFrom \"" + document.getElementById("sd_validFrom").value + "\"^^xsd:date .")
+            if (document.getElementById("sd_validThrough").value != "") {
+                kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:validThrough ' + '"' + document.getElementById("sd_validThrough").value + '"^^xsd:date .');
+            }
+           // Create successor of and recommendation deprecation, if any.
+            // Deprecation recommendation will not be created if there is no successor of even if a value is provided!
+            if (document.getElementById("sd_successorOf").value != "") {
+                kb_sd.add("sd:" + document.getElementById("sd").value + " gr:successorOf <" + document.getElementById("sd_successorOf").value + "> .");
+                if (document.getElementById("sd_deprecationRecommendation").value != "") {
+                    kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:deprecationRecommendationTimePointSD ' + '"' + document.getElementById("sd_deprecationRecommendation").value + '"^^xsd:date .');
+                }
+            }
 
+            
             // Create the service model instance
-            .add("sp:" + document.getElementById("sd_model").value + " a bp:" + document.getElementById("servicemodel_class").value + " .")
-                .add("sp:" + document.getElementById("sd_model").value + " gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
+            kb_sd.add("sd:" + document.getElementById("sd_model").value + " a bp:" + document.getElementById("servicemodel_class").value + " .")
+                .add("sd:" + document.getElementById("sd_model").value + " gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
                 // Assign the selected profile instance to the service model
-                .add("sp:" + document.getElementById("sd_model").value + " bp:" + document.getElementById("slp_class").value + " <" + document.getElementById("slp").value + "> .");
+                .add("sd:" + document.getElementById("sd_model").value + " bp:" + document.getElementById("slp_class").value + " <" + document.getElementById("slp").value + "> .");
             if (document.getElementById("sd_dependsOn").value != "") {
                 document.getElementById("sd_dependsOn").value.split(" ").forEach(function (dep) {
-                    kb_sd.add("sp:" + document.getElementById("sd").value + " usdl-core-cb:dependsOn " + dep + " .");
+                    kb_sd.add("sd:" + document.getElementById("sd").value + " usdl-core-cb:dependsOn " + dep + " .");
                 });
             }
             // Add the chosen classification concepts to the service model
@@ -327,7 +340,7 @@
         function addClassificationConcepts(kb) {
             var class_table = document.getElementById("class_table");
             for (i = 0; i < class_table.rows.length; i++) {
-                kb.add("sp:" + document.getElementById("sd_model").value + " usdl-core-cb:hasClassificationDimension " + "<" + class_table.rows[i].cells[2].innerHTML + "> .")
+                kb.add("sd:" + document.getElementById("sd_model").value + " usdl-core-cb:hasClassificationDimension " + "<" + class_table.rows[i].cells[2].innerHTML + "> .")
             }
             return kb;
         }
@@ -961,7 +974,7 @@
                     <form>
                         <div class="form-group">
                             <label>Provider Namespace</label>
-                            <input type="text" class="form-control" id="sd_namespace" value="http://yourprovidernamespace.com">
+                            <input type="text" class="form-control" id="sp_namespace" value="http://yourprovidernamespace.com">
                         </div>
                     </form>
                 </div>
@@ -989,6 +1002,11 @@
                 <div class="panel-body">
                     <form>
                         <div class="form-group">
+                            <label>Service description namespace</label>
+                            <input class="form-control" type="text" id="sd_namespace" value="http://yourservicenamespace.com">
+                            <input type="text" id="servicemodel_class" value="Broker Policy Class" disabled="disabled" hidden="hidden">
+                        </div>
+                        <div class="form-group">
                             <label>Title</label>
                             <input class="form-control" type="text" id="sd" value="YourServiceDescriptionTitle">
                             <input type="text" id="servicemodel_class" value="Broker Policy Class" disabled="disabled" hidden="hidden">
@@ -1006,6 +1024,19 @@
                             <label>Valid Through</label>
                             <input class="form-control" type="text" id="sd_validThrough" value="2017-02-28">
                         </div>
+                                                                   <div class="form-group">
+                                                <label>Successor of (URI to the predecessor service description, optional)</label>
+                                                
+                                                    <input class="form-control" type="text" id="sd_successorOf" value="">
+                                                
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Recommendation deprecated from (optional)</label>
+                                                
+                                                    <input class="form-control" type="text" id="sd_deprecationRecommendation" value="YYYY-MM-DD">
+                                                
+                                            </div>
+ 
                         <div class="form-group">
                             <label>Depends on</label>
                             <input class="form-control" type="text" id="sd_dependsOn">
