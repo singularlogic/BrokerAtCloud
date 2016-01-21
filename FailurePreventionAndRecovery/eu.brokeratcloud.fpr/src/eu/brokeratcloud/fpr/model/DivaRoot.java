@@ -61,6 +61,7 @@ import diva.Variant;
 import diva.VariantExpression;
 import diva.helpers.DivaHelper;
 import diva.parser.DivaExpressionParser;
+import eu.brokeratcloud.fpr.Main;
 import eu.brokeratcloud.fpr.input.abstracts.AdaptRule;
 import eu.brokeratcloud.fpr.input.abstracts.ConsumerProfile;
 import eu.brokeratcloud.fpr.input.abstracts.ServiceAttribute;
@@ -68,6 +69,7 @@ import eu.brokeratcloud.fpr.input.abstracts.ServiceCategory;
 import eu.brokeratcloud.fpr.input.abstracts.ServiceDependency;
 import eu.brokeratcloud.fpr.input.json.ConsumerProfileJson;
 import eu.brokeratcloud.fpr.input.sparql.ServiceDependencySparql;
+import eu.brokeratcloud.fpr.jms.Subscriber;
 
 
 public class DivaRoot {
@@ -638,9 +640,13 @@ public class DivaRoot {
 		// ConsumerProfileLocal.INSTANCE.publicStatus.remove(service+"Available");
 		// return "updated";
 		// }
+		System.out.println(String.format("--------%s is set to %s", service, likelihood));
 		int nlikelihood = this.getFailureNumValue(likelihood);
 		if (nlikelihood < 0)
 			return "Not a valid level name";
+		Main.inUse.clear();
+		Main.inUse.add(service);
+		Subscriber.dirty = true;
 		for (Dimension d : root.getDimension()) {
 			for (Variant v : d.getVariant()) {
 				if (v.getName().equals(service)) {
@@ -924,6 +930,7 @@ public class DivaRoot {
 			e.printStackTrace();
 			result.add(e.getStackTrace().toString());
 		}
+		
 		return result;
 	}
 

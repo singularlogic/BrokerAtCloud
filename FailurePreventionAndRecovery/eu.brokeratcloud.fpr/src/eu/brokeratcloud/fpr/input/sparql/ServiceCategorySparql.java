@@ -43,11 +43,24 @@ public class ServiceCategorySparql extends ServiceCategoryLocal {
 
 	public static String resolveService(String s) {
 		String result = s;
-		if (s.startsWith(servicePrefixFull)) {
+		if (s.contains("#")){
+			result = s.split("#")[1];
+			result = result.substring(0, result.length());
+		}
+		else if (s.startsWith(servicePrefixFull)) {
 			result = s.split("#")[1];
 		} else if (s.startsWith(servicePrefix)) {
 			result = s.split(":")[1];
-		} else{
+		} else if (s.startsWith("sd:")) {
+			result = s.split(":")[1];
+		}
+		else if(s.contains(":")){
+			return s.split(":")[1];
+		}
+		else if(!s.contains(":")){
+			result = s;
+		}
+		else{
 			System.out.println(s);
 			throw new RuntimeException(
 					"service name should start with <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider> or <sp:>");
@@ -126,12 +139,19 @@ public class ServiceCategorySparql extends ServiceCategoryLocal {
 
 	public static String resolveFc(String s) {
 		String result = s;
-		if (s.startsWith(fcPrefixFull)) {
+		if (s.contains("#")){
+			result = s.split("#")[1];
+			result = result.substring(0, result.length());
+		}
+		else if (s.startsWith(fcPrefixFull)) {
 			result = s.split("#")[1];
 		} else if (s.startsWith(fcPrefix)) {
 			result = s.split(":")[1];
 
-		} else
+		} else if(s.contains(":")){
+			result = s.split(":")[1];
+		}
+		else
 			throw new RuntimeException(
 					"service name should start with <http://www.broker-cloud.eu/service-descriptions/CAS/service-provider> or <sp:>");
 		return fcDimention + result;

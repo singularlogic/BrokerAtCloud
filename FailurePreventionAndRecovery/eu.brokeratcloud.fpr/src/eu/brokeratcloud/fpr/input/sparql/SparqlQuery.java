@@ -37,6 +37,7 @@ public class SparqlQuery {
 			+ "prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#>\n"
 			+ "prefix skos:  <http://www.w3.org/2004/02/skos/core#>";
 
+	
 	public String defaultOutput = "Text";
 
 	public String server = PropertiesUtil.INSTANCE.get("fusekiServer");
@@ -53,6 +54,8 @@ public class SparqlQuery {
 	}
 
 	public String query(String query, String output) {
+		
+		//System.out.println(prefixes);
 		String q = prefixes + "\n" + query;
 
 		if (output == null) {

@@ -39,12 +39,14 @@ public class Subscriber implements MessageListener {
 		TopicSession session = topicConnection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
 		Subscriber.session = session;
 		
+		//listenTo(session, "MemoryLoad");
 		//listenTo(session, "AvgQueryTime");
 		listenTo(session, "ImpendingFailureHigh");
 		listenTo(session, "ImpendingFailureLow");
 		listenTo(session, "ImpendingFailureMedium");
 		listenTo(session, "OccurredFailure");
 		listenTo(session, "RecoveredFailure");
+		listenTo(session, "FprRecommendation");
 
 		topicConnection.start();
 		System.out.println("started");
@@ -69,7 +71,11 @@ public class Subscriber implements MessageListener {
 		try {
 			TextMessage textMessage = (TextMessage) arg0;
 			String s = textMessage.getText();
-			String cep = String.format("{ \"%s\": %s }", topic, s);
+			String cep = null;
+			if(s.contains("ImpendingFailure") || s.contains("OccurredFailure"))
+				cep = s;
+			else
+				cep = String.format("{ \"%s\": %s }", topic, s);
 			System.out.println(cep);
 			new PubSub().cepEvent(cep);
 			dirty = true;
@@ -91,6 +97,7 @@ public class Subscriber implements MessageListener {
 		TextMessage textmessage = session.createTextMessage(message);
 		publisher.send(textmessage);
 		System.out.println("sent");
+		
 	}
 
 }

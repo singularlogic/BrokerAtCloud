@@ -27,7 +27,9 @@ import javax.ws.rs.core.MediaType;
 import diva.Configuration;
 import diva.Score;
 import eu.brokeratcloud.fpr.input.abstracts.ConsumerProfile;
+import eu.brokeratcloud.fpr.input.abstracts.ServiceDependency;
 import eu.brokeratcloud.fpr.input.json.ConsumerProfileJson;
+import eu.brokeratcloud.fpr.input.sparql.ServiceCategorySparql;
 import eu.brokeratcloud.fpr.model.ConfigurationsPool;
 import eu.brokeratcloud.fpr.model.DivaRoot;
 import eu.brokeratcloud.fpr.model.RecommendationHistory;
@@ -304,9 +306,7 @@ public class Recommendation {
 
 		List<String> cleanServices = new ArrayList<String>();
 		for (String srv : services) {
-			if (srv.contains(":")) {
-				cleanServices.add(srv.split(":")[1]);
-			}
+			cleanServices.add(ServiceCategorySparql.resolveService(srv));
 		}
 		DivaRoot root = Repository.mainRoot.fork();
 		List<String> res = root.getRecommQuery(consumer, cleanServices);
@@ -322,12 +322,12 @@ public class Recommendation {
 
 		for (String s : cleanServices) {
 			if (!res.contains(s))
-				remove.add("sp:" + s);
+				remove.add( s);
 		}
 
 		for (String s : res)
 			if (!cleanServices.contains(s))
-				add.add("sp:" + s);
+				add.add( s);
 
 		// for(String s : services){
 		// if(s.endsWith("1")){
@@ -342,10 +342,39 @@ public class Recommendation {
 			nextQuery = nextQuery + "&service=sp:"+s;
 		}
 		
+		Map<String, Object> reason = new TreeMap<String, Object>();
+		reason.put("cause",  PubSub.latestReasons);
+		Map<String,List<String>> depends = new HashMap<String,List<String>>();
+		for(String s : res){
+			if(!cleanServices.contains(s)){
+				boolean dep = false;
+				for(String s1 : cleanServices){
+					try{
+					if(ServiceDependency.INSTANCE.getDependency(s1).contains(s)){
+						if(depends.get(s1)==null){
+							depends.put(s1, new ArrayList<String>());
+						}
+						depends.get(s1).add(s);
+					}
+					}
+					catch(Exception e){
+						
+					}
+				}
+				
+			}
+		}
+		if(!depends.isEmpty()){
+			reason.put("dependency", depends);
+		}
+		reason.put("failures", PubSub.failureRecords);
+		
 		result.put("add", add);
 		result.put("remove", remove);
-		result.put("reason", PubSub.latestReasons);
+		result.put("reason", reason);
 		result.put("nextQuery", nextQuery);
+		
+		RecommendationHistory.INSTANCE.addItemNow(add, remove, consumer);
 		//
 		return result;
 	}

@@ -1,6 +1,7 @@
 package eu.brokeratcloud.fpr.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -18,7 +19,18 @@ public class RecommendationHistory {
 
 	public List<HistoryItem> items = new ArrayList<HistoryItem>();
 
-	public void initSamples() {
+	public void initSamples(){
+		
+	}
+	
+	public void addItemNow(List<String> added, List<String> removed, String customer){
+		HistoryItem item = new HistoryItem();
+		item.added.addAll(added);
+		item.removed.addAll(removed);
+		item.timestamp = Calendar.getInstance().getTime();
+	}
+	
+	public void initSamplesOld() {
 		HistoryItem item = null;
 
 		// History item ONE

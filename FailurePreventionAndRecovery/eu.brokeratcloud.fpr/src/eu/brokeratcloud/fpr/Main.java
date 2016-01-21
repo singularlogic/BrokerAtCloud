@@ -2,11 +2,17 @@ package eu.brokeratcloud.fpr;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 import javax.jms.JMSException;
 import javax.ws.rs.core.UriBuilder;
 
+import org.codehaus.jackson.annotate.JsonValue;
 import org.codehaus.jackson.jaxrs.JacksonJsonProvider;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.ser.std.JsonValueSerializer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -26,6 +32,8 @@ import eu.brokeratcloud.fpr.resources.PubSub;
 import eu.brokeratcloud.fpr.resources.Recommendation;
 
 public class Main {
+	
+	public static List<String> inUse = new ArrayList<String>();
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -78,14 +86,37 @@ public class Main {
 		new Thread(){
 			public void run(){
 				while(true){
+					try{
 					if(Subscriber.dirty){
 						Subscriber.dirty=false;
-						//TODO: Enacting part from SiLo
+						if(inUse.isEmpty()){
+							boolean empty = true;
+							for(List lst : PubSub.failureRecords.values()){
+								if(!lst.isEmpty()){
+									inUse.addAll(lst);
+								}
+							}
+							
+						}
+						Object obj = new Recommendation().getRecommendationQuery("SomeCon", inUse);
+						Map m = (Map) obj;
+						try{
+							if(!( ((List)m.get("add")).isEmpty() && ((List) m.get("remove")).isEmpty())){
+								ObjectMapper mapper = new ObjectMapper();
+								String message = mapper.writeValueAsString(obj);
+								Subscriber.sendMessage("FprRecommendation", message);
+							}
+						}
+						catch(Exception e){
+							e.printStackTrace();
+						}
+					}
+					}catch (Exception e){
+						System.err.println(e);
 					}
 					try{
 						sleep(10000);
-					}
-				
+					}				
 					catch (InterruptedException e) {
 						e.printStackTrace();
 					

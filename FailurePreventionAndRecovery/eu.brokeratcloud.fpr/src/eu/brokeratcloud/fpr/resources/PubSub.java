@@ -2,6 +2,7 @@ package eu.brokeratcloud.fpr.resources;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +22,8 @@ import eu.brokeratcloud.fpr.model.Repository;
 @Path("subscriptions/")
 @Produces(MediaType.APPLICATION_JSON)
 public class PubSub {
+	
+	public static Map<String, List<String>> failureRecords = new HashMap<String, List<String>>();
 
 	protected static String latestReasons = "";
 
@@ -35,6 +38,10 @@ public class PubSub {
 		Object e;
 		try {
 			e = mapper.readValue(event, Map.class);
+//			if(((Map) e).keySet().size()==1){
+//				e = ((Map) e).values().iterator().next();
+//			}
+				
 		} catch (Exception e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -47,7 +54,14 @@ public class PubSub {
 			String key = ((Map.Entry) entry).getKey().toString();
 
 			Map value = (Map) ((Map.Entry) entry).getValue();
-			String serviceName = value.get("Service").toString();
+			
+			String serviceName = null;
+			if(value.containsKey("Service"))
+				serviceName = value.get("Service").toString();
+			else if(value.containsKey("Offering"))
+				serviceName = value.get("Offering").toString();
+			 
+			
 			String causesText = (String) value.get("Cause");
 
 			latestReasons = causesText;
@@ -59,6 +73,16 @@ public class PubSub {
 
 			String cleanServiceName = ServiceCategorySparql.resolveService(serviceName);
 			result = result + "\n" + root.updateFailureLikelihood(cleanServiceName, key);
+			
+			for(List<String> arr : failureRecords.values()){
+				arr.remove(cleanServiceName);
+			}
+			
+			if(!failureRecords.containsKey(key)){
+				failureRecords.put(key, new ArrayList<String>());
+			}
+			failureRecords.get(key).add(cleanServiceName);
+			
 //			for (String s : allcontexts) {
 //				if (causesList.contains(s))
 //					result = result + "\n" + root.updateFailureLikelihood(s, "true");
