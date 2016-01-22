@@ -310,7 +310,7 @@ public class Recommendation {
 		}
 		DivaRoot root = Repository.mainRoot.fork();
 		List<String> res = root.getRecommQuery(consumer, cleanServices);
-		// return res.toString();
+		System.out.println("Get result"+res.toString());
 		try {
 			// This is odd: without this sleep, curl gets a "empty result", even
 			// if res is not null
@@ -329,6 +329,7 @@ public class Recommendation {
 			if (!cleanServices.contains(s))
 				add.add( s);
 
+		System.out.println("Get added and removed"+add.toString()+remove.toString());
 		// for(String s : services){
 		// if(s.endsWith("1")){
 		// String newservice = s.substring(0, s.length()-1)+"2";
@@ -341,7 +342,7 @@ public class Recommendation {
 		for(String s : res){
 			nextQuery = nextQuery + "&service=sp:"+s;
 		}
-		
+		System.out.println("Get next query"+nextQuery);
 		Map<String, Object> reason = new TreeMap<String, Object>();
 		reason.put("cause",  PubSub.latestReasons);
 		Map<String,List<String>> depends = new HashMap<String,List<String>>();
@@ -358,12 +359,13 @@ public class Recommendation {
 					}
 					}
 					catch(Exception e){
-						
+						//e.printStackTrace();
 					}
 				}
 				
 			}
 		}
+		System.out.println("Get dependencies"+depends);
 		if(!depends.isEmpty()){
 			reason.put("dependency", depends);
 		}
@@ -375,7 +377,10 @@ public class Recommendation {
 		result.put("nextQuery", nextQuery);
 		
 		RecommendationHistory.INSTANCE.addItemNow(add, remove, consumer);
-		//
+		System.out.println("Get result"+result.toString());
+//		if(true){
+//			throw new RuntimeException("no reason");
+//		}
 		return result;
 	}
 

@@ -912,7 +912,7 @@ public class DivaRoot {
 		//saveModel(consumer + "-before");
 		this.fileNamePrefix = consumer;
 		_runSimulation();
-
+		System.out.println("Finished Simulation");
 		try {
 			Configuration config = null;
 			List<Configuration> configs = root.getSimulation().getScenario().get(0).getContext().get(0).getConfiguration();
@@ -930,7 +930,7 @@ public class DivaRoot {
 			e.printStackTrace();
 			result.add(e.getStackTrace().toString());
 		}
-		
+		System.out.println("Finished result extraction. "+result.toString());
 		return result;
 	}
 

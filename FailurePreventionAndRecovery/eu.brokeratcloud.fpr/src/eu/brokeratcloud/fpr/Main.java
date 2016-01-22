@@ -53,9 +53,14 @@ public class Main {
 		resourceConfig.register(Recommendation.class);
 		resourceConfig.register(DependencyChecking.class);
 		resourceConfig.register(PubSub.class);
-		resourceConfig.register(JacksonJsonProvider.class); // Using Jackson for
+		resourceConfig.register(JacksonJsonProvider.class);
+		resourceConfig.register(MyExceptionMapper.class);
+		// Using Jackson for
 															// JSON wrapping
 		HttpServer server = GrizzlyHttpServerFactory.createHttpServer(uri, resourceConfig);
+		//ResourceConfig.
+		//resourceConfig.a
+		//GrizzlyHttpServerFactory.
 		try {
 			server.start();
 		} catch (IOException e) {
@@ -125,6 +130,7 @@ public class Main {
 			}
 		}.start();
 
+		
 		try {
 			Subscriber.startListening();
 		} catch (JMSException e) {
