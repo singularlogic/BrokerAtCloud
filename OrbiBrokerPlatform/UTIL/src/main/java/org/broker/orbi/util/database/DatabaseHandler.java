@@ -46,6 +46,7 @@ public enum DatabaseHandler {
     private final String BrokerProfile;
     private final String ZabbixDBURL;
     private final String BrokerDBURL;
+    private final String PulsarDBURL;
 
     DatabaseHandler() {
         try {
@@ -86,6 +87,7 @@ public enum DatabaseHandler {
 
         this.ZabbixDBURL = "jdbc:mysql://" + this.ZabbixHost + ":" + this.DBPort + "/" + this.ZabbixDBName + "?user=" + this.ZabbixDBUser + "&password=" + this.ZabbixDBPass + "&useEncoding=true&characterEncoding=UTF-8&";
         this.BrokerDBURL = "jdbc:mysql://" + this.BrokerHost + ":" + this.DBPort + "/" + this.BrokerDBName + "?user=" + this.BrokerDBUser + "&password=" + this.BrokerDBPass + "&useEncoding=true&characterEncoding=UTF-8&";
+        this.PulsarDBURL = "jdbc:mysql://" + this.BrokerHost + ":" + this.DBPort + "/pulsar?user=pulsar&password=!pulsar!&useEncoding=true&characterEncoding=UTF-8&";
 
 //        System.out.println(DBURL);
     }
@@ -156,6 +158,8 @@ public enum DatabaseHandler {
                 String _DBURL = "";
                 if (database.equalsIgnoreCase("zabbix")) {
                     _DBURL = this.ZabbixDBURL;
+                } else if ("pulsar".equalsIgnoreCase(database)) {
+                    _DBURL = this.PulsarDBURL;
                 } else {
                     _DBURL = this.BrokerDBURL;
                 }

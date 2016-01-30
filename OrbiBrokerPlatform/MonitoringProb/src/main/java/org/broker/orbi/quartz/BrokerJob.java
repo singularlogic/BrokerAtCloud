@@ -18,7 +18,7 @@ public class BrokerJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
-        // UBISES Scheduler invokation
+        // Broker Scheduler invokation
         Logger.getLogger(BrokerJob.class.getName()).log(Level.INFO, "Broker Job invoked! Starting process..");
 
         // Initialize List of Hosts
@@ -27,7 +27,7 @@ public class BrokerJob implements Job {
         // Retrieve Metrics for all Hosts and for each variable send a Topic Message
         String response = Util.startRetrievalFromZabbix(listOfHosts);
 
-        Logger.getLogger(BrokerJob.class.getName()).log(Level.INFO, "Broker Job finished with message: " + response + " and sent to TOPIC!");
+        Logger.getLogger(BrokerJob.class.getName()).log(Level.INFO, "Broker Job finished with message: {0} and sent to TOPIC!", response);
     }
 
 }

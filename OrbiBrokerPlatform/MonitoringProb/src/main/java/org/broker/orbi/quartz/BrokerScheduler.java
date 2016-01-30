@@ -27,7 +27,7 @@ public class BrokerScheduler {
 
         CronTrigger trigger = newTrigger()
                 .withIdentity("trigger1", "group1")
-                .withSchedule(cronSchedule("0/5 * * * * ?"))
+                .withSchedule(cronSchedule("0/2 * * * * ?"))
                 .build();
 
         // Tell quartz to schedule the job using our trigger 

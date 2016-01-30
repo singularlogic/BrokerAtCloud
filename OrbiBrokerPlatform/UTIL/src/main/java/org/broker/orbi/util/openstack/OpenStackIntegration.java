@@ -1,6 +1,7 @@
 package org.broker.orbi.util.openstack;
 
 import java.util.List;
+import java.util.logging.Logger;
 import org.openstack4j.api.Builders;
 import org.openstack4j.api.OSClient;
 import org.openstack4j.model.compute.Server;
@@ -8,22 +9,21 @@ import org.openstack4j.model.compute.Server.Status;
 import org.openstack4j.model.compute.ServerCreate;
 import org.openstack4j.model.network.NetFloatingIP;
 import org.openstack4j.model.network.Network;
-import org.openstack4j.model.network.Pool;
 import org.openstack4j.model.network.Port;
-import org.openstack4j.model.network.Subnet;
 import org.openstack4j.openstack.OSFactory;
 
 /**
  *
- * @author pgouvas
+ * @author Christos Paraskeva <ch.paraskeva at gmail dot com>
  */
 public class OpenStackIntegration {
 
+    private final static Logger orbiLogger = Logger.getLogger(OpenStackIntegration.class.getName());
+
     public static void main(String[] args) {
         OpenStackIntegration osi = new OpenStackIntegration();
-        osi.authenticate();
-        //osi.destroyInstance("http://192.168.4.201:5000/v2.0", "admin", "!strat3g1c!", "admin", "82632111-1279-4b10-9997-8a1c15930c02");
-        //osi.createInstance("http://192.168.4.201:5000/v2.0", "admin", "!strat3g1c!", "admin","OrbiInstance","2","a4fcc126-0a68-40bf-bc83-d09b14b92293","192.168.10.12");        
+        //osi.destroyInstance("http://192.168.4.201:5000/v2.0", "admin", "!strat3g1c!", "admin", "c760742f-fbef-4a00-89b0-37d9ba74fd09");
+        osi.createInstance("http://192.168.4.201:5000/v2.0", "admin", "!strat3g1c!", "admin", "User385OrbiGoldProvider3", "2", "208a1068-d2d1-4aa3-9a7e-897d92bc6fc9");
     }
 
     public OpenStackIntegration() {
@@ -39,7 +39,7 @@ public class OpenStackIntegration {
                     .tenantName(tenant)
                     .authenticate();
             os.compute().servers().delete(serverid);
-            System.out.println("Destroy server with ID: " + serverid + " success!");
+            orbiLogger.info("Destroy server with ID: " + serverid + " success!");
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -47,7 +47,7 @@ public class OpenStackIntegration {
         return true;
     }
 
-    public Object[] createInstance(String endpoint, String username, String password, String tenant, String instancename, String flavorid, String templateid, String internalip) {
+    public Object[] createInstance(String endpoint, String username, String password, String tenant, String instancename, String flavorid, String templateid) {
         Object[] returnObject = new Object[2];
         NetFloatingIP chosenfloatip = null;
         String serverid = "";
@@ -70,7 +70,8 @@ public class OpenStackIntegration {
                     .flavor(flavorid)
                     .image(templateid)
                     .addSecurityGroup("98ebff13-c074-40d2-a28e-fb367a744cfd") //defaultsecuritygroup        
-                    .keypairName("pgouvaslaptop")
+                    .keypairName("christara")
+                    //                    .keypairName("pgouvaslaptop")
                     .addNetworkPort(port.getId())
                     .build();
 
@@ -78,21 +79,22 @@ public class OpenStackIntegration {
             serverid = server.getId();
             List<? extends NetFloatingIP> floatips = os.networking().floatingip().list();
             for (NetFloatingIP floatip : floatips) {
-                System.out.println("floating: " + floatip + " fixed: " + floatip.getFixedIpAddress());
+                orbiLogger.info("floating: " + floatip + " fixed: " + floatip.getFixedIpAddress());
                 if (floatip.getFixedIpAddress() == null) {
                     chosenfloatip = floatip;
                     break;
                 }
             }
-            System.out.println("chosen:" + chosenfloatip.toString());
+
+            orbiLogger.info("chosen:" + chosenfloatip.toString());
 
             Status stat = Status.BUILD;
             while (stat != Status.ACTIVE) {
                 stat = os.compute().servers().get(serverid).getStatus();
-                System.out.println("stat:" + stat.toString());
+                orbiLogger.info("stat:" + stat.toString());
             }
             os.compute().floatingIps().addFloatingIP(os.compute().servers().get(serverid), chosenfloatip.getFloatingIpAddress());
-            System.out.println("VM Creation success");
+            orbiLogger.info("VM Creation success");
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -101,6 +103,8 @@ public class OpenStackIntegration {
 
         returnObject[0] = serverid;
         returnObject[1] = chosenfloatip.getFloatingIpAddress();
+
+        orbiLogger.info("Current server ID: " + serverid);
 
         return returnObject;
     }//EoM
@@ -171,42 +175,41 @@ public class OpenStackIntegration {
 //        }
 //        Pool pool = pools.get(0);
 //------------------------------------------------------------        
-        NetFloatingIP chosenfloatip = null;
-        List<? extends NetFloatingIP> floatips = os.networking().floatingip().list();
-        for (NetFloatingIP floatip : floatips) {
-            System.out.println("floating: " + floatip + " fixed" + floatip.getFixedIpAddress());
-            if (floatip.getFixedIpAddress() == null) {
-                chosenfloatip = floatip;
-                break;
-            }
-        }
-        System.out.println("chosen:" + chosenfloatip.toString());   //TODO addlogic if no floating ip is available        
-
-        Port port = os.networking().port().create(Builders.port()
-                .name("port-1")
-                .networkId("38879a94-d60e-4702-ba5b-e5ef935fc045")
-                .build());
-
-        ServerCreate sc = Builders.server()
-                .name("Cirros2")
-                .flavor("1") //tiny
-                .image("fe9aee7f-71fb-4e46-9a7d-bbf5e13dd35b") //cirros           
-                .addSecurityGroup("98ebff13-c074-40d2-a28e-fb367a744cfd")
-                .keypairName("pgouvaslaptop")
-                .addNetworkPort(port.getId())
-                .build();
-
-        Server server = os.compute().servers().boot(sc);
-        String serverid = server.getId();                   //here is the error
-
-//-----        String serverid = os.compute().servers().boot(sc).getId(); //oxi auto giati kanei generate errors
-        Status stat = Status.BUILD;
-        while (stat != Status.ACTIVE) {
-            stat = os.compute().servers().get(serverid).getStatus();
-            System.out.println("stat:" + stat.toString());
-        }
-        os.compute().floatingIps().addFloatingIP(os.compute().servers().get(serverid), chosenfloatip.getFloatingIpAddress());
-
+//        NetFloatingIP chosenfloatip = null;
+//        List<? extends NetFloatingIP> floatips = os.networking().floatingip().list();
+//        for (NetFloatingIP floatip : floatips) {
+//            System.out.println("floating: " + floatip + " fixed" + floatip.getFixedIpAddress());
+//            if (floatip.getFixedIpAddress() == null) {
+//                chosenfloatip = floatip;
+//                break;
+//            }
+//        }
+//        System.out.println("chosen:" + chosenfloatip.toString());   //TODO addlogic if no floating ip is available        
+//
+//        Port port = os.networking().port().create(Builders.port()
+//                .name("port-1")
+//                .networkId("38879a94-d60e-4702-ba5b-e5ef935fc045")
+//                .build());
+//
+//        ServerCreate sc = Builders.server()
+//                .name("Cirros2")
+//                .flavor("1") //tiny
+//                .image("fe9aee7f-71fb-4e46-9a7d-bbf5e13dd35b") //cirros           
+//                .addSecurityGroup("98ebff13-c074-40d2-a28e-fb367a744cfd")
+//                .keypairName("pgouvaslaptop")
+//                .addNetworkPort(port.getId())
+//                .build();
+//
+//        Server server = os.compute().servers().boot(sc);
+//        String serverid = server.getId();                   //here is the error
+//
+////-----        String serverid = os.compute().servers().boot(sc).getId(); //oxi auto giati kanei generate errors
+//        Status stat = Status.BUILD;
+//        while (stat != Status.ACTIVE) {
+//            stat = os.compute().servers().get(serverid).getStatus();
+//            System.out.println("stat:" + stat.toString());
+//        }
+//        os.compute().floatingIps().addFloatingIP(os.compute().servers().get(serverid), chosenfloatip.getFloatingIpAddress());
     }//EoM 
 
 }

@@ -23,7 +23,8 @@
 	<module>BrokerTopic</module>
         <!-- ear that bundles the main UI -->
         <module>BrokerEar</module>
-  </modules>
+        <module>ORBIBROKER-REPOSITORY</module>
+    </modules>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

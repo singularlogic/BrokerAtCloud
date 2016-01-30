@@ -1,5 +1,7 @@
 package org.broker.orbi.monitoring;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,7 +11,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.broker.orbi.topic.BrokerTopicSubscriber;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.methods.RequestEntity;
+import org.apache.commons.httpclient.methods.StringRequestEntity;
+import org.apache.commons.io.IOUtils;
 import org.broker.orbi.util.database.DatabaseHandler;
 import org.broker.orbi.util.entities.Host;
 import org.broker.orbi.util.entities.ZabbixItem;
@@ -22,8 +29,9 @@ import org.json.JSONObject;
  */
 public class Util {
 
-    static final private BrokerTopicSubscriber topicSub = new BrokerTopicSubscriber();
     private static int UPTIME = 0;
+    private static final String failPreventionMechanismURL = "http://192.168.3.34:8080/org.seerc.brokeratcloud.webservice/rest/topics/monitoring/MemoryLoad/Sintef";
+    private static final String failPreventionCustomURL = "http://192.168.3.34:8080/org.seerc.brokeratcloud.webservice/rest/topics/monitoring/";
 
     public static List<Host> initializeZabbixHosts() {
         List<Host> listOfZabbixHosts = null;
@@ -33,7 +41,7 @@ public class Util {
         ResultSet rs = null;
         try {
 
-            stm = con.prepareStatement("SELECT * FROM Purchase;");
+            stm = con.prepareStatement("SELECT S.name,P.* FROM Purchase P,SPOffer O,ServiceDescription S where P.spoffer_id = O.id and O.profile_id=S.id;");
             rs = stm.executeQuery();
             listOfZabbixHosts = new ArrayList<>();
             while (rs.next()) {
@@ -43,7 +51,7 @@ public class Util {
                 host.setUserID(rs.getInt("user_id"));
                 host.setPurchaseID(rs.getInt("id"));
                 host.setOfferID(rs.getInt("spoffer_id"));
-                host.setHostName("P" + host.getPurchaseID() + "U" + host.getUserID() + "O" + host.getOfferID());
+                host.setHostName("P" + host.getPurchaseID() + "U" + host.getUserID() + "O" + host.getOfferID()+"_"+rs.getString("name"));
 
                 // Retrieve Zabbix Items per HostID
                 Map<String, ZabbixItem> mapOfZabbixItems = ZabbixUtil.getItemsFromZabbix(Integer.valueOf(host.getHostID()));
@@ -97,7 +105,7 @@ public class Util {
                     ZabbixItem tempZabbixItem = (ZabbixItem) pairs1.getValue();
 
                     if (mapOfZabbixKeys.containsKey(tempZabbixItem.getZabbixKey())) {
-                        
+
                         // Map<String, String> 
                         total++;
                         if (ps != null) {
@@ -184,11 +192,11 @@ public class Util {
     }
 
     public static String createJSONObject(Host _host, ZabbixItem _zabbixItem) {
-        
+
         String jsonSTR = "";
-        
+
         String offering = "";
-        
+
         JSONObject jsonObject = new JSONObject();
 
         if (_zabbixItem.getZabbixCategory().equalsIgnoreCase("System")) {
@@ -197,6 +205,9 @@ public class Util {
         } else if (_zabbixItem.getZabbixCategory().equalsIgnoreCase("Database")) {
             jsonObject.put("Offering", _host.getHostName() + "_Database");
             offering = _host.getHostName() + "_Database";
+        } else if (_zabbixItem.getZabbixKey().equalsIgnoreCase("system.cpu.load[,avg1]")) {
+            jsonObject.put("Offering", _host.getHostName());
+            offering = _host.getHostName();
         } else {
             jsonObject.put("Offering", _host.getHostName() + "_AS");
             offering = _host.getHostName() + "_AS";
@@ -238,9 +249,14 @@ public class Util {
                     value = String.valueOf((int) slowQueries);
                     type = "Integer";
                     break;
-                case "system.cpu.util[,user]":
-                    float cpuLoad = Float.valueOf(_zabbixItem.getValue());
+                case "system.cpu.load[,avg1]":
+                    float cpuLoad = Float.valueOf(_zabbixItem.getValue()) * 125;
+                    if (cpuLoad > 100) {
+                        cpuLoad = 99F;
+                    }
                     value = String.valueOf((int) cpuLoad);
+
+                    System.out.println("CPU Load: " + value);
                     type = "Integer";
                     break;
                 case "apache[Uptime]":
@@ -261,12 +277,11 @@ public class Util {
         jsonObject.put(_zabbixItem.getItemName() + "Type", type);
         jsonObject.put(_zabbixItem.getItemName() + "Unit", _zabbixItem.getZabbixName());
         jsonObject.put("Timestamp", _zabbixItem.getDate());
-        
-        
+
         jsonSTR = "{\"" + _zabbixItem.getItemName() + "\":\"" + value + "\",\"Offering\":\"" + offering + "\",\""
-                + _zabbixItem.getItemName() + "Type\":\"" + type + "\",\"" 
-                + _zabbixItem.getItemName() + "Unit\":\"" + _zabbixItem.getZabbixName() 
-                +"\",\"timestamp\":\"" + _zabbixItem.getDate() +"\"}";        
+                + _zabbixItem.getItemName() + "Type\":\"" + type + "\",\""
+                + _zabbixItem.getItemName() + "Unit\":\"" + _zabbixItem.getZabbixName()
+                + "\",\"timestamp\":\"" + _zabbixItem.getDate() + "\"}";
 
 //        return jsonObject.toString();
         return jsonSTR;
@@ -275,15 +290,118 @@ public class Util {
 
     public static String sendTopicNotificationMsg(String _JSONObject, String zabbixKey) {
 
-        String response = topicSub.sendMsg(_JSONObject, zabbixKey);
+        boolean isSuccess = false;
 
-        System.out.println("JSON: " + _JSONObject);
-
-        if (null != response) {
-            return response;
-        } else {
-            return "SUCCESS";
+        switch (zabbixKey) {
+            case "system.memoryload":
+                isSuccess = postToFailPreventionMechanism(_JSONObject, zabbixKey, false);
+                break;
+            case "system.storageload":
+                isSuccess = postToFailPreventionMechanism(_JSONObject, zabbixKey, false);
+                break;
+            case "apache[ReqPerSec]":
+                isSuccess = postToFailPreventionMechanism(_JSONObject, zabbixKey, false);
+                break;
+            case "mysql.querytime":
+                isSuccess = postToFailPreventionMechanism(_JSONObject, zabbixKey, false);
+                break;
+            case "mysql.threads":
+                isSuccess = postToFailPreventionMechanism(_JSONObject, zabbixKey, false);
+                break;
+            case "system.cpu.load[,avg1]":
+                isSuccess = postToFailPreventionMechanism(_JSONObject, zabbixKey, false);
+                break;
+            case "http":
+                isSuccess = postToFailPreventionMechanism(_JSONObject, zabbixKey, false);
+                break;
+            default:
+                isSuccess = postToFailPreventionMechanism(_JSONObject, zabbixKey, true);
+                break;
         }
+
+//        System.out.println("JSON: " + _JSONObject);
+        if (isSuccess) {
+            return "SUCCESS";
+        } else {
+            return "ERROR";
+        }
+    }
+
+    private static boolean postToFailPreventionMechanism(String message, String zabbixKey, boolean mainURL) {
+
+        PostMethod method = null;
+
+        try {
+            // Create a method instance.
+
+            final HttpClient client = new HttpClient();
+
+            if (mainURL) {
+
+                method = new PostMethod(failPreventionMechanismURL);
+
+            } else {
+
+                String URL = "";
+                switch (zabbixKey) {
+                    case "system.memoryload":
+                        URL = failPreventionCustomURL + "MemoryLoad/SiLo/";
+                        break;
+                    case "system.storageload":
+                        URL = failPreventionCustomURL + "StorageLoad/SiLo/";
+                        break;
+                    case "apache[ReqPerSec]":
+                        URL = failPreventionCustomURL + "RequestsPerSec/SiLo/";
+                        break;
+                    case "mysql.querytime":
+                        URL = failPreventionCustomURL + "QueryTime/SiLo/";
+                        break;
+                    case "mysql.threads":
+                        URL = failPreventionCustomURL + "Threads/SiLo/";
+                        break;
+                    case "system.cpu.load[,avg1]":
+                        URL = failPreventionCustomURL + "CPULoadAvgPerCore/SiLo/";
+                        break;
+                    case "http":
+                        URL = failPreventionCustomURL + "HTTPResponseTime/SiLo/";
+                        break;
+                    default:
+                        URL = failPreventionMechanismURL;
+                        break;
+                }
+
+                method = new PostMethod(URL);
+            }
+
+            RequestEntity re = new StringRequestEntity(message, "application/json", "UTF-8");
+
+            method.setRequestEntity(re);
+
+            int statusCode = client.executeMethod(method);
+
+            if (statusCode != HttpStatus.SC_OK) {
+                Logger.getLogger(Util.class.getName()).log(Level.SEVERE, "Method failed: {0}", method.getStatusLine());
+                return false;
+            } else {
+                byte[] bytesArray = IOUtils.toByteArray(method.getResponseBodyAsStream());
+//                Logger.getLogger(Util.class.getName()).log(Level.INFO, "Method response:  {0}", new String(bytesArray));
+            }
+
+//            method.releaseConnection();
+        } catch (UnsupportedEncodingException ex) {
+            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } catch (IOException ex) {
+            Logger.getLogger(Util.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        } finally {
+            if (null != method) {
+                method.releaseConnection();
+            }
+        }
+
+        return true;
+
     }
 
 }

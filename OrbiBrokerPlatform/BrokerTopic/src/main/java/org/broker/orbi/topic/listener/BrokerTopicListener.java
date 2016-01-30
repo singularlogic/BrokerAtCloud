@@ -36,8 +36,10 @@ import org.broker.orbi.topic.message.BrokerTopicMessage;
 })
 public class BrokerTopicListener implements MessageListener {
 
-    private static final String failPreventionMechanismURL = "http://94.75.243.141:8081/org.seerc.brokeratcloud.webservice/rest/topics/monitoring/monitoring/Sintef";
-    private static final String failPreventionCustomURL = "http://94.75.243.141:8081/org.seerc.brokeratcloud.webservice/rest/topics/monitoring/";
+//    private static final String failPreventionMechanismURL = "http://213.249.38.66:3335/org.seerc.brokeratcloud.webservice/rest/topics/monitoring/MemoryLoad/Sintef";
+//    private static final String failPreventionCustomURL = "http://213.249.38.66:3335/org.seerc.brokeratcloud.webservice/rest/topics/monitoring/";
+    private static final String failPreventionMechanismURL = "http://192.168.3.34:8080/org.seerc.brokeratcloud.webservice/rest/topics/monitoring/MemoryLoad/Sintef";
+    private static final String failPreventionCustomURL = "http://192.168.3.34:8080/org.seerc.brokeratcloud.webservice/rest/topics/monitoring/";
 
     public BrokerTopicListener() {
     }
@@ -55,13 +57,16 @@ public class BrokerTopicListener implements MessageListener {
             String zabbixKey = brokerMsg.getMsgSubject();
 
             switch (zabbixKey) {
-                case "system.memoryLoad":
+                case "system.memoryload":
                     postToFailPreventionMechanism(jsonMSG, zabbixKey, false);
                     break;
-                case "system.storageLoad":
+                case "system.storageload":
                     postToFailPreventionMechanism(jsonMSG, zabbixKey, false);
                     break;
                 case "apache[ReqPerSec]":
+                    postToFailPreventionMechanism(jsonMSG, zabbixKey, false);
+                    break;
+                case "mysql.querytime":
                     postToFailPreventionMechanism(jsonMSG, zabbixKey, false);
                     break;
                 case "mysql.threads":
@@ -89,13 +94,13 @@ public class BrokerTopicListener implements MessageListener {
 
     @PostConstruct
     public void init() {
-        System.out.println("Broker Topic Listener received a message..");
+        System.out.println("Broker Topic Listener received a message.. at" + failPreventionCustomURL);
 
     }
 
     @PreDestroy
     public void destroy() {
-        System.out.println("Broker Topic Listener proccesed a message!");
+        System.out.println("Broker Topic Listener proccesed a message.. at" + failPreventionCustomURL);
     }
 
     private boolean postToFailPreventionMechanism(String message, String zabbixKey, boolean mainURL) {
@@ -115,14 +120,17 @@ public class BrokerTopicListener implements MessageListener {
 
                 String URL = "";
                 switch (zabbixKey) {
-                    case "system.memoryLoad":
+                    case "system.memoryload":
                         URL = failPreventionCustomURL + "MemoryLoad/SiLo/";
                         break;
-                    case "system.storageLoad":
+                    case "system.storageload":
                         URL = failPreventionCustomURL + "StorageLoad/SiLo/";
                         break;
                     case "apache[ReqPerSec]":
                         URL = failPreventionCustomURL + "RequestsPerSec/SiLo/";
+                        break;
+                    case "mysql.querytime":
+                        URL = failPreventionCustomURL + "QueryTime/SiLo/";
                         break;
                     case "mysql.threads":
                         URL = failPreventionCustomURL + "Threads/SiLo/";
@@ -148,11 +156,11 @@ public class BrokerTopicListener implements MessageListener {
             int statusCode = client.executeMethod(method);
 
             if (statusCode != HttpStatus.SC_OK) {
-                Logger.getLogger(BrokerTopicListener.class.getName()).severe("Method failed: " + method.getStatusLine());
+                Logger.getLogger(BrokerTopicListener.class.getName()).log(Level.SEVERE, "Method failed: {0}", method.getStatusLine());
                 return false;
             } else {
                 byte[] bytesArray = IOUtils.toByteArray(method.getResponseBodyAsStream());
-                Logger.getLogger(BrokerTopicListener.class.getName()).info("Method response: " + new String(bytesArray));
+                Logger.getLogger(BrokerTopicListener.class.getName()).log(Level.INFO, "Method response:  {0}", new String(bytesArray));
             }
 
             method.releaseConnection();

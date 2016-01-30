@@ -1,141 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-
     <servlet>
         <servlet-name>login</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.login</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>storePolicy</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.storePolicy</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>policies</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.policies</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>consumers</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.consumers</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>spoffers</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.spoffers</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>manageserviceproviders</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.manageserviceproviders</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>services</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.services</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>retrieveServiceProfiles</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.retrieveServiceProfiles</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>retrieveVariables</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.retrieveVariables</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>validateAndCreateSO</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.validateAndCreateSO</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>search</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.search</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>retrievePolicyVariables</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.retrievePolicyVariables</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>retrieveServiceOffers</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.retrieveServiceOffers</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>validateVariables</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.validateVariables</servlet-class>
+        <servlet-class>org.broker.orbi.servlet.other.login</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>register</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.register</servlet-class>
+        <servlet-class>org.broker.orbi.servlet.other.register</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>registerNewUser</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.registerNewUser</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>purchaseSO</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.purchaseSO</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>runningservices</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.runningservices</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>retrieveHistory</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.retrieveHistory</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>modifyIaaSProvider</servlet-name>
-        <servlet-class>org.broker.orbi.servlet.modifyIaaSProvider</servlet-class>
+        <servlet-class>org.broker.orbi.servlet.client.RegisterClient</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>login</servlet-name>
-        <url-pattern>/en/login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>storePolicy</servlet-name>
-        <url-pattern>/en/storePolicy</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>policies</servlet-name>
-        <url-pattern>/en/policies</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>consumers</servlet-name>
-        <url-pattern>/en/consumers</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>spoffers</servlet-name>
-        <url-pattern>/en/spoffers</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>manageserviceproviders</servlet-name>
-        <url-pattern>/en/manageserviceproviders</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>services</servlet-name>
-        <url-pattern>/en/services</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>retrieveServiceProfiles</servlet-name>
-        <url-pattern>/en/retrieveServiceProfiles</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>retrieveVariables</servlet-name>
-        <url-pattern>/en/retrieveVariables</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>validateAndCreateSO</servlet-name>
-        <url-pattern>/en/validateAndCreateSO</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>search</servlet-name>
-        <url-pattern>/en/search</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>retrievePolicyVariables</servlet-name>
-        <url-pattern>/en/retrievePolicyVariables</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>retrieveServiceOffers</servlet-name>
-        <url-pattern>/en/retrieveServiceOffers</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>validateVariables</servlet-name>
-        <url-pattern>/en/validateVariables</url-pattern>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>register</servlet-name>
@@ -145,29 +24,14 @@
         <servlet-name>registerNewUser</servlet-name>
         <url-pattern>/registerNewUser</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>purchaseSO</servlet-name>
-        <url-pattern>/en/purchaseSO</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>runningservices</servlet-name>
-        <url-pattern>/en/runningservices</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>retrieveHistory</servlet-name>
-        <url-pattern>/en/retrieveHistory</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>modifyIaaSProvider</servlet-name>
-        <url-pattern>/en/modifyIaaSProvider</url-pattern>
-    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>en/login</welcome-file>
+        <welcome-file>index</welcome-file>
+        <!--        <welcome-file>index.jsp</welcome-file>-->
     </welcome-file-list>
     <error-page>
         <error-code>403</error-code>
@@ -177,12 +41,33 @@
         <error-code>408</error-code>
         <location>/408.jsp</location>
     </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/notFound</location>
+    </error-page>
+    <!-- exclude this pages! -->
+    <security-constraint>
+        <display-name>OrbiBroker Constraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>all</web-resource-name>
+            <description/>
+            <url-pattern>/assets/*</url-pattern>
+            <url-pattern>/index.jsp</url-pattern>
+            <url-pattern>/register</url-pattern>
+            <url-pattern>/index</url-pattern>
+            <url-pattern>/clients/register</url-pattern>
+            <url-pattern>/rest/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>NONE</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
     <security-constraint>
         <display-name>UBISES Constraint</display-name>
         <web-resource-collection>
             <web-resource-name>all</web-resource-name>
             <description/>
-            <url-pattern>/en/*</url-pattern>
+            <url-pattern>/*</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description>For all Registered Users Only</description>
@@ -198,7 +83,8 @@
         <auth-method>FORM</auth-method>
         <realm-name>BROKERAppRealm</realm-name>
         <form-login-config>
-            <form-login-page>/login.jsp</form-login-page>
+            <form-login-page>/login</form-login-page>
+<!--            <form-login-page>/login.jsp</form-login-page>-->
             <form-error-page>/error.jsp</form-error-page>
         </form-login-config>
     </login-config>
@@ -206,7 +92,7 @@
     <!--End-User Role -->
     <security-role>
         <description>User Role</description>
-        <role-name>user</role-name>
+        <role-name>enduser</role-name>
     </security-role>
     <!--Admin Role -->
     <security-role>
@@ -224,4 +110,31 @@
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
+    <listener>
+        <listener-class>
+            org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap
+        </listener-class>
+    </listener>
+    <servlet>
+        <servlet-name>Resteasy</servlet-name>
+        <servlet-class>
+            org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+        </servlet-class>
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>org.broker.orbi.rest.APIApplication</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Resteasy</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+    <context-param>
+        <param-name>resteasy.scan</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>resteasy.servlet.mapping.prefix</param-name>
+        <param-value>/rest</param-value>
+    </context-param>
 </web-app>

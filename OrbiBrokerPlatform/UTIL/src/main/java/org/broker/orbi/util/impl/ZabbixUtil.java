@@ -66,6 +66,7 @@ public class ZabbixUtil {
 
         // Insert to hosts (hostname - > hostID)
         Connection con = DatabaseHandler.INSTANCE.getDatasource("zabbix");
+        //Connection con = DatabaseHandler.INSTANCE.getConnection("zabbix");
         PreparedStatement stm = null;
         try {
             con.setAutoCommit(false);
@@ -199,6 +200,7 @@ public class ZabbixUtil {
     private static int getNextID(String tableName, String fieldName) {
         int nextID = 0;
         Connection con = DatabaseHandler.INSTANCE.getDatasource("zabbix");
+        //Connection con = DatabaseHandler.INSTANCE.getConnection("zabbix");
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
@@ -313,6 +315,7 @@ public class ZabbixUtil {
 
     private static boolean updateNextID(String tableName, String fieldName, int nextID) {
         Connection con = DatabaseHandler.INSTANCE.getDatasource("zabbix");
+        //Connection con = DatabaseHandler.INSTANCE.getConnection("zabbix");
         PreparedStatement stm = null;
         try {
 
@@ -347,11 +350,12 @@ public class ZabbixUtil {
         Map<String, ZabbixItem> mapOfZabbixItems = null;
         ZabbixItem zabbixItem = null;
         Connection con = DatabaseHandler.INSTANCE.getDatasource("broker");
+        //Connection con = DatabaseHandler.INSTANCE.getConnection("broker");
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
 
-            stm = con.prepareStatement("SELECT * FROM PolicyVariable WHERE has_zabbix= 1;");
+            stm = con.prepareStatement("SELECT * FROM ZabbixVariable WHERE has_zabbix= 1;");
             rs = stm.executeQuery();
             mapOfZabbixItems = new HashMap<>();
 
@@ -365,7 +369,7 @@ public class ZabbixUtil {
                 zabbixItem.setZabbixHistory(rs.getInt("zabbix_history"));
                 zabbixItem.setZabbixTrends(rs.getInt("zabbix_trends"));
                 zabbixItem.setZabbixValueType(rs.getInt("zabbix_value_type"));
-                zabbixItem.setZabbixTemplateID(rs.getInt("zabbix_templateid"));
+                zabbixItem.setZabbixTemplateID(rs.getInt("zabbix_template"));
                 zabbixItem.setType(rs.getString("zabbix_type"));
                 zabbixItem.setZabbixCategory(rs.getString("zabbix_category"));
 
@@ -417,6 +421,7 @@ public class ZabbixUtil {
     public static Map<String, ZabbixItem> getItemsFromZabbix(int hostID) {
         Map<String, ZabbixItem> mapOfZabbixItems = getZabbixItems();
         Connection con = DatabaseHandler.INSTANCE.getDatasource("zabbix");
+        //Connection con = DatabaseHandler.INSTANCE.getConnection("zabbix");
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
@@ -461,6 +466,7 @@ public class ZabbixUtil {
         Map<String, ZabbixHistory> mapOfZabbixHistory = null;
         ZabbixHistory zabbixHistory = null;
         Connection con = DatabaseHandler.INSTANCE.getDatasource("zabbix");
+        //Connection con = DatabaseHandler.INSTANCE.getConnection("zabbix");
         PreparedStatement stm = null;
         ResultSet rs = null;
         try {
@@ -516,8 +522,9 @@ public class ZabbixUtil {
         ResultSet rs = null;
         try {
             //SELECT PV.zabbix_key FROM  `PolicyRelation` as PR,  `VariableProfile` as VP, `PolicyVariable` as PV, `VariableType` as VT, SPOffer as O WHERE PV.type_id=VT.id and ( VP.policy_id=O.policy_id  OR ( VP.profile_id= PR.slp_id and PR.policy_id=O.policy_id) OR VP.profile_id=O.profile_id) and  VP.variable_id = PV.id and O.id=? group by PV.name
-            stm = con.prepareStatement("SELECT PV.zabbix_key, PV.name, PV.metric_unit FROM  `PolicyRelation` as PR,  `VariableProfile` as VP, `PolicyVariable` as PV, `VariableType` as VT, SPOffer as O WHERE PV.type_id=VT.id and ( VP.policy_id=O.policy_id  OR ( VP.profile_id= PR.slp_id and PR.policy_id=O.policy_id) OR VP.profile_id=O.profile_id) and  VP.variable_id = PV.id and O.id=? group by PV.name");
-            stm.setInt(1, Integer.parseInt(offer_id));
+//            stm = con.prepareStatement("SELECT PV.zabbix_key, PV.name, PV.metric_unit FROM  `PolicyRelation` as PR,  `VariableProfile` as VP, `PolicyVariable` as PV, `VariableType` as VT, SPOffer as O WHERE PV.type_id=VT.id and ( VP.policy_id=O.policy_id  OR ( VP.profile_id= PR.slp_id and PR.policy_id=O.policy_id) OR VP.profile_id=O.profile_id) and  VP.variable_id = PV.id and O.id=? group by PV.name");
+            stm = con.prepareStatement("SELECT PV.zabbix_key, PV.name, PV.metric_unit FROM `ZabbixVariable` PV WHERE PV.has_zabbix = 1;");
+//            stm.setInt(1, Integer.parseInt(offer_id));
             rs = stm.executeQuery();
             policyVariables = new HashMap<>();
             while (rs.next()) {
@@ -582,7 +589,7 @@ public class ZabbixUtil {
     private static String reportResponseTimes(long nanoTime, long milliTime) {
         // convert nanoseconds to milliseconds and display both times with three digits of precision (microsecond)
         //String nanoFormatted = String.format("%,.3f", nanoTime / NANO_TO_MILLIS);
-        String milliFormatted = String.format("%,.0f", milliTime / 1.0);
+        String milliFormatted = String.valueOf((int) milliTime);//String.format("%,.0f", milliTime / 1.0);
 
         return milliFormatted;
     }
@@ -593,7 +600,7 @@ public class ZabbixUtil {
         conn.setConnectTimeout(milliseconds);
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         while (in.readLine() != null) {
-        
+
         }
         in.close();
     }

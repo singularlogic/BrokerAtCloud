@@ -32,6 +32,7 @@
                             <span class="text-muted">Monitoring status: <%= MonitoringScheduler.INSTANCE.getMonitoringSchedulerState()%></span>
                             <br>
                             <br>
+                            <center>
                             <form class="form-horizontal" action="changeStatusOfMonitoringScheduler" method="post">
 
                                 
@@ -50,7 +51,7 @@
                                         }
                                     %>
                             </form>
-
+                            </center>
                         </div>
                     </div>
                 </div>
