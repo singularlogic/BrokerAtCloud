@@ -1,0 +1,46 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> . 
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> . 
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> . 
+@prefix owl: <http://www.w3.org/2002/07/owl#> . 
+@prefix dcterms: <http://purl.org/dc/terms/> . 
+@prefix usdl-core: <http://www.linked-usdl.org/ns/usdl-core#> . 
+@prefix usdl-core-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#> . 
+@prefix usdl-sla: <http://www.linked-usdl.org/ns/usdl-sla#> . 
+@prefix usdl-sla-cb: <http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#> . 
+@prefix usdl-business-roles: <http://www.linked-usdl.org/ns/usdl-business-roles#> . 
+@prefix blueprint: <http://bizweb.sap.com/TR/blueprint#> . 
+@prefix vcard: <http://www.w3.org/2006/vcard/ns#> . 
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> . 
+@prefix ctag: <http://commontag.org/ns#> . 
+@prefix org: <http://www.w3.org/ns/org#> . 
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> . 
+@prefix time: <http://www.w3.org/2006/time#> . 
+@prefix gr: <http://purl.org/goodrelations/v1#> . 
+@prefix doap: <http://usefulinc.com/ns/doap#> . 
+@prefix bp: <http://www.broker-cloud.eu/service-descriptions/SOME-COMPANY/broker#> . 
+@prefix sp: <http://yourprovidernamespace.com#> . 
+@prefix sd: <http://yourservicenamespace.com#> . 
+
+sp:YourCompanyAcronym 
+  a gr:BusinessEntity ; 
+  gr:legalName "Your Company Legal Name" . 
+
+sd:YourCompanyAcronymEntityInvolvement 
+  a usdl-core:EntityInvolvement ; 
+  usdl-core:withBusinessRole usdl-business-roles:provider ; 
+  usdl-core:ofBusinessEntity sp:YourCompanyAcronym . 
+
+sd:YourServiceDescriptionTitle 
+  a usdl-core:Service ; 
+  dcterms:creator sp:YourCompanyAcronym ; 
+  usdl-core:hasEntityInvolvement sd:YourCompanyAcronymEntityInvolvement ; 
+  usdl-core-cb:hasServiceModel sd:YourServiceModelName ; 
+  usdl-core-cb:validFrom "2017-02-01"^^xsd:date ; 
+  usdl-core-cb:validThrough "2017-02-28"^^xsd:date . 
+
+sd:YourServiceModelName 
+  a bp:SomeServiceModel ; 
+  gr:isVariantOf bp:SomeBrokerPolicy ; 
+  bp:SomeServiceLevelProfile bp:ServiceLevelProfileHigh ; 
+  usdl-core-cb:hasClassificationDimension <http://www.broker-cloud.eu/service-descriptions/CAS/categories#rootConcept> , 
+    <http://www.broker-cloud.eu/service-descriptions/CAS/categories#sales> . 
