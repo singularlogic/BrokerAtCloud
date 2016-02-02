@@ -81,82 +81,86 @@
         var kb;
 
         function storeSD() {
-            var sp_namespace = document.getElementById("sp_namespace").value;
-            var sd_namespace = document.getElementById("sd_namespace").value;
-            var kb_sd = $.rdf()
-                .base(sd_namespace)
-                .prefix('foaf', 'http://xmlns.com/foaf/0.1/')
-                .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
-                .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
-                .prefix('owl', 'http://www.w3.org/2002/07/owl#')
-                .prefix('dcterms', 'http://purl.org/dc/terms/')
-                .prefix('usdl-core', 'http://www.linked-usdl.org/ns/usdl-core#')
-                .prefix('usdl-core-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker#')
-                .prefix('usdl-sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
-                .prefix('usdl-sla-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#')
-                .prefix('usdl-business-roles', 'http://www.linked-usdl.org/ns/usdl-business-roles#')
-                .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
-                .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
-                .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
-                .prefix('ctag', 'http://commontag.org/ns#')
-                .prefix('org', 'http://www.w3.org/ns/org#')
-                .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
-                .prefix('time', 'http://www.w3.org/2006/time#')
-                .prefix('gr', 'http://purl.org/goodrelations/v1#')
-                .prefix('doap', 'http://usefulinc.com/ns/doap#')
-                .prefix('bp', document.kb.databank.baseURI)
-                .prefix('sp', sp_namespace + "#")
-                .prefix('sd', sd_namespace + "#")
-                // Create the business entity of the service provider
-                .add("sp:" + document.getElementById("sp_business_entity").value + " a gr:BusinessEntity .")
-                .add('sp:' + document.getElementById("sp_business_entity").value + ' gr:legalName ' + '"' + document.getElementById("sp_legal_name").value + '"' + ' .')
-                // Create the entity involvement instance and bind it to the service provider business entity
-                .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " a usdl-core:EntityInvolvement .")
-                .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:withBusinessRole usdl-business-roles:provider .")
-                .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:ofBusinessEntity sp:" + document.getElementById("sp_business_entity").value + " .")
-                // Create the service instance
-                .add("sd:" + document.getElementById("sd").value + " a usdl-core:Service .")
-                .add("sd:" + document.getElementById("sd").value + " dcterms:creator sp:" + document.getElementById("sp_business_entity").value + " .")
-                .add("sd:" + document.getElementById("sd").value + " usdl-core:hasEntityInvolvement sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement .")
-                .add("sd:" + document.getElementById("sd").value + " usdl-core-cb:hasServiceModel sd:" + document.getElementById("sd_model").value + " .")
-                .add("sd:" + document.getElementById("sd").value + " usdl-core-cb:validFrom \"" + document.getElementById("sd_validFrom").value + "\"^^xsd:date .")
-            if (document.getElementById("sd_validThrough").value != "") {
-                kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:validThrough ' + '"' + document.getElementById("sd_validThrough").value + '"^^xsd:date .');
-            }
-           // Create successor of and recommendation deprecation, if any.
-            // Deprecation recommendation will not be created if there is no successor of even if a value is provided!
-            if (document.getElementById("sd_successorOf").value != "") {
-                kb_sd.add("sd:" + document.getElementById("sd").value + " gr:successorOf <" + document.getElementById("sd_successorOf").value + "> .");
-                if (document.getElementById("sd_deprecationRecommendation").value != "") {
-                    kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:deprecationRecommendationTimePointSD ' + '"' + document.getElementById("sd_deprecationRecommendation").value + '"^^xsd:date .');
+            try {
+                var sp_namespace = document.getElementById("sp_namespace").value;
+                var sd_namespace = document.getElementById("sd_namespace").value;
+                var kb_sd = $.rdf()
+                    .base(sd_namespace)
+                    .prefix('foaf', 'http://xmlns.com/foaf/0.1/')
+                    .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+                    .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
+                    .prefix('owl', 'http://www.w3.org/2002/07/owl#')
+                    .prefix('dcterms', 'http://purl.org/dc/terms/')
+                    .prefix('usdl-core', 'http://www.linked-usdl.org/ns/usdl-core#')
+                    .prefix('usdl-core-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker#')
+                    .prefix('usdl-sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
+                    .prefix('usdl-sla-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#')
+                    .prefix('usdl-business-roles', 'http://www.linked-usdl.org/ns/usdl-business-roles#')
+                    .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
+                    .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
+                    .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
+                    .prefix('ctag', 'http://commontag.org/ns#')
+                    .prefix('org', 'http://www.w3.org/ns/org#')
+                    .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
+                    .prefix('time', 'http://www.w3.org/2006/time#')
+                    .prefix('gr', 'http://purl.org/goodrelations/v1#')
+                    .prefix('doap', 'http://usefulinc.com/ns/doap#')
+                    .prefix('bp', document.kb.databank.baseURI)
+                    .prefix('sp', sp_namespace + "#")
+                    .prefix('sd', sd_namespace + "#")
+                    // Create the business entity of the service provider
+                    .add("sp:" + document.getElementById("sp_business_entity").value + " a gr:BusinessEntity .")
+                    .add('sp:' + document.getElementById("sp_business_entity").value + ' gr:legalName ' + '"' + document.getElementById("sp_legal_name").value + '"' + ' .')
+                    // Create the entity involvement instance and bind it to the service provider business entity
+                    .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " a usdl-core:EntityInvolvement .")
+                    .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:withBusinessRole usdl-business-roles:provider .")
+                    .add("sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement" + " usdl-core:ofBusinessEntity sp:" + document.getElementById("sp_business_entity").value + " .")
+                    // Create the service instance
+                    .add("sd:" + document.getElementById("sd").value + " a usdl-core:Service .")
+                    .add("sd:" + document.getElementById("sd").value + " dcterms:creator sp:" + document.getElementById("sp_business_entity").value + " .")
+                    .add("sd:" + document.getElementById("sd").value + " usdl-core:hasEntityInvolvement sd:" + document.getElementById("sp_business_entity").value + "EntityInvolvement .")
+                    .add("sd:" + document.getElementById("sd").value + " usdl-core-cb:hasServiceModel sd:" + document.getElementById("sd_model").value + " .")
+                    .add("sd:" + document.getElementById("sd").value + " usdl-core-cb:validFrom \"" + document.getElementById("sd_validFrom").value + "\"^^xsd:date .")
+                if (document.getElementById("sd_validThrough").value != "") {
+                    kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:validThrough ' + '"' + document.getElementById("sd_validThrough").value + '"^^xsd:date .');
                 }
+                // Create successor of and recommendation deprecation, if any.
+                // Deprecation recommendation will not be created if there is no successor of even if a value is provided!
+                if (document.getElementById("sd_successorOf").value != "") {
+                    kb_sd.add("sd:" + document.getElementById("sd").value + " gr:successorOf <" + document.getElementById("sd_successorOf").value + "> .");
+                    if (document.getElementById("sd_deprecationRecommendation").value != "") {
+                        kb_sd.add("sd:" + document.getElementById("sd").value + ' usdl-core-cb:deprecationRecommendationTimePointSD ' + '"' + document.getElementById("sd_deprecationRecommendation").value + '"^^xsd:date .');
+                    }
+                }
+
+
+                // Create the service model instance
+                kb_sd.add("sd:" + document.getElementById("sd_model").value + " a bp:" + document.getElementById("servicemodel_class").value + " .")
+                    .add("sd:" + document.getElementById("sd_model").value + " gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
+                    // Assign the selected profile instance to the service model
+                    .add("sd:" + document.getElementById("sd_model").value + " bp:" + document.getElementById("slp_class").value + " <" + document.getElementById("slp").value + "> .");
+                if (document.getElementById("sd_dependsOn").value != "") {
+                    document.getElementById("sd_dependsOn").value.split(" ").forEach(function (dep) {
+                        kb_sd.add("sd:" + document.getElementById("sd").value + " usdl-core-cb:dependsOn <" + dep + "> .");
+                    });
+                }
+                // Add the chosen classification concepts to the service model
+                kb_sd = addClassificationConcepts(kb_sd);
+                // Dump the kb with the service description to a turtle format and show it in a separate window.
+
+                kb_sd = storeSLsFromPanel(kb_sd);
+
+                var dmp = kb_sd.databank.dump({
+                    format: 'text/turtle',
+                    indent: true,
+                    serialize: true
+                })
+                var uueFile = Base64.encode(dmp)
+                var uri = 'data:text/turtle;base64,' + encodeURIComponent(uueFile)
+                window.open(uri);
+            } catch (err) {
+                window.alert(err);
             }
-
-            
-            // Create the service model instance
-            kb_sd.add("sd:" + document.getElementById("sd_model").value + " a bp:" + document.getElementById("servicemodel_class").value + " .")
-                .add("sd:" + document.getElementById("sd_model").value + " gr:isVariantOf bp:" + document.getElementById("servicemodel").value + " .")
-                // Assign the selected profile instance to the service model
-                .add("sd:" + document.getElementById("sd_model").value + " bp:" + document.getElementById("slp_class").value + " <" + document.getElementById("slp").value + "> .");
-            if (document.getElementById("sd_dependsOn").value != "") {
-                document.getElementById("sd_dependsOn").value.split(" ").forEach(function (dep) {
-                    kb_sd.add("sd:" + document.getElementById("sd").value + " usdl-core-cb:dependsOn <" + dep + "> .");
-                });
-            }
-            // Add the chosen classification concepts to the service model
-            kb_sd = addClassificationConcepts(kb_sd);
-            // Dump the kb with the service description to a turtle format and show it in a separate window.
-
-            kb_sd = storeSLsFromPanel(kb_sd);
-
-            var dmp = kb_sd.databank.dump({
-                format: 'text/turtle',
-                indent: true,
-                serialize: true
-            })
-            var uueFile = Base64.encode(dmp)
-            var uri = 'data:text/turtle;base64,' + encodeURIComponent(uueFile)
-            window.open(uri)
         }
 
         //output
@@ -1024,19 +1028,19 @@
                             <label>Valid Through</label>
                             <input class="form-control" type="text" id="sd_validThrough" value="2017-02-28">
                         </div>
-                                                                   <div class="form-group">
-                                                <label>Successor of (URI to the predecessor service description, optional)</label>
-                                                
-                                                    <input class="form-control" type="text" id="sd_successorOf" value="">
-                                                
-                                            </div>
-                                            <div class="form-group">
-                                                <label>Recommendation deprecated from (optional)</label>
-                                                
-                                                    <input class="form-control" type="text" id="sd_deprecationRecommendation" value="YYYY-MM-DD">
-                                                
-                                            </div>
- 
+                        <div class="form-group">
+                            <label>Successor of (URI to the predecessor service description, optional)</label>
+
+                            <input class="form-control" type="text" id="sd_successorOf" value="">
+
+                        </div>
+                        <div class="form-group">
+                            <label>Recommendation deprecated from (optional)</label>
+
+                            <input class="form-control" type="text" id="sd_deprecationRecommendation" value="YYYY-MM-DD">
+
+                        </div>
+
                         <div class="form-group">
                             <label>Depends on</label>
                             <input class="form-control" type="text" id="sd_dependsOn">

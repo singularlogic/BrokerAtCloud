@@ -83,92 +83,96 @@
         var kb;
 
         function storeBP() {
-            var kb_bp = $.rdf()
-                .base(document.getElementById("bp_namespace").value)
-                .prefix('foaf', 'http://xmlns.com/foaf/0.1/')
-                .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
-                .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
-                .prefix('owl', 'http://www.w3.org/2002/07/owl#')
-                .prefix('dcterms', 'http://purl.org/dc/terms/')
-                .prefix('usdl-core', 'http://www.linked-usdl.org/ns/usdl-core#')
-                .prefix('usdl-core-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker#')
-                .prefix('usdl-sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
-                .prefix('usdl-sla-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#')
-                .prefix('usdl-pref', 'http://www.linked-usdl.org/ns/usdl-pref#')
-                .prefix('usdl-business-roles', 'http://www.linked-usdl.org/ns/usdl-business-roles#')
-                .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
-                .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
-                .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
-                .prefix('ctag', 'http://commontag.org/ns#')
-                .prefix('org', 'http://www.w3.org/ns/org#')
-                .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
-                .prefix('time', 'http://www.w3.org/2006/time#')
-                .prefix('gr', 'http://purl.org/goodrelations/v1#')
-                .prefix('doap', 'http://usefulinc.com/ns/doap#')
-                .prefix(document.getElementById("classtaxpref").value, document.getElementById("classtaxURI").value + "#")
-                .prefix('bp', document.getElementById("bp_namespace").value + "#")
-                //  .prefix('bp', document.kb.databank.baseURI)
-                // Create the business entity of broker
-                //.add("<" + document.getElementById("bp_business_entity").value + "> a gr:BusinessEntity .")
-                .add("bp:" + document.getElementById("bp_business_entity").value + " a gr:BusinessEntity .")
+            try {
+                var kb_bp = $.rdf()
+                    .base(document.getElementById("bp_namespace").value)
+                    .prefix('foaf', 'http://xmlns.com/foaf/0.1/')
+                    .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+                    .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
+                    .prefix('owl', 'http://www.w3.org/2002/07/owl#')
+                    .prefix('dcterms', 'http://purl.org/dc/terms/')
+                    .prefix('usdl-core', 'http://www.linked-usdl.org/ns/usdl-core#')
+                    .prefix('usdl-core-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker#')
+                    .prefix('usdl-sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
+                    .prefix('usdl-sla-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#')
+                    .prefix('usdl-pref', 'http://www.linked-usdl.org/ns/usdl-pref#')
+                    .prefix('usdl-business-roles', 'http://www.linked-usdl.org/ns/usdl-business-roles#')
+                    .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
+                    .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
+                    .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
+                    .prefix('ctag', 'http://commontag.org/ns#')
+                    .prefix('org', 'http://www.w3.org/ns/org#')
+                    .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
+                    .prefix('time', 'http://www.w3.org/2006/time#')
+                    .prefix('gr', 'http://purl.org/goodrelations/v1#')
+                    .prefix('doap', 'http://usefulinc.com/ns/doap#')
+                    .prefix(document.getElementById("classtaxpref").value, document.getElementById("classtaxURI").value + "#")
+                    .prefix('bp', document.getElementById("bp_namespace").value + "#")
+                    //  .prefix('bp', document.kb.databank.baseURI)
+                    // Create the business entity of broker
+                    //.add("<" + document.getElementById("bp_business_entity").value + "> a gr:BusinessEntity .")
+                    .add("bp:" + document.getElementById("bp_business_entity").value + " a gr:BusinessEntity .")
 
-            .add("bp:" + document.getElementById("bp_business_entity").value + ' gr:legalName ' + '"' + document.getElementById("bp_legal_name").value + '"^^xsd:string .')
-                // Create the entity involvement instance and bind it to the broker business entity
-                .add("bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement" + " a usdl-core:EntityInvolvement .")
-                .add("bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement" + " usdl-core:withBusinessRole usdl-business-roles:intermediary .")
-                .add("bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement" + " usdl-core:ofBusinessEntity " + "bp:" + document.getElementById("bp_business_entity").value + " .")
-                // Create the business policy instance
-                .add("bp:" + document.getElementById("bp_instance").value + " a " + "bp:" + document.getElementById("bp_model").value + " .")
-                .add("bp:" + document.getElementById("bp_instance").value + " dcterms:creator " + "bp:" + document.getElementById("bp_business_entity").value + " .")
-                .add("bp:" + document.getElementById("bp_instance").value + " usdl-core:hasEntityInvolvement " + "bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement .")
-                .add("bp:" + document.getElementById("bp_instance").value + " usdl-core-cb:hasClassificationDimension " + document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " .")
-                // Create the bp service model
-                .add("bp:" + document.getElementById("bp_model").value + " rdfs:subClassOf usdl-core:ServiceModel .")
+                .add("bp:" + document.getElementById("bp_business_entity").value + ' gr:legalName ' + '"' + document.getElementById("bp_legal_name").value + '"^^xsd:string .')
+                    // Create the entity involvement instance and bind it to the broker business entity
+                    .add("bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement" + " a usdl-core:EntityInvolvement .")
+                    .add("bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement" + " usdl-core:withBusinessRole usdl-business-roles:intermediary .")
+                    .add("bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement" + " usdl-core:ofBusinessEntity " + "bp:" + document.getElementById("bp_business_entity").value + " .")
+                    // Create the business policy instance
+                    .add("bp:" + document.getElementById("bp_instance").value + " a " + "bp:" + document.getElementById("bp_model").value + " .")
+                    .add("bp:" + document.getElementById("bp_instance").value + " dcterms:creator " + "bp:" + document.getElementById("bp_business_entity").value + " .")
+                    .add("bp:" + document.getElementById("bp_instance").value + " usdl-core:hasEntityInvolvement " + "bp:" + document.getElementById("bp_business_entity").value + "EntityInvolvement .")
+                    .add("bp:" + document.getElementById("bp_instance").value + " usdl-core-cb:hasClassificationDimension " + document.getElementById("classtaxpref").value + ":" + document.getElementById("classtaxroot").value + " .")
+                    // Create the bp service model
+                    .add("bp:" + document.getElementById("bp_model").value + " rdfs:subClassOf usdl-core:ServiceModel .")
 
 
-            // Create the SL profile
-            .add("bp:" + document.getElementById("slp_class").value + " rdfs:subClassOf usdl-sla:ServiceLevelProfile .")
-                .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile .")
-                .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:domain " + "bp:" + document.getElementById("bp_model").value + " .")
-                .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:range " + "bp:" + document.getElementById("slp_class").value + " .");
+                // Create the SL profile
+                .add("bp:" + document.getElementById("slp_class").value + " rdfs:subClassOf usdl-sla:ServiceLevelProfile .")
+                    .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:subPropertyOf usdl-sla:hasServiceLevelProfile .")
+                    .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:domain " + "bp:" + document.getElementById("bp_model").value + " .")
+                    .add("bp:" + "has" + document.getElementById("slp_class").value + " rdfs:range " + "bp:" + document.getElementById("slp_class").value + " .");
 
-            //Broker policy lifecycle management 
-            //Create validFrom and valid through
-            kb_bp.add("bp:" + document.getElementById("bp_instance").value + ' usdl-core-cb:validFrom ' + '"' + document.getElementById("valid_from").value + '"^^xsd:date .')
-            if (document.getElementById("valid_through").value != "") {
-                kb_bp.add("bp:" + document.getElementById("bp_instance").value + ' usdl-core-cb:validThrough ' + '"' + document.getElementById("valid_through").value + '"^^xsd:date .')
-            }
-            // Create successor of and deprecation properties, if any.
-            // Deprecation properties will not be created if there is no successor of even if values are provided!
-            if (document.getElementById("successor_of_bp").value != "") {
-                kb_bp.add("bp:" + document.getElementById("bp_instance").value + " gr:successorOf <" + document.getElementById("successor_of_bp").value + "> .");
-                if (document.getElementById("onboarding_deprecated_from").value != "") {
-                    kb_bp.add("bp:" + document.getElementById("bp_instance").value + ' usdl-core-cb:deprecationOnboardingTimePoint ' + '"' + document.getElementById("onboarding_deprecated_from").value + '"^^xsd:date .');
+                //Broker policy lifecycle management 
+                //Create validFrom and valid through
+                kb_bp.add("bp:" + document.getElementById("bp_instance").value + ' usdl-core-cb:validFrom ' + '"' + document.getElementById("valid_from").value + '"^^xsd:date .')
+                if (document.getElementById("valid_through").value != "") {
+                    kb_bp.add("bp:" + document.getElementById("bp_instance").value + ' usdl-core-cb:validThrough ' + '"' + document.getElementById("valid_through").value + '"^^xsd:date .')
                 }
-                if (document.getElementById("recommendation_deprecated_from").value != "") {
-                    kb_bp.add("bp:" + document.getElementById("bp_instance").value + ' usdl-core-cb:deprecationRecommendationTimePointBP ' + '"' + document.getElementById("recommendation_deprecated_from").value + '"^^xsd:date .');
+                // Create successor of and deprecation properties, if any.
+                // Deprecation properties will not be created if there is no successor of even if values are provided!
+                if (document.getElementById("successor_of_bp").value != "") {
+                    kb_bp.add("bp:" + document.getElementById("bp_instance").value + " gr:successorOf <" + document.getElementById("successor_of_bp").value + "> .");
+                    if (document.getElementById("onboarding_deprecated_from").value != "") {
+                        kb_bp.add("bp:" + document.getElementById("bp_instance").value + ' usdl-core-cb:deprecationOnboardingTimePoint ' + '"' + document.getElementById("onboarding_deprecated_from").value + '"^^xsd:date .');
+                    }
+                    if (document.getElementById("recommendation_deprecated_from").value != "") {
+                        kb_bp.add("bp:" + document.getElementById("bp_instance").value + ' usdl-core-cb:deprecationRecommendationTimePointBP ' + '"' + document.getElementById("recommendation_deprecated_from").value + '"^^xsd:date .');
+                    }
                 }
+
+                // Add classification
+                kb_bp = addClassificationConcepts(kb_bp);
+
+                // Create the SL schemas for qualitative values
+                kb_bp = addQualSLSchemas(kb_bp);
+                // Create the SL schemas for quantitative values
+                kb_bp = addQuantSLSchemas(kb_bp);
+                // Store bp with schemas to a global var
+                kb_bp = addQualValues(kb_bp);
+
+                // Dump the kb with the service description to a turtle format and show it in a separate window.
+                var dmp = kb_bp.databank.dump({
+                    format: 'text/turtle',
+                    indent: true,
+                    serialize: true
+                })
+                var uueFile = Base64.encode(dmp)
+                var uri = 'data:text/turtle;base64,' + encodeURIComponent(uueFile)
+                window.open(uri);
+            } catch (err) {
+                window.alert(err);
             }
-
-            // Add classification
-            kb_bp = addClassificationConcepts(kb_bp);
-
-            // Create the SL schemas for qualitative values
-            kb_bp = addQualSLSchemas(kb_bp);
-            // Create the SL schemas for quantitative values
-            kb_bp = addQuantSLSchemas(kb_bp);
-            // Store bp with schemas to a global var
-            kb_bp = addQualValues(kb_bp);
-
-            // Dump the kb with the service description to a turtle format and show it in a separate window.
-            var dmp = kb_bp.databank.dump({
-                format: 'text/turtle',
-                indent: true,
-                serialize: true
-            })
-            var uueFile = Base64.encode(dmp)
-            var uri = 'data:text/turtle;base64,' + encodeURIComponent(uueFile)
-            window.open(uri)
         }
         // Other editor
         function createQuantitativeIntTables() {}
@@ -762,61 +766,63 @@
             var dt = event.dataTransfer
             var files = dt.files
             if (files.length == 1) {
+                try {
+                    var reader = new FileReader();
+                    reader.onload = function (event) {
+                        var content = event.target.result;
+                        var kb = $.rdf();
+                        kb.load(content);
 
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    var content = event.target.result;
-                    var kb = $.rdf();
-                    kb.load(content);
+                        kb.prefix('foaf', 'http://xmlns.com/foaf/0.1/')
+                            .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
+                            .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
+                            .prefix('owl', 'http://www.w3.org/2002/07/owl#')
+                            .prefix('dcterms', 'http://purl.org/dc/terms/')
+                            .prefix('usdl-core', 'http://www.linked-usdl.org/ns/usdl-core#')
+                            .prefix('usdl-core-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker#')
+                            .prefix('usdl-sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
+                            .prefix('usdl-sla-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#')
+                            .prefix('usdl-business-roles', 'http://www.linked-usdl.org/ns/usdl-business-roles#')
+                            .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
+                            .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
+                            .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
+                            .prefix('ctag', 'http://commontag.org/ns#')
+                            .prefix('org', 'http://www.w3.org/ns/org#')
+                            .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
+                            .prefix('time', 'http://www.w3.org/2006/time#')
+                            .prefix('gr', 'http://purl.org/goodrelations/v1#')
+                            .prefix('doap', 'http://usefulinc.com/ns/doap#')
+                            .base(findBase(kb) + "#");
 
-                    kb.prefix('foaf', 'http://xmlns.com/foaf/0.1/')
-                        .prefix('rdf', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#')
-                        .prefix('rdfs', 'http://www.w3.org/2000/01/rdf-schema#')
-                        .prefix('owl', 'http://www.w3.org/2002/07/owl#')
-                        .prefix('dcterms', 'http://purl.org/dc/terms/')
-                        .prefix('usdl-core', 'http://www.linked-usdl.org/ns/usdl-core#')
-                        .prefix('usdl-core-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker#')
-                        .prefix('usdl-sla', 'http://www.linked-usdl.org/ns/usdl-sla#')
-                        .prefix('usdl-sla-cb', 'http://www.linked-usdl.org/ns/usdl-core/cloud-broker-sla#')
-                        .prefix('usdl-business-roles', 'http://www.linked-usdl.org/ns/usdl-business-roles#')
-                        .prefix('blueprint', 'http://bizweb.sap.com/TR/blueprint#')
-                        .prefix('vcard', 'http://www.w3.org/2006/vcard/ns#')
-                        .prefix('xsd', 'http://www.w3.org/2001/XMLSchema#')
-                        .prefix('ctag', 'http://commontag.org/ns#')
-                        .prefix('org', 'http://www.w3.org/ns/org#')
-                        .prefix('skos', 'http://www.w3.org/2004/02/skos/core#')
-                        .prefix('time', 'http://www.w3.org/2006/time#')
-                        .prefix('gr', 'http://purl.org/goodrelations/v1#')
-                        .prefix('doap', 'http://usefulinc.com/ns/doap#')
-                        .base(findBase(kb) + "#");
+                        kb.prefix('bp', kb.base());
 
-                    kb.prefix('bp', kb.base());
+                        loadClassificationTaxonomy(kb);
 
-                    loadClassificationTaxonomy(kb);
+                        //Load SLP class
+                        var slpclasses = kb.where("?slps rdfs:subClassOf usdl-sla:ServiceLevelProfile");
+                        slpclasses.each(function () {
+                            var sel = this["slps"];
+                            var url_slps = sel.value._string;
+                            document.getElementById("slp_class").value = url_slps.split('#')[1];
+                        })
+                        loadQuantitativeSLSchemas(kb);
+                        loadQualitativeSLSchemas(kb);
+                        save_SLSchemas();
 
-                    //Load SLP class
-                    var slpclasses = kb.where("?slps rdfs:subClassOf usdl-sla:ServiceLevelProfile");
-                    slpclasses.each(function () {
-                        var sel = this["slps"];
-                        var url_slps = sel.value._string;
-                        document.getElementById("slp_class").value = url_slps.split('#')[1];
-                    })
-                    loadQuantitativeSLSchemas(kb);
-                    loadQualitativeSLSchemas(kb);
-                    save_SLSchemas();
+                        //load qual values
 
-                    //load qual values
+                        loadQualValues(kb);
 
-                    loadQualValues(kb);
-
-                    //window.alert(kb.base());
-                    document.kb = kb;
+                        //window.alert(kb.base());
+                        document.kb = kb;
+                    }
+                    reader.readAsText(files[0]);
+                    document.getElementById("bp").innerHTML = "Broker policy loaded!";
+                    $("#serviceEditArea").collapse('show');
+                    $("#serviceLoadArea").collapse('hide');
+                } catch (err) {
+                    window.alert(err);
                 }
-                reader.readAsText(files[0]);
-                document.getElementById("bp").innerHTML = "Broker policy loaded!";
-                $("#serviceEditArea").collapse('show');
-                $("#serviceLoadArea").collapse('hide');
-
             }
         }
 

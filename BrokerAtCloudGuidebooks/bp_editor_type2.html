@@ -733,21 +733,25 @@
                 concept.text = url.split('#')[1];
                 selectelement.add(concept, null);
 
-            })
+            });
         }
 
 
         function storeBPtype2() {
-            var kb_bp = document.kb;
-            kb_bp = storeSLPsFromPanels(kb_bp);
-            var dmp = kb_bp.databank.dump({
-                format: 'text/turtle',
-                indent: true,
-                serialize: true
-            });
-            var uueFile = Base64.encode(dmp);
-            var uri = 'data:text/turtle;base64,' + encodeURIComponent(uueFile);
-            window.open(uri);
+            try {
+                var kb_bp = document.kb;
+                kb_bp = storeSLPsFromPanels(kb_bp);
+                var dmp = kb_bp.databank.dump({
+                    format: 'text/turtle',
+                    indent: true,
+                    serialize: true
+                });
+                var uueFile = Base64.encode(dmp);
+                var uri = 'data:text/turtle;base64,' + encodeURIComponent(uueFile);
+                window.open(uri);
+            } catch (err) {
+                window.alert(err);
+            }
         }
 
         function addSLPPanel() {
