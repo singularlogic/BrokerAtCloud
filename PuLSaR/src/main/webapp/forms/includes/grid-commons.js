@@ -470,7 +470,7 @@
 			$format = (args.column && args.column.displayFormat && args.column.displayFormat!=='%') ? args.column.displayFormat : '%';
 			$precision = (args.column && args.column.displayPrecision && !isNaN(args.column.displayPrecision) && parseInt(args.column.displayPrecision)>=0) ? parseInt(args.column.displayPrecision) : 2;
 
-			$(args.container).append($label+': ');
+			//$(args.container).append($label+': ');
 			var style = "width:40px;";
 			$html = $("<INPUT type=text style='"+style+"' class='numType' required />")
 			$percent = $($html)
@@ -535,6 +535,508 @@
 				if (isNaN(percent) || parseFloat(percent)<0 || parseFloat(percent)>1) {
 					return {valid: false, msg: "Please enter a valid "+$label.toLowerCase()+"."};
 				}
+			}
+			return {valid: true, msg: null};
+		};
+
+		this.init();
+	}
+
+// ================================================================================================
+// Constraints formatter and editor
+
+	var orderedOps = [['=','='], ['<>','&ne;'], ['<','&lt;'], ['<=','&le;'], ['>','&gt;'], ['>=','&ge;']];
+	var rangeOps = [['@','&isin;'], ['!','&notin;']];
+	var constrOps = {
+						'NUMERIC_INC': orderedOps,
+						'NUMERIC_DEC': orderedOps,
+						'NUMERIC_RANGE': rangeOps,
+						'BOOLEAN': [['=','=']],
+						'UNORDERED_SET': rangeOps,
+						'FUZZY_INC': orderedOps,
+						'FUZZY_DEC': orderedOps,
+						'FUZZY_RANGE': rangeOps,
+						'LINGUISTIC': orderedOps
+					};
+	var constrHelp = {
+						'NUMERIC_INC': "Accepts a numeric value",
+						'NUMERIC_DEC': "Accepts a numeric value",
+						'NUMERIC_RANGE': "Accepts two numeric values <i>a, b</i> <br/>where <i>a &le; b</i>. Meaning: <i>[a, b]</i>",
+						'BOOLEAN': "Use the <i>true</i> or <i>false</i> value <br/>valid for this attribute",
+						'UNORDERED_SET': "Use any number of the legal <br/>list values for this attribute",
+						'FUZZY_INC': "Accepts a fuzzy value. Format:<br/><b>(a ; b ; c)</b> where a &le; b &le; c",
+						'FUZZY_DEC': "Accepts a fuzzy value. Format:<br/><b>(a ; b ; c)</b> where a &le; b &le; c",
+						'FUZZY_RANGE': "Accepts a fuzzy range. Format:<br/><b>(a ; b ; c; d)</b> where a &le; b &le; c &le; d",
+						'LINGUISTIC': "Accepts any legal linguistic value for <br/>this attribute"
+					};
+	
+	function ConstraintsFormatter(row, cell, value, columnDef, dataContext) {
+		var formatted = dataContext.constraints.trim()
+							.replace('<>','&ne;')
+							.replace('<=','&le;')
+							.replace('>=','&ge;')
+							.replace('<','&lt;')
+							.replace('>','&gt;')
+							.replace('@','&isin;')
+							.replace('!','&notin;');
+		if (formatted==='') formatted = '-'; 
+		else formatted = '<font size="-1" color="blue">'+formatted+'</font>';
+		return '<b>'+formatted+'</b>';
+	}
+
+	function ConstraintsEditor(args) {
+		var $constrOp;
+		var $constrFrom;
+		var $constrTo;
+		var $cbArray;
+		var $clear;
+		var $label;
+		var $field;
+		var $type;
+		var scope = this;
+		var canvas;
+
+		this.init = function () {
+			// get label and field name
+			$label = (args.column && args.column.name && args.column.name.trim()!=='') ? args.column.name.trim() : 'Constraints';
+			$field = (args.column && args.column.field && args.column.field!=='') ? args.column.field : 'constraints';
+			
+			// get type
+			$type = args.item.type;
+			var $isNumericType = numericTypes.indexOf($type)>-1;
+			var $isFuzzyType = fuzzyTypes.indexOf($type)>-1;
+			var $isTextType = textTypes.indexOf($type)>-1;
+			var $isRange = ($type.indexOf('_RANGE')>0);
+			
+			// create popup constraints editor and canvas (inside editor)
+			canvas = $('<div id="constraints-editor" class="ui-dialog ui-dialog-content ui-widget ui-widget-content ui-corner-all ui-front ui-draggable ui-resizable" style="width:220px; height:auto; background:#ffffcc; border-radius:10px; border:1px solid darkred; padding:10px; z-index:100;"></div>')
+						.appendTo(args.container);
+			
+			// prepare operators html element
+			var ops = constrOps[$type];
+			if (ops.length==1) {
+				list = ops[0][1];
+			} else {
+				var list = '<SELECT style="width:60px;height:23px;padding:1px !important;font-size:9pt !important;">';
+				for (i in ops) {
+					var op = ops[i];
+					val=op[0]; txt=op[1];
+					list += '<OPTION value="'+val+'">'+txt+'</OPTION>';
+				}
+				list += '</SELECT>';
+			}
+			
+			// create operators list (select)
+			$oplist = $(list);
+			$constrOp = $($oplist)
+				.appendTo(canvas)
+				.bind("keydown", scope.handleKeyDown);
+			
+			canvas.append(' ');
+			
+			// create 'from' field
+			if (!$isTextType) {
+				// numeric or fuzzy value/range type
+				var style = ($isTextType || $isFuzzyType) ? 'width:120px;' : 'width:50px;';
+				$html = $('<INPUT type="text" style="'+style+';padding:1px !important;" required />');
+				$constrFrom = $($html)
+					.appendTo(canvas)
+					.bind("keydown", scope.handleKeyDown);
+			} else 
+			if ($type=='BOOLEAN' || $type=='LINGUISTIC') {
+				// boolean or linguistic type
+				terms = args.item.from.split(',');
+				$list = '<SELECT style="width:120px;height:23px;padding:1px !important;font-size:9pt !important;">';
+				for (k=0; k<terms.length; k++) {
+					val = terms[k].trim();
+					if (val==='') continue;
+					$list += '<OPTION value="'+val+'">'+val+'</OPTION>';
+				}
+				list += '</SELECT>';
+				$constrFrom = $($list)
+					.appendTo(canvas)
+					.bind("keydown", scope.handleKeyDown);
+			} else {
+				// unordered list type
+				terms = args.item.from.split(',');
+				$list = '<br/>';
+				$constrFrom = $('<div></div>');
+				$cbArray = [];
+				for (k=0; k<terms.length; k++) {
+					val = terms[k].trim();
+					if (val==='') continue;
+					var cb = $('<INPUT type="checkbox" value="'+val+'">');
+					$cbArray.push( cb );
+					$constrFrom.append(cb).append(' ').append('<i>'+val+'</i>').append($('<br/>'));
+				}
+				$constrFrom
+					.appendTo(canvas)
+					.bind("keydown", scope.handleKeyDown);
+			}
+			
+			canvas.append(' ');
+			
+			// create 'to' field if necessary
+			if ($isRange && $isNumericType) {
+				$(args.container).append(' &oline; ');
+				$html = $('<INPUT type="text" style="'+style+';padding:1px !important;" required />');
+				$constrTo = $($html)
+					.appendTo(canvas)
+					.bind("keydown", scope.handleKeyDown);
+			}
+			
+			// create 'save' button
+			$html = '<a href="#" style="color:red;vertical-align:baseline;"><img src="../../images/buttons/save-2.png" style="vertical-align:baseline;"/></a>';
+			$save = $($html)
+				.appendTo(canvas)
+				.bind("keydown", scope.handleKeyDown)
+				.click(function() {
+					var container = $("#constraints-editor");
+					if (container) {
+						var e = jQuery.Event("keydown"); 
+						e.which = 13; //choose the one you want
+						e.keyCode = 13;
+						container.trigger(e);
+					}
+				});
+			
+			// create 'clear' button
+			$html = '<a href="#" style="color:red;vertical-align:baseline;"><img src="../../images/buttons/delete2.png" style="vertical-align:baseline;"/></a>';
+			$clear = $($html)
+				.appendTo(canvas)
+				.bind("keydown", scope.handleKeyDown)
+				.click(function() {
+					$constrOp.val('');
+					$constrFrom.val('');
+					if ($constrTo) $constrTo.val('');
+					if ($cbArray) {
+						for (i=0; i<$cbArray.length; i++) $cbArray[i].prop('checked', false);
+					}
+				});
+			
+			//add help tip
+			$help = '<div class="wrap" style="font-size:9pt;">'+constrHelp[$type]+'</div>';
+			canvas.append($help);
+			
+			// set focus to this element
+			scope.focus();
+			
+			// capture mouse click outside popup constraints editor and close it
+			$(document).mouseup(function (e)
+			{
+				var container = $("#constraints-editor");
+
+				if (!container.is(e.target) // if the target of the click isn't the container...
+					&& container.has(e.target).length === 0) // ... nor a descendant of the container
+				{
+					//container.hide();
+					e = jQuery.Event("keydown"); 
+					e.which = 27;
+					container.trigger(e);
+				}
+			});
+		};
+
+		this.handleKeyDown = function (e) {
+			if (e.keyCode == $.ui.keyCode.LEFT || e.keyCode == $.ui.keyCode.RIGHT || e.keyCode == $.ui.keyCode.TAB) {
+				e.stopImmediatePropagation();
+			}
+		};
+
+		this.destroy = function () {
+			$(args.container).empty();
+		};
+
+		this.focus = function () {
+			$constrOp.focus();
+		};
+
+		this.serializeValue = function () {
+			var values='';
+			var ret = {};
+			switch ($type) {
+				case 'NUMERIC_INC':
+				case 'NUMERIC_DEC':
+					values = $constrFrom.val();
+					if (!$constrOp || $constrOp.val()==='') ret[$field] = '-';
+					else if ($constrFrom.val().trim()!=='' || $constrTo && $constrTo.val().trim()!=='' && $constrTo.val().trim()!==',') ret[$field] = $constrOp.val() +' '+ values;
+					else ret[$field] = '-';
+					break;
+				case 'NUMERIC_RANGE':
+					values = '['+$constrFrom.val()+','+$constrTo.val()+']';
+					if (!$constrOp || $constrOp.val()==='') ret[$field] = '-';
+					else if ($constrFrom.val().trim()!=='' || $constrTo && $constrTo.val().trim()!=='' && $constrTo.val().trim()!==',') ret[$field] = $constrOp.val() +' '+ values;
+					else ret[$field] = '-';
+					break;
+				case 'FUZZY_INC':
+				case 'FUZZY_DEC':
+					values = '('+$constrFrom.val()+')';
+					if (!$constrOp || $constrOp.val()==='') ret[$field] = '-';
+					else if ($constrFrom.val().trim()!=='' || $constrTo && $constrTo.val().trim()!=='' && $constrTo.val().trim()!==',') ret[$field] = $constrOp.val() +' '+ values;
+					else ret[$field] = '-';
+					break;
+				case 'FUZZY_RANGE':
+					values = '['+$constrFrom.val()+']';
+					if (!$constrOp || $constrOp.val()==='') ret[$field] = '-';
+					else if ($constrFrom.val().trim()!=='' || $constrTo && $constrTo.val().trim()!=='' && $constrTo.val().trim()!==',') ret[$field] = $constrOp.val() +' '+ values;
+					else ret[$field] = '-';
+					break;
+				case 'BOOLEAN':
+				case 'LINGUISTIC':
+					if (!$constrOp || $constrOp.val()==='') ret[$field] = '-';
+					//else if ($constrFrom && $constrFrom.val().trim()!=='') ret[$field] = $constrOp.val() +' '+ $constrFrom.val();
+					else if ($constrFrom && $constrFrom[0] && $constrFrom[0].value && $constrFrom[0].value!=='') ret[$field] = $constrOp.val() +' '+ $constrFrom[0].value;
+					else ret[$field] = '-';
+					break;
+				case 'UNORDERED_SET':
+					if (!$constrOp || $constrOp.val()==null || $constrOp.val()==='') ret[$field] = '-';
+					else if ($constrFrom) {
+						var str = $constrOp.val()+' [';
+						first = true;
+						for (i=0; i<$cbArray.length; i++) {
+							var cb = $cbArray[i];
+							if (cb.is(":checked")) {
+								if (first) first = false; else str += ', '; 
+								str += cb.val();
+							}
+						}
+						str += ']';
+						if (first) str = '-';
+						ret[$field] = str;
+					} else ret[$field] = '-';
+					break;
+			}
+			return ret;
+		};
+
+		this.applyValue = function (item, state) {
+			if (state[$field]) {
+				item[$field] = state[$field].trim();
+			} else {
+				console.log('state['+$field+'] is not defined');
+			}
+		};
+
+		this.loadValue = function (item) {
+			var value = item[$field].trim();
+			if (value==='-') value = '';
+			var p = value.indexOf(' ');
+			if (p>0) {
+				oper = value.substring(0,p).trim();
+				lim  = value.substring(p).trim();
+			} else {
+				oper = '=';
+				lim = value;
+			}
+			$constrOp.val(oper);
+			switch ($type) {
+				case 'NUMERIC_INC':
+				case 'NUMERIC_DEC':
+					if (!lim) lim='';
+					$constrFrom.val( lim );
+					break;
+				case 'NUMERIC_RANGE':
+					if (lim) {
+						var part = lim.substring(1, lim.length-1).split(',',2);
+						$constrFrom.val( part[0].trim() );
+						$constrTo.val( part[1].trim() );
+					}
+					break;
+				case 'FUZZY_INC':
+				case 'FUZZY_DEC':
+					if (!lim) lim='()';
+					var tfn = lim.substring(1, lim.length-1);
+					$constrFrom.val( tfn );
+					//var part = tfn.split(';',3);
+					break;
+				case 'FUZZY_RANGE':
+					if (lim) {
+						var tfi = lim.substring(1, lim.length-1);
+						$constrFrom.val( tfi );
+						//var part = tfn.split(';',4);
+					}
+					break;
+				case 'BOOLEAN':
+				case 'LINGUISTIC':
+					if (!lim) lim='';
+					$constrFrom.val( lim );
+					break;
+				case 'UNORDERED_SET':
+					if (lim) {
+						//clear checkbox ticks
+						for (i=0; i<$cbArray.length; i++) $cbArray[i].prop('checked', false);
+						//set checkbox ticks
+						var part = lim.substring(1, lim.length-1).split(',');
+						for (k=0; k<part.length; k++) {
+							var val = part[k].trim();
+							if (val==='') continue;
+							// find checkbox and check it
+							for (i=0; i<$cbArray.length; i++) {
+								if ($cbArray[i].val().trim()===val) {
+									$cbArray[i].prop('checked', true);
+									break;
+								}
+							}
+						}
+					}
+					break;
+			}
+		};
+
+		this.isValueChanged = function () {
+			r = this._isValueChanged();
+			//alert('CHANGED: RESULT: '+r);
+			return r;
+		}
+		this._isValueChanged = function () {
+			var value = args.item[$field].trim();	//current (stored) value. New values in fields $constrOp/From/To
+			//var part = value.split(' ',2);
+			var p = value.indexOf(' ');
+			var oper = value.substring(0, p);	//part[0];
+			var lim  = value.substring(p+1);	//part[1];
+			var cFrom='';
+			var cTo='';
+			switch ($type) {
+				case 'NUMERIC_INC':
+				case 'NUMERIC_DEC':
+					if (!lim) cFrom = '';
+					else cFrom = lim;
+					break;
+				case 'NUMERIC_RANGE':
+					if (lim) {
+						var part = lim.substring(1, lim.length-1).split(',',2);
+						cFrom = part[0];
+						cTo = part[1];
+					}
+					break;
+				case 'FUZZY_INC':
+				case 'FUZZY_DEC':
+					if (!lim) cFrom='0;0;0';
+					else cFrom = lim.substring(1, lim.length-1);
+					break;
+				case 'FUZZY_RANGE':
+					if (lim) {
+						lim = lim.substring(1, lim.length-1);
+						cFrom = lim;
+					}
+					break;
+				case 'BOOLEAN':
+				case 'LINGUISTIC':
+					if (!lim) cFrom='';
+					else cFrom = lim;
+					break;
+				case 'UNORDERED_SET':
+					if (lim) {
+						arr1 = lim.split(',');
+						arr2 = $constrFrom.val().split(',');
+						if (arr1.length!==arr2.length) return true;
+						cnt = 0;
+						for (ii in arr1) {
+							arr1[ii] = arr1[ii].trim();
+							if (arr1[ii]==='') continue;
+							for (jj in arr2) {
+								arr2[jj] = arr2[jj].trim();
+								if (arr2[jj]==='') continue;
+								if (arr1[ii]===arr2[jj]) cnt++;
+							}
+						}
+						if (cnt!==arr1.length) return true;
+					}
+					break;
+			}
+			if (!cTo || cTo==='') return (oper !== $constrOp.val() || cFrom !== $constrFrom.val());
+			else return (oper !== $constrOp.val() || cFrom !== $constrFrom.val() || cTo !== $constrTo.val());
+		};
+
+		function isNumeric(n) {
+			return !isNaN(parseFloat(n)) && isFinite(n);
+		}
+		
+		this.validate = function () {
+			r = this._validate();
+			//alert('VALID: RESULT: '+JSON.stringify(r));
+			return r;
+		}
+		this._validate = function () {
+			oper = $constrOp.val();
+			cFrom = $constrFrom.val();
+			cTo = $constrTo ? $constrTo.val() : '';
+			if (!oper || oper==null) oper = '';
+			if (!cFrom || cFrom==null) cFrom = '';
+			if (!cTo || cTo==null) cTo = '';
+			oper = oper.trim();
+			cFrom = cFrom.trim();
+			cTo = cTo.trim();
+			fieldName = '';	//$field;
+			//alert('VALID: op: '+oper+'  from: '+cFrom+'  to: '+cTo+'  fld: '+fieldName);
+			if ((oper==='' || oper==='-') && (cFrom==='' || cFrom==='-') && (cTo==='' || cTo==='-')) {
+				//constraint has been cleared
+				return {valid: true, msg: null};
+			}
+			//
+			if (oper==='') {
+				return {valid: false, msg: "Missing operator for "+fieldName+" constraint."};
+			}
+			if (cFrom==='' && $type!=='UNORDERED_SET') {
+				return {valid: false, msg: "Missing value for "+fieldName+" constraint."};
+			}
+			//
+			val = cFrom;
+			switch ($type) {
+				case 'NUMERIC_INC':
+				case 'NUMERIC_DEC':
+					if (cFrom==='' || isNaN(cFrom) || !isNumeric(cFrom)) {
+						return {valid: false, msg: "Invalid numeric value for "+fieldName+" constraint."};
+					} 
+					break;
+				case 'NUMERIC_RANGE':
+					if (cFrom==='' || isNaN(cFrom) || !isNumeric(cFrom)) { return {valid: false, msg: "Invalid numeric value in the lower bound of the range specification for "+fieldName+" constraint."};	} 
+					if (cTo==='' || isNaN(cTo) || !isNumeric(cTo)) { return {valid: false, msg: "Invalid numeric value in the upper bound of the range specification for "+fieldName+" constraint."}; } 
+					pFrom = parseFloat(cFrom);
+					pTo = parseFloat(cTo);
+					if (pFrom > pTo) { return {valid: false, msg: "Lower bound must be lower or equal to upper bound of the range specification for "+fieldName+" constraint."}; } 
+					break;
+				case 'FUZZY_INC':
+				case 'FUZZY_DEC':
+					if (cFrom.startsWith('(')) cFrom = cFrom.substring(1);
+					if (cFrom.endsWith(')')) cFrom = cFrom.substring(0, cFrom.length-1);
+					part = cFrom.split(';');
+					if (part.length!==3) {
+						return {valid: false, msg: "Invalid fuzzy value for "+fieldName+" constraint."};
+					}
+					a = part[0].trim(); b = part[1].trim(); c = part[2].trim();
+					if (a==='' || isNaN(a) || !isNumeric(a)) { return {valid: false, msg: "Invalid fuzzy value a for "+fieldName+" constraint."}; } 
+					if (b==='' || isNaN(b) || !isNumeric(b)) { return {valid: false, msg: "Invalid fuzzy value b for "+fieldName+" constraint."}; } 
+					if (c==='' || isNaN(c) || !isNumeric(c)) { return {valid: false, msg: "Invalid fuzzy value c for "+fieldName+" constraint."}; } 
+					a = parseFloat(a); b = parseFloat(b); c = parseFloat(c); 
+					if (! (a<=b && b<=c) ) { return {valid: false, msg: "Fuzzy value parameters must be a <= b <=; c for "+fieldName+" constraint."}; } 
+					break;
+				case 'FUZZY_RANGE':
+					if (cFrom.startsWith('(')) cFrom = cFrom.substring(1);
+					if (cFrom.endsWith(')')) cFrom = cFrom.substring(0, cFrom.length-1);
+					if (cFrom.startsWith('[')) cFrom = cFrom.substring(1);
+					if (cFrom.endsWith(']')) cFrom = cFrom.substring(0, cFrom.length-1);
+					part = cFrom.split(';');
+					if (part.length!==4) {
+						return {valid: false, msg: "Invalid fuzzy range for "+fieldName+" constraint."};
+					}
+					a = part[0].trim(); b = part[1].trim(); c = part[2].trim(); d = part[3].trim();
+					if (a==='' || isNaN(a) || !isNumeric(a)) { return {valid: false, msg: "Invalid fuzzy a range for "+fieldName+" constraint."}; } 
+					if (b==='' || isNaN(b) || !isNumeric(b)) { return {valid: false, msg: "Invalid fuzzy b range for "+fieldName+" constraint."}; } 
+					if (c==='' || isNaN(c) || !isNumeric(c)) { return {valid: false, msg: "Invalid fuzzy c range for "+fieldName+" constraint."}; } 
+					if (d==='' || isNaN(d) || !isNumeric(d)) { return {valid: false, msg: "Invalid fuzzy d range for "+fieldName+" constraint."}; } 
+					a = parseFloat(a); b = parseFloat(b); c = parseFloat(c); d = parseFloat(d); 
+					if (! (a<=b && b<=c && c<=d) ) { return {valid: false, msg: "Fuzzy range parameters must be a <= b <= c <= d for "+fieldName+" constraint."}; } 
+					break;
+				case 'BOOLEAN':
+				case 'LINGUISTIC':
+					part = cFrom.split(',');
+					if (part.length!==1) {
+						return {valid: false, msg: "Multiple values in boolean or linguistic constraint for "+fieldName+"."};
+					}
+					break;
+				case 'UNORDERED_SET':
+					break;
 			}
 			return {valid: true, msg: null};
 		};

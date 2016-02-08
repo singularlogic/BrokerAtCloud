@@ -1,9 +1,5 @@
 @echo off
-
-set JVM="%JAVA_HOME%\bin\java.exe"
 set curdir=%~dp0
-set BASEDIR="%curdir:~0,-1%\.."
+call %curdir%\settings.bat
 
-@start cmd /c " %JVM% -DVERBOSE -Dfile.encoding=UTF-8 -jar %BASEDIR%\bin\jetty-runner+ssi.jar --port 9090 %BASEDIR%\target\PuLSaR.war "
-
-rem jetty logging options: -DDEBUG  -DVERBOSE -DIGNORED
+@start cmd /c " cd %curdir%\.. & %JVM% %JETTY_LOGGING_LEVEL% -Dfile.encoding=UTF-8 -jar %BASEDIR%\bin\jetty-runner+ssi.jar --port %PULSAR_PORT% %PULSAR_CONTEXT% "

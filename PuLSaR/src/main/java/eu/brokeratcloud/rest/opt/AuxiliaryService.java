@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.rest.opt;
 
 import java.util.*;
@@ -34,12 +53,34 @@ import eu.brokeratcloud.util.*;
 public class AuxiliaryService extends AbstractManagementService {
 	protected static final Logger logger = LoggerFactory.getLogger("eu.brokeratcloud.rest.opt.AuxiliaryService");
 	
+	protected static final String auxConfigFile = "auxiliary.properties";
+	protected static Properties auxConfig;
+	protected static Properties providerServicesCache;			// Caches provider services loaded from file (see retrieveProviderServices)
+	protected static String activeBrokerPolicyUri;				// Set when calling 'applyBrokerPolicy'
+	
+	static {
+		AuxiliaryService auxWS = new AuxiliaryService();
+		try {
+			logger.debug("AuxiliaryService.<static>: Applying active broker policy defaults to persistence framework");
+			HashMap<String,String> hm=auxWS.applyBrokerPolicy("#");
+			logger.debug("AuxiliaryService.<static>: Defaults applied to persistence framework: status={}", hm.get("status"));
+			logger.debug("AuxiliaryService.<static>: Active broker policy: {}", hm.get("bp-uri"));
+		} catch (Exception e) {
+			logger.error("AuxiliaryService.<static>: Failed to apply active broker policy defaults to persistence framework: Reason: {}", e);
+		}
+	}
+	
 	// Stats Counters
 	protected static int spl10 = -1;
 	protected static int spl11 = -1;
 	protected static int spl12 = -1;
 	protected static int cnt13 = -1;
 	protected static int cnt14 = -1;
+	
+	// Constructor
+	public AuxiliaryService() {
+		if (auxConfig==null) auxConfig = loadConfig(auxConfigFile);
+	}
 	
 	// Retrieves service descriptions belonging to given category/ies
 	// NOTE: 'cat_id' can be a comma-separated list of classification dimension IDs (e.g. maps,energy,developer)
@@ -50,12 +91,10 @@ public class AuxiliaryService extends AbstractManagementService {
 		try {
 			logger.trace("getServiceDescriptionsForCategories: BEGIN: classifications={}", catId);
 			
-			RdfPersistenceManager pm = RdfPersistenceManagerFactory.createRdfPersistenceManager();
-			
 			// Retrieve service descriptions based on classification dimensions given
 			StringBuilder sb = new StringBuilder();
 			sb.append(
-				"SELECT DISTINCT ?bpi ?bpsmClass ?srv ?sm ?slp \n"+
+				"SELECT DISTINCT ?bpi ?bpsmClass ?bpiValidFrom ?bpiValidTo ?srv ?sm ?slp ?validFrom ?validTo ?successor ?recomDepr \n"+
 				"WHERE { \n"+
 				"	?srv a ?srvClass . \n"+
 				"	?srvClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-core#Service> . \n"+
@@ -64,9 +103,18 @@ public class AuxiliaryService extends AbstractManagementService {
 				"	# \n"+
 				"	?sm a ?bpsmClass . \n"+
 				"	?bpsmClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.linked-usdl.org/ns/usdl-core#ServiceModel> . \n"+
+				"	OPTIONAL { ?bpi <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validFrom> ?bpiValidFrom . } \n"+
+				"	OPTIONAL { ?bpi <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validThrough> ?bpiValidTo . } \n"+
 				"	# \n"+
 				"	?sm ?hasSLP ?slp. \n"+
 				"	?hasSLP <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-sla#hasServiceLevelProfile> . \n"+
+				"	# \n"+
+				"	OPTIONAL { ?srv <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validFrom> ?validFrom . } \n"+
+				"	OPTIONAL { ?srv <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validThrough> ?validTo . } \n"+
+				"	OPTIONAL { \n"+
+				"		?successor <http://purl.org/goodrelations/v1#successorOf> + ?srv. \n"+
+				"		?successor <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#deprecationRecommendationTimePointSD> ?recomDepr \n"+
+				"	} \n"+
 				"	# \n"+
 				"	# Classification Filter \n"
 			);
@@ -75,6 +123,8 @@ public class AuxiliaryService extends AbstractManagementService {
 				if (catId.isEmpty()) {
 					throw new Exception("getServiceDescriptionsForCategories: No classification dimensions specified");
 				}
+				
+				RdfPersistenceManager pm = RdfPersistenceManagerFactory.createRdfPersistenceManager();
 				//boolean first = true;
 				int ii = 1;
 				for (String cdId : catId.split("[,]")) {
@@ -98,8 +148,8 @@ public class AuxiliaryService extends AbstractManagementService {
 			List<Map<String,RDFNode>> results = client.queryAndProcess(queryStr);
 			logger.trace("getServiceDescriptionsForCategories: Results: "+results);
 			
-			ServiceDescription[] list = new ServiceDescription[results.size()];
-			for (int i=0; i<list.length; i++) {
+			Vector<ServiceDescription> v = new Vector<ServiceDescription>();
+			for (int i=0, n=results.size(); i<n; i++) {
 				Map<String,RDFNode> soln = results.get(i);
 				
 				String bpiUri = node2url( soln.get("bpi") );
@@ -108,9 +158,24 @@ public class AuxiliaryService extends AbstractManagementService {
 				String smUri  = node2url( soln.get("sm") );
 				String slpUri = node2url( soln.get("slp") );
 				
+				// Check service validity - BEGIN
+				String bpiValidFrom = val2str( soln.get("bpiValidFrom") );
+				String bpiValidTo = val2str( soln.get("bpiValidTo") );
+				String validFrom = val2str( soln.get("validFrom") );
+				String validTo = val2str( soln.get("validTo") );
+				String successorUri = node2url( soln.get("successor") );
+				String recomDepr = val2str( soln.get("recomDepr") );
+				if (successorUri.equals(srvUri)) { successorUri=""; recomDepr=""; }
+				if ( ! checkValidAndActive(bpiUri, bpiValidFrom, bpiValidTo, srvUri, validFrom, validTo, successorUri, recomDepr)) {
+					logger.debug("getServiceDescriptionsForCategories:  Ignoring service: uri={}");
+					continue;
+				}
+				// Check service validity - END
+				
 				logger.trace("getServiceDescriptionsForCategories: calling _getServiceDescription for service: uri={}, sm={}, slp={}, bpi={}, bpsm-class={}", srvUri, smUri, slpUri, bpiUri, bpsmc);
-				list[i] = _getServiceDescription(srvUri, smUri, slpUri, bpiUri, bpsmc, client);
+				v.add( _getServiceDescription(srvUri, smUri, slpUri, bpiUri, bpsmc, client) );
 			}
+			ServiceDescription[] list = v.toArray(new ServiceDescription[v.size()]);
 			
 			logger.trace("getServiceDescriptionsForCategories: END: results={}", list);
 			return list;
@@ -121,6 +186,52 @@ public class AuxiliaryService extends AbstractManagementService {
 		}
 	}
 	
+	protected Date parseXsdDate(String dtStr) {
+		if (dtStr!=null && !(dtStr=dtStr.trim()).isEmpty()) {
+			return eu.brokeratcloud.persistence.DateParser.parseW3CDateTime( dtStr );
+		}
+		return null;
+	}
+	
+	protected boolean checkValidAndActive(String bpiUri, String bpiValidFrom, String bpiValidTo, String srvUri, String validFrom, String validTo, String successorUri, String recomDepr) {
+		logger.trace("checkValidAndActive: BEGIN: bp-uri={}, bp-valid-from={}, bp-valid-to={}, uri={}, valid-from={}, valid-to={}, successor-uri={}, recom-depreciation-date={}", bpiUri, bpiValidFrom, bpiValidTo, srvUri, validFrom, validTo, successorUri, recomDepr);
+		/*if (successorUri!=null && !(successorUri=successorUri.trim()).isEmpty()) {
+			logger.warn("checkValidAndActive:  REPLACED service: uri={}, successor-uri={}", srvUri, successorUri);
+			return false;
+		}*/
+		
+		Date dtBpiValidFrom = parseXsdDate(bpiValidFrom);
+		Date dtBpiValidTo = parseXsdDate(bpiValidTo);
+		Date dtValidFrom = parseXsdDate(validFrom);
+		Date dtValidTo = parseXsdDate(validTo);
+		Date dtRecomDepr = parseXsdDate(recomDepr);
+		Date dtNow = new Date();
+		
+		logger.trace("checkValidAndActive: Checking broker policy validity: uri={}, valid-from={} / {} --> valid-to={} / {}, now={}", bpiUri, dtBpiValidFrom, bpiValidFrom, dtBpiValidTo, bpiValidTo, dtNow);
+		if ( (dtBpiValidFrom!=null && (dtNow.getTime() < dtBpiValidFrom.getTime())) ||
+			 (dtBpiValidTo!=null && (dtBpiValidTo.getTime() < dtNow.getTime())) )
+		{
+			logger.warn("checkValidAndActive:  Ignoring service of INACTIVE POLICY: uri={}, bp-uri={}, valid-from={} --> valid-to={}", srvUri, bpiUri, bpiValidFrom, bpiValidTo);
+			return false;
+		}
+		logger.trace("checkValidAndActive: Checking service validity: uri={}, valid-from={} / {} --> valid-to={} / {}, now={}", srvUri, dtValidFrom, validFrom, dtValidTo, validTo, dtNow);
+		if ( (dtValidFrom!=null && (dtNow.getTime() < dtValidFrom.getTime())) ||
+			 (dtValidTo!=null && (dtValidTo.getTime() < dtNow.getTime())) )
+		{
+			logger.warn("checkValidAndActive:  Ignoring INACTIVE service: uri={}, valid-from={} --> valid-to={}", srvUri, validFrom, validTo);
+			return false;
+		}
+		logger.trace("checkValidAndActive: Checking if service in grace period: uri={}, successor-uri={}, recom-depreciation={} / {}, now={}", srvUri, successorUri, dtRecomDepr, recomDepr, dtNow);
+		if ( (successorUri!=null && !(successorUri=successorUri.trim()).isEmpty()) &&
+		     (dtRecomDepr!=null && (dtRecomDepr.getTime() < dtNow.getTime())) )
+		{
+			logger.warn("checkValidAndActive:  Ignoring DEPRECATED service: uri={}, valid-from={} --> valid-to={}, deprication-date={}, successor-uri={}", srvUri, validFrom, validTo, recomDepr, successorUri);
+			return false;
+		}
+		logger.debug("checkValidAndActive:  VALID service: uri={}", srvUri);
+		return true;
+	}
+	
 	// Retrieves service descriptions belonging to given service provider
 	@GET
 	@Path("/offerings/sp/{sp}/list")
@@ -129,12 +240,21 @@ public class AuxiliaryService extends AbstractManagementService {
 		try {
 			logger.trace("getServiceProviderOfferings: BEGIN: sp={}", sp);
 			
-			RdfPersistenceManager pm = RdfPersistenceManagerFactory.createRdfPersistenceManager();
+			// Retrieve provider service descriptions
+			String[] providerSDsArray = retrieveProviderServices(sp);
+			
+			// Prepare service selection filter
+			StringBuilder sb1 = new StringBuilder();
+			for (String sd : providerSDsArray) {
+				//sb1.append( String.format("\t\t|| str(?sm) = \"%s\" \n", sd) );
+				sb1.append( String.format("\t\t|| str(?srv) = \"%s\" \n", sd) );
+			}
+			String sdFilter = sb1.toString();
 			
 			// Retrieve service descriptions of service provider 'sp'
 			StringBuilder sb = new StringBuilder();
 			sb.append(
-				"SELECT DISTINCT ?bpi ?bpsmClass ?srv ?sm ?slp ?creator \n"+
+				"SELECT DISTINCT ?bpi ?bpsmClass ?bpiValidFrom ?bpiValidTo ?srv ?sm ?slp ?creator ?validFrom ?validTo ?successor ?recomDepr \n"+
 				"WHERE { \n"+
 				"	?srv a ?srvClass . \n"+
 				"	?srvClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-core#Service> . \n"+
@@ -143,14 +263,27 @@ public class AuxiliaryService extends AbstractManagementService {
 				"	# \n"+
 				"	?sm a ?bpsmClass . \n"+
 				"	?bpsmClass <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.linked-usdl.org/ns/usdl-core#ServiceModel> . \n"+
+				"	OPTIONAL { ?bpi <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validFrom> ?bpiValidFrom . } \n"+
+				"	OPTIONAL { ?bpi <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validThrough> ?bpiValidTo . } \n"+
 				"	# \n"+
 				"	?sm ?hasSLP ?slp. \n"+
 				"	?hasSLP <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> * <http://www.linked-usdl.org/ns/usdl-sla#hasServiceLevelProfile> . \n"+
 				"	# \n"+
+				"	OPTIONAL { ?srv <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validFrom> ?validFrom . } \n"+
+				"	OPTIONAL { ?srv <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validThrough> ?validTo . } \n"+
+				"	OPTIONAL { \n"+
+				"		?successor <http://purl.org/goodrelations/v1#successorOf> + ?srv. \n"+
+				"		?successor <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#deprecationRecommendationTimePointSD> ?recomDepr \n"+
+				"	} \n"+
+				"	# \n"+
 				"	# Owner info\n"+
 				"	?srv <http://purl.org/dc/terms/creator> ?creator .\n"+
-				"	?creator <http://purl.org/goodrelations/v1#taxID> ?taxId . \n"+
-				"	FILTER ( ?taxId = \""+sp+"\" ) . \n"+
+				"	FILTER ( \n"+
+				"		1 = 0 \n"
+			);
+			sb.append( sdFilter );
+			sb.append(
+				"	) . \n"+
 				"} \n"+
 				"ORDER BY ?srv ?sm ?slp \n"
 			);
@@ -161,8 +294,8 @@ public class AuxiliaryService extends AbstractManagementService {
 			List<Map<String,RDFNode>> results = client.queryAndProcess(queryStr);
 			logger.trace("getServiceProviderOfferings: Results: "+results);
 			
-			ServiceDescription[] list = new ServiceDescription[results.size()];
-			for (int i=0; i<list.length; i++) {
+			Vector<ServiceDescription> v = new Vector<ServiceDescription>();
+			for (int i=0, n=results.size(); i<n; i++) {
 				Map<String,RDFNode> soln = results.get(i);
 				
 				String bpiUri = node2url( soln.get("bpi") );
@@ -171,9 +304,23 @@ public class AuxiliaryService extends AbstractManagementService {
 				String smUri  = node2url( soln.get("sm") );
 				String slpUri = node2url( soln.get("slp") );
 				
+				// Check service validity - BEGIN
+				String bpiValidFrom = val2str( soln.get("bpiValidFrom") );
+				String bpiValidTo = val2str( soln.get("bpiValidTo") );
+				String validFrom = val2str( soln.get("validFrom") );
+				String validTo = val2str( soln.get("validTo") );
+				String successorUri = node2url( soln.get("successor") );
+				String recomDepr = node2url( soln.get("recomDepr") );
+				if ( ! checkValidAndActive(bpiUri, bpiValidFrom, bpiValidTo, srvUri, validFrom, validTo, successorUri, recomDepr)) {
+					logger.debug("getServiceDescriptionsForCategories:  Ignoring service: uri={}");
+					continue;
+				}
+				// Check service validity - END
+				
 				logger.trace("getServiceProviderOfferings: calling _getServiceDescription for service: uri={}, sm={}, slp={}, bpi={}, bpsm-class={}", srvUri, smUri, slpUri, bpiUri, bpsmc);
-				list[i] = _getServiceDescription(srvUri, smUri, slpUri, bpiUri, bpsmc, client);
+				v.add( _getServiceDescription(srvUri, smUri, slpUri, bpiUri, bpsmc, client) );
 			}
+			ServiceDescription[] list = v.toArray(new ServiceDescription[v.size()]);
 			
 			logger.trace("getServiceProviderOfferings: END: results={}", list);
 			return list;
@@ -182,6 +329,100 @@ public class AuxiliaryService extends AbstractManagementService {
 			logger.error("getServiceProviderOfferings: Returning an empty array of {}", ServiceDescription.class);
 			return new ServiceDescription[0];
 		}
+	}
+	
+	protected String[] retrieveProviderServices(String username) {
+		logger.trace("retrieveProviderServices: BEGIN: username={}", username);
+		if (username==null || (username=username.trim()).isEmpty()) {
+			logger.error("retrieveProviderServices: ERROR: Invalid argument 'username': {}\nThrowing exception", username);
+			throw new IllegalArgumentException("retrieveProviderServices: Invalid argument 'username': "+username);
+		}
+		
+		String providerServicesSource = auxConfig.getProperty("provider-services-source");
+		logger.trace("retrieveProviderServices: CFG: providerServicesSource={}", providerServicesSource);
+		String src = providerServicesSource;
+		if (src==null || (src=src.trim()).isEmpty()) {
+			logger.error("retrieveProviderServices: ERROR: Missing 'providerServicesSource' configuration parameter. Returning null");
+			return null;
+		}
+		
+		Vector sdVect = null;
+		String[] part = src.split("[ \t]+", 2);
+		String srcType=part[0].trim().toUpperCase();
+		src = part[1].trim();
+		if (srcType.equals("URL")) {
+			// Call web service...
+			String url = String.format( src, username );
+			logger.trace("retrieveProviderServices: Contacting URL source: {}", url);
+			sdVect = (Vector)_callWebService(url, "GET", Vector.class, null);
+			logger.trace("retrieveProviderServices: URL source returned: {}", sdVect);
+		} else
+		if (srcType.equals("FILE")) {
+			logger.debug("retrieveProviderServices: FILE source: {}", src);
+			//
+			if (providerServicesCache==null) {
+				logger.debug("retrieveProviderServices: Loading provider services from FILE source: {}", src);
+				providerServicesCache = loadConfig(src);
+				if (providerServicesCache!=null) {
+					logger.debug("retrieveProviderServices: FILE source returned:\n{}", providerServicesCache);
+				} else {
+					logger.error("retrieveProviderServices: ERROR: Failed to load FILE source contents: {}", src);
+					throw new RuntimeException("retrieveProviderServices: Failed to load FILE source contents: "+src);
+				}
+			} else {
+				logger.debug("retrieveProviderServices: FILE source already loaded: {}", src);
+			}
+			String sds = providerServicesCache.getProperty(username);
+			if (sds==null) sds = "";
+			sds=sds.trim();
+			String[] sd = sds.split("[ \t\n]+");
+			sdVect = new Vector( java.util.Arrays.asList(sd) );
+		} else
+		/*if (srcType.equals("SPARQL")) {
+			logger.debug("retrieveProviderServices: SPARQL query source: {}", src);
+			
+			// NOT IMPLEMENTED
+		} else */
+		{
+			logger.error("retrieveProviderServices: ERROR: Invalid 'providerServicesSource' configuration parameter value: {}\nThrowing exception", providerServicesSource);
+			throw new RuntimeException("retrieveProviderServices: Invalid 'providerServicesSource' configuration parameter: "+providerServicesSource);
+		}
+		
+		// Remove invalid entries
+		logger.trace("retrieveProviderServices: Filtering provider '{}' services", username);
+		for (int i=sdVect.size()-1; i>=0; i--) {
+			String sd = sdVect.get(i).toString().trim();
+			if (!sd.startsWith("http")) sdVect.remove(i);
+		}
+		logger.trace("retrieveProviderServices: Provider '{}' services after filtering: {}", username, sdVect);
+		
+		String[] sdUriArr = (String[])sdVect.toArray(new String[sdVect.size()]);
+		logger.trace("retrieveProviderServices: END: result={}", sdUriArr);
+		return sdUriArr;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Object _callWebService(String url, String method, Class clss, Object entity) {
+		org.jboss.resteasy.client.jaxrs.ResteasyClient client = new org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder().build();
+		org.jboss.resteasy.client.jaxrs.ResteasyWebTarget target = client.target(url);
+		
+		javax.ws.rs.core.Response response = null;
+		method = method.trim().toLowerCase();
+		if (method.equals("get")) response = target.request().accept(javax.ws.rs.core.MediaType.APPLICATION_JSON).get();
+		else if (method.equals("put")) response = target.request().put( javax.ws.rs.client.Entity.json(entity) );
+		else if (method.equals("post")) response = target.request().post( javax.ws.rs.client.Entity.json(entity) );
+		else if (method.equals("delete")) response = target.request().delete();
+		int status = response.getStatus();
+		if (status>299) throw new RuntimeException("Operation failed: Status="+status+", URL="+url);
+		
+		Object obj = null;
+		if (clss!=null) {
+			obj = response.readEntity( clss );
+		} else {
+			obj = response.getEntity();
+		}
+		response.close();
+		return obj;
 	}
 	
 	// Retrieves service description based on category/ies (cat_id) and service URI (serv_id)
@@ -255,22 +496,249 @@ public class AuxiliaryService extends AbstractManagementService {
 			}
 		} catch (Exception e) {
 			logger.error("getServiceDescription(URI): EXCEPTION THROWN: \n", e);
-			//e.printStackTrace(System.err);
 			logger.debug("getServiceDescription(URI): OUTPUT: Returning null");
 			return null;
 		}
 	}
 	
-//TODO: DELETE AFTER INTEGRATION WITH FPR !!!
-	// Simulates FPR query operation for recommended services
+	// =============================================================================================================================
+	
+	@GET @POST
+	@Path("/list-active-policies")
+	@Produces("application/json")
+	public String[] getActiveBrokerPolicies() throws java.io.IOException, ClassNotFoundException {
+		String queryStr =
+			"SELECT DISTINCT ?bp \n" +
+			"WHERE { \n" +
+			"    ?bpsm <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.linked-usdl.org/ns/usdl-core#ServiceModel> .  \n" +
+			"    ?bp a ?bpsm . \n" +
+			"    FILTER NOT EXISTS { ?bp <http://purl.org/goodrelations/v1#isVariantOf> ?bp2 } \n" +
+			"    FILTER NOT EXISTS { \n" +
+			"        ?bp <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validFrom> ?from . \n" +
+			"        FILTER ( <http://www.w3.org/2001/XMLSchema#date>(CONCAT(STR(year(now())),'-',STR(month(now())),'-',STR(day(now())))) < ?from ) \n" +
+			"    } \n" +
+			"    FILTER NOT EXISTS { \n" +
+			"        ?bp <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validThrough> ?to . \n" +
+			"        FILTER ( <http://www.w3.org/2001/XMLSchema#date>(CONCAT(STR(year(now())),'-',STR(month(now())),'-',STR(day(now())))) > ?to ) \n" +
+			"    } \n" +
+			"    FILTER NOT EXISTS { \n" +
+			"        ?bp3 <http://purl.org/goodrelations/v1#successorOf> ?bp . \n" +
+			"        ?bp3 <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validFrom> ?from3 . \n" +
+			"        FILTER ( <http://www.w3.org/2001/XMLSchema#date>(CONCAT(STR(year(now())),'-',STR(month(now())),'-',STR(day(now())))) >= ?from3 ) \n" +
+			"    } \n" +
+			"    BIND (STRBEFORE(STR(?bp),'#') as ?bpNsBase) \n" +
+			"    # \n" +
+			"    ?bp <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasClassificationDimension> ?cd . \n" +
+			"    BIND (CONCAT(STRBEFORE(STR(?cd),'#'),'#') AS ?cdNs) \n" +
+			"} \n" +
+			"ORDER BY ?bp ";		
+		
+		// Querying triplestore to get a list of active broker policies
+		SparqlServiceClient client = SparqlServiceClientFactory.getClientInstance();
+		List<Map<String,RDFNode>> results = client.queryAndProcess(queryStr);
+		if (results==null || results.size()==0) return new String[0];
+		
+		String[] list = new String[results.size()];
+		int i=0;
+		for (Map<String,RDFNode> bpData : results) {
+			if (bpData==null || bpData.size()==0) continue;
+			String bpUri = node2url( bpData.get("bp") );
+			list[i++] = bpUri;
+		}
+		
+		return list;
+	}
+	
+	@GET @POST
+	@Path("/apply-policy/{bp-uri}")
+	@Produces("application/json")
+	public HashMap applyBrokerPolicy(@PathParam("bp-uri") String bpUri) throws java.io.IOException, ClassNotFoundException {
+		logger.warn("applyBrokerPolicy: BEGIN: bp-uri={}", bpUri);   
+		
+		if (bpUri==null || (bpUri=bpUri.trim()).isEmpty() || bpUri.equals(".") || bpUri.equals("#")) bpUri = null;	// i.e. apply (unique) active broker policy
+		logger.warn("applyBrokerPolicy: Calling _setPersistenceDefaults: bp-uri={}", bpUri);   
+		String rr = _setPersistenceDefaults(bpUri);
+		String s = rr;
+		boolean status = s.startsWith("_setPersistenceDefaults: OK:");
+		if (status) {
+			s = s.substring("_setPersistenceDefaults: OK: bp-uri=".length()).trim();
+			bpUri = s.substring(0, s.indexOf(","));
+			activeBrokerPolicyUri = bpUri;
+		} else {
+			s = s.substring("_setPersistenceDefaults: ERROR: ".length()).trim();
+		}
+		
+		// Return response
+		HashMap<String,String> hm = new HashMap<String,String>();
+		hm.put("bp-uri", bpUri);
+		if (status) hm.put("status", "OK");
+		else hm.put("status", "Broker policy not found or it contains errors \n("+rr+")");
+		logger.trace("applyBrokerPolicy: END: return={}", hm);   
+		return hm;
+	}
+	
+	@GET @POST
+	@Path("/get-applied-policy")
+	@Produces("application/json")
+	public HashMap<String,String> getAppliedBrokerPolicy() throws java.io.IOException, ClassNotFoundException {
+		logger.warn("getAppliedBrokerPolicy: BEGIN: ");   
+		
+		// Get applied broker policy defaults
+		logger.warn("getAppliedBrokerPolicy: Getting applied broker policy defaults");   
+		String[] bpDefaults = eu.brokeratcloud.persistence.RdfPersistenceManagerImpl.getDefaultUris();
+		
+		// Return response
+		HashMap<String,String> hm = new HashMap<String,String>();
+		
+		if (bpDefaults==null || bpDefaults[0]==null || bpDefaults[1]==null || bpDefaults[2]==null ||
+			bpDefaults[0].trim().isEmpty() || bpDefaults[1].trim().isEmpty() || bpDefaults[2].trim().isEmpty())
+		{
+			hm.put("status", "Broker policy not initialized");
+		} else {
+			hm.put("status", "OK");
+			hm.put("ns-pref", bpDefaults[0]);
+			hm.put("bp-ns", bpDefaults[1]);
+			hm.put("cd-ns", bpDefaults[2]);
+			hm.put("bp-uri", activeBrokerPolicyUri);
+		}
+		
+		logger.trace("getAppliedBrokerPolicy: END: return={}", hm);   
+		return hm;
+	}
+	
+	protected String _setPersistenceDefaults(String bpUri) throws java.io.IOException, ClassNotFoundException {
+		String queryStr =
+			"SELECT ?bp (CONCAT(?bpNsBase,'#') AS ?bpNs) (CONCAT(?bpNsBase,'/') AS ?nsPref) ?cdNs \n" +
+			"WHERE { \n" +
+			"    ?bpsm <http://www.w3.org/2000/01/rdf-schema#subClassOf> <http://www.linked-usdl.org/ns/usdl-core#ServiceModel> . \n" +
+			"    ?bp a ?bpsm . \n" +
+			( (bpUri!=null && !(bpUri=bpUri.trim()).isEmpty()) ? String.format(
+			"    FILTER ( STR(?bp) = '%s' ) \n", bpUri) : 
+			"" ) +
+			"    FILTER NOT EXISTS { ?bp <http://purl.org/goodrelations/v1#isVariantOf> ?bp2 } \n" +
+			"    FILTER NOT EXISTS { \n" +
+			"        ?bp <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validFrom> ?from . \n" +
+			"        FILTER ( <http://www.w3.org/2001/XMLSchema#date>(CONCAT(STR(year(now())),'-',STR(month(now())),'-',STR(day(now())))) < ?from ) \n" +
+			"    } \n" +
+			"    FILTER NOT EXISTS { \n" +
+			"        ?bp <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validThrough> ?to . \n" +
+			"        FILTER ( <http://www.w3.org/2001/XMLSchema#date>(CONCAT(STR(year(now())),'-',STR(month(now())),'-',STR(day(now())))) > ?to ) \n" +
+			"    } \n" +
+			"    FILTER NOT EXISTS { \n" +
+			"        ?bp3 <http://purl.org/goodrelations/v1#successorOf> ?bp . \n" +
+			"        ?bp3 <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validFrom> ?from3 . \n" +
+			"        FILTER ( <http://www.w3.org/2001/XMLSchema#date>(CONCAT(STR(year(now())),'-',STR(month(now())),'-',STR(day(now())))) >= ?from3 ) \n" +
+			"    } \n" +
+			"    BIND (STRBEFORE(STR(?bp),'#') as ?bpNsBase) \n" +
+			"    # \n" +
+			"    ?bp <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasClassificationDimension> ?cd . \n" +
+			"    BIND (CONCAT(STRBEFORE(STR(?cd),'#'),'#') AS ?cdNs) \n" +
+			"} ";		
+		
+		// Querying triplestore to get the new defaults (for broker policy namsespace and classification dimensions namespace)
+		SparqlServiceClient client = SparqlServiceClientFactory.getClientInstance();
+		List<Map<String,RDFNode>> results = client.queryAndProcess(queryStr);
+		if (results==null || results.size()==0) return "_setPersistenceDefaults: ERROR: No active Broker Policy found or Classification dimension is missing";
+		if (results.size()>1) return "_setPersistenceDefaults: ERROR: More than one active Broker Policy or Classification dimension found";
+		
+		// Get the new defaults
+		Map<String,RDFNode> soln = results.get(0);
+		String bp = node2url( soln.get("bp") ).trim();
+		String bpNs = val2str( soln.get("bpNs") ).trim();
+		String nsPref = val2str( soln.get("nsPref") ).trim();
+		String cdNs = val2str( soln.get("cdNs") ).trim();
+		if (bp.isEmpty() || bpNs.isEmpty() || nsPref.isEmpty() || cdNs.isEmpty()) return String.format("_setPersistenceDefaults: Results are empty: bp-uri=%s, bpNs=%s, nsPref=%s, cdNs=%s", bp, bpNs, nsPref, cdNs);
+		
+		// Apply new defaults
+		eu.brokeratcloud.persistence.RdfPersistenceManagerImpl.setDefaultUris(bpNs, nsPref, cdNs);
+		
+		return String.format("_setPersistenceDefaults: OK: bp-uri=%s, bpNs=%s, nsPref=%s, cdNs=%s", bp, bpNs, nsPref, cdNs);
+	}
+	
+	@GET @POST
+	@Path("/flush-caches")
+	@Produces("application/json")
+	public void flushCaches() throws java.io.IOException, ClassNotFoundException {
+		synchronized (slpCacheLock) {
+			sdCache = new HashMap<String,ServiceDescription>();
+			sdCacheLock = new Object();
+			slpCache = new HashMap<String,HashMap<String,String>>();
+		}
+		logger.info("flushCaches: All /opt/aux caches were flushed");
+	}
+	
+	// =============================================================================================================================
+	
+	// Used for testing. Simulates Cloud Service platform web services for retrieving a provider's services
+	// The actual implementation of this service must be provided by Cloud Service platform
+	@GET
+	@Path("/offerings/by/provider/{username}")
+	@Produces("application/json")
+	public String[] getProviderOfferings(@PathParam("username") String username) {
+		logger.warn("getProviderOfferings: SIMULATES QUERING CLOUD PLATFORM:  username={}", username);
+		return _processDummyResponse("dummy-provider-services-source-response", username);
+	}
+	
+	// Used for testing. Simulates FPR web service for checking if a service has already been recommended by FPR
 	@GET
 	@Path("/frp-recommended/service/{serv_id}/timestamp/{timestamp}")
 	@Produces("application/json")
-	public String simulateFprRecomResponse(@PathParam("serv_id") String srvUri, @PathParam("timestamp") String tm) {
-		srvUri = java.net.URLDecoder.decode(srvUri);
-		logger.warn("simulateFprRecomResponse: FPR QUERIED:  service={}, timestamp={}", srvUri, tm);
-		logger.warn("simulateFprRecomResponse: ** REMOVE AFTER INTEGRATING WITH FPRC **");
-		return String.format("{ \"recommended\" : [ \"admin\", \"sc1\", \"sc2\" ] }");
+	public String simulateFprRecomResponse(@PathParam("serv_id") String srvUri, @PathParam("timestamp") String tm) throws java.io.UnsupportedEncodingException {
+		srvUri = java.net.URLDecoder.decode(srvUri, java.nio.charset.StandardCharsets.UTF_8.toString());
+		logger.warn("simulateFprRecomResponse: SIMULATES QUERING FPR:  service={}, timestamp={}", srvUri, tm);
+		// Get configured response
+		String[] response = _processDummyResponse("dummy-fpr-response", srvUri);
+		// Build final response
+		StringBuilder sb = new StringBuilder("{ \"recommended\" : [ ");
+		boolean first=true;
+		for (int i=0; i<response.length; i++) {
+			if (first) first=false; else sb.append(", ");
+			sb.append("\"").append(response[i]).append("\"");
+		}
+		sb.append(" ] }");
+		return sb.toString();
+	}
+	
+	protected String[] _processDummyResponse(String setting, String username) {
+		String[] response = auxConfig.getProperty(setting).split("[\r\n]");
+		String[] uri = null;
+		// Search for user/service-specific response
+		for (int i=0; i<response.length; i++) {
+			String line = response[i].trim();
+			int p = line.indexOf(":");
+			if (p>0 && line.substring(0,p).equalsIgnoreCase(username)) {
+				uri = line.substring(p+1).trim().split("[\t, ]");
+				break;
+			}
+		}
+		// Search for a default (*) response
+		if (uri==null) {
+			for (int i=0; i<response.length; i++) {
+				String line = response[i].trim();
+				int p = line.indexOf(":");
+				if (p>0 && line.substring(0,p).equals("*")) {
+					uri = line.substring(p+1).trim().split("[\t, ]");
+					break;
+				}
+			}
+		}
+		// Prepare services/user array
+		String[] uriArr = null;
+		if (uri!=null) {
+			int k=0;
+			for (int j=0; j<uri.length; j++) {
+				if (!uri[j].trim().isEmpty()) k++;
+				else uri[j]=null;
+			}
+			uriArr = new String[k];
+			k=0;
+			for (int j=0; j<uri.length; j++) {
+				if (uri[j]!=null) uriArr[k++] = uri[j].trim();
+			}
+		} else {
+			uriArr = new String[0];
+		}
+		return uriArr;
 	}
 	
 	// =============================================================================================================================
@@ -718,7 +1186,6 @@ public class AuxiliaryService extends AbstractManagementService {
 			return sd;
 		} catch (Exception e) {
 			logger.error("getServiceDescription(URI): EXCEPTION THROWN:\n", e);
-			//e.printStackTrace(System.err);
 			logger.error("getServiceDescription(URI): OUTPUT: Returning null");
 			return null;
 		}

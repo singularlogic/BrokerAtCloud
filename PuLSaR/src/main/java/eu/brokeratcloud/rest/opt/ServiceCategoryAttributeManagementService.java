@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.rest.opt;
 
 import java.util.*;
@@ -33,7 +52,34 @@ import org.slf4j.LoggerFactory;
 @Path("/opt/service-category/")
 public class ServiceCategoryAttributeManagementService extends AbstractManagementService {
 	protected static final Logger logger = LoggerFactory.getLogger("eu.brokeratcloud.rest.opt.SCA");
-
+	
+	protected static final String qryAllCategories =
+		"SELECT ?concept \n" +
+		//"#SELECT ?bpi ?bpsm ?rootConcept ?concept \n" +
+		"WHERE { \n" +
+		"	FILTER ( ?bpi = <%s> ) \n" +
+		"	?bpsm <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-core#ServiceModel> . \n" +
+		"	?bpi a ?bpsm . \n" +
+		"	?bpi <http://www.linked-usdl.org/ns/usdl-core#hasEntityInvolvement> ?involvement . \n" +
+		"	FILTER NOT EXISTS { ?successor <http://purl.org/goodrelations/v1#successorOf> ?bpi . } \n" +
+		"	FILTER NOT EXISTS {  \n" +
+		"		?bpi <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validFrom> ?validFrom .  \n" +
+		"		FILTER ( \n" +
+		"			<http://www.w3.org/2001/XMLSchema#date>( CONCAT(STR(year(now())),'-',STR(month(now())),'-',STR(day(now()))) ) < ?validFrom  \n" +
+		"		) . \n" +
+		"	} \n" +
+		"	FILTER NOT EXISTS {  \n" +
+		"		?bpi <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validThrough> ?validTo .  \n" +
+		"		FILTER ( \n" +
+		"			<http://www.w3.org/2001/XMLSchema#date>( CONCAT(STR(year(now())),'-',STR(month(now())),'-',STR(day(now()))) ) > ?validTo  \n" +
+		"		) . \n" +
+		"	} \n" +
+		"	?bpi <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#hasClassificationDimension> ?rootConcept . \n" +
+		"	?concept a <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#ClassificationDimension> . \n" +
+		"	?concept <http://www.w3.org/2004/02/skos/core#broader> * ?rootConcept . \n" +
+		"} \n" +
+		"";
+	
 	protected static SparqlServiceClient client = null;
 	
 	@GET
@@ -41,10 +87,15 @@ public class ServiceCategoryAttributeManagementService extends AbstractManagemen
 	@Produces("application/json")
 	public String getCategoryTreeAsString() {
 		try {
+			// Get active broker policy URI
+			HashMap<String,String> hm = new AuxiliaryService().getAppliedBrokerPolicy();
+			String activeBpUri = hm!=null ? hm.get("bp-uri") : null;
+			logger.debug("Active broker policy uri: {}", hm);
+			
 			// Get service classification dimensions
 			eu.brokeratcloud.persistence.RdfPersistenceManager pm = eu.brokeratcloud.persistence.RdfPersistenceManagerFactory.createRdfPersistenceManager();
 			List<Object> list = null;
-			list = pm.findAll(ClassificationDimension.class);
+			list = pm.findByQuery( String.format(qryAllCategories, activeBpUri) );
 			logger.debug("{} service classification dimensions found", list.size());
 			
 			// Process service classification dimensions - group by classification dimension scheme
@@ -52,7 +103,7 @@ public class ServiceCategoryAttributeManagementService extends AbstractManagemen
 			StringBuilder sb = new StringBuilder("[ ");
 			if (list!=null) {
 				// Process classification dimensions
-				List<ClassificationDimensionScheme> dimList = new LinkedList<ClassificationDimensionScheme>();
+				//List<ClassificationDimensionScheme> dimList = new LinkedList<ClassificationDimensionScheme>();
 				for (Object o : list) {
 					ClassificationDimension sc = (ClassificationDimension)o;
 					String id = sc.getId();
@@ -191,22 +242,58 @@ public class ServiceCategoryAttributeManagementService extends AbstractManagemen
 		}
 	}
 	
-// =====================================================================================
-	
+	// =====================================================================================
+
+	protected static final String qryServCatAttrs = 
+		"SELECT ?pv ?oa \n" +
+		"WHERE {  \n" +
+		"	?pv  <http://www.w3.org/2000/01/rdf-schema#subClassOf>*  <http://www.linked-usdl.org/ns/usdl-pref#PreferenceVariable> . \n" +
+		"	?pv  <http://www.linked-usdl.org/ns/usdl-pref#belongsTo> <%s> . \n" +
+		"	?pv  <http://www.linked-usdl.org/ns/usdl-pref#refToServiceAttribute> ?oa . \n" +
+		"	# \n" +
+		"	?dpvp <http://www.w3.org/2000/01/rdf-schema#domain> ?pv . \n" +
+		"	?dpvp <http://www.w3.org/2000/01/rdf-schema#range> ?apv . \n" +
+		"	# \n" +
+		"	?bpsm <http://www.w3.org/2000/01/rdf-schema#subClassOf> * <http://www.linked-usdl.org/ns/usdl-core#ServiceModel> . \n" +
+		"	?bpi a ?bpsm . \n" +
+		"	?bpi <http://www.linked-usdl.org/ns/usdl-core#hasEntityInvolvement> ?involvement . \n" +
+		"	?at <http://www.w3.org/2000/01/rdf-schema#subPropertyOf> ?sth . \n" +
+		"	?at <http://www.w3.org/2000/01/rdf-schema#domain> ?bpsm . \n" +
+		"	?at <http://www.w3.org/2000/01/rdf-schema#range> ?apv \n" +
+		"	# \n" +
+		"	FILTER NOT EXISTS { \n" +
+		"		?successor <http://purl.org/goodrelations/v1#successorOf> ?bpi . \n" +
+		"		?successor <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validFrom> ?succValidFrom . \n" +
+		"		FILTER ( \n" +
+		"			<http://www.w3.org/2001/XMLSchema#date>(CONCAT(STR(year(now())),'-',STR(month(now())),'-',STR(day(now())),'Z')) >= ?succValidFrom \n" +
+		"		) . \n" +
+		"	} \n" +
+		"	FILTER NOT EXISTS {  \n" +
+		"		?bpi <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validFrom> ?validFrom .  \n" +
+		"		FILTER ( \n" +
+		"			<http://www.w3.org/2001/XMLSchema#date>( CONCAT(STR(year(now())),'-',STR(month(now())),'-',STR(day(now()))) ) < ?validFrom  \n" +
+		"		) . \n" +
+		"	} \n" +
+		"	FILTER NOT EXISTS {  \n" +
+		"		?bpi <http://www.linked-usdl.org/ns/usdl-core/cloud-broker#validThrough> ?validTo .  \n" +
+		"		FILTER ( \n" +
+		"			<http://www.w3.org/2001/XMLSchema#date>( CONCAT(STR(year(now())),'-',STR(month(now())),'-',STR(day(now()))) ) > ?validTo  \n" +
+		"		) . \n" +
+		"	} \n" +
+		"} ORDER BY ?s \n" +
+		"";
+
 	protected static ServiceCategoryAttribute[] _getServiceCategoryAttributes(String catId) throws Exception {
 		logger.trace("getServiceCategoryAttributes: BEGIN: classification dimension id={}", catId);
 		eu.brokeratcloud.persistence.RdfPersistenceManager pm = eu.brokeratcloud.persistence.RdfPersistenceManagerFactory.createRdfPersistenceManager();
 		
-		String btUri = pm.getFieldUri(PreferenceVariable.class, "belongsTo");
-		String rtUri = pm.getFieldUri(PreferenceVariable.class, "refToServiceAttribute");
 		String cdUri = pm.getObjectUri(catId, ClassificationDimension.class);
-		String queryStr = "SELECT ?s WHERE { ?s  <http://www.w3.org/2000/01/rdf-schema#subClassOf>*  <http://www.linked-usdl.org/ns/usdl-pref#PreferenceVariable> . "+
-						  " ?s  <"+btUri+">  <"+cdUri+"> .  ?s  <"+rtUri+">  ?oa . } ORDER BY ?s ";
+		String queryStr = String.format( qryServCatAttrs, cdUri );
 		logger.trace("getServiceCategoryAttributes: Preference Variable Id retrieval query: {}", queryStr);
 		
 		if (client==null) client = SparqlServiceClientFactory.getClientInstance();
  		logger.trace("getServiceCategoryAttributes: Querying preference variable ID's for classification dimension: {}", catId);
-		List<String> results = client.queryForIds(queryStr, "?s");
+		List<String> results = client.queryForIds(queryStr, "?pv");
 		logger.debug("getServiceCategoryAttributes: preference variables for classification dimension found: {}", results.size());
  		logger.trace("getServiceCategoryAttributes: preference variable Id's returned: {}", results);
 		
@@ -1062,9 +1149,9 @@ public class ServiceCategoryAttributeManagementService extends AbstractManagemen
 		logger.trace("updateServiceCategoryAttribute: Calling '_checkExistenceOfNewId' to check if it's ok to use the new internal attribute name that will be generated");
 		boolean newIdExists = _checkExistenceOfNewId(sca);
 		
-		if ( ! newIdExists ) {
+		//if ( newIdExists ) {
 			// The internal attribute name that will be generated is UNIQUE. It's ok to continue
-			String scaId = java.net.URLDecoder.decode( sca.getId() );
+			String scaId = java.net.URLDecoder.decode( sca.getId(), java.nio.charset.StandardCharsets.UTF_8.toString() );
 			logger.trace("updateServiceCategoryAttribute: Current SCA id={}", scaId);
 			
 			logger.trace("updateServiceCategoryAttribute: Calling 'deleteServiceCategoryAttribute' to clear persisted objects");
@@ -1074,13 +1161,13 @@ public class ServiceCategoryAttributeManagementService extends AbstractManagemen
 			
 			logger.trace("updateServiceCategoryAttribute: END: new-id={}", newId);
 			return newId;
-		} else {
+		/*} else {
 			// The internal attribute name that will be generated is NOT UNIQUE. It's NOT ok to continue
 			// Most likely user has selected the same attribute twice
-			Exception exc = new Exception("_updateServiceCategoryAttribute: The internal attribute name that would be used already exists. You have possibly selected an attribute twice");
+			Exception exc = new Exception("_updateServiceCategoryAttribute: The internal attribute name that would be used DOES NOT exist");
 			logger.error("updateServiceCategoryAttribute: EXCEPTION THROWN");
 			throw exc;
-		}
+		}*/
 	}
 	
 	protected static void _deleteServiceCategoryAttribute(String id) throws Exception {
@@ -1149,7 +1236,7 @@ public class ServiceCategoryAttributeManagementService extends AbstractManagemen
 		}
 		
 		// Retrieve Broker Policy objects
-		String id = java.net.URLDecoder.decode( sca.getId() );
+		String id = java.net.URLDecoder.decode( sca.getId(), java.nio.charset.StandardCharsets.UTF_8.toString() );
 		PolicyObjects po = _retrieveBrokerPolicyObjects(pm, id, true);
 		if (po==null) {
 			throw new Exception("_updateSCAFields: Could not find some or all broker policy objects: pv-uri="+id+"\nPolicy-Objects: "+po);

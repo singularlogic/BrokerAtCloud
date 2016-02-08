@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.opt.engine;
 
 import eu.brokeratcloud.common.SLMEvent;
@@ -17,6 +36,8 @@ import org.jboss.resteasy.client.jaxrs.ResteasyWebTarget;
 import javax.ws.rs.client.Entity;
 
 class PubsubEventManager extends EventManager {
+	private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("eu.brokeratcloud.event.manager.pubsub");
+	
 	protected static final String defaultPubsubFile = "pubsub.properties";
 	
 	protected Configuration config;
@@ -43,7 +64,7 @@ class PubsubEventManager extends EventManager {
 		// Load pubsub properties
 		InputStream is = getClass().getClassLoader().getResourceAsStream(pubsubFile);
 		if (is==null) {
-			System.err.println("PubsubEventManager: Pubsub properties file not found: "+pubsubFile);
+			logger.error("PubsubEventManager: Pubsub properties file not found: {}", pubsubFile);
 			return;
 		}
 		Properties pubsubProps = new Properties();
@@ -56,25 +77,25 @@ class PubsubEventManager extends EventManager {
 		String[] hostPart = host.split("[ \t]+");
 		for (int i=0; i<hostPart.length; i++) hostPart[i] = hostPart[i].trim();
 		if (hostPart[0].equalsIgnoreCase(".AUTO")) {
-			System.out.println("PubsubEventManager: Resolving callback endpoint host dynamically");
+			logger.debug("PubsubEventManager: Resolving callback endpoint host dynamically");
 			List<InetAddress> addresses = null;
 			if (hostPart[1].equalsIgnoreCase("FILTER") && hostPart.length>2) {
 				String filter = hostPart[2].replace(".","\\.").replace("*",".*");
-				System.out.println("PubsubEventManager: Using address filter: "+filter);
+				logger.debug("PubsubEventManager: Using address filter: {}", filter);
 				addresses = NetworkHelper.getInetAddresses(filter);
 			} else {
 				addresses = NetworkHelper.getInetAddresses();
 			}
 			if (addresses.size()==0) {
 				host = InetAddress.getLocalHost().getHostAddress();
-				System.out.println("PubsubEventManager: No network addresses found. Using loopback: "+host);
+				logger.warn("PubsubEventManager: No network addresses found. Using loopback: {}", host);
 			} else {
 				StringBuilder sb = new StringBuilder();
 				for (InetAddress a : addresses) sb.append(a.getHostAddress()).append(" ");
-				System.out.println("PubsubEventManager: Found "+addresses.size()+" address(es): "+sb.toString().trim());
+				logger.info("PubsubEventManager: Found {} address(es): {}", +addresses.size(), sb.toString().trim());
 				host = addresses.get(0).getHostAddress();
-				if (addresses.size()>1) System.out.println("PubsubEventManager: Using the first address: "+host);
-				else System.out.println("PubsubEventManager: Using address: "+host);
+				if (addresses.size()>1) logger.info("PubsubEventManager: Using the first address: "+host);
+				else logger.info("PubsubEventManager: Using address: "+host);
 			}
 		}
 		
@@ -89,7 +110,7 @@ class PubsubEventManager extends EventManager {
 		
 		this.callbackHost = host;
 		this.callbackPort = port;
-		System.out.println("PubsubEventManager: Callback endpoint host="+host+", port="+port+", base="+base);
+		logger.info("PubsubEventManager: Callback endpoint host={}, port={}, base={}", host, port, base);
 		
 		// Process Topic URLs (subscribe, unsubscribe, callback and publish URLs)
 		for (Object o : pubsubProps.keySet()) {
@@ -114,14 +135,14 @@ class PubsubEventManager extends EventManager {
 					if (publishVal==null || (publishVal=publishVal.trim()).isEmpty()) publishVal = null;
 					
 					if (subscribeVal!=null && callbackVal==null || subscribeVal==null && publishVal==null) {
-						System.err.println("PubsubEventManager: Invalid specification for Topic: "+topicName+" : At least subscribe & callback URLs or publich URL must be provided");
+						logger.error("PubsubEventManager: Invalid specification for Topic: {} : At least subscribe & callback URLs or publich URL must be provided", topicName);
 						continue;
 					}
 					if (subscribeVal==null && callbackVal!=null) {
-						System.err.println("PubsubEventManager: Callback URL specified without subscribe URL for Topic: "+topicName+" : Ignoring it");
+						logger.warn("PubsubEventManager: Callback URL specified without subscribe URL for Topic: {} : Ignoring it", topicName);
 					}
 					if (subscribeVal==null && unsubscribeVal!=null) {
-						System.err.println("PubsubEventManager: Unsubscribe URL specified without subscribe URL for Topic: "+topicName+" : Ignoring it");
+						logger.warn("PubsubEventManager: Unsubscribe URL specified without subscribe URL for Topic: {} : Ignoring it", topicName);
 					}
 					
 					String[][] topicUrl = new String[4][];
@@ -136,7 +157,7 @@ class PubsubEventManager extends EventManager {
 		}
 		
 		if (topics.size()==0) {
-			System.err.println("PubsubEventManager: No topics found in Pubsub properties file: "+pubsubFile);
+			logger.error("PubsubEventManager: No topics found in Pubsub properties file: {}", pubsubFile);
 		}
 	}
 	
@@ -193,18 +214,18 @@ class PubsubEventManager extends EventManager {
 			for (String topicName : topics.keySet()) {
 				String[] subscribeArr = topics.get(topicName)[1];
 				if (subscribeArr==null) {
-					System.out.println( String.format("PubsubEventManager: Topic %s doesn't have subscribe URL. Ignoring...", topicName) );
+					logger.info("PubsubEventManager: Topic {} doesn't have subscribe URL. Ignoring subscription", topicName);
 					continue;
 				}
 				String method = subscribeArr[0];
 				String subscribeUrl = subscribeArr[1];
 				if (subscribeUrl==null || subscribeUrl.trim().isEmpty()) continue;
-				System.out.println( String.format("PubsubEventManager: Subscribing to %s topic: URL=%s", topicName, subscribeUrl) );
+				logger.info("PubsubEventManager: Subscribing to {} topic: URL={}", topicName, subscribeUrl);
 				callRestWS(subscribeUrl, method, String.class, "");
 			}
-			System.out.println("PubsubEventManager: Endpoint is ready");
+			logger.info("PubsubEventManager: Endpoint is ready");
 		} catch (Exception e) {
-			System.err.println( "PubsubEventManager.startManager: EXCEPTION CAUGHT: "+e);
+			logger.error("PubsubEventManager.startManager: EXCEPTION CAUGHT: {}", e);
 			e.printStackTrace();
 		}
 	}
@@ -214,13 +235,13 @@ class PubsubEventManager extends EventManager {
 			for (String topicName : topics.keySet()) {
 				String[] unsubscribeArr = topics.get(topicName)[2];
 				if (unsubscribeArr==null) {
-					System.out.println( String.format("PubsubEventManager: Topic %s doesn't have unsubscribe URL. Ignoring...", topicName) );
+					logger.info("PubsubEventManager: Topic {} doesn't have unsubscribe URL. Ignoring unsubscription", topicName);
 					continue;
 				}
 				String method = unsubscribeArr[0];
 				String unsubscribeUrl = unsubscribeArr[1];
 				if (unsubscribeUrl==null || unsubscribeUrl.trim().isEmpty()) continue;
-				System.out.println( String.format("PubsubEventManager: Unsubscribing from %s topic: URL=%s", topicName, unsubscribeUrl) );
+				logger.info("PubsubEventManager: Unsubscribing from {} topic: URL={}", topicName, unsubscribeUrl);
 				callRestWS(unsubscribeUrl, method, String.class, "");
 			}
 			
@@ -228,7 +249,7 @@ class PubsubEventManager extends EventManager {
 			server.stopEndpoint();
 			setOnline(false);
 		} catch (Exception e) {
-			System.err.println( "PubsubEventManager.stopManager: EXCEPTION CAUGHT: "+e);
+			logger.error("PubsubEventManager.stopManager: EXCEPTION CAUGHT: {}", e);
 			e.printStackTrace();
 		}
 	}
@@ -244,7 +265,7 @@ class PubsubEventManager extends EventManager {
 		else if (method.equals("post")) response = target.request().post( Entity.json(entity) );
 		else if (method.equals("delete")) response = target.request().delete();
 		int status = response.getStatus();
-		System.out.println("--> Response: "+status);
+		logger.debug("--> Response: "+status);
 		if (status>299) throw new RuntimeException("PubsubEventManager.callRestWS: Operation failed: Status="+status+", URL="+url);
 		
 		Object obj = null;
@@ -266,15 +287,15 @@ class PubsubEventManager extends EventManager {
 			SLMEvent evt = SLMEvent.parseEvent(evtText);
 			eventReceived(evt);
 		} catch (Exception e) {
-			System.err.println( "PubsubEventManager.eventReceived(String): Error while parsing SLM event: "+e );
-			e.printStackTrace();
+			logger.error("PubsubEventManager.eventReceived(String): Error while parsing SLM event: {}", e);
+			//e.printStackTrace();
 		}
 	}
 	
 	public void eventReceived(SLMEvent evt) {
-		//System.out.println("Event received: "+evt.getId());
+		logger.trace("Event received: id={}", evt.getId());
 		if (evt.getType()==null || evt.getType().trim().isEmpty()) {
-			System.err.println( String.format("PubsubEventManager.eventReceived: Missing event type: Event-Id: %s", evt.getId()) );
+			logger.error("PubsubEventManager.eventReceived: Missing event type: Event-Id: {}", evt.getId());
 			return;
 		}
 		
@@ -282,7 +303,7 @@ class PubsubEventManager extends EventManager {
 		if ("service-onboarded".equals(type)) serviceOnboarded(evt);
 		else if ("service-deprecated".equals(type)) serviceDepreciated(evt);
 		else if ("service-updated".equals(type)) serviceUpdated(evt);
-		else System.err.println( String.format("PubsubEventManager.eventReceived: Unknown event type: %s, Event-Id: %s", evt.getType(), evt.getId()) );
+		else logger.error("PubsubEventManager.eventReceived: Unknown event type: {}, Event-Id: {}", evt.getType(), evt.getId());
 	}
 	
 	public void serviceOnboarded(SLMEvent evt) {
@@ -302,13 +323,13 @@ class PubsubEventManager extends EventManager {
 		String topicName = evt.getTopic();
 		if (topicName==null || (topicName=topicName.trim()).isEmpty()) throw new IllegalArgumentException("PubsubEventManager.publish: Event passed has no topic: "+evt);
 		String[][] arr = topics.get(topicName);
-		if (arr==null) { System.err.println("PubsubEventManager.publish: Event topic not found: "+topicName); return false; }
+		if (arr==null) { logger.warn("PubsubEventManager.publish: Event topic not found: {}", topicName); return false; }
 		String verb = arr[3][0];
 		String url = arr[3][1];
 		String content = evt.getProperty(".EVENT-CONTENT");
 		content = content==null ? "" : content.trim();
 		url = url.replace("%{EVENT-CONTENT}%", content);
-		System.out.println("PubsubEventManager.publish: Publishing event using: "+verb+" "+url);
+		logger.info("PubsubEventManager.publish: Publishing event using: {} {}", verb, url);
 		callRestWS(url, verb, String.class, content);
 		return true;
 	}

@@ -3,9 +3,11 @@
  */
 function reloadTree() {
 	$('#profileList').jstree("refresh");
+	updateProfileFormButtonsState(false);
 }
 function saveNode() {
 	submitForm('#formEditProfile');
+	updateProfileFormButtonsState(false);
 }
 function doSaveNode() {
 	var urlStr;
@@ -20,6 +22,7 @@ function doSaveNode() {
 	prepareValuesForSubmit(values);
 	retrieveData(methodStr, urlStr, values, "Saving...");
 	reloadTree();
+	updateProfileFormButtonsState(false);
 }
 function deleteNode() {
 	if ($('input[name=id]').prop('readonly')===true) {	// if 'id' field is readonly then it's delete of an existing profile, not a new (unsaved) one
@@ -29,6 +32,7 @@ function deleteNode() {
 			// ok, go on...
 		} else {
 			alert('Select a profile to delete');
+			updateProfileFormButtonsState(false);
 			return;
 		}
 		
@@ -63,12 +67,15 @@ function deleteNode() {
 		clearForm();
 		deselectTreeNode();
 	}
+	updateProfileFormButtonsState(false);
 }
 function createNode() {
-	clearForm();
+	//clearForm();
+	clearFormAndLists();
 	setField('id', ' ');
 	deselectTreeNode();
 	//$('input[name=id]').prop('readonly', false);
+	updateProfileFormButtonsState(true);
 }
 function selectedTreeNode(tree) {
 	if (!tree) tree = $("#profileList").jstree();

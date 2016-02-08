@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.rest.gui;
 
 import java.io.*;
@@ -101,11 +120,11 @@ public class NotificationsComponent extends AbstractFacingComponent {
 	@RolesAllowed({"admin", "sp"})
 	public String getNotificationsForService(@PathParam("sd_id") String sdId) throws IOException {
 		long startTm = System.currentTimeMillis();
-		logger.info("-------------- getNotificationsForService: INPUT: service-id: "+java.net.URLDecoder.decode(sdId));
+		logger.info("-------------- getNotificationsForService: INPUT: service-id: "+java.net.URLDecoder.decode(sdId, java.nio.charset.StandardCharsets.UTF_8.toString()));
 		
 		// Call REST service in order to get service notifications
 		long callStartTm = System.currentTimeMillis();
-		Notification[] notifList = (Notification[])_callBrokerRestWS(baseUrl+"/opt/notification/sd/"+java.net.URLEncoder.encode(sdId), "GET", java.lang.reflect.Array.newInstance(Notification.class, 0).getClass(), null);
+		Notification[] notifList = (Notification[])_callBrokerRestWS(baseUrl+"/opt/notification/sd/"+java.net.URLEncoder.encode(sdId, java.nio.charset.StandardCharsets.UTF_8.toString()), "GET", java.lang.reflect.Array.newInstance(Notification.class, 0).getClass(), null);
 		long callEndTm = System.currentTimeMillis();
 		long duration = callEndTm-callStartTm;
 		

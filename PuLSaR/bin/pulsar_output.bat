@@ -1,7 +1,5 @@
 @echo off
-
-set JVM="%JAVA_HOME%\bin\java.exe"
 set curdir=%~dp0
-set BASEDIR="%curdir:~0,-1%\.."
+call %curdir%\settings.bat
 
-%JVM% -DVERBOSE -Dfile.encoding=UTF-8 -jar %BASEDIR%\bin\jetty-runner+ssi.jar --port 9090 %BASEDIR%\target\PuLSaR.war >%BASEDIR%\OUTPUT.txt 2>&1
+cmd /C " cd %curdir%\.. && %JVM% %JETTY_LOGGING_LEVEL% -Dfile.encoding=UTF-8 -jar %BASEDIR%\bin\jetty-runner+ssi.jar --port %PULSAR_PORT% %PULSAR_CONTEXT% >%BASEDIR%\logs\OUTPUT.txt 2>&1 "

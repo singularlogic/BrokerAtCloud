@@ -65,6 +65,7 @@ function initProfileList() {
 	  "plugins" : [
 		"state", "types", "wholerow", "hotkeys",
 		//"contextmenu", //"dnd", "search",
+		"sort"
 	  ]
 	})
 	.on('ready.jstree', function() {
@@ -98,6 +99,8 @@ function initProfileList() {
 				clearForm();
 				profileList.jstree('deselect_all');
 				categoryList.jstree('deselect_all');
+				wizardGlobalData = { };
+				updateProfileFormButtonsState(false);
 				return;
 			}
 			
@@ -125,13 +128,15 @@ function initProfileList() {
 					var prId = getField('id');
 					var clsfStr = getField('serviceClassifications');
 					wizardGlobalData = { 'profile': prId, 'category': clsfStr };
+					updateProfileFormButtonsState(false);
 				}
 			});
 		}
 		else {
 			$('#data .content').hide();
-			$('#data .default').html('xxx').show();
+			$('#data .default').html('---').show();
 		}
+		updateProfileFormButtonsState(false);
 	})
 	;
 };
@@ -169,6 +174,7 @@ function initWizard() {
 							
 							// Do any necessary validations (e.g. is form saved, is a profile and a service category selected)
 							if (!prId || prId==='') {
+								wizardGlobalData = { };
 								alert('Please select a profile');
 								return false;
 							}
@@ -178,11 +184,11 @@ function initWizard() {
 							
 							if (step) {
 								// check if changes have been saved
-								if (!wizardGlobalData['profile']) return false;
+								if (!wizardGlobalData['profile'] || wizardGlobalData['profile'].trim()==='') return false;
 								//if (step==='1') success = savePage1Grid();
 								if (step==='2') success = savePage2Grid();
 								if (step==='3') success = savePage3Grid();
-								if (step==='4') success = savePage4Grid();
+								if (step==='4') success = savePage4Grid(false);
 							}
 							
 							return success;
@@ -339,16 +345,79 @@ function initProfileButtonsForm() {
 	$('#formButtonsProfile').jsonForm(options);
 }
 
+function setProfileFormButtonDisabled(btnLabel,disabled) {
+	if (disabled) $("#formButtonsProfile").find('button:contains("'+btnLabel+'")').attr('disabled','disabled');
+	else $("#formButtonsProfile").find('button:contains("'+btnLabel+'")').removeAttr('disabled');
+}
+function setWizardDisabled(disabled) {
+	if (disabled) {
+		$('#wizard').smartWizard('disableStep',2);
+		$('#wizard').smartWizard('disableStep',3);
+		$('#wizard').smartWizard('disableStep',4);
+		$('#wizard').find('a:contains("Next")').addClass('buttonDisabled');
+	} else {
+		$('#wizard').smartWizard('enableStep',2);
+		$('#wizard').smartWizard('enableStep',3);
+		$('#wizard').smartWizard('enableStep',4);
+		$('#wizard').find('a:contains("Next")').removeClass('buttonDisabled');
+	}
+}
+function setProfileFormDisabled(disabled) {
+	if (disabled) {
+		$('#formEditProfile').find('input[name="name"]').attr('disabled','disabled');
+		$('#formEditProfile').find('input[name="description"]').attr('disabled','disabled');
+		$('#formEditProfile').find('input[name="selectionPolicy"]').attr('disabled','disabled');
+		//
+		$('#categoryList-container').find("*").prop("disabled", true);
+		$('#categoryList-container').fadeTo(0,.5);
+	} else {
+		$('#formEditProfile').find('input[name="name"]').removeAttr('disabled');
+		$('#formEditProfile').find('input[name="description"]').removeAttr('disabled');
+		$('#formEditProfile').find('input[name="selectionPolicy"]').removeAttr('disabled');
+		//
+		$('#categoryList-container').find("*").prop("disabled", false);
+		$('#categoryList-container').fadeTo(0,1);
+	}
+}
+function updateProfileFormButtonsState(createProfile) {
+	if (createProfile) {
+		// A new profile is being created
+		setProfileFormButtonDisabled('Save Changes',false);
+		setProfileFormButtonDisabled('Delete Profile',true);
+		setProfileFormButtonDisabled('Create Profile',true);
+		setWizardDisabled(true);
+		setProfileFormDisabled(false);
+	} else
+	if (wizardGlobalData && wizardGlobalData['profile'] && wizardGlobalData['profile'].trim()!=='') {
+		// A profile has been selected
+		var profileId = wizardGlobalData['profile'];
+		setProfileFormButtonDisabled('Save Changes',false);
+		setProfileFormButtonDisabled('Delete Profile',false);
+		setProfileFormButtonDisabled('Create Profile',false);
+		setWizardDisabled(false);
+		setProfileFormDisabled(false);
+	} else {
+		// No profile is selected
+		setProfileFormButtonDisabled('Save Changes',true);
+		setProfileFormButtonDisabled('Delete Profile',true);
+		setProfileFormButtonDisabled('Create Profile',false);
+		setWizardDisabled(true);
+		setProfileFormDisabled(true);
+	}
+}
+
 /*
  *	Clear form, lists and recommendations
  */
 function clearFormAndLists() {
-	if (isPage1saved===false && confirm('Discard changes?')) {
+	if (isPage1saved===true || isPage1saved===false && confirm('Discard changes?')) {
 		console.log('clearFormAndLists: BEGIN');
 		try { clearForm(); } catch (e) { console.log('clearFormAndLists: clearForm: EXCEPTION: '+e); }
 		try { deselectTreeNode("#profileList"); } catch (e) { console.log('clearFormAndLists: clear #profileList: EXCEPTION: '+e); }
 		try { deselectTreeNode('#categoryList'); } catch (e) { console.log('clearFormAndLists: clear #categoryList: EXCEPTION: '+e); }
 		try { clearRecommendation(); } catch (e) { console.log('clearFormAndLists: clearRecommendation: EXCEPTION: '+e); }
+		wizardGlobalData = { };
+		updateProfileFormButtonsState(false);
 		console.log('clearFormAndLists: END');
 	}
 }
@@ -388,7 +457,8 @@ function initCategoryList() {
 	  "plugins" : [
 		"state", "types", "wholerow", "hotkeys",
 		//"contextmenu", //"dnd", "search",
-		"checkbox"
+		"checkbox",
+		"sort"
 	  ]
 	})
 	.on('ready.jstree', function() {
@@ -562,7 +632,7 @@ var page4grid_columns = [
     {id: "weight", name: "Weight", field: "weight", width: 120, groupTotalsFormatter: sumTotalsFormatter, formatter: PercentFormatter, editor: PercentEditor, displayFormat:"%", displayPrecision:2},
     {id: "type", name: "Type", width: 100, formatter: TypeFormatter},
     {id: "params", name: "Allowed values", width: 150, formatter: TypeRangeFormatter},
-    {id: "constraints", name: "Constraints", field: "constraints", width: 200, formatter: ConstraintsFormatter, editor: Slick.Editors.LongText},
+    {id: "constraints", name: "Constraints", field: "constraints", width: 200, formatter: ConstraintsFormatter, editor: ConstraintsEditor /*Slick.Editors.LongText*/},
 ];
 
 // Weight sum, formatter and editor
@@ -574,15 +644,11 @@ function sumTotalsFormatter(totals, columnDef) {
 		} else {
 			precision = (columnDef && columnDef.displayPrecision && !isNaN(columnDef.displayPrecision) && parseInt(columnDef.displayPrecision)>=0) ? parseInt(columnDef.displayPrecision) : 2;
 			precision = Math.pow(10, precision);
+			val = sumWeights();
 			return (Math.round(parseFloat(val)*100*precision)/precision) + "%";
 		}
 	}
 	return "";
-}
-
-// Constraints formatter and editor
-function ConstraintsFormatter(row, cell, value, columnDef, dataContext) {
-	return '<b>'+dataContext.constraints+'</b>';
 }
 
 // Page 4 grid options
@@ -725,10 +791,13 @@ function refreshGrandTotals() {
 	$('#page4grid_header_total_weight').html( _round(100*sum)+'%' );
 }
 
-function savePage4Grid() {
-	if (!checkNormalized()) {
-		alert('Weights are not normalized');
-		return;
+function savePage4Grid(checkSum) {
+	if (!checkSum || checkSum==null) checkSum = true;
+	if (checkSum) {
+		if (!checkNormalized()) {
+			alert('Weights are not normalized');
+			return;
+		}
 	}
 	
 	// save preference parameter
@@ -750,37 +819,65 @@ function savePage4Grid() {
 				},
 		error: function(jqXHR, textStatus, errorThrown) {
 					loadingIndicator.fadeOut();
-					alert('STATUS='+textStatus+'\nERROR='+errorThrown);
 					success = false;
+					//
+					var response = {};
+					var code = 'response = '+jqXHR.responseText.replace(/\n/g,"\\n")+';'
+					console.log('CODE:  '+code);
+					eval(code);
+					var p = response.exception.indexOf('Constraint expression is not valid');
+					if (p>0) alert(response.exception.substring(p));
+					else alert('STATUS='+textStatus+'\nERROR='+errorThrown);
+					console.log('ERROR: jqXHR: '+JSON.stringify(jqXHR));
 				},
 	});
 
 	return success;
 }
 
-function checkNormalized() {
+function sumWeights() {
 	var sum = 0;
 	for (i in page4grid_data) {
 		var item = page4grid_data[i];
 		if (!item.weight) continue;
 		sum += item.weight;
 	}
+	return sum;
+}
+function checkNormalized() {
+	var sum = 0;
+	sum = sumWeights();
+	sum = Math.round(sum*10000,0)/10000;
 	return (sum==1);
 }
 
 function normalizeWeights() {
-	var sum = 0;
+	//round weights
 	for (i in page4grid_data) {
 		var item = page4grid_data[i];
 		if (!item.weight) continue;
-		sum += item.weight;
+		item.weight = Math.round(item.weight*10000,0)/10000;
 	}
-	if (sum<=0) return;
-	for (i in page4grid_data) {
-		var item = page4grid_data[i];
-		if (!item.weight) continue;
-		item.weight /= sum;
+	//normalize weights
+	for (k=0; k<100; k++) {
+		var sum = 0;
+		for (i in page4grid_data) {
+			var item = page4grid_data[i];
+			if (!item.weight) continue;
+			sum += item.weight;
+		}
+		if (sum<=0) return;
+		var sum1 = 0;
+		for (i in page4grid_data) {
+			var item = page4grid_data[i];
+			if (!item.weight) continue;
+			item.weight /= sum;
+			sum1 += item.weight;
+		}
+		sum1 = Math.round(sum1*10000,0)/10000;
+		if (sum1==1) break;
 	}
+	//refresh grid
 	page4grid.invalidateAllRows();
 	page4grid.render();
 	

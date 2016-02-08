@@ -325,6 +325,8 @@
 			initProfileEditForm();
 			initProfileButtonsForm();
 			
+			updateProfileFormButtonsState(false);
+			
 			/*****  PAGE-2 initialization  *****/
 			// Page 2 initialization occurs when page 2 is displayed.
 			

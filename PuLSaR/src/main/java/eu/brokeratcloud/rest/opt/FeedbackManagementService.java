@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.rest.opt;
 
 import java.util.*;
@@ -167,22 +186,37 @@ public class FeedbackManagementService extends AbstractManagementService {
 			Vector<ServiceDescription> vect = new Vector<ServiceDescription>();
 			int rCnt = 0;
 			for (UsedService s : results) {
-				// get service data from result set
-				String sdId = s.getString("serviceId");
-				Timestamp tm = s.getTimestamp("lastUsedTimestamp");
-				String status = s.getString("status");
-				logger.trace("getServiceDescriptionsUsedByUser: Processing record #{}: sd-uri={}, last-used={}, status={}", ++rCnt, sdId, tm, status);
+				rCnt++;
+				if (s==null) {
+					logger.warn("getServiceDescriptionsUsedByUser: Used services result-set contains nulls: At row #{}", rCnt);
+				}
 				
-				if (sdId==null || sdId.trim().isEmpty() || status==null || status.trim().isEmpty()) continue;
-				
-				String uri = sdId.trim();
-				logger.trace("getServiceDescriptionsUsedByUser: Retrieving service description for uri: {}", uri);
-				ServiceDescription sd = auxWs.getServiceDescription( uri );
-				if (sd!=null) vect.add(sd);
-				else logger.error("getServiceDescriptionsUsedByUser: Service description NOT FOUND in RDF repository: uri={}", uri);
-				
-				if (status.equals("IN-USE")) sd.setLastUsedTimestamp(null);
-				else sd.setLastUsedTimestamp( (tm!=null) ? tm : new Date() );
+				String sdId = null;
+				try {
+					// get service data from result set
+					sdId = s.getString("serviceId");
+					Timestamp tm = s.getTimestamp("lastUsedTimestamp");
+					String status = s.getString("status");
+					logger.trace("getServiceDescriptionsUsedByUser: Processing record #{}: sd-uri={}, last-used={}, status={}", rCnt, sdId, tm, status);
+					
+					if (sdId==null || sdId.trim().isEmpty() || status==null || status.trim().isEmpty()) {
+						logger.warn("getServiceDescriptionsUsedByUser: Retrieved service record has empty Id or Status columns: id={}, status={}", sdId, status);
+						continue;
+					}
+					
+					// retrieve service description
+					String uri = sdId.trim();
+					logger.trace("getServiceDescriptionsUsedByUser: Retrieving service description for uri: {}", uri);
+					ServiceDescription sd = auxWs.getServiceDescription( uri );
+					if (sd!=null) vect.add(sd);
+					else logger.error("getServiceDescriptionsUsedByUser: Service description NOT FOUND in RDF repository: uri={}", uri);
+					
+					// update last used timestamp
+					if (status.equalsIgnoreCase("IN-USE")) sd.setLastUsedTimestamp(null);
+					else sd.setLastUsedTimestamp( (tm!=null) ? tm : new Date() );
+				} catch (Exception e) {
+					logger.error("getServiceDescriptionsUsedByUser: Exception thrown will processing service: {}\nEXCEPTION: {}", sdId, e);
+				}
 			}
 			logger.trace("getServiceDescriptionsUsedByUser: Retrieving service descriptions for used services from RDF repository... done");
 			logger.trace("getServiceDescriptionsUsedByUser: Retrieved service descriptions: {}", vect);

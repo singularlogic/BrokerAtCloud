@@ -1,7 +1,5 @@
 @echo off
+call settings.bat
 
-set curdir=%~dp0
-set BASEDIR="%curdir:~0,-1%\.."
-
-set path=%path%;bin
+set path=%path%;"%BASEDIR%\bin"
 cmd /k "cd %BASEDIR%"

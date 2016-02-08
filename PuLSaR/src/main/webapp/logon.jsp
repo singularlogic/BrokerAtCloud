@@ -25,6 +25,9 @@
 					if (input.name==='j_password') input.value = pass;
 				}
 			}
+			window.onload = function() {
+				document.getElementById("btn_submit").focus();
+			};
 		</script>
 		<button onClick="setCredentials('admin','admin');"><img src="images/admin2.jpg"/><br/><font size="-1"><i>Admin</i></font></button>
 		<button onClick="setCredentials('sc1','sc1');"><img src="images/consumer.png"/><br/><font size="-1"><i>Consumer 1</i></font></button>
@@ -44,7 +47,7 @@
 				</tr>
 				<tr>
 					<td colspan="2"><p align="center" style="text-align:center">
-						<INPUT TYPE="submit" ACTION="j_security_check" VALUE="Login" METHOD="POST" NAME="submit">
+						<INPUT ID="btn_submit" TYPE="submit" ACTION="j_security_check" VALUE="Login" METHOD="POST" NAME="submit">
 					</p></td>
 				</tr>
 			</table>

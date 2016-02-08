@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.rest.gui;
 
 import java.io.*;
@@ -90,7 +109,7 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 			// append recommendation info to string buffer
 			if (first) first=false; else sb.append(",\n");
 			long tm = rec.getCreateTimestamp()!=null ? rec.getCreateTimestamp().getTime() : new Date().getTime();
-			sb.append( String.format(Locale.US, rowHead, rec.getId(), tm, profile.getName(), rec.getProfile()) );
+			sb.append( String.format(Locale.US, rowHead, rec.getId(), tm, profile.getName().replace("\"","\\\""), rec.getProfile()) );
 			if (rec.getItems()!=null) {
 				boolean first2 = true;
 				int ord = 0;
@@ -103,6 +122,7 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 					String response = item.getResponse();
 					String extra = extra2str( item.getExtra() );
 					
+					if (suggestion!=null) suggestion = suggestion.replace("\"","\\\"");
 					sb.append( String.format(Locale.US, rowItem, iid, suggestion, relevance, ord++, response, extra) );
 				}
 			}
@@ -184,8 +204,8 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 		StringBuilder sb = new StringBuilder("[");
 		long duration = 0;
 		// process recommendations
-		String recomHeadFmt = "{'id':'%s','createTimestamp':%d,'profile-name':'%s','items':[";
-		String recomItemFmt = "{'id':'%s','suggestion':'%s','relevance':%.2f,'order':%d,'response':'%s', 'extra':%s}";
+		String recomHeadFmt = "{\"id\":\"%s\",\"createTimestamp\":%d,\"profile-name\":\"%s\",\"items\":[";
+		String recomItemFmt = "{\"id\":\"%s\",\"suggestion\":\"%s\",\"relevance\":%.2f,\"order\":%d,\"response\":\"%s\", \"extra\":%s}";
 		String recomTail = "]}";
 		boolean first = true;
 		for (int i=0; i<recomList.length; i++) {
@@ -204,7 +224,7 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 			String rcId = recom.getId();
 			Date rcCrTm = recom.getCreateTimestamp();
 			long rcMillis = rcCrTm!=null ? rcCrTm.getTime() : 0;
-			String pfName = profile.getName();
+			String pfName = profile.getName().replace("\"","\\\"");
 			List<RecommendationItem> items = recom.getItems(); 
 			sb.append( String.format(Locale.US, recomHeadFmt, rcId, rcMillis, pfName) );
 			// prepare recommendation items
@@ -219,6 +239,8 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 					double relevance = 100*rit.getWeight();
 					String response = rit.getResponse().trim();
 					String extra = extra2str( rit.getExtra() );
+					
+					if (suggestion!=null) suggestion = suggestion.replace("\"","\\\"");
 					sb.append( String.format(Locale.US, recomItemFmt, iid, suggestion, relevance, j++, response, extra) );
 				}
 			}
@@ -227,7 +249,6 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 		}
 		sb.append("]");
 		String str = sb.toString();
-		str = str.replace("'","\"");
 		
 		Object[] retVal = new Object[2];
 		retVal[0] = str;
@@ -237,7 +258,7 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 	
 	protected String extra2str(Object o) {
 		if (o==null) {
-			return "";
+			return "\"\"";
 		} else
 		if (o instanceof java.util.List) {
 			List attrs = (List)o;
@@ -254,6 +275,8 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 					int p1 = atName.indexOf("#Allowed");
 					int p2 = atName.lastIndexOf("Value");
 					if (p1>=0 && p2>p1+8) atName = atName.substring(p1+8, p2);
+					atName = atName.replace("\"","\\\"");
+					atValue = atValue.replace("\"","\\\"");
 					if (first) first=false; else sb.append(", ");
 					sb.append( String.format(tpl, atName, atValue) );
 				}
@@ -261,7 +284,7 @@ public class RecommendationsComponent extends AbstractFacingComponent {
 			sb.append("]");
 			return sb.toString();
 		} else {
-			return o.toString();
+			return "\""+o.toString().replace("\"","\\\"")+"\"";
 		}
 	}
 	

@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.rest.gui;
 
 import java.io.*;
@@ -135,7 +154,7 @@ public class FeedbackComponent extends AbstractFacingComponent {
 		// Call REST service in order to get imprecise attributes list for service
 		logger.trace("getUsedServiceFeedbackForm: retrieving imprecise attributes from PuLSaR...");
 		long callStartTm = System.currentTimeMillis();
-		ServiceCategoryAttribute[] scaArr = (ServiceCategoryAttribute[]) _callBrokerRestWS(baseUrl+"/opt/feedback/sd/"+java.net.URLEncoder.encode(sdId)+"/imprecise-attributes", "GET", java.lang.reflect.Array.newInstance(ServiceCategoryAttribute.class, 0).getClass(), null);
+		ServiceCategoryAttribute[] scaArr = (ServiceCategoryAttribute[]) _callBrokerRestWS(baseUrl+"/opt/feedback/sd/"+java.net.URLEncoder.encode(sdId, java.nio.charset.StandardCharsets.UTF_8.toString())+"/imprecise-attributes", "GET", java.lang.reflect.Array.newInstance(ServiceCategoryAttribute.class, 0).getClass(), null);
 		long callEndTm = System.currentTimeMillis();
 		long duration = callEndTm-callStartTm;
 		logger.trace("getUsedServiceFeedbackForm: retrieving imprecise attributes from PuLSaR... done");
@@ -160,7 +179,7 @@ public class FeedbackComponent extends AbstractFacingComponent {
 		// Call REST service in order to get consumer feedback for service
 		logger.trace("getUsedServiceFeedbackForm: retrieving consumer feedback from PuLSaR...");
 		callStartTm = System.currentTimeMillis();
-		Map<String,String> map = (Map<String,String>) _callBrokerRestWS(baseUrl+"/opt/feedback/sc/"+getUsername()+"/sd/"+java.net.URLEncoder.encode(sdId), "GET", Map.class, null);
+		Map<String,String> map = (Map<String,String>) _callBrokerRestWS(baseUrl+"/opt/feedback/sc/"+getUsername()+"/sd/"+java.net.URLEncoder.encode(sdId, java.nio.charset.StandardCharsets.UTF_8.toString()), "GET", Map.class, null);
 		callEndTm = System.currentTimeMillis();
 		duration += callEndTm-callStartTm;
 		logger.trace("getUsedServiceFeedbackForm: retrieving consumer feedback from PuLSaR... done");
@@ -297,7 +316,7 @@ public class FeedbackComponent extends AbstractFacingComponent {
 		try {
 			// Call REST service in order to store feedback data
 			callStartTm = System.currentTimeMillis();
-			_callBrokerRestWS(baseUrl+"/opt/feedback/sc/"+getUsername()+"/sd/"+java.net.URLEncoder.encode(sdId), "POST", null, params);
+			_callBrokerRestWS(baseUrl+"/opt/feedback/sc/"+getUsername()+"/sd/"+java.net.URLEncoder.encode(sdId, java.nio.charset.StandardCharsets.UTF_8.toString()), "POST", null, params);
 			callEndTm = System.currentTimeMillis();
 		} catch (Exception e) {
 			logger.error("-------------- saveFeedback: EXCEPTION THROWN", e);
@@ -325,7 +344,7 @@ public class FeedbackComponent extends AbstractFacingComponent {
 		try {
 			// Call REST service in order to delete stored feedback data
 			callStartTm = System.currentTimeMillis();
-			_callBrokerRestWS(baseUrl+"/opt/feedback/sc/"+getUsername()+"/sd/"+java.net.URLEncoder.encode(sdId), "DELETE", null, "");
+			_callBrokerRestWS(baseUrl+"/opt/feedback/sc/"+getUsername()+"/sd/"+java.net.URLEncoder.encode(sdId, java.nio.charset.StandardCharsets.UTF_8.toString()), "DELETE", null, "");
 			callEndTm = System.currentTimeMillis();
 		} catch (Exception e) {
 			logger.error("-------------- deleteFeedback: EXCEPTION THROWN", e);

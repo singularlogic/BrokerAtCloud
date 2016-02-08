@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.persistence;
 
 import eu.brokeratcloud.persistence.annotations.*;
@@ -576,7 +595,7 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 		}
 		logger.trace("processObject: LOOP-2: END");
 		
-		// Populate id field if it has been already
+		// Populate id field if it hasn't been already
 		_setIdField(o, pc, po);
 		
 		logger.debug("processObject: END");
@@ -1397,11 +1416,16 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 		}
 		if (formatter!=null) {
 			String valStr;
+			String so = o.toString();
+			// escape double quotes
+			if (type.equals(String.class)) {
+				so = so.replace("\"", "\\\"");
+			}
 			if (lang==null || lang.isEmpty()) {
 				//String valStr = URLEncoder.encode( String.format(formatter, o), "UTF-8" );
-				valStr = String.format(formatter, o);
+				valStr = String.format(formatter, so);
 			} else {
-				valStr = String.format(langStringBindType, o, lang);
+				valStr = String.format(langStringBindType, so, lang);
 			}
 			logger.debug("formatValue: END: result={}", valStr);
 			return valStr;
@@ -1446,26 +1470,29 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 			datatypePart = defaultXsdType;
 		}
 		
-//		logger.trace("parseValue: before processing: lexical-part={}, datatype-part={}, lang={}", lexicalPart, datatypePart, lang);
 		// prepare lexical part
-		if (lexicalPart.startsWith("\"") && lexicalPart.endsWith("\"")) lexicalPart = lexicalPart.substring(1,lexicalPart.length()-1).trim();
+		//logger.trace("parseValue: before processing: lexical-part={}, datatype-part={}, lang={}", lexicalPart, datatypePart, lang);
+		if (lexicalPart.startsWith("\"") && lexicalPart.endsWith("\"")) {
+			lexicalPart = lexicalPart.substring(1,lexicalPart.length()-1).trim();
+			lexicalPart = lexicalPart.replace("\\\"","\"");
+		}
 		lexicalPart0 = lexicalPart;
-//		lexicalPart = URLDecoder.decode( lexicalPart, "UTF-8" );
+		//lexicalPart = URLDecoder.decode( lexicalPart, "UTF-8" );
 		
 		//prepare datatype part
 		if (datatypePart!=null && !datatypePart.isEmpty()) {
 			int p2 = datatypePart.lastIndexOf("#");
 			if (p2>-1 && p2+1<datatypePart.length()) datatypePart = datatypePart.substring(p2+1,datatypePart.length()-1).trim();
 			if (datatypePart.isEmpty()) datatypePart = defaultXsdType;
-//			logger.trace("parseValue: after processing: lexical-part={}, datatype-part={}", lexicalPart, datatypePart);
+			//logger.trace("parseValue: after processing: lexical-part={}, datatype-part={}", lexicalPart, datatypePart);
 		}
 		
 		// lookup xsd-to-java datatype binds
 		Class type = xsd2javaDatatypes.get(datatypePart);
-//		logger.trace("parseValue: xsd-to-java datatype bind: {}", type.getSimpleName());
+		//logger.trace("parseValue: xsd-to-java datatype bind: {}", type.getSimpleName());
 		
 		// instantiate value
-//		logger.trace("parseValue: instantiating value...");
+		//logger.trace("parseValue: instantiating value...");
 		Object val = null;
 		if (type==Boolean.class) {
 			val = Boolean.valueOf(lexicalPart);
@@ -1725,7 +1752,7 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 		boolean result = ftype.isPrimitive() || ftype.equals(Boolean.class) || ftype.equals(Byte.class) ||
 						ftype.equals(Character.class) || ftype.equals(Short.class) || ftype.equals(Integer.class) ||
 						ftype.equals(Long.class) || ftype.equals(Float.class) || ftype.equals(Double.class) ||
-						ftype.equals(java.lang.String.class) || ftype.equals(java.util.Date.class) ||
+						ftype.equals(java.lang.String.class) || ftype.equals(Date.class) ||
 						ftype.equals(java.math.BigInteger.class) || ftype.equals(java.math.BigDecimal.class);
 		logger.debug("isLiteralType: result={}", result);
 		return result;
@@ -1863,8 +1890,8 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 				while ((s=pending.poll())!=null) {
 					String[] parents = getRdfClassParentClasses(rdfType);
 					for (String par : parents) {
-logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: checking parent class: {}", par);
-logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: _typeRdfClasses: {}", _typeRdfClasses);
+						logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: checking parent class: {}", par);
+						logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: _typeRdfClasses: {}", _typeRdfClasses);
 						if (par==null || par.trim().isEmpty()) continue;
 						par = par.trim();
 						
@@ -1940,12 +1967,12 @@ logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: _typeRdfClasses: {}", _
 	protected static String baseUriServiceCategories;
 	protected static String baseUriBrokerPolicy;
 	
-//---------	protected static String defaultXsd2javaBindType;
+	//---------	protected static String defaultXsd2javaBindType;
 	protected static String defaultXsdType = "string";
 	protected static Class<?> defaultJava2xsdBindType;
 	protected static String langStringBindType;
 	protected static HashMap<Class,String> java2xsdBinds;
-//--------	protected static HashMap<Class,Pattern> xsd2javaBinds;
+	//--------	protected static HashMap<Class,Pattern> xsd2javaBinds;
 	protected static HashMap<String,Class> xsd2javaDatatypes;
 	
 	protected static Vector<Pattern> nonRegisterableRdfClasses;
@@ -2001,6 +2028,32 @@ logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: _typeRdfClasses: {}", _
 		}
 	}
 	
+	public static String[] getDefaultUris() {
+		String[] uri = new String[4];
+		uri[0] = defaultNamespacePrefix;
+		uri[1] = defaultTypesPrefix;
+		uri[2] = baseUriServiceCategories;
+		uri[3] = baseUriBrokerPolicy;
+		return uri;
+	}
+	
+	public static void setDefaultUris(String bpNs, String nsPref, String cdNs) throws IOException, ClassNotFoundException {
+		defaultNamespacePrefix = nsPref;
+		defaultTypesPrefix = bpNs;
+		baseUriServiceCategories = cdNs;
+		baseUriBrokerPolicy = bpNs;
+		
+		// flush cached data
+		_analyzedTypes = new HashMap<Class,PersistentClass>();
+		_typeRdfClasses = new HashMap<String,PersistentClass>();
+		_typePatterns = new HashMap<Pattern,PersistentClass>();
+		managedObjects = new HashMap<String,Object>();
+		managedObjectUris = new HashMap<Object,String>();
+		
+		// reload and re-analyze classes
+		_preloadTypes("/preload-types.properties");
+	}
+	
 	// --------------------------------------------------------------------------
 	// initialize defaults
 	//
@@ -2014,7 +2067,6 @@ logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: _typeRdfClasses: {}", _
 		defaultXsdType = "string";
 		
 		_initJava2xsdBindings();
-//--------		_initXsd2javaBindings();
 		_initXsd2javaDatatypes();
 	}
 	
@@ -2125,7 +2177,7 @@ logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: _typeRdfClasses: {}", _
 			String key = ((String)k).trim();
 			String value = p.getProperty(key).trim();
 			Class type;
-			//System.err.println("===> "+key+" : "+value);
+			//logger.debug("===> {} : {}", key, value);
 			if (key.equals(".default")) {
 				defaultJava2xsdBindType = Class.forName(value);
 				continue;
@@ -2149,7 +2201,7 @@ logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: _typeRdfClasses: {}", _
 		for (Object k : p.keySet()) {
 			String key = ((String)k).trim();
 			String value = p.getProperty(key).trim();
-			//System.err.println("===> "+key+" : "+value);
+			//logger.debug("===> {} : {}", key, value);
 			if (key.equals(".default")) {
 				defaultXsdType = value;
 				continue;
@@ -2183,7 +2235,7 @@ logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: _typeRdfClasses: {}", _
 			String key = (String)k;
 			key = key.trim();
 			String value = p.getProperty(key).trim();
-//logger.trace(">>>>   Key={}, Value={}", key, value);
+ //logger.trace(">>>>   Key={}, Value={}", key, value);
 			
 			// look for class preload directives
 			if (!key.startsWith("class.")) continue;
@@ -2192,11 +2244,11 @@ logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: _typeRdfClasses: {}", _
 			int dot = clssName.lastIndexOf(".");
 			String setting = (dot+1<clssName.length()) ? clssName.substring(dot+1) : "";
 			clssName = clssName.substring(0,dot);
-//logger.trace(">>>>   Class={}, Setting={}", clssName, setting);
+ //logger.trace(">>>>   Class={}, Setting={}", clssName, setting);
 			
 			// preload and analyze class
 			Class type = types.get(clssName);
-//logger.trace(">>>>   Preloaded Type={}", type);
+ //logger.trace(">>>>   Preloaded Type={}", type);
 			if (type==null) {
 				logger.debug("RdfPresistenceManager: \tPreloading and analyzing class: {}", clssName);
 				type = Class.forName(clssName);
@@ -2206,13 +2258,13 @@ logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: _typeRdfClasses: {}", _
 				pc.idPattern = null;		// if they (id-formatter & id-pattern) are not provided in class preloading settings
 				types.put(clssName, type);
 			}
-//logger.trace(">>>>   AFTER: Preloaded Type={}", type);
+ //logger.trace(">>>>   AFTER: Preloaded Type={}", type);
 			
 			// override 'typeUri' with the value provided
 			if (!value.isEmpty()) {
 				logger.debug("RdfPresistenceManager: \tOverriding class metadata: class={}, {}={}", type, setting, value);
 				PersistentClass pc = _analyzedTypes.get(type);
-//logger.trace(">>>>   PC={}", pc);
+ //logger.trace(">>>>   PC={}", pc);
 				if (pc!=null) {
 					if (setting.equals("")) ;
 					else if (setting.equalsIgnoreCase("uri")) pc.typeUri = value;
@@ -2225,9 +2277,9 @@ logger.trace("getJavaTypeFromRdfType: SUB-CLASS-OF part: _typeRdfClasses: {}", _
 					else if (setting.equalsIgnoreCase("id-formatter")) pc.idFormatter = value;
 					else if (setting.equalsIgnoreCase("id-pattern")) pc.idPattern = Pattern.compile(value);
 					else logger.debug("RdfPresistenceManager: \tUnknown setting while preloading: {}", setting);
-//logger.trace(">>>>   AFTER PC={}", pc);
+ //logger.trace(">>>>   AFTER PC={}", pc);
 				}
-//else logger.debug(">>>>   PC is NULL: class={}", type);
+ //else logger.debug(">>>>   PC is NULL: class={}", type);
 			}
 		}
 		
@@ -2449,7 +2501,7 @@ class PersistentClass {
 				logger.trace("getFieldFromUri: \tis-collection={}", pf.isCollection);
 				if (pf.isCollection && fUri.startsWith(pf.fieldUri+RdfPersistenceManagerImpl.csep)) return pf;
 				logger.trace("getFieldFromUri: \tis-map={}", pf.isMap);
-//logger.trace("getFieldFromUri: \tIT IS MAP: fUri={}, pf.field-uri={}, msep={}", fUri, pf.fieldUri, RdfPersistenceManagerImpl.msep);
+				//logger.trace("getFieldFromUri: \tIT IS MAP: fUri={}, pf.field-uri={}, msep={}", fUri, pf.fieldUri, RdfPersistenceManagerImpl.msep);
 				if (pf.isMap && fUri.startsWith(pf.fieldUri+RdfPersistenceManagerImpl.msep)) return pf;
 				
 				boolean langMatch = (lang==null || (lang=lang.trim()).isEmpty()) ?
@@ -2480,7 +2532,7 @@ class PersistentClass {
 				logger.trace("getFieldByName: \tis-collection={}", pf.isCollection);
 				if (pf.isCollection && fUri.startsWith(pf.fieldUri+RdfPersistenceManagerImpl.csep)) return pf;
 				logger.trace("getFieldByName: \tis-map={}", pf.isMap);
-//logger.trace("getFieldByName: \tIT IS MAP: fUri={}, pf.field-uri={}, msep={}", fUri, pf.fieldUri, RdfPersistenceManagerImpl.msep);
+				//logger.trace("getFieldByName: \tIT IS MAP: fUri={}, pf.field-uri={}, msep={}", fUri, pf.fieldUri, RdfPersistenceManagerImpl.msep);
 				if (pf.isMap && fUri.startsWith(pf.fieldUri+RdfPersistenceManagerImpl.msep)) return pf;*/
 				if (logger.isTraceEnabled()) logger.trace("getFieldByName: \tchecking for exact match: {}", fieldName.equals(pf.name));
 				if (fieldName.equals(pf.name)) return pf;
@@ -2565,10 +2617,10 @@ class PersistentField {
 			arrayDimensions = dim;
 		} else
 		if (isMap) {
-//			throw new RdfPersistenceException("PersistentField: CURRENTLY NOT SUPPORTS MAP FIELDS");
+			//throw new RdfPersistenceException("PersistentField: CURRENTLY NOT SUPPORTS MAP FIELDS");
 		} else
 		if (isCollection) {
-//			throw new RdfPersistenceException("PersistentField: CURRENTLY NOT SUPPORTS COLLECTION FIELDS");
+			//throw new RdfPersistenceException("PersistentField: CURRENTLY NOT SUPPORTS COLLECTION FIELDS");
 		} else
 		{	// Not an array, Map or Collection
 			

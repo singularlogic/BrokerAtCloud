@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.rest.gui;
 
 import java.io.*;
@@ -53,19 +72,47 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 	}
 	
 	
-// ===============================================================================================================
+	// ===============================================================================================================
 	
 	@GET
 	@Path("/exportBrokerPolicy")
 	@Produces("text/turtle;charset=utf-8")
-	public String exportBrokerPolicy() {
+	public String exportBrokerPolicy() throws UnsupportedEncodingException {
 		logger.debug("exportBrokerPolicy: BEGIN: n/a");
 		
+		// Call REST service in order to broker policy defaults from Auxiliary service
+		HashMap hm = null;
+		{
+			ResteasyClient client = new ResteasyClientBuilder().build();
+			ResteasyWebTarget target = client.target(baseUrl+"/opt/aux/get-applied-policy");
+			long callStartTm = System.currentTimeMillis();
+			Response response = target.request().get();
+			hm = response.readEntity( HashMap.class );
+			long callEndTm = System.currentTimeMillis();
+			logger.debug("Response: {}, Duration: {}", response.getStatus(), callEndTm-callStartTm);
+			logger.debug("Broker policy defaults: {}", hm);
+			response.close();
+		}
+		// Check response
+		if (hm==null || hm.get("status")==null || hm.get("status").toString().trim().isEmpty() || !hm.get("status").toString().trim().equalsIgnoreCase("OK")) {
+			throw new RuntimeException("Broker Policy has not been initialized in Triplestore or it contains errors");
+		}
+		
+		// Get broker policy defaults
+		String nsPref = hm.get("ns-pref").toString().trim();
+		String bpNs = hm.get("bp-ns").toString().trim();
+		String cdNs = hm.get("cd-ns").toString().trim();
+		logger.debug("Broker policy defaults: ns-prefix={}, bp-ns={}, cd-ns={}", nsPref, bpNs, cdNs);
+		
+		// Build triplestore query URL using broker policy defaults
 		ResteasyClient client = new ResteasyClientBuilder().build();
 		String url = this.configProperties.getProperty("triplestore-query");
-		logger.trace("exportBrokerPolicy: Querying export service: {}", url);
+		url = url.replaceAll("\\{\\{BP-NS\\}\\}", java.net.URLEncoder.encode(bpNs, java.nio.charset.StandardCharsets.UTF_8.toString()));
+		url = url.replaceAll("\\{\\{CD-NS\\}\\}", java.net.URLEncoder.encode(cdNs, java.nio.charset.StandardCharsets.UTF_8.toString()));
+		logger.info("exportBrokerPolicy: Querying export service: {}", url);
 		ResteasyWebTarget target = client.target(url);
 		
+		// Retrive broker policy from triplestore
 		Response response = response = target.request().get();
 		int status = response.getStatus();
 		logger.trace("exportBrokerPolicy: Response Status: {} - {}", status, response.getStatusInfo());
@@ -268,7 +315,7 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 	public OptimisationAttribute saveAttribute(OptimisationAttribute atIn) throws IOException {
 		long startTm = System.currentTimeMillis();
 		logger.info("-------------- saveAttribute: INPUT: {}", atIn);
-		atIn.setLastUpdateTimestamp(new java.util.Date());
+		atIn.setLastUpdateTimestamp(new Date());
 		String id = atIn.getId();
 		if (id==null || id.trim().isEmpty()) {
 			// Fail...
@@ -327,7 +374,7 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 	public Response createAttribute(OptimisationAttribute atIn) throws IOException {
 		long startTm = System.currentTimeMillis();
 		logger.info("-------------- createAttribute: INPUT: {}", atIn);
-		atIn.setLastUpdateTimestamp(new java.util.Date());
+		atIn.setLastUpdateTimestamp(new Date());
 		String id = atIn.getId();
 		if (id==null || id.trim().isEmpty()) {
 			// generate a new Id
@@ -363,7 +410,7 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 	}
 	
 	
-// ===============================================================================================================
+	// ===============================================================================================================
 	
 	@GET
 	@Path("/category-attribute-mappings/{cat_id}")
@@ -425,7 +472,7 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 			if (comment==null) comment = "";
 			if (measuredBy==null) measuredBy = "";
 			
-			sb.append( String.format(fmtCommon, row++, java.net.URLEncoder.encode(_jsonVal(id)), _jsonVal(bppName), _jsonVal(attrId), _jsonVal(attrName), _jsonVal(typ), _jsonVal(unit), 
+			sb.append( String.format(fmtCommon, row++, java.net.URLEncoder.encode(_jsonVal(id), java.nio.charset.StandardCharsets.UTF_8.toString()), _jsonVal(bppName), _jsonVal(attrId), _jsonVal(attrName), _jsonVal(typ), _jsonVal(unit), 
 												(!mandatory ? "false" : "true"), _jsonVal(labelEn), _jsonVal(labelDe), _jsonVal(comment), _jsonVal(measuredBy)) );
 			if (ServiceCategoryAttribute.isNumericType(typ)) {
 				double m = sca.getMin();
@@ -607,7 +654,7 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 		
 		// Call REST service for update
 		ResteasyClient client = new ResteasyClientBuilder().build();
-		ResteasyWebTarget target = client.target(baseUrl+"/opt/service-category/attributes/" + java.net.URLEncoder.encode(id) );
+		ResteasyWebTarget target = client.target(baseUrl+"/opt/service-category/attributes/" + java.net.URLEncoder.encode(id, java.nio.charset.StandardCharsets.UTF_8.toString()) );
 		long callStartTm = System.currentTimeMillis();
 		Response response = target.request().delete();
 		long callEndTm = System.currentTimeMillis();
@@ -619,7 +666,7 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 		return Response.status( response.getStatus() ).entity("Duration:  "+(endTm-startTm)).build();
 	}
 	
-// ===============================================================================================================
+	// ===============================================================================================================
 	
 	@XmlRootElement
 	@XmlAccessorType(XmlAccessType.FIELD)
@@ -670,7 +717,7 @@ public class AdminFacingComponent extends AbstractFacingComponent {
 		@XmlAttribute
 		String measuredBy;		// measurement by (if any)
 		@XmlAttribute
-		boolean mandatory;
+		boolean mandatory;	// Is mandatory? (Admin setting overrides users' setting. If true attribute must always be included in consumer preferences, when pref. profile regards the same service category)
 		@XmlAttribute
 		String from;
 		@XmlAttribute

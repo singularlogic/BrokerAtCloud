@@ -7,10 +7,13 @@ var recommendationAcceptButtonVisible = "false";
 
 function requestRecommendation(profileId, requestNewRecom) {
 	if (!profileId || profileId===null || profileId.trim()==='') {
-		if (!wizardGlobalData['profile']) return;
-		profileId = wizardGlobalData['profile'];
+		if (!wizardGlobalData['profile']) profileId = null;
+		else profileId = wizardGlobalData['profile'];
 	}
-	if (!profileId || profileId===null || profileId.trim()==='') return;
+	if (!profileId || profileId===null || profileId.trim()==='') {
+		alert('Please select an existing Profile or create a new one');
+		return;
+	}
 	
 	if (requestNewRecom && requestNewRecom===true) {
 		url = '/gui/recommendations/'+profileId+'/request';
@@ -168,9 +171,102 @@ function clearRecommendation() {
 	if ($('#recomSave').length>0) $('#recomSave').html('');
 }
 
+// Show extra service details
+//
 function showExtra(elem, extra) {
-	console.log('Recommendation item: extra info = \n'+extra);
-	alert(extra);
+	//showExtraPopupDialog(elem, extra);
+	showExtraExpandable(elem, extra);
+}
+
+var dialogServDetails;
+
+function showExtraPopupDialog(elem, extra) {
+	//console.log('Recommendation item: extra info = \n'+extra);
+	
+	if ($( "#dialog-message" ).length>0) $( "#dialog-message" ).empty();
+	if (dialogServDetails && dialogServDetails!=='') { dialogServDetails.empty(); dialogServDetails = ''; }
+	
+	tblHtml = '';
+	cnt = 0;
+	rows = extra.split('\n');
+	for (i=0; i<rows.length; i++) {
+		row = rows[i].trim();
+		if (row==='') continue;
+		p = row.indexOf('=');
+		attr = row.substring(0,p).trim().replace('#','');
+		val = row.substring(p+1).trim();
+		tblHtml += '	  <div class="row"><div class="cell" style="text-align: right;"><b>'+attr+'</b></div><div class="cell"><i>'+val+'</i></div></div>\n';
+		cnt++;
+	}
+	
+	html = 
+		'<link rel="stylesheet" href="extra.css" type="text/css">'+
+		'<div id="dialog-message" title="Service Details">'+
+		'  <p>'+
+		'	<div class="wrapper"><div class="table">'+
+		'	  <div class="row header blue"><div class="cell" style="text-align:center">Attribute</div><div class="cell" style="text-align:center">Value</div></div>'+
+		tblHtml+
+		'	</div></div>'+
+		'  </p>'+
+		'</div>';
+	dialogServDetails = $(html);
+	dialogServDetails.appendTo(document.body);
+
+	$( "#dialog-message" ).dialog({
+		modal: true,
+		width: 800,
+		closeOnEscape: false,
+		buttons: {
+			Ok: function() {
+				$( this ).dialog( "close" );
+				dialogServDetails.remove();
+				dialogServDetails = '';
+			}
+		}
+	});
+}
+
+function showExtraExpandable(elem, extra) {
+	//console.log('Recommendation item: extra info = \n'+extra);
+	
+	var txt = $(elem).eq(0).html();
+	if (txt!=='[+]') {
+		// details are shown... collapsing div
+		$(elem).empty();
+		$(elem).append( '[+]' );
+		return ;
+	}
+	//else :  details are hidden... expand div
+	
+	// prepare service details for display
+	tblHtml = '';
+	cnt = 0;
+	rows = extra.split('\n');
+	for (i=0; i<rows.length; i++) {
+		row = rows[i].trim();
+		if (row==='') continue;
+		p = row.indexOf('=');
+		attr = row.substring(0,p).trim().replace('#','');
+		val = row.substring(p+1).trim();
+		tblHtml += '	  <div class="row"><div class="cell" style="text-align: right;"><b>'+attr+'</b></div><div class="cell"><i>'+val+'</i></div></div>\n';
+		cnt++;
+	}
+	
+	html = 
+		'<link rel="stylesheet" href="extra.css" type="text/css">'+
+		'<div id="dialog-message" title="Service Details">'+
+		'  <p>'+
+		'	<div class="wrapper"><div class="table">'+
+		'	  <div class="row header blue"><div class="cell" style="text-align:center">Attribute</div><div class="cell" style="text-align:center">Value</div></div>'+
+		tblHtml+
+		'	</div></div>'+
+		'  </p>'+
+		'</div>';
+	
+	// replace <a> contents with service details (including the [-] collapse button)
+	$(elem).empty();
+	details = $(html);
+	$(elem).html( '[&#8211;]' ).append( details );
 }
 
 // EOF

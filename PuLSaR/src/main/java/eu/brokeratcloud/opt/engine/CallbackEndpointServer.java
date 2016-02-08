@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.opt.engine;
 
 import eu.brokeratcloud.common.SLMEvent;
@@ -16,6 +35,8 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
  *	An HTTP endpoint implemention using Jetty. Accepts callbacks from Pub/Sub infrastructure
  */
 public class CallbackEndpointServer extends AbstractHandler {
+	private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("eu.brokeratcloud.event.manager.pubsub");
+	
 	private static final String onboardedPath = "/service/onboarded";
 	private static final String deprecatedPath = "/service/deprecated";
 	private static final String updatedPath = "/service/updated";
@@ -45,19 +66,19 @@ public class CallbackEndpointServer extends AbstractHandler {
 			public Thread setQueue(LinkedBlockingQueue<SLMEvent> q) { queue = q; return this; }
 			public void run() {
 				try {
-					System.out.println("CallbackEndpointServer: event dispatch thread started");
+					logger.info("CallbackEndpointServer: event dispatch thread started");
 					boolean keepRunning = true;
 					while (keepRunning) {
 						SLMEvent event = queue.take();
 						if (event==null || event.getType()!=null && event.getType().trim().equalsIgnoreCase("EXIT")) keepRunning = false;
-						else System.out.println("CallbackEndpointServer: Processing event: \n\toperation="+event.getType()+"\n\tservice-uri="+event.getProperty("service-description"));
+						else logger.info("CallbackEndpointServer: Processing event: \n\toperation={}\n\tservice-uri={}", 
+																				event.getType(), event.getProperty("service-description"));
 						if (keepRunning && manager!=null) manager.eventReceived( event );
-						else System.err.println("CallbackEndpointServer: No manager set");
+						else logger.error("CallbackEndpointServer: No manager set");
 					}
-					System.out.println("\nCallbackEndpointServer: event dispatch thread terminated");
+					logger.info("CallbackEndpointServer: event dispatch thread terminated");
 				} catch (Exception e) {
-					System.err.println("CallbackEndpointServer: event dispatch thread caught an exception: "+e);
-					e.printStackTrace(System.err);
+					logger.error("CallbackEndpointServer: event dispatch thread caught an exception: {}", e);
 					//manager.stopManager();	// or setOnline(false);
 				}
 				runner2 = null;
@@ -73,18 +94,17 @@ public class CallbackEndpointServer extends AbstractHandler {
 			public Thread setHandler(CallbackEndpointServer h) { handler = h; return this; }
 			public void run() {
 				try {
-					System.out.println("CallbackEndpointServer: endpoint server thread started");
+					logger.info("CallbackEndpointServer: endpoint server thread started");
 					server = new Server(port);
 					server.setStopAtShutdown(true);
 					server.setHandler(handler);
 					server.start();
 					server.join();
-					System.out.println("\nCallbackEndpointServer: endpoint server thread terminated");
+					logger.info("CallbackEndpointServer: endpoint server thread terminated");
 					server = null;
 					runner = null;
 				} catch (Exception e) {
-					System.err.println("CallbackEndpointServer: endpoint server thread caught an exception. Closing endpoint. Exception: "+e);
-					e.printStackTrace(System.err);
+					logger.error("CallbackEndpointServer: endpoint server thread caught an exception. Closing endpoint. Exception: {}", e);
 					manager.stopManager();	// or setOnline(false);
 				}
 			}
@@ -94,7 +114,7 @@ public class CallbackEndpointServer extends AbstractHandler {
 	}
 	
 	public void stopEndpoint() throws Exception {
-		System.out.println("CallbackEndpointServer: Closing endpoint...");
+		logger.debug("CallbackEndpointServer: Closing endpoint...");
 		if (server!=null) {
 			server.stop();
 		}
@@ -102,7 +122,7 @@ public class CallbackEndpointServer extends AbstractHandler {
 			SLMEvent exitEvent = new SLMEvent(".","EXIT",null);
 			queue.put(exitEvent);
 		}
-		System.out.println("CallbackEndpointServer: endpoint closed");
+		logger.debug("CallbackEndpointServer: endpoint closed");
 	}
 	
 	public void handle(String target,
@@ -123,7 +143,7 @@ public class CallbackEndpointServer extends AbstractHandler {
 		if (target.equals(onboardedPath)) operation = "service-onboarded";
 		else if (target.equals(deprecatedPath)) operation = "service-deprecated";
 		else if (target.equals(updatedPath)) operation = "service-updated";
-		else System.err.println("CallbackEndpointServer: Invalid path: "+target);
+		else logger.warn("CallbackEndpointServer: Invalid path: {}", target);
 		
 		// Extracting service URI from message body
 		String eventText = null;
@@ -131,27 +151,27 @@ public class CallbackEndpointServer extends AbstractHandler {
 			String srvUri = extractServiceUri(content);
 			if (srvUri!=null && !srvUri.isEmpty()) {
 				eventText = String.format(eventTpl, new java.util.Date().toString(), target, operation, srvUri);
-			} else System.err.println("CallbackEndpointServer: Invalid event message: \n"+content);
+			} else logger.warn("CallbackEndpointServer: Invalid event message: \n{}", content);
 		}
-		else System.err.println("CallbackEndpointServer: No operation specified");
+		else logger.warn("CallbackEndpointServer: No operation specified");
 		
 		// Create an SLMEvent instance and push it to event dispatcher queue
 		if (eventText!=null) {
 			try {
 				SLMEvent event = SLMEvent.parseEvent(eventText);
-				System.out.println("CallbackEndpointServer: Event received");
+				logger.info("CallbackEndpointServer: Event received");
 				
 				response.setStatus(HttpServletResponse.SC_OK);
 				baseRequest.setHandled(true);
 				
 				if (manager!=null) {
-					String m = queue.offer(event) ? "CallbackEndpointServer: Event queued for dispatch ("+queue.size()+" events awaiting)" : "CallbackEndpointServer: Failed to queue event in dispatch queue";
-					System.out.println(m);
+					if (queue.offer(event)) logger.debug("CallbackEndpointServer: Event queued for dispatch ({} events awaiting)", queue.size());
+					else logger.error("CallbackEndpointServer: Failed to queue event in dispatch queue");
 				}
-				else System.err.println("CallbackEndpointServer: No manager set");
+				else logger.error("CallbackEndpointServer: No manager set");
 				
 			} catch (ParseException e) {
-				System.err.println("CallbackEndpointServer: Invalid SLM event format: Event Spec:\n"+eventText);
+				logger.warn("CallbackEndpointServer: Invalid SLM event format: Event Spec:\n{}", eventText);
 			}
 		} else {
 			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

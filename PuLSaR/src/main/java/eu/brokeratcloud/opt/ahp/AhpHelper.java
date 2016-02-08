@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.opt.ahp;
 
 import eu.brokeratcloud.common.RootObject;
@@ -18,8 +37,14 @@ import java.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AhpHelper extends RootObject {
-	private static final Logger logger = LoggerFactory.getLogger("eu.brokeratcloud.opt.rank.ahp");
+public abstract class AhpHelper extends RootObject {
+	protected static final Logger logger = LoggerFactory.getLogger("eu.brokeratcloud.opt.rank.ahp");
+	
+	public static AhpHelper getInstance(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		Class clss = Class.forName(className);
+		logger.debug("AhpHelper.getInstance: Creating a new instance of class '{}'", className);
+		return (AhpHelper)clss.newInstance();
+	}
 	
 	protected static Method _NUMERIC_INC_RI_CALC_METHOD;
 	protected static Method _NUMERIC_DEC_RI_CALC_METHOD;
@@ -43,7 +68,7 @@ public class AhpHelper extends RootObject {
 			cArg2[3] = double.class;
 			cArg2[4] = cArg2[6] = boolean.class;
 			//
-			Class clss = getClass();
+			Class clss = AhpHelper.class;
 			_NUMERIC_INC_RI_CALC_METHOD = clss.getDeclaredMethod("_calcNumericIncRelativeImportance", cArg);
 			_NUMERIC_DEC_RI_CALC_METHOD = clss.getDeclaredMethod("_calcNumericDecRelativeImportance", cArg);
 			_NUMERIC_RANGE_RI_CALC_METHOD = clss.getDeclaredMethod("_calcNumericRangeRelativeImportance", cArg2);
@@ -283,7 +308,7 @@ public class AhpHelper extends RootObject {
 		// calculate eigenvector using extend analysis technique
 		logger.trace("Extend Analysis: starting...");
 		Stats.get().startSplit(splC2);
-		double[] eigenvector = _extendAnalysis2(comparisonMatrix);
+		double[] eigenvector = _extendAnalysis(comparisonMatrix);
 		Stats.get().endSplit(splC2);
 		logger.debug("Extend Analysis: eigenvector: {}", Arrays.toString(eigenvector));
 		
@@ -352,27 +377,70 @@ public class AhpHelper extends RootObject {
 		else return TFN.one();
 	}
 	protected TFN _calcNumericRangeRelativeImportance(Object val1, Object val2, Object valReq, double weight, boolean mandatory, Object allowed, boolean higherIsBetter) {
+		//logger.trace("_calcNumericRangeRelativeImportance: BEGIN: val1={}, val2={}, req={}, wght={}, mand={}, allowed={}, h-i-b={}", val1, val2, valReq, weight, mandatory, allowed, higherIsBetter);
+		
 		NumericInterval i1 = null, i2 = null, ir = (NumericInterval)valReq;
 		String str;
 		if (val1!=null && !(str=val1.toString().trim()).isEmpty()) i1 = NumericInterval.valueOf(str);
 		if (val2!=null && !(str=val2.toString().trim()).isEmpty()) i2 = NumericInterval.valueOf(str);
+		//logger.trace("_calcNumericRangeRelativeImportance: STEP-1: i1={}, i2={}, ir={}", i1, i2, ir);
+		
+		double l1 = i1!=null ? i1.length() : 0;
+		double l2 = i2!=null ? i2.length() : 0;
+		//logger.trace("_calcNumericRangeRelativeImportance: STEP-2: lengths: l1={}, l2={}, lr={}", l1, l2, ir!=null?ir.length():-1);
+		if (ir!=null && i1!=null && i2!=null) {
+			l1 = i1.join(ir).length();
+			l2 = i2.join(ir).length();
+			//logger.trace("_calcNumericRangeRelativeImportance: STEP-3: JOINT-lengths: l1r={}, l2r={}", l1, l2);
+		}
+		TFN result = null;
+		if (l1>0 && l2>0) result = new TFN(l1/l2);
+		else if (l1==0 && l2>0)  result = new TFN(weight);
+		else if (l1>0  && l2==0) result = new TFN(1/weight);
+		else result = TFN.one();
+		//logger.trace("_calcNumericRangeRelativeImportance: STEP-4: result={}", result);
+		
+		result = higherIsBetter ? result : result.inv();
+		//logger.trace("_calcNumericRangeRelativeImportance: END: result={}", higherIsBetter ? result : result.inv());
+		return result;
+	}
+	//An alternative, scenario-specific implementation
+	protected TFN _calcNumericRangeRelativeImportance_2(Object val1, Object val2, Object valReq, double weight, boolean mandatory, Object allowed, boolean higherIsBetter) {
+		//logger.trace("_calcNumericRangeRelativeImportance_2: BEGIN: val1={}, val2={}, req={}, wght={}, mand={}, allowed={}, h-i-b={}", val1, val2, valReq, weight, mandatory, allowed, higherIsBetter);
+		NumericInterval i1 = null, i2 = null, ir = (NumericInterval)valReq;
+		String str;
+		if (val1!=null && !(str=val1.toString().trim()).isEmpty()) i1 = NumericInterval.valueOf(str);
+		if (val2!=null && !(str=val2.toString().trim()).isEmpty()) i2 = NumericInterval.valueOf(str);
+		//logger.trace("_calcNumericRangeRelativeImportance_2: STEP-1: i1={}, i2={}, ir={}", i1, i2, ir);
 		
 		TFN result = null;
-		if (i1!=null && i2!=null || mandatory) result = null;
+		if (i1!=null && i2!=null) result = null;
 		else if (i1==null && i2!=null) result = new TFN(weight);
 		else if (i1!=null  && i2==null) result = new TFN(1/weight);
 		else if (i1==null && i2==null) result = TFN.one();
+		//logger.trace("_calcNumericRangeRelativeImportance_2: STEP-2: result={}", result);
 		
 		if (result!=null) {
+			//logger.trace("_calcNumericRangeRelativeImportance_2: END-2: MISSING SERVICE ATTR. VALUE: i1={}, i2={}, result={}", i1, i2, result);
 			return result;
 		}
 		
 		double[] vals = (double[])allowed;
 		double min = vals[0];
 		double max = vals[1];
-			double lb1 = i1!=null ? i1.getLowerBound() : Double.NEGATIVE_INFINITY;
-			double lb2 = i2!=null ? i2.getLowerBound() : Double.NEGATIVE_INFINITY;
+		//logger.trace("_calcNumericRangeRelativeImportance_2: STEP-3: allowed: min={}, max={}", min, max);
+		if (higherIsBetter) {
+			double lb1 = i1!=null ? i1.getLowerBound() : min;
+			double lb2 = i2!=null ? i2.getLowerBound() : min;
 			result = new TFN( (max-lb2)/(max-lb1) );
+			//logger.trace("_calcNumericRangeRelativeImportance_2: STEP-4A (H-i-b): lb1={}, lb2={}, min/max={}/{}, ratio={}", lb1, lb2, min, max, (max-lb2)/(max-lb1));
+		} else {
+			double ub1 = i1!=null ? i1.getUpperBound() : max;
+			double ub2 = i2!=null ? i2.getUpperBound() : max;
+			result = new TFN( (ub2-min)/(ub1-min) );
+			//logger.trace("_calcNumericRangeRelativeImportance_2: STEP-4B (L-i-b): ub1={}, ub2={}, min/max={}-{}, ratio={}", ub1, ub2, min, max, (ub2-min)/(ub1-min));
+		}
+		//logger.trace("_calcNumericRangeRelativeImportance_2: END: result={}", result);
 		return result;
 	}
 	// Fuzzy Types (inc/dec/range)
@@ -397,27 +465,70 @@ public class AhpHelper extends RootObject {
 		else return TFN.one();
 	}
 	protected TFN _calcFuzzyRangeRelativeImportance(Object val1, Object val2, Object valReq, double weight, boolean mandatory, Object allowed, boolean higherIsBetter) {
+		//logger.trace("_calcFuzzyRangeRelativeImportance: BEGIN: val1={}, val2={}, req={}, wght={}, mand={}, allowed={}, h-i-b={}", val1, val2, valReq, weight, mandatory, allowed, higherIsBetter);
+		
 		TFuzzyInterval i1 = null, i2 = null, ir = (TFuzzyInterval)valReq;
 		String str;
 		if (val1!=null && !(str=val1.toString().trim()).isEmpty()) i1 = TFuzzyInterval.valueOf(str);
 		if (val2!=null && !(str=val2.toString().trim()).isEmpty()) i2 = TFuzzyInterval.valueOf(str);
+		//logger.trace("_calcFuzzyRangeRelativeImportance: STEP-1: i1={}, i2={}, ir={}", i1, i2, ir);
+		
+		TFN l1 = i1!=null ? i1.length() : null;
+		TFN l2 = i2!=null ? i2.length() : null;
+		//logger.trace("_calcFuzzyRangeRelativeImportance: STEP-2: lengths: l1={}, l2={}, lr={}", l1, l2, ir!=null?ir.length():null);
+		if (ir!=null && i1!=null && i2!=null) {
+			l1 = i1.join(ir).length();
+			l2 = i2.join(ir).length();
+			//logger.trace("_calcFuzzyRangeRelativeImportance: STEP-3: JOINT-lengths: l1r={}, l2r={}", l1, l2);
+		}
+		TFN result = null;
+		if (l1!=null && l2!=null) result = l1.div(l2);
+		else if (l1==null && l2!=null) result = new TFN(weight);
+		else if (l1!=null && l2==null) result = new TFN(1/weight);
+		else result = TFN.one();
+		//logger.trace("_calcFuzzyRangeRelativeImportance: STEP-4: result={}", result);
+		
+		result = higherIsBetter ? result : result.inv();
+		//logger.trace("_calcFuzzyRangeRelativeImportance: END: result={}", higherIsBetter ? result : result.inv());
+		return result;
+	}
+	//An alternative, scenario-specific implementation
+	protected TFN _calcFuzzyRangeRelativeImportance_2(Object val1, Object val2, Object valReq, double weight, boolean mandatory, Object allowed, boolean higherIsBetter) {
+		//logger.trace("_calcFuzzyRangeRelativeImportance_2: BEGIN: val1={}, val2={}, req={}, wght={}, mand={}, allowed={}, h-i-b={}", val1, val2, valReq, weight, mandatory, allowed, higherIsBetter);
+		TFuzzyInterval i1 = null, i2 = null, ir = (TFuzzyInterval)valReq;
+		String str;
+		if (val1!=null && !(str=val1.toString().trim()).isEmpty()) i1 = TFuzzyInterval.valueOf(str);
+		if (val2!=null && !(str=val2.toString().trim()).isEmpty()) i2 = TFuzzyInterval.valueOf(str);
+		//logger.trace("_calcFuzzyRangeRelativeImportance_2: STEP-1: i1={}, i2={}, ir={}", i1, i2, ir);
 		
 		TFN result = null;
-		if (i1!=null && i2!=null || mandatory) result = null;
+		if (i1!=null && i2!=null) result = null;
 		else if (i1==null && i2!=null) result = new TFN(weight);
 		else if (i1!=null  && i2==null) result = new TFN(1/weight);
 		else if (i1==null && i2==null) result = TFN.one();
+		//logger.trace("_calcFuzzyRangeRelativeImportance_2: STEP-2: result={}", result);
 		
 		if (result!=null) {
+			//logger.trace("_calcFuzzyRangeRelativeImportance_2: END-2: MISSING SERVICE ATTR. VALUE: i1={}, i2={}, result={}", i1, i2, result);
 			return result;
 		}
 		
 		TFN[] vals = (TFN[])allowed;
 		double min = vals[0].getLowerBound();
 		double max = vals[1].getUpperBound();
-			double lb1 = i1!=null ? i1.getLowerBound() : Double.NEGATIVE_INFINITY;
-			double lb2 = i2!=null ? i2.getLowerBound() : Double.NEGATIVE_INFINITY;
+		//logger.trace("_calcFuzzyRangeRelativeImportance_2: STEP-3: allowed: min-lb={}, max-ub={}", min, max);
+		if (higherIsBetter) {
+			double lb1 = i1!=null ? i1.getLowerBound() : min;
+			double lb2 = i2!=null ? i2.getLowerBound() : min;
 			result = new TFN( (max-lb2)/(max-lb1) );
+			//logger.trace("_calcFuzzyRangeRelativeImportance_2: STEP-4A (H-i-b): lb1={}, lb2={}, min/max={}/{}, ratio={}", lb1, lb2, min, max, (max-lb2)/(max-lb1));
+		} else {
+			double ub1 = i1!=null ? i1.getUpperBound() : max;
+			double ub2 = i2!=null ? i2.getUpperBound() : max;
+			result = new TFN( (ub2-min)/(ub1-min) );
+			//logger.trace("_calcFuzzyRangeRelativeImportance_2: STEP-4B (L-i-b): ub1={}, ub2={}, min/max={}-{}, ratio={}", ub1, ub2, min, max, (ub2-min)/(ub1-min));
+		}
+		//logger.trace("_calcFuzzyRangeRelativeImportance_2: END: result={}", result);
 		return result;
 	}
 	// Boolean Type
@@ -490,70 +601,7 @@ public class AhpHelper extends RootObject {
 		else return TFN.one();
 	}
 	
-	// Implementation of extend analysis
-	protected static double[] _extendAnalysis2(TFN[][] matrix) {
-		// defussify comparison matrix
-		int N = matrix.length;
-		double[][] matrix2 = new double[N][N];
-		for (int i=0; i<N; i++) {
-			for (int j=0; j<N; j++) {
-				if (i==j) matrix2[i][j] = 1;
-				else matrix2[i][j] = matrix[i][j].defuzzify();
-			}
-		}
-		
-		// calculate crisp eigenvector
-		double[][] m1 = matrix2;
-		double[] ev1 = _calcCrispEigenvector(m1);
-		double[] ev2;
-		int iter = 0;
-		double diff;
-		double maxDiff = 0.01;
-		do {
-			double[][] m2 = _squareCrispMatrix(m1);
-			ev2 = _calcCrispEigenvector(m2);
-			diff = _diffCrispVectors(ev1, ev2);
-			if (diff<maxDiff) break;
-			m1 = m2;
-			ev1 = ev2;
-			iter++;
-		} while (iter<100);
-		if (diff<maxDiff) return ev2;
-		return null;
-	}
-	protected static double[] _calcCrispEigenvector(double[][] matrix) {
-		int N = matrix.length;
-		double[] rowsum = new double[N];
-		double total = 0;
-		// calculate row sums
-		for (int i=0; i<N; i++) {
-			double sum = 0;
-			for (int j=0; j<N; j++) sum += matrix[i][j];
-			rowsum[i] = sum;
-			total += sum;
-		}
-		// normalize row sums
-		for (int i=0; i<N; i++) rowsum[i] /= total;
-		logger.trace(Arrays.toString(rowsum));
-		return rowsum;
-	}
-	protected static double[][] _squareCrispMatrix(double[][] src) {
-		int N = src.length;
-		double[][] square = new double[N][N];
-		for (int i=0; i<N; i++)
-		for (int j=0; j<N; j++) {
-			double sum = 0;
-			for (int k=0; k<N; k++) sum += src[i][k]*src[k][j];
-			square[i][j] = sum;
-		}
-		return square;
-	}
-	protected static double _diffCrispVectors(double[] v1, double[] v2) {
-		int N = v1.length;
-		double diff = 0;
-		for (int i=0; i<N; i++) diff += Math.abs(v1[i]-v2[i]);
-		return diff;
-	}
+	protected abstract double[] _extendAnalysis(TFN[][] matrix);
 	
 	public static class RankedItem implements Comparable<RankedItem> {
 		public ServiceDescription item;

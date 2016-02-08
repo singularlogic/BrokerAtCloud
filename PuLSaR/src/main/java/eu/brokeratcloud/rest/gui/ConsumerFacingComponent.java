@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.rest.gui;
 
 import java.io.*;
@@ -219,7 +238,7 @@ public class ConsumerFacingComponent extends AbstractFacingComponent {
 	public CPP saveProfile(CPP prIn) throws IOException {
 		long startTm = System.currentTimeMillis();
 		logger.info("-------------- saveProfile: INPUT: {}", prIn);
-		prIn.setLastUpdateTimestamp(new java.util.Date());
+		prIn.setLastUpdateTimestamp(new Date());
 		boolean newProfile = false;
 		
 		// Assign a new Id if missing
@@ -294,7 +313,7 @@ public class ConsumerFacingComponent extends AbstractFacingComponent {
 	public CPP createProfile(CPP prIn) throws IOException {
 		long startTm = System.currentTimeMillis();
 		logger.info("-------------- createProfile: INPUT: {}", prIn);
-		prIn.setLastUpdateTimestamp(new java.util.Date());
+		prIn.setLastUpdateTimestamp(new Date());
 		String id = prIn.getId();
 		if (id==null || id.trim().isEmpty()) {
 			// generate a new Id
@@ -339,7 +358,7 @@ public class ConsumerFacingComponent extends AbstractFacingComponent {
 		return prOut;
 	}
 	
-// =====================================================================================================
+	// =====================================================================================================
 	
 	@GET
 	@POST
@@ -422,13 +441,13 @@ public class ConsumerFacingComponent extends AbstractFacingComponent {
 					String cpId = "";					// Consumer preference id
 					String type = sca.getType();
 					// Consumer preference data
-					ConsumerPreference cp = prefs.get( java.net.URLDecoder.decode(scaId) );
+					ConsumerPreference cp = prefs.get( java.net.URLDecoder.decode(scaId, java.nio.charset.StandardCharsets.UTF_8.toString()) );
 					if (selectedOnly && cp==null) continue;
 					
 					boolean selected = false;
-					boolean mandatory = sca.getMandatory();
-					double weight = 0;
-					ConsumerPreferenceExpression constraint = null;
+					boolean mandatory = sca.getMandatory();				// CHANGE BACK TO   "false"
+					double weight = 0;									// CHANGE BACK TO   "0"
+					ConsumerPreferenceExpression constraint = null;		// CHANGE BACK TO   "null"
 					String cExpr = "-";
 					if (cp!=null) {
 						selected = true;
@@ -535,11 +554,11 @@ public class ConsumerFacingComponent extends AbstractFacingComponent {
 					currPrefs.remove(attrId);
 				} 
 				else {	// Not contains attribute
-					String attrIdEnc = java.net.URLEncoder.encode( attrId );
+					String attrIdEnc = java.net.URLEncoder.encode( attrId, java.nio.charset.StandardCharsets.UTF_8.toString() );
 					ServiceCategoryAttribute attr = (ServiceCategoryAttribute)_callBrokerRestWS(baseUrl+"/opt/service-category/attributes/"+attrIdEnc, "GET", ServiceCategoryAttribute.class, null);
 					
 					// get preference variable from SCA
-					String pvUri = java.net.URLDecoder.decode(attr.getId());
+					String pvUri = java.net.URLDecoder.decode(attr.getId(), java.nio.charset.StandardCharsets.UTF_8.toString());
 					logger.trace("saveSelectedAttributes: SCA id={}", pvUri);
 					
 					// create new consumer preference
@@ -964,7 +983,7 @@ public class ConsumerFacingComponent extends AbstractFacingComponent {
 	}
 	
 	
-// ===============================================================================================================
+	// ===============================================================================================================
 	@XmlRootElement
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@JsonIgnoreProperties(ignoreUnknown = true)

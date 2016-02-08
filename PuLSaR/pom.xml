@@ -1,13 +1,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>eu.brokeratcloud.optimisation</groupId>
 	<artifactId>pulsar-webapp</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
 	<name>PuLSaR Webapp</name>
-	<url>http://maven.apache.org</url>
-
+	<description>Preference-based cLoud Service Recommender (PuLSaR) is a cloud consumer preference based recommender that uses a holistic multi-criteria decision making approach for offering optimisation as brokerage service. Specifically, PuLSaR builds upon a fuzzy AHP approach that solves the problem of service ranking and allows the multi-objective assessment of cloud services. This approach provides a more expressive and unified way to capture and process user opinions and preferences (both precise and imprecise) than traditional service ranking methods.</description>
+	<url>http://imu.ntua.gr/software/pulsar</url>
+	<organization>
+		<name>Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens</name>
+		<url>http://imu.iccs.gr/</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+	
 	<repositories>
 		<repository>
 			<id>maven2</id>
@@ -31,7 +44,6 @@
 		</repository>
 	</repositories>
 
-	<!-- use: mvn dependency:copy-dependencies to extract all dependency jars -->
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -48,6 +60,10 @@
 				<exclusion>
 					<groupId>org.slf4j</groupId>
 					<artifactId>slf4j-simple</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -67,11 +83,6 @@
 			<artifactId>resteasy-client</artifactId>
 			<version>3.0.2.Final</version>
 		</dependency>
-<!--	<dependency>
-			<groupId>net.sf.scannotation</groupId>
-			<artifactId>scannotation</artifactId>
-			<version>1.0.3</version>
-		</dependency>-->
 
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
@@ -81,12 +92,22 @@
 		<dependency>
 			<groupId>org.jboss.resteasy</groupId>
 			<artifactId>resteasy-multipart-provider</artifactId>
-			<version>2.2.0.GA</version>
+			<version>2.2.1.GA</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-jaxrs</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.jboss.resteasy</groupId>
+					<artifactId>resteasy-jaxb-provider</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.0.1</version>
+			<version>2.1</version>
 		</dependency>
 
 		<dependency>
@@ -94,6 +115,24 @@
 			<artifactId>apache-jena</artifactId>
 			<type>pom</type>
 			<version>2.11.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.httpcomponents</groupId>
+					<artifactId>httpclient</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>log4j</groupId>
+					<artifactId>log4j</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -128,15 +167,38 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<version>1.1.8</version>
 		</dependency>
+<!--
+** MySQL driver
+**
+** Connection string in 'resources/feedback.properties' needs modification, and 'mvn package'
+**
+		<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.1.17</version>
+		</dependency>
+-->
 		<dependency>
 			<groupId>org.javalite</groupId>
 			<artifactId>activejdbc</artifactId>
 			<version>1.4.9</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.mitchellbosecke</groupId>
 			<artifactId>pebble</artifactId>
 			<version> 1.4.3 </version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-api</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
@@ -154,8 +216,6 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
-					<!--<compilerArgument>-Xlint:unchecked</compilerArgument>-->
-					<!--<compilerArgument>-Xlint:deprecation</compilerArgument>-->
 				</configuration>
 			</plugin>
 			<plugin>
@@ -171,7 +231,7 @@
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
+	  </plugins>
 	</build>
-
+	
 </project>

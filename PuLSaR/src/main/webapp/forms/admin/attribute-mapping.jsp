@@ -448,7 +448,8 @@
 		  },
 		  "plugins" : [
 			"contextmenu", //"dnd", "search",
-			"state", "types", "wholerow", "hotkeys"
+			"state", "types", "wholerow", "hotkeys",
+			"sort"
 		  ]
 		})
 		.on('changed.jstree', function (e, data) {
@@ -460,7 +461,7 @@
 			}
 			else {
 				$('#data .content').hide();
-				$('#data .default').html('xxx').show();
+				$('#data .default').html('---').show();
 			}
 		});
 	} // End of initCategoriesTree
@@ -564,16 +565,20 @@
 		  },
 		  "plugins" : [
 			"contextmenu", //"dnd", "search",
-			"state", "types", "wholerow", "hotkeys", "checkbox"
+			"state", "types", "wholerow", "hotkeys", "checkbox",
+			"sort"
 		  ]
 		});
 		
 		// dbl-click event handler for 'attributes tree' appearing in lightbox
 		treeAttributes.bind('dblclick.jstree',function (e) {
-			var tree = $("#attrList").jstree();
-			/*var sel = tree.get_selected(true);
+			var node = $(e.target).closest("li");
+			doUpdateAttribute(node[0]);
+			
+			/*var tree = $("#attrList").jstree();
+			var sel = tree.get_selected(true);
 			if (sel.length==1) {
-				var node = sel[0];*/
+				var node = sel[0];
 				if(contextMenuCmd) {
 					if (contextMenuCmd==='add') {
 						//doAddAttribute(node);
@@ -582,7 +587,7 @@
 						//doUpdateAttribute(node);
 					}
 				}
-			//}
+			}*/
 		});
 		
 	} // End of initAttributesTree

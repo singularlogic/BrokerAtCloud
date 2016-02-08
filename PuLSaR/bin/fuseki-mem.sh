@@ -1,8 +1,7 @@
 #!/bin/bash
-SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-BASEDIR=$( cd "$SCRIPT_DIR/.." && pwd )
+source $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/settings.sh
 
 cd $BASEDIR/fuseki
 
-java -Xmx1000M -jar fuseki-server.jar --port=3030 --mem --update /BrokerAtCloudStore
+$JVM -Xmx1000M -jar fuseki-server.jar --port=$FUSEKI_PORT --mem --update /$FUSEKI_SERVICE
 

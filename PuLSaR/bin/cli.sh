@@ -1,9 +1,6 @@
 #!/bin/bash
-SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-BASEDIR=$( cd "$SCRIPT_DIR/.." && pwd )
-TRGDIR=$( cd "$BASEDIR/target" && pwd )
+source $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/settings.sh
 
-JVM=java
-clpath="$TRGDIR/classes:$TRGDIR/dependency/*:$TRGDIR/OptWebapp/WEB-INF/lib/*"
+clpath="$TARGET_DIR/classes:$TARGET_DIR/dependency/*:$TARGET_DIR/PuLSaR/WEB-INF/lib/*"
 
-$JVM -DVERBOSE -classpath "$clpath" eu.brokeratcloud.opt.engine.CLI "$@"
+$JVM $JETTY_LOGGING_LEVEL -classpath "$clpath" eu.brokeratcloud.opt.engine.CLI "$@"

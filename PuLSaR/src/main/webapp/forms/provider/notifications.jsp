@@ -35,12 +35,13 @@
     <script type="text/javascript" src="notif-init.js"></script>
 	<script>
 		notificationDisplayPanel = "#ContentPanel";
+		var listEmpty = true;
 	</script>
 	
 	<script type="text/javascript">
 		$(document).ready(function () {
 				
-			$("#splitter").jqxSplitter({  width: 1500, height: 400, panels: [{ size: '30%'}] });
+			$("#splitter").jqxSplitter({  width: 800, height: 400, panels: [{ size: '30%'}] });
 			$('#splitter').resizable();
 			
 			// prepare the data
@@ -61,9 +62,15 @@
 			var dataAdapter = new $.jqx.dataAdapter(source, {
 				loadComplete: function(data) {
 					loadingIndicator.fadeOut();
+					if (listEmpty) {
+						$(notificationDisplayPanel).html('<br/><i>There are no service notifications so far</i>');
+						//$("#listbox").html('<br/><i>There are no service notifications so far</i>');
+						$("#splitter").jqxSplitter('collapse');
+					}
 				},
 				loadError: function(xhr,status,error) {
 					loadingIndicator.fadeOut();
+					$(notificationDisplayPanel).html('<i>Error while retrieving notifications<br/>'+error+'</i>');
 					alert('STATUS='+status+'\nERROR='+error);
 				}
 			});
@@ -73,6 +80,7 @@
 			$('#listbox').jqxListBox({ selectedIndex: 0,  source: dataAdapter, displayMember: "service-name", valueMember: "slp-id", /*itemHeight: 70,*/ width: '100%', height: '100%',
 				renderer: function (index, label, value) {
 					var table = '<table style="min-width: 130px;"><tr><td><b>' + (index+1) + '.</b> ' + label + '</td></tr><tr><td><i>' + value + '</i></td></tr></table>';
+					listEmpty = false;
 					return table;
 				}
 			});

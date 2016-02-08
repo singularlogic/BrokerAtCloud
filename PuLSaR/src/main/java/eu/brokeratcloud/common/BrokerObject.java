@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.common;
 
 import java.util.Date;
@@ -24,10 +43,10 @@ public abstract class BrokerObject extends RootObject {
 	protected String description;
 	@XmlAttribute
 	@RdfPredicate(uri="http://purl.org/dc/terms/created", omitIfNull=true)
-	protected java.util.Date createTimestamp;
+	protected Date createTimestamp;
 	@XmlAttribute
 	@RdfPredicate(uri="http://purl.org/dc/terms/modified", omitIfNull=true)
-	protected java.util.Date lastUpdateTimestamp;
+	protected Date lastUpdateTimestamp;
 	@XmlAttribute
 	@RdfPredicate(uri="http://purl.org/dc/terms/creator", omitIfNull=true)
 	protected String owner;
@@ -39,10 +58,10 @@ public abstract class BrokerObject extends RootObject {
 	public String getDescription() { return description; }
 	public void setDescription(String n) { description = n; }
 	
-	public java.util.Date getCreateTimestamp() { return createTimestamp; }
-	public void setCreateTimestamp(java.util.Date dt) { createTimestamp = dt; }
-	public java.util.Date getLastUpdateTimestamp() { return lastUpdateTimestamp; }
-	public void setLastUpdateTimestamp(java.util.Date dt) { lastUpdateTimestamp = dt; }
+	public Date getCreateTimestamp() { return createTimestamp; }
+	public void setCreateTimestamp(Date dt) { createTimestamp = dt; }
+	public Date getLastUpdateTimestamp() { return lastUpdateTimestamp; }
+	public void setLastUpdateTimestamp(Date dt) { lastUpdateTimestamp = dt; }
 	
 	public String getOwner() { return owner; }
 	public void setOwner(String c) { owner = c; }

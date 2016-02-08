@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.opt.engine;
 
 import eu.brokeratcloud.common.SLMEvent;
@@ -5,6 +24,8 @@ import eu.brokeratcloud.opt.RecommendationManager;
 import eu.brokeratcloud.util.Stats;
 
 class LocalLoopEventManager extends EventManager {
+	private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger("eu.brokeratcloud.event.manager.local");
+	
 	protected Configuration config;
 	protected boolean online;
 	protected RecommendationManager recomMgr;
@@ -28,14 +49,14 @@ class LocalLoopEventManager extends EventManager {
 			SLMEvent evt = SLMEvent.parseEvent(evtText);
 			eventReceived(evt);
 		} catch (Exception e) {
-			System.err.println( "LocalLoopEventManager.eventReceived(String): Error while parsing SLM event: "+e );
+			logger.warn( "LocalLoopEventManager.eventReceived(String): Error while parsing SLM event: {}", e );
 			e.printStackTrace();
 		}
 	}
 	
 	public void eventReceived(SLMEvent evt) {
 		if (evt.getType()==null || evt.getType().trim().isEmpty()) {
-			System.err.println( String.format("LocalLoopEventManager.eventReceived: Missing event type: Event-Id: %s", evt.getId()) );
+			logger.warn("LocalLoopEventManager.eventReceived: Missing event type: Event-Id: {}", evt.getId());
 			return;
 		}
 		
@@ -48,19 +69,19 @@ class LocalLoopEventManager extends EventManager {
 		if ("service-onboarded".equals(type)) serviceOnboarded(evt);
 		else if ("service-deprecated".equals(type)) serviceDepreciated(evt);
 		else if ("service-updated".equals(type)) serviceUpdated(evt);
-		else System.err.println( String.format("LocalLoopEventManager.eventReceived: Unknown event type: %s, Event-Id: %s", evt.getType(), evt.getId()) );
+		else logger.warn("LocalLoopEventManager.eventReceived: Unknown event type: {}, Event-Id: {}", evt.getType(), evt.getId());
 		
 		// Get time measurements
 		logTimers();
-		System.err.println( getTimerStats() );
+		logger.debug( "Time measurements: {}", getTimerStats() );
 		
 		double totalTimeLLEM = eu.brokeratcloud.opt.engine.LocalLoopEventManager.getTotalElapsedTime() / Stats.nanoToSec;
 		double totalTimeFC = eu.brokeratcloud.fuseki.FusekiClient.getTotalElapsedTime() / Stats.nanoToSec;
 		double totalTimeNet = totalTimeLLEM - totalTimeFC;
 		double[] stats = Stats.get().getStats(null, Stats.memToMb);
 		if (stats!=null && stats.length>15) {
-			System.err.println( "LLEM Dur.\tFC Dur.\tPLS Dur.\tAvg. Mem\tMax Mem\tAvg Active Threads\tMax Threads\tTotal Threads\tCPUs\tAvg OS Load\tMax OS Load\tAvg Jvm Load\tMax Jvm Load" );
-			System.err.println( String.format( java.util.Locale.forLanguageTag("el"), "%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%d\t%d\t%d\t%.3f\t%.3f\t%.3f\t%.3f\n", 
+			logger.debug( "LLEM Dur.\tFC Dur.\tPLS Dur.\tAvg. Mem\tMax Mem\tAvg Active Threads\tMax Threads\tTotal Threads\tCPUs\tAvg OS Load\tMax OS Load\tAvg Jvm Load\tMax Jvm Load" );
+			logger.debug( "{}", String.format( java.util.Locale.forLanguageTag("el"), "%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%.3f\t%d\t%d\t%d\t%.3f\t%.3f\t%.3f\t%.3f\n", 
 				totalTimeLLEM, totalTimeFC, totalTimeNet, stats[1], stats[4], stats[8], (long)stats[9], (long)stats[10], (int)stats[11], stats[12], stats[13], stats[14], stats[15] ) );
 		}
 	}

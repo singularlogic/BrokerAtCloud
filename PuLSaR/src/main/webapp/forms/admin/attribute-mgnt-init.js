@@ -95,7 +95,8 @@
 			  },
 			  "plugins" : [
 				"contextmenu", //"dnd", "search",
-				"state", "types", "wholerow", "hotkeys"
+				"state", "types", "wholerow", "hotkeys",
+				"sort"
 			  ]
 			})
 			.on('changed.jstree', function (e, data) {
@@ -114,7 +115,7 @@
 				}
 				else {
 					$('#data .content').hide();
-					$('#data .default').html('xxx').show();
+					$('#data .default').html('---').show();
 				}
 			})
 			;

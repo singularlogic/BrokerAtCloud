@@ -18,7 +18,6 @@
  * limitations under the License.
  *
  */
-//package com.sun.syndication.io.impl;
 package eu.brokeratcloud.persistence;
 
 import java.text.DateFormat;
@@ -143,10 +142,8 @@ public class DateParser {
                 if (pp.getIndex()!=sDate.length()) {
                     d = null;
                 }
-                //System.out.println("pp["+pp.getIndex()+"] s["+sDate+" m["+masks[i]+"] d["+d+"]");
             }
             catch (Exception ex1) {
-                //System.out.println("s: "+sDate+" m: "+masks[i]+" d: "+null);
             }
         }
         return d;

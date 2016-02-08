@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.rest.opt;
 
 import java.util.*;
@@ -31,7 +50,7 @@ public class AttributeManagementService extends AbstractManagementService {
 			
 			String rdfType = pm.getClassRdfType(OptimisationAttribute.class);
 			String parentUri = pm.getFieldUri(OptimisationAttribute.class, "parent");
-			String queryStr = "SELECT ?s WHERE { ?s  a  <"+rdfType+"> .   ?s  <"+parentUri+">  \"\"^^<http://www.w3.org/2001/XMLSchema#string> }";
+			String queryStr = "SELECT ?s WHERE { ?s  a  <"+rdfType+"> .  ?s <http://purl.org/dc/terms/title> ?title .  FILTER NOT EXISTS { ?s  <"+parentUri+">  ?s1 } .  FILTER ( ?s != <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> ) } ORDER BY ?title";
 			
 			logger.debug("getTopLevelAttributes: Retrieving top-level optimisation attribute");
 			List<Object> list = pm.findByQuery(queryStr);
@@ -52,8 +71,13 @@ public class AttributeManagementService extends AbstractManagementService {
 	public OptimisationAttribute[] getAllAttributes() {
 		try {
 			RdfPersistenceManager pm = RdfPersistenceManagerFactory.createRdfPersistenceManager();
+
+			String rdfType = pm.getClassRdfType(OptimisationAttribute.class);
+			String parentUri = pm.getFieldUri(OptimisationAttribute.class, "parent");
+			String queryStr = "SELECT ?s WHERE { ?s  a  <"+rdfType+"> .  ?s <http://purl.org/dc/terms/title> ?title .  FILTER ( ?s != <http://www.brokeratcloud.eu/v1/opt/SERVICE-ATTRIBUTE#null> ) } ORDER BY ?title";
+			
 			logger.debug("getAllAttributes: Retrieving ALL optimisation attribute");
-			List<Object> list = pm.findAll(OptimisationAttribute.class);
+			List<Object> list = pm.findByQuery(queryStr);
 			logger.debug("{} Optimisation Attributes found", list.size());
 			return list.toArray(new OptimisationAttribute[list.size()]);
 		} catch (Exception e) {
@@ -94,7 +118,7 @@ public class AttributeManagementService extends AbstractManagementService {
 			String attrRdfType = pm.getClassRdfType(OptimisationAttribute.class);
 			String parentFieldUri = pm.getFieldUri(OptimisationAttribute.class, "parent");
 			String parentId = pm.getObjectUri(id, OptimisationAttribute.class);
-			String queryStr = "SELECT ?s WHERE { ?s  a  <"+attrRdfType+"> ; <"+parentFieldUri+">  <"+parentId+"> }";
+			String queryStr = "SELECT ?s WHERE { ?s  a  <"+attrRdfType+"> ; <"+parentFieldUri+">  <"+parentId+"> ; <http://purl.org/dc/terms/title> ?title } ORDER BY ?title";
 			
 			logger.debug("getAttributeSubattributes: Retrieving sub-attributes of Optimisation Attribute with id = {}", id);
 			List<Object> list = pm.findByQuery( String.format(queryStr, id) );

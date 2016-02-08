@@ -3,6 +3,7 @@
  */
 
 var notificationDisplayPanel = "#NotificationsPanel";
+var notifsEmpty = true;
 
 function updateNotification(service) {
 	var container = $('<div style="margin: 5px;"></div>')
@@ -27,6 +28,9 @@ function updateNotification(service) {
 		var dataAdapter = new $.jqx.dataAdapter(source, {
 			loadComplete: function(data) {
 				loadingIndicator.fadeOut();
+				if (notifsEmpty) {
+					$(notificationDisplayPanel).html('<br/><i>There are no service notifications so far</i>');
+				}
 			},
 			loadError: function(xhr,status,error) {
 				loadingIndicator.fadeOut();
@@ -48,6 +52,7 @@ function updateNotification(service) {
 				var bgcolor = index%2==0 ? 'rgb(230,230,230)' : 'rgb(255,255,255)';
 				
 				var itemHtml = '<div style="padding: 2px; min-width: 130px; background:'+bgcolor+';"><b>' + (index+1) + '.</b> ' + typeStr + ' ' + dt + '<br/><i>' + value + '</i></div>';
+				notifsEmpty = false;
 				return itemHtml;
 			}
 		});

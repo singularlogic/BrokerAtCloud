@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.fuseki;
 
 import java.util.HashMap;
@@ -9,17 +28,16 @@ import java.util.Properties;
 
 import com.hp.hpl.jena.query.QueryExecution;
 import com.hp.hpl.jena.query.QueryExecutionFactory;
-import com.hp.hpl.jena.sparql.engine.http.QueryExceptionHTTP;
 import com.hp.hpl.jena.query.QuerySolution;
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 
-import com.hp.hpl.jena.update.Update;
 import com.hp.hpl.jena.update.UpdateExecutionFactory;
 import com.hp.hpl.jena.update.UpdateProcessor;
 import com.hp.hpl.jena.update.UpdateRequest;
 
 public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceClient {
+	private static final org.slf4j.Logger _logger = org.slf4j.LoggerFactory.getLogger("eu.brokeratcloud.sparql.fuseki");
 
 	private Properties properties;
 	private String updateService;
@@ -52,7 +70,7 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 	protected void debug(String mesg) {
 		if (!debugOn) return;
 		if (logger!=null) { logger.println(mesg); logger.flush(); }
-		else { System.err.println(getClass()+": "+mesg); }
+		else { _logger.debug("{}: {}", getClass(), mesg); }
 	}
 	
 	public String getSelectEndpoint() { return queryService; }
@@ -115,6 +133,7 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 	public List<Map<String,RDFNode>> queryAndProcess(String selectQuery) {
 		long startTm = System.nanoTime();
 		debug("queryAndProcess: ...");
+		debug("queryAndProcess: Query="+selectQuery);
 		QueryExecution qeSelect = query(selectQuery);
 		try {
 			ResultSet results = qeSelect.execSelect();
@@ -143,6 +162,7 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 	public List<String> queryForIds(String selectQuery, String idCol) {
 		long startTm = System.nanoTime();
 		debug("queryForIds: ...");
+		debug("queryForIds: Query="+selectQuery);
 		QueryExecution qeSelect = query(selectQuery);
 		try {
 			ResultSet results = qeSelect.execSelect();
@@ -170,6 +190,8 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 	} // end method
 	
 	public QueryExecution query(String selectQuery) {
+		debug("query: ...");
+		debug("query: Query="+selectQuery);
 		return _query(selectQuery, true);
 	}
 	
@@ -180,6 +202,7 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 	public Object queryValue(String selectQuery) {
 		long startTm = System.nanoTime();
 		debug("queryValue: ...");
+		debug("queryValue: Query="+selectQuery);
 		QueryExecution qeSelect = _query(selectQuery, false);
 		try {
 			ResultSet rs = qeSelect.execSelect();
@@ -204,6 +227,7 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 	public boolean ask(String askQuery) {
 		long startTm = System.nanoTime();
 		debug("ask: ...");
+		debug("ask: Query="+askQuery);
 		QueryExecution qeAsk = query(askQuery);
 		try {
 			return qeAsk.execAsk();
@@ -247,7 +271,7 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 		long startTm = System.currentTimeMillis();
 		for (int i=0; i<cnt; i++) {
 			long startTm1 = System.currentTimeMillis();
-			client.queryAndProcess(args[(i % qryCnt)+1]);
+			client.queryAndProcess(args[ i % qryCnt + 1 ]);
 			dur += (System.currentTimeMillis() - startTm1);
 			if (i%1000==0) { System.out.print("."); System.out.flush(); }
 		}

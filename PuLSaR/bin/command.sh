@@ -1,6 +1,5 @@
 #!/bin/bash
-SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
-BASEDIR=$( cd "$SCRIPT_DIR/.." && pwd )
+source $( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/settings.sh
 
 path="$path:$BASEDIR/bin"
 export path

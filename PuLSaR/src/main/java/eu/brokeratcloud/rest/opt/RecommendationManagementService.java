@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.rest.opt;
 
 import java.util.*;
@@ -76,28 +95,7 @@ public class RecommendationManagementService extends AbstractManagementService {
 			Recommendation[] recomList = list.toArray(new Recommendation[list.size()]);
 			
 			logger.debug("getRecommendations: Enriching recommendation items with service attribute info");
-			eu.brokeratcloud.rest.opt.AuxiliaryService auxWS = new eu.brokeratcloud.rest.opt.AuxiliaryService();
-			for (Recommendation recom : recomList) {
-				logger.debug("getRecommendations:     Enriching items of recommendation {}", recom.getId());
-				for (RecommendationItem item : recom.getItems()) {
-					String srvId = item.getServiceDescription();
-					logger.debug("getRecommendations:         Fetching info for service {}", srvId);
-					eu.brokeratcloud.common.ServiceDescription sd = auxWS.getServiceDescription(srvId);
-					Map<String,Object> attrs = sd.getServiceAttributes();
-					if (attrs!=null) {
-						String[][] attrsArr = new String[attrs.size()][2];
-						int i=0;
-						for (String at : attrs.keySet()) {
-							Object val = attrs.get(at);
-							if (at.indexOf('#')>0) at = at.substring(at.indexOf('#'));
-							attrsArr[i][0] = at;
-							attrsArr[i][1] = val!=null ? val.toString() : "";
-							i++;
-						}
-						item.setExtra(attrsArr);
-					}
-				}
-			}
+			enrichRecomItems(recomList);
 			logger.debug("getRecommendations: Done enriching recommendation items with service attribute info");
 			
 			return recomList;
@@ -106,6 +104,33 @@ public class RecommendationManagementService extends AbstractManagementService {
 			logger.debug("getRecommendations: Returning an empty array of {}", Recommendation.class);
 			return new Recommendation[0];
 		}
+	}
+	
+	protected void enrichRecomItems(Recommendation[] recomList) {
+		logger.debug("enrichRecomItems: BEGIN: recom-list-size={}", recomList.length);
+		eu.brokeratcloud.rest.opt.AuxiliaryService auxWS = new eu.brokeratcloud.rest.opt.AuxiliaryService();
+		for (Recommendation recom : recomList) {
+			logger.trace("enrichRecomItems:      Enriching items of recommendation {}", recom.getId());
+			for (RecommendationItem item : recom.getItems()) {
+				String srvId = item.getServiceDescription();
+				logger.trace("enrichRecomItems:          Fetching info for service {}", srvId);
+				eu.brokeratcloud.common.ServiceDescription sd = auxWS.getServiceDescription(srvId);
+				Map<String,Object> attrs = sd.getServiceAttributes();
+				if (attrs!=null) {
+					String[][] attrsArr = new String[attrs.size()][2];
+					int i=0;
+					for (String at : attrs.keySet()) {
+						Object val = attrs.get(at);
+						if (at.indexOf('#')>0) at = at.substring(at.indexOf('#'));
+						attrsArr[i][0] = at;
+						attrsArr[i][1] = val!=null ? val.toString() : "";
+						i++;
+					}
+					item.setExtra(attrsArr);
+				}
+			}
+		}
+		logger.debug("enrichRecomItems: END");
 	}
 
 	// GET /opt/recommendation/sc/{scId}
@@ -132,7 +157,12 @@ public class RecommendationManagementService extends AbstractManagementService {
 			logger.debug("getAllRecommendations: Retrieving Recommendations for ALL profiles");
 			List<Object> list = pm.findByQuery( String.format(queryStr, scId) );
 			logger.debug("{} recommendations found", list.size());
-			return list.toArray(new Recommendation[list.size()]);
+			
+			Recommendation[] recomList = list.toArray(new Recommendation[list.size()]);
+			logger.debug("getAllRecommendations: Enriching recommendation items with service attribute info");
+			enrichRecomItems(recomList);
+			logger.debug("getAllRecommendations: Done enriching recommendation items with service attribute info");
+			return recomList;
 		} catch (Exception e) {
 			logger.error("getAllRecommendations: EXCEPTION THROWN: {}", e);
 			logger.debug("getAllRecommendations: Returning an empty array of {}", Recommendation.class);
@@ -151,6 +181,12 @@ public class RecommendationManagementService extends AbstractManagementService {
 			logger.debug("getRecommendation: Retrieving Recommendation with id = {}", id);
 			Recommendation recom = (Recommendation)pm.find(id, Recommendation.class);
 			logger.debug("Recommendation {} :\n{}", id, recom);
+			
+			Recommendation[] recomList = { recom };
+			logger.debug("getRecommendation: Enriching recommendation items with service attribute info");
+			enrichRecomItems(recomList);
+			logger.debug("getRecommendation: Done enriching recommendation items with service attribute info");
+			
 			return recom;
 		} catch (Exception e) {
 			logger.error("getRecommendation: EXCEPTION THROWN: {}", e);

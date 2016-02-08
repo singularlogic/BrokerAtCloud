@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.opt;
 
 import eu.brokeratcloud.common.BrokerObject;
@@ -28,7 +47,7 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 	@XmlAttribute
 	@RdfPredicate
 	protected String expression;
-//SOS:  @XmlAttribute  MUST NOT BE SET FOR THIS FIELD IN ORDER TO AVOID INFINITE RECURSION DURING "JSON SERIALIZATION"
+	//@XmlAttribute  MUST NOT BE SET FOR THIS FIELD IN ORDER TO AVOID INFINITE RECURSION DURING "JSON SERIALIZATION"
 	@RdfPredicate
 	protected ConsumerPreference consumerPreference;
 	
@@ -214,7 +233,7 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 				} else
 				if (isSet && hasOrder==false) {
 					logger.trace("_parseExpression: IS UNORDERED SET");
-					if (operator!=OPERATOR.EQ && operator!=OPERATOR.NOT_IN && operator!=OPERATOR.UNKNOWN) {
+					if (operator!=OPERATOR.EQ && operator!=OPERATOR.IN && operator!=OPERATOR.NOT_IN && operator!=OPERATOR.UNKNOWN) {
 						_isValid = false;
 						errMsg = "Invalid unordered set type operator: "+operator;
 					} else {
@@ -457,13 +476,13 @@ public class ConsumerPreferenceExpression extends BrokerObject {
 		} else
 		if (isBoolean) {
 			boolean val = _parseBoolean( valStr );
-			if (true) {
+			//if (true) {
 				if (expression==null || _isComment) return true;	// if no constraint, evaluate 'true'
 				switch (operator) {
 					case EQ: return val==requiredBooleanValue;
 					default: errMsg = "** IMPLEMENTATION ERROR OR CORRUPTED DATA **: Invalid boolean type operator: "+operator;
 				}
-			}
+			//}
 		} else
 		if (isSet && hasOrder==false) {
 			boolean foundAll = false;

@@ -34,6 +34,7 @@
     <script type="text/javascript" src="recom-init.js"></script>
 	<script>
 		recommendationDisplayPanel = "#ContentPanel";
+		var listEmpty = true;
 	</script>
 	
 	<script type="text/javascript">
@@ -72,9 +73,15 @@
 			var dataAdapter = new $.jqx.dataAdapter(source, {
 				loadComplete: function(data) {
 					loadingIndicator.fadeOut();
+					if (listEmpty) {
+						$(recommendationDisplayPanel).html('<br/><i>There are no profiles with active recommendations so far</i>');
+						//$("#listbox").html('<br/><i>There are no profiles with active recommendations so far</i>');
+						$("#splitter").jqxSplitter('collapse');
+					}
 				},
 				loadError: function(xhr,status,error) {
 					loadingIndicator.fadeOut();
+					$(recommendationDisplayPanel).html('<i>Error while retrieving profiles<br/>'+error+'</i>');
 					alert('STATUS='+status+'\nERROR='+error);
 				}
 			});
@@ -86,6 +93,7 @@
 					//var datarecord = data[index];
 					var dt = new Date(new Number(value));
 					var table = '<table style="min-width: 130px;"><tr><td><b>' + (index+1) + '.</b> ' + label + '</td></tr><tr><td><i>' + dt.toUTCString() + '</i></td></tr></table>';
+					listEmpty = false;
 					return table;
 				}
 			});

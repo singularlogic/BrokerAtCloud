@@ -1,3 +1,22 @@
+/*
+ * #%L
+ * Preference-based cLoud Service Recommender (PuLSaR) - Broker@Cloud optimisation engine
+ * %%
+ * Copyright (C) 2014 - 2016 Information Management Unit, Institute of Communication and Computer Systems, National Technical University of Athens
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package eu.brokeratcloud.opt;
 
 import java.util.Arrays;
@@ -26,39 +45,40 @@ public class ServiceCategoryAttribute extends BrokerObject {
 	@RdfPredicate(uri="http://www.linked-usdl.org/ns/usdl-pref#hasOptimisationAttribute")
 	protected String attribute;
 	@XmlAttribute
-	@RdfPredicate
+	@RdfPredicate //(uri="http://www.linked-usdl.org/ns/usdl-pref#hasDataType")
 	protected String type;
 	@XmlAttribute
-	@RdfPredicate
+	@RdfPredicate //(uri="http://www.linked-usdl.org/ns/usdl-pref#isMandatory")
 	protected boolean mandatory;
 	@XmlAttribute
-	@RdfPredicate
-	protected String unit;
+	@RdfPredicate //(uri="http://www.linked-usdl.org/ns/usdl-pref#hasUnitOfMeasurement")
+	protected String unit;	// unit of measurement (if any)
 	@XmlAttribute
-	@RdfPredicate
-	protected String measuredBy;
+	@RdfPredicate //(uri="http://www.linked-usdl.org/ns/usdl-pref#hasUnitOfMeasurement")
+	protected String measuredBy;	// unit of measurement (if any)
 	
 	@XmlAttribute
+	//@RdfPredicate
 	protected String bppName;
 	
 	//Allowed Value Range constraints
 	@XmlAttribute
-	@RdfPredicate
+	@RdfPredicate //(uri="http://www.linked-usdl.org/ns/usdl-pref#hasMax")
 	protected double max;
 	@XmlAttribute
-	@RdfPredicate
+	@RdfPredicate //(uri="http://www.linked-usdl.org/ns/usdl-pref#hasMin")
 	protected double min;
 	@XmlAttribute
-	@RdfPredicate(delete="cascade")
+	@RdfPredicate(delete="cascade" /*, uri="http://www.linked-usdl.org/ns/usdl-pref#hasFuzzyMax"*/ )
 	protected TFN fmin;
 	@XmlAttribute
-	@RdfPredicate(delete="cascade")
+	@RdfPredicate(delete="cascade" /*, uri="http://www.linked-usdl.org/ns/usdl-pref#hasFuzzyMin"*/ )
 	protected TFN fmax;
 	@XmlAttribute
-	@RdfPredicate(delete="cascade")
+	@RdfPredicate(delete="cascade" /*, uri="http://www.linked-usdl.org/ns/usdl-pref#hasMembers"*/ )
 	protected String[] members;
 	@XmlAttribute
-	@RdfPredicate(delete="cascade")
+	@RdfPredicate(delete="cascade" /*, uri="http://www.linked-usdl.org/ns/usdl-pref#hasLinguisticTerms"*/ )
 	protected String[] terms;
 	//
 	protected boolean higherIsBetter;
