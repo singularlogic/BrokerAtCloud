@@ -30,8 +30,7 @@ public abstract class Stats {
 	private static void initInstance() {
 		// Load properties
 		try {
-			properties = new Properties();
-			properties.load( Stats.class.getClassLoader().getResourceAsStream(propertiesFile) );
+			properties = eu.brokeratcloud.util.Config.getConfig(propertiesFile);
 		} catch (Exception e) {}
 		// Instantiate Stats singleton object
 		try {

@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 	private static final Logger logger = LoggerFactory.getLogger( (new Object() { }.getClass().getEnclosingClass()).getName() );
+	private static final String RDF_CONFIG_BASE = "/rdf-persistence";
 	
 	// ========================================================================================
 	// Constructors and (static) factory methods
@@ -2002,7 +2003,7 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 			// load config settings from config files
 			_initDefaultsFromConfigFiles();
 			// preload and analyze classes
-			_preloadTypes("/preload-types.properties");
+			_preloadTypes(RDF_CONFIG_BASE+"/preload-types.properties");
 			
 			logger.debug("Defaults:\n" +
 						"defaultNamespacePrefix = {}\n" +
@@ -2051,7 +2052,7 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 		managedObjectUris = new HashMap<Object,String>();
 		
 		// reload and re-analyze classes
-		_preloadTypes("/preload-types.properties");
+		_preloadTypes(RDF_CONFIG_BASE+"/preload-types.properties");
 	}
 	
 	// --------------------------------------------------------------------------
@@ -2125,10 +2126,10 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 	// initialize from config files
 	//
 	protected static void _initDefaultsFromConfigFiles() throws IOException, ClassNotFoundException {
-		String java2xsdTypeBindInitFile = "/java2xsdTypeBindings.properties";
-		String xsd2javaTypeBindInitFile = "/xsd2javaTypeBindings.properties";
-		String defaultUrisFile = "/defaultUris.properties";
-		String rdfPersistenceFile = "/rdf-persistence.properties";
+		String java2xsdTypeBindInitFile = RDF_CONFIG_BASE+"/java2xsdTypeBindings.properties";
+		String xsd2javaTypeBindInitFile = RDF_CONFIG_BASE+"/xsd2javaTypeBindings.properties";
+		String defaultUrisFile = RDF_CONFIG_BASE+"/defaultUris.properties";
+		String rdfPersistenceFile = RDF_CONFIG_BASE+"/rdf-persistence.properties";
 		logger.info("RdfPersistenceManager: Initializing from files:\ndefault URIs: {}\nJava-to-Xsd bindings: {}\nXsd-to-Java bindings: {}\nRdf Persistence: {}", defaultUrisFile, java2xsdTypeBindInitFile, xsd2javaTypeBindInitFile, rdfPersistenceFile);
 		_initTypeBindingsFromFiles(java2xsdTypeBindInitFile, xsd2javaTypeBindInitFile);
 		_initDefaultUris(defaultUrisFile);
@@ -2137,8 +2138,7 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 	
 	// initialize persistence settigns, default namespace, predicates (RDF properties) and URIs
 	protected static void _initRdfPersistenceSettings(String settingsFile) throws IOException {
-		Properties p = new Properties();
-		p.load( RdfPersistenceManagerImpl.class.getResourceAsStream(settingsFile) );
+		Properties p = eu.brokeratcloud.util.Config.getConfig(settingsFile);
 		
 		ignoreUnknownProperties = _parseBoolean( p.getProperty(".ignore-unknown-properties") );
 		
@@ -2155,8 +2155,7 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 	}
 	
 	protected static void _initDefaultUris(String typeFile) throws IOException {
-		Properties p = new Properties();
-		p.load( RdfPersistenceManagerImpl.class.getResourceAsStream(typeFile) );
+		Properties p = eu.brokeratcloud.util.Config.getConfig(typeFile);
 		
 		defaultNamespacePrefix = p.getProperty(".default-namespace-prefix");
 		defaultTypesPrefix = p.getProperty(".default-type-prefix");
@@ -2171,8 +2170,7 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 	
 	protected static void _initTypeBindingsFromFiles(String java2xsdInitFile, String xsd2javaInitFile) throws IOException, ClassNotFoundException {
 		// Initialize from java2xsdInitFile
-		Properties p = new Properties();
-		p.load( RdfPersistenceManagerImpl.class.getResourceAsStream(java2xsdInitFile) );
+		Properties p = eu.brokeratcloud.util.Config.getConfig(java2xsdInitFile);
 		for (Object k : p.keySet()) {
 			String key = ((String)k).trim();
 			String value = p.getProperty(key).trim();
@@ -2196,8 +2194,7 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 		}
 		
 		// Initialize from xsd2javaInitFile
-		p = new Properties();
-		p.load( RdfPersistenceManagerImpl.class.getResourceAsStream(xsd2javaInitFile) );
+		p = eu.brokeratcloud.util.Config.getConfig(xsd2javaInitFile);
 		for (Object k : p.keySet()) {
 			String key = ((String)k).trim();
 			String value = p.getProperty(key).trim();
@@ -2217,9 +2214,8 @@ public class RdfPersistenceManagerImpl implements RdfPersistenceManager {
 	//
 	protected static void _preloadTypes(String preloadTypesFile) throws IOException, ClassNotFoundException {
 		logger.debug("RdfPresistenceManager: Preloading and analyzing classes...");
-		Properties p = new Properties();
+		Properties p = eu.brokeratcloud.util.Config.getConfig(preloadTypesFile);
 		HashMap<String,Class> types = new HashMap<String,Class>();
-		p.load( RdfPersistenceManagerImpl.class.getResourceAsStream(preloadTypesFile) );
 		
 		// replace placeholders with actual values
 		for (Object k : p.keySet()) {

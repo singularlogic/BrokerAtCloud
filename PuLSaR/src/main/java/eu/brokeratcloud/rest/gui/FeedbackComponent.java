@@ -82,8 +82,7 @@ public class FeedbackComponent extends AbstractFacingComponent {
 	protected void initFeedbackConfig() {
 		try {
 			logger.debug("Loading feedback properties file: {}", feedbackConfigFile);
-			Properties properties = new Properties();
-			properties.load( getClass().getClassLoader().getResourceAsStream(feedbackConfigFile) );
+			Properties properties = eu.brokeratcloud.util.Config.getConfig(feedbackConfigFile);
 			//
 			String str = properties.getProperty("gui.RECENT_THRESHOLD");
 			RECENT_THRESHOLD = Long.MAX_VALUE;

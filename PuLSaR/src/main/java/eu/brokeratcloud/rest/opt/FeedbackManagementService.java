@@ -84,8 +84,7 @@ public class FeedbackManagementService extends AbstractManagementService {
 		try {
 			String propertiesFile = defaultActiveJdbcConfigFile;
 			logger.debug("initActiveJdbc: Loading ActiveJDBC configuration from file: {}", propertiesFile);
-			Properties properties = new Properties();
-			properties.load( getClass().getClassLoader().getResourceAsStream(propertiesFile) );
+			Properties properties = eu.brokeratcloud.util.Config.getConfig(propertiesFile);
 			this.activeJdbcConfig = properties;
 			String pwd = activeJdbcConfig.getProperty("db.password");
 			activeJdbcConfig.setProperty("db.password", "********");

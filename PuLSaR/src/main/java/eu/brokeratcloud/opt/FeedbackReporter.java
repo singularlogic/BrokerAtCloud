@@ -105,21 +105,14 @@ public class FeedbackReporter extends RootObject {
 	}
 	
 	protected Properties _loadSettings(String file) {
-		try {
-			Properties p = new Properties();
-			logger.debug("FeedbackReporter: Reading default properties from file: {}...", file);
-			java.io.InputStream is = getClass().getResourceAsStream(file);
-			if (is==null) {
-				logger.debug("FeedbackReporter: Reading default properties from file: {}... Not found", file);
-				return null;
-			}
-			p.load( is );
-			logger.debug("FeedbackReporter: Reading default properties from file: {}... done", file);
-			return p;
-		} catch (Exception e) {
-			logger.error("FeedbackReporter: Exception while reading default properties from file: {},  Exception: {}", file, e);
+		logger.debug("FeedbackReporter: Reading default properties from file: {}...", file);
+		Properties p = eu.brokeratcloud.util.Config.getConfig(file);
+		if (p==null) {
+			logger.debug("FeedbackReporter: Reading default properties from file: {}... Not found", file);
 			return null;
 		}
+		logger.debug("FeedbackReporter: Reading default properties from file: {}... done", file);
+		return p;
 	}
 	
 	// ================================================================================================================

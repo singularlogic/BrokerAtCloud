@@ -48,8 +48,7 @@ public class AbstractManagementService extends RootObject {
 	protected Properties loadConfig(String propertiesFile) {
 		try {
 			logger.debug("loadConfig: Loading properties file: {}", propertiesFile);
-			Properties properties = new Properties();
-			properties.load( getClass().getClassLoader().getResourceAsStream(propertiesFile) );
+			Properties properties = eu.brokeratcloud.util.Config.getConfig(propertiesFile);
 			return properties;
 		} catch (Exception e) {
 			logger.error("loadConfig: Exception during initialization. Using defaults: ", e);

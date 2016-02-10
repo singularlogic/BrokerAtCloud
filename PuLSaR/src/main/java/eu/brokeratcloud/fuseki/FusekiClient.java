@@ -50,8 +50,7 @@ public class FusekiClient implements eu.brokeratcloud.persistence.SparqlServiceC
 	}
 	
 	public FusekiClient(String propertiesFile) throws java.io.IOException {
-		properties = new Properties();
-		properties.load( getClass().getClassLoader().getResourceAsStream(propertiesFile) );
+		properties = eu.brokeratcloud.util.Config.getConfig(propertiesFile);
 		updateService = properties.getProperty("update-service");
 		queryService = properties.getProperty("query-service");
 		

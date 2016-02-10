@@ -62,13 +62,11 @@ class PubsubEventManager extends EventManager {
 		topics = new HashMap<String,String[][]>();
 		
 		// Load pubsub properties
-		InputStream is = getClass().getClassLoader().getResourceAsStream(pubsubFile);
-		if (is==null) {
+		Properties pubsubProps = eu.brokeratcloud.util.Config.getConfig(pubsubFile);
+		if (pubsubProps==null) {
 			logger.error("PubsubEventManager: Pubsub properties file not found: {}", pubsubFile);
 			return;
 		}
-		Properties pubsubProps = new Properties();
-		pubsubProps.load( is );
 		
 		// Process callback endpoint host and port
 		String host = pubsubProps.getProperty("CALLBACK-HOST", ".AUTO");

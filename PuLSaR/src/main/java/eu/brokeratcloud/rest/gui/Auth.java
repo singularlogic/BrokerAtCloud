@@ -19,10 +19,6 @@
  */
 package eu.brokeratcloud.rest.gui;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,18 +52,18 @@ public class Auth {
 	@Produces("text/html")
 	@PermitAll
 	@RolesAllowed({"admin","sc","sp"})
-	public String getMenu(@Context HttpServletRequest request) throws IOException {
+	public String getMenu(@Context HttpServletRequest request) {
 		logger.debug("Auth: getMenu: Calling getMenuStatic");
 		return getMenuStatic(request);
 	}
 	
-	public static String getMenuStatic(@Context HttpServletRequest request) throws IOException {
+	public static String getMenuStatic(@Context HttpServletRequest request) {
 		logger.debug("Auth: getMenuStatic: INPUT: request={}", request);
 		
 		// Loading menu template from file, if it hasn't been already
 		if (menuTemplate==null) {
 			logger.debug("Auth: getMenuStatic: Loading menu template...");
-			menuTemplate = readInputStreamAsString( Auth.class.getResourceAsStream(menuTemplateUrl) );
+			menuTemplate = eu.brokeratcloud.util.Config.getResourceAsString(menuTemplateUrl);
 			logger.debug("Auth: getMenuStatic: Menu template loaded:\n"+menuTemplate);
 			
 			logger.trace("Auth: getMenuStatic: template processing pattern: {}", patternStr);
@@ -126,17 +122,5 @@ public class Auth {
 		
 		logger.trace("Auth: getMenuStatic: OUTPUT: menu code:\n{}", html);
 		return html;
-	}
-	
-	protected static String readInputStreamAsString(InputStream in) throws IOException {
-		BufferedInputStream bis = new BufferedInputStream(in);
-		ByteArrayOutputStream buf = new ByteArrayOutputStream();
-		int result = bis.read();
-		while(result != -1) {
-			byte b = (byte)result;
-			buf.write(b);
-			result = bis.read();
-		}        
-		return buf.toString();
 	}
 }

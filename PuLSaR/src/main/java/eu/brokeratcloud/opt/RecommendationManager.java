@@ -163,24 +163,14 @@ public class RecommendationManager extends RootObject {
 	}
 	
 	protected Properties _loadSettings(String file) {
-		java.io.InputStream is = null;
-		try {
-			Properties p = new Properties();
-			logger.debug("Reading default properties from file: {}...", file);
-			is = getClass().getResourceAsStream(file);
-			if (is==null) {
-				logger.debug("Reading default properties from file: {}... Not found", file);
-				return null;
-			}
-			p.load( is );
-			logger.debug("Reading default properties from file: {}... done", file);
-			return p;
-		} catch (Exception e) {
-			logger.error("Exception while reading default properties from file: {},  Exception: {}", file, e);
+		logger.debug("Reading default properties from file: {}...", file);
+		Properties p = eu.brokeratcloud.util.Config.getConfig(file);
+		if (p==null) {
+			logger.debug("Reading default properties from file: {}... Not found", file);
 			return null;
-		} finally {
-			if (is!=null) try { is.close(); } catch (Exception e) {}
 		}
+		logger.debug("Reading default properties from file: {}... done", file);
+		return p;
 	}
 	
 	// ================================================================================================================

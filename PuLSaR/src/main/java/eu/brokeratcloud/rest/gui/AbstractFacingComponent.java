@@ -52,8 +52,7 @@ public abstract class AbstractFacingComponent extends RootObject {
 	public void loadConfig(String propertiesFile) throws IOException {
 		try {
 			logger.debug("Loading properties file: {}", propertiesFile);
-			Properties properties = new Properties();
-			properties.load( getClass().getClassLoader().getResourceAsStream(propertiesFile) );
+			Properties properties = eu.brokeratcloud.util.Config.getConfig(propertiesFile);
 			baseUrl = properties.getProperty("ws-base");
 			this.configProperties = properties;
 			logger.debug("WS base: {}", baseUrl);
