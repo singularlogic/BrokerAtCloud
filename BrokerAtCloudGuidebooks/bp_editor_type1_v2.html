@@ -221,9 +221,9 @@
             //document.getElementById("classtaxroot").disabled = true;
             //document.getElementById("classtaxURI").disabled = true;
 
-            deactivateQuantSLSchemaTable();
-            document.getElementById("quant_sl_table_add").disabled = true;
-            document.getElementById("quant_sl_table_delete").disabled = true;
+            //deactivateQuantSLSchemaTable();
+            //document.getElementById("quant_sl_table_add").disabled = true;
+            //document.getElementById("quant_sl_table_delete").disabled = true;
             deactivateQualSLSchemaTable();
             document.getElementById("qual_sl_table_add").disabled = true;
             document.getElementById("qual_sl_table_delete").disabled = true;
@@ -306,18 +306,18 @@
             //document.getElementById("bp_instance").disabled = false;
             //document.getElementById("bp_model").disabled = false;
             document.getElementById("slp_class").disabled = false;
-            document.getElementById("classtaxpref").disabled = false;
-            document.getElementById("classtaxroot").disabled = false;
-            document.getElementById("classtaxURI").disabled = false;
-            activateQuantSLSchemaTable();
-            document.getElementById("quant_sl_table_add").disabled = false;
-            document.getElementById("quant_sl_table_delete").disabled = false;
+            //document.getElementById("classtaxpref").disabled = false;
+            //document.getElementById("classtaxroot").disabled = false;
+            //document.getElementById("classtaxURI").disabled = false;
+            //activateQuantSLSchemaTable();
+            //document.getElementById("quant_sl_table_add").disabled = false;
+            //document.getElementById("quant_sl_table_delete").disabled = false;
             activateQualSLSchemaTable();
             document.getElementById("qual_sl_table_add").disabled = false;
             document.getElementById("qual_sl_table_delete").disabled = false;
-            activateClassTaxTable();
-            document.getElementById("classtax_table_add").disabled = false;
-            document.getElementById("classtax_table_delete").disabled = false;
+            //activateClassTaxTable();
+            //document.getElementById("classtax_table_add").disabled = false;
+            //document.getElementById("classtax_table_delete").disabled = false;
 
             document.getElementById("safe_schemas").disabled = false;
             document.getElementById("edit_schemas").disabled = true;
@@ -1311,9 +1311,9 @@
                             </div>
 
                             <div class="bc-buttongroup">
-                                <button class="btn btn-default" id="safe_schemas" onclick="save_SLSchemas()">Save the Service Level Schemas. </button>
+                                <button class="btn btn-default" id="safe_schemas" onclick="save_SLSchemas()"> Create Qualitative Value Sets. </button>
 
-                                <button class="btn btn-default" id="edit_schemas" disabled="disabled" onclick="activateInputFields()">Edit the Service Level Schemas. </button>
+                                <button class="btn btn-default" id="edit_schemas" disabled="disabled" onclick="activateInputFields()">Edit Qualitative Service Level Schemas. </button>
                             </div>
                             <div class="panel panel-default collapse" id='qualValuePanel'>
                                 <div class="panel-heading">
