@@ -407,7 +407,8 @@
                 // Assign the service model class and instance to the business policy form
                 document.getElementById("bp_business_entity").value = url_bizentity.split('#')[1];
                 document.getElementById("br_namespace").value = url_bizentity.split('#')[0];
-            })}
+            })
+           }
 
             return base
         }
@@ -641,7 +642,7 @@
                     kb.add("bp:" + qual_value + "_" + qual_value_type + " rdfs:label " + '"' + qual_values_table.rows[j].cells[3].childNodes[0].value + '"@en .');
                     if (j < qual_values_table.rows.length - 1) {
                         // kb.add("bp:" + qual_value + " gr:" + qual_values_table.rows[j].cells[4].childNodes[0].value + " bp:" + qual_values_table.rows[j + 1].cells[2].childNodes[0].value + " .")
-                        kb.add("bp:" + qual_value + "_" + qual_value_type + " gr:" + qual_values_table.rows[j].cells[4].childNodes[0].value + " bp:" + qual_values_table.rows[j + 1].cells[2].childNodes[0].value + " .")
+                        kb.add("bp:" + qual_value + "_" + qual_value_type + " gr:" + qual_values_table.rows[j].cells[4].childNodes[0].value + " bp:" + qual_values_table.rows[j + 1].cells[2].childNodes[0].value + "_" + qual_value_type + " .")
                     }
                 }
             }
